@@ -1,0 +1,26 @@
+name: Generate coverage badges
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  run:
+    name: Generate badges
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run test coverage
+        run: npm run test:coverage
+
+      - name: Generate coverage badges
+        uses: jpb06/coverage-badges-action@latest
+        with:
+          output-folder: ./coverage-badges
+          badges-icon: jest

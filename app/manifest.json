@@ -1,0 +1,31 @@
+{
+  "name": "Open Adblocker",
+  "description": "Open Adblocker",
+  "manifest_version": 3,
+  "minimum_chrome_version": "110.0",
+  "background": {
+    "service_worker": "service_worker.js"
+  },
+  "action": {
+    "default_icon": "icons/extension/icon_16.png",
+    "default_title": "Open Adblocker",
+    "default_popup": "popup/index.html"
+  },
+  "icons": {
+    "16": "icons/extension/icon_16.png",
+    "48": "icons/extension/icon_48.png",
+    "128": "icons/extension/icon_128.png"
+  },
+  "permissions": [
+    "scripting",
+    "webRequest",
+    "webNavigation",
+    "storage",
+    "management",
+    "alarms",
+    "declarativeNetRequest"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ]
+}

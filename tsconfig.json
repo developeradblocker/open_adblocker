@@ -1,0 +1,58 @@
+{
+  "compilerOptions": {
+    "module": "esnext",
+    "target": "esnext",
+    "outDir": "./dist",
+    "allowJs": true,
+    "strict": true,
+    "jsx": "preserve",
+    "importHelpers": true,
+    "skipLibCheck": true,
+    "moduleResolution": "node",
+    "noUnusedLocals": true,
+    "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "esModuleInterop": true,
+    "noImplicitThis": false,
+    "resolveJsonModule": true,
+    "strictPropertyInitialization": false,
+    "strictNullChecks": false,
+    "paths": {
+      "@/*": [
+        "./app/*"
+      ],
+      "@adguard/tswebextension/mv3": [
+        "./node_modules/@adguard/tswebextension/dist/types/index.mv3.d.ts"
+      ]
+    },
+    "baseUrl": ".",
+    "typeRoots": [
+      "app/js/declarations",
+      "node_modules/@types",
+      "node_modules/@vue",
+      "reflect-metadata"
+    ],
+    "types": [
+      "webpack-env",
+      "chrome",
+      "node",
+      "jest"
+    ],
+    "lib": [
+      "esnext",
+      "dom",
+      "dom.iterable",
+      "scripthost"
+    ],
+  },
+  "include": [
+    "app/**/*.ts",
+    "app/**/*.tsx",
+    "app/**/*.vue",
+    "tests/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
