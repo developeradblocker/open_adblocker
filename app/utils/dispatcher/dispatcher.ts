@@ -267,6 +267,7 @@ export class Dispatcher implements DispatcherInterface {
   async sendBox<ReturnType> (box: Box<AppMessage>): Promise<ReturnType> {
     return await new Promise((resolve) => {
       const handleOnOfter = async (): Promise<void> => {
+        const afterCbs = this.registryAfter.get(type) ?? []
         if (afterCbs.length) {
           await Promise.allSettled(afterCbs.map(cb => cb(box)))
         }
@@ -284,7 +285,6 @@ export class Dispatcher implements DispatcherInterface {
       this.logger.info(JSON.stringify(box, null, 2))
       this.logger.groupEnd(label)
 
-      const afterCbs = this.registryAfter.get(type) ?? []
       const record: RegistryRecord | undefined = this.registry.get(type)
       if (typeof record === 'undefined') {
         handleOnOfter().then(() => {

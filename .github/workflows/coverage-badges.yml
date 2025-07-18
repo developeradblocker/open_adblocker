@@ -24,3 +24,30 @@ jobs:
         with:
           output-folder: ./coverage-badges
           badges-icon: jest
+          no-commit: true
+          target-branch: badges
+
+      - name: Create PR
+        id: cpr
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: update badges
+          title: '[Bump] Badges'
+          body: Update badges to reflect latest release changes
+          branch: badges
+          base: main
+
+      - name: PR Merge
+        if: steps.cpr.outputs.pull-request-operation == 'created'
+        uses: actions/github-script@v6
+        env:
+          PR_NUMBER: ${{ steps.cpr.outputs.pull-request-number }}
+        with:
+          script: |
+            github.rest.pulls.merge({
+              pull_number: process.env.PR_NUMBER,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+             })
+

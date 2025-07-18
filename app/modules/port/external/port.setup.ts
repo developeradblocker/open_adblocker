@@ -44,7 +44,7 @@ export const setupExternalPortChannel = (options: ExternalPortSetupOptions): Ext
     _resolvers: [] as PromiseResolver[],
     async sendMessage<ResponseType> (message: AppMessage): Promise<ResponseType> {
       const box: PortBox<AppMessage> = {
-        port: this._port.name,
+        port: this._port?.name ?? options.name,
         channel: Channel.port,
         id: uuidv4(),
         message

@@ -67,7 +67,7 @@ const openRateUs = async (): Promise<void> => {
 }
 
 const onMenuClick = async (): Promise<void> => {
-  await $router.push({ name: ROUTE.MENU })
+  await $router.push({ name: ROUTE.HOME })
 }
 
 </script>

@@ -26,9 +26,7 @@ jest.mock('pinia', () => ({
 }))
 
 jest.mock('vue-router', () => {
-  // const originalModule = jest.requireActual('vue-router')
   return {
-    // ...originalModule,
     createRouter: jest.fn(() => ({
       afterEach: jest.fn()
     })),
@@ -103,9 +101,10 @@ describe('Popup entry script', () => {
 
       expect(afterEachMock).toHaveBeenCalledTimes(1)
       const callback = afterEachMock.mock.calls[0][0]
-      callback({ name: ROUTE.INIT })
-      expect(visitPageMock).toHaveBeenCalledTimes(1)
-      expect(visitPageMock).toHaveBeenCalledWith(ROUTE.INIT)
+      callback({ name: ROUTE.HOME })
+      expect(visitPageMock).toHaveBeenCalledTimes(2)
+      expect(visitPageMock).toHaveBeenNthCalledWith(1, ROUTE.INIT)
+      expect(visitPageMock).toHaveBeenNthCalledWith(2, ROUTE.HOME)
     })
   })
 })

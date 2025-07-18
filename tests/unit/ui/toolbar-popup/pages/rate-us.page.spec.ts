@@ -58,7 +58,7 @@ describe('RateUsPage.vue', () => {
 
   it('should navigate to menu on click', () => {
     wrapper.getComponent(Header).vm.$emit('menu-click')
-    expect(pushMock).toHaveBeenLastCalledWith({ name: ROUTE.MENU })
+    expect(pushMock).toHaveBeenLastCalledWith({ name: ROUTE.HOME })
   })
 
   it('should open rate us on button click', async () => {

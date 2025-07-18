@@ -19,6 +19,7 @@
 import 'reflect-metadata'
 import { createApp } from 'vue'
 
+import { ROUTE } from '@/ui/toolbar-popup/router/route-names'
 import { createRouter, createWebHashHistory, RouteLocationNormalized, RouterOptions } from 'vue-router'
 import App from './app.vue'
 import { createPinia } from 'pinia'
@@ -56,12 +57,13 @@ setupExternalApp();
   const router = createRouter(routerOpts)
   app.use(router)
 
+  const activity = useUserActivity()
   router.afterEach((to: RouteLocationNormalized): void => {
-    const activity = useUserActivity()
     activity.visitPage(to.name as PageUI)
   })
 
   app.use(createPinia())
   app.component('BaseSvg', InlineSvg)
   app.mount('#app')
+  activity.visitPage(ROUTE.INIT)
 })()
