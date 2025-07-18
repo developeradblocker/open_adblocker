@@ -1,8 +1,5 @@
 # Open Ad Blocker
 
-## Status
-![coverage-total.svg](coverage-badges/coverage-total.svg)
-
 ## Commands
 - `npm run build:dev:chrome`: built for development with source maps for Chrome browser.
 - `npm run build:prod:chrome`: built for production for Chrome browser.
