@@ -46,7 +46,7 @@ describe('MenuLinks.vue', () => {
   })
 
   it('should open new tab on link clicked', async () => {
-    const url = 'https://openadblocker.com/about-us/'
+    const url = 'https://openadblocker.com/'
     await wrapper.get('[data-test="link"]').trigger('click')
     expect(clickMock).toHaveBeenCalledTimes(1)
     expect(clickMock).toHaveBeenCalledWith(ElementsUI.about, {

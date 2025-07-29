@@ -52,7 +52,7 @@ const LINKS: MenuLink[] = [
   {
     icon: 'info',
     text: 'About',
-    url: 'https://openadblocker.com/about-us/',
+    url: 'https://openadblocker.com/',
     element: ElementsUI.about
   },
   {
