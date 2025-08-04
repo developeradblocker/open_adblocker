@@ -22,7 +22,6 @@
     "webNavigation",
     "storage",
     "management",
-    "alarms",
     "declarativeNetRequest"
   ],
   "host_permissions": [
