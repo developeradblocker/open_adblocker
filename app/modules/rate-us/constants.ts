@@ -16,7 +16,7 @@
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
 
-export const RATE_US_URL = 'https://chrome.google.com'
+export const RATE_US_URL = 'https://chromewebstore.google.com/detail/jncabfnemmiofhiimdgelgeobggelpci'
 
 /**
  * How many times the user has to visit the home page before we show the rate us popup

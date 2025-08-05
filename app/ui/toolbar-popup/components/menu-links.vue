@@ -52,7 +52,7 @@ const LINKS: MenuLink[] = [
   {
     icon: 'info',
     text: 'About',
-    url: 'https://openadblocker.com/about-us/',
+    url: 'https://openadblocker.com/',
     element: ElementsUI.about
   },
   {
@@ -64,7 +64,7 @@ const LINKS: MenuLink[] = [
   {
     icon: 'link',
     text: 'Terms and conditions',
-    url: 'https://github.com/developeradblocker/open_adblocker',
+    url: 'https://github.com/developeradblocker/open_adblocker?tab=readme-ov-file#open-ad-blocker',
     element: ElementsUI.terms
   }
 ]

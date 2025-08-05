@@ -1,6 +1,6 @@
 {
   "name": "Open Adblocker",
-  "description": "Open Adblocker",
+  "description": "Get the best open source ad blocker - Block ads in one click",
   "manifest_version": 3,
   "minimum_chrome_version": "110.0",
   "background": {
@@ -22,7 +22,6 @@
     "webNavigation",
     "storage",
     "management",
-    "alarms",
     "declarativeNetRequest"
   ],
   "host_permissions": [
