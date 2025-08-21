@@ -29,12 +29,14 @@ import { requiredMessages } from '@/service_worker/required-messages'
 import { AppMessages } from '@/modules/app/common/app.messages'
 import { setupInternalWhitelist } from '@/modules/whitelist/internal/whitelist.setup'
 import { setupUserActivity } from '@/modules/user-activity/internal/user-activity.setup'
+import { helloAndGoodbyeSetup } from '@/modules/hello-and-goodbye/internal/hello-and-goodbye.setup'
 
 logger.info('Service Worker preparing')
 /**
  * Service Worker (SW)
  */
 setupWorker('SW')
+helloAndGoodbyeSetup()
 setupAdGuard()
 setupInternalPortChannel()
 setupInternalWhitelist()

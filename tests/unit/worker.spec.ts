@@ -29,6 +29,7 @@ import { setupUserActivity } from '@/modules/user-activity/internal/user-activit
 import { flushPromises } from '../helpers/flushPromises'
 import { onHandledAllRequiredMessages } from '@/utils/on-handled-all-required-messages'
 import { AppMessages } from '@/modules/app/common/app.messages'
+import { helloAndGoodbyeSetup } from '@/modules/hello-and-goodbye/internal/hello-and-goodbye.setup'
 
 jest.mock('@/utils/setup-worker', () => ({
   setupWorker: jest.fn(),
@@ -75,6 +76,10 @@ jest.mock('@/service_worker/required-messages', () => ({
   requiredMessages: list
 }))
 
+jest.mock('@/modules/hello-and-goodbye/internal/hello-and-goodbye.setup', () => ({
+  helloAndGoodbyeSetup: jest.fn()
+}))
+
 describe('serviceWorkerSetup', () => {
   let mockWork: jest.Mock
 
@@ -95,6 +100,7 @@ describe('serviceWorkerSetup', () => {
       expect(logger.info).toHaveBeenCalledWith('Service Worker preparing')
       expect(jest.mocked(setupWorker)).toHaveBeenCalledWith('SW')
       expect(setupAdGuard).toHaveBeenCalled()
+      expect(helloAndGoodbyeSetup).toHaveBeenCalled()
       expect(setupInternalPortChannel).toHaveBeenCalled()
       expect(setupInternalAdBlocker).toHaveBeenCalled()
       expect(setupUserActivity).toHaveBeenCalled()
