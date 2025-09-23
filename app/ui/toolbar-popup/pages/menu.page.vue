@@ -21,7 +21,7 @@
       <Header
         title="Menu"
         with-border
-        :show-menu="false"
+        :menu-closed="false"
         @menu-click="onMenuClick"
       />
     </template>

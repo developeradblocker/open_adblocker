@@ -33,13 +33,14 @@
       {{ title }}
     </h1>
     <div
+      v-if="withClose"
       data-test="menu"
       class="header__menu"
       @click="onMenuClick"
     >
       <BaseSvg
         class="header__menu-icon"
-        :src="`../icons/${showMenu ? 'hamburger' : 'close' }.svg`"
+        :src="`../icons/${menuClosed ? 'hamburger' : 'close' }.svg`"
       />
     </div>
   </div>
@@ -57,12 +58,14 @@ import { useRoute } from 'vue-router'
 
 const $emit = defineEmits(['menu-click'])
 const props = withDefaults(defineProps<{
+  withClose?: boolean
   withBorder?: boolean
   title?: string
-  showMenu?: boolean
+  menuClosed?: boolean
 }>(), {
+  withClose: true,
   withBorder: false,
-  showMenu: true
+  menuClosed: true
 })
 const activity = useUserActivity()
 const $route = useRoute()
@@ -75,8 +78,8 @@ const onLogoClick = async (): Promise<void> => {
 }
 
 const onMenuClick = async (): Promise<void> => {
-  const element: ElementsUI = props.showMenu ? ElementsUI.menu : ElementsUI.close
-  const payload: BaseUserClickPayload = props.showMenu
+  const element: ElementsUI = props.menuClosed ? ElementsUI.menu : ElementsUI.close
+  const payload: BaseUserClickPayload = props.menuClosed
     ? {
         page: $route.name as PageUI,
         to: ClickEventToAction.openMenu

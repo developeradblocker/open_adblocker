@@ -19,7 +19,7 @@
   <PrimaryLayout class="rate-us-page">
     <template #header>
       <Header
-        :show-menu="false"
+        :with-close="false"
         @menu-click="onMenuClick"
       />
     </template>
@@ -36,6 +36,7 @@
         </div>
         <h2 class="rate-us-page__title">Enjoy using Open AdBlocker?</h2>
         <p class="rate-us-page__description">Recommend us to others <br> by rating us on {{ browser }} store</p>
+        <span class="rate-us-page__reminder">Remind later</span>
         <BaseButton label="Rate us!" class="rate-us-page__action" @click="openRateUs"/>
       </div>
     </template>
@@ -83,7 +84,6 @@ const onMenuClick = async (): Promise<void> => {
   gap: 12px;
   align-items: center;
   justify-content: center;
-  margin-bottom: 25px;
 }
 
 .rate-us-page__icon {
@@ -93,7 +93,7 @@ const onMenuClick = async (): Promise<void> => {
 }
 
 .rate-us-page__title {
-  margin-bottom: 12px;
+  margin: 12px 0 4px;
   color: #2D2A3C;
   font-size: 16px;
   font-weight: 700;
@@ -101,10 +101,21 @@ const onMenuClick = async (): Promise<void> => {
 }
 
 .rate-us-page__description {
-  margin-bottom: 28px;
+  margin: 0 0 16px;
   color: var(--primary-color);
   font-size: 14px;
   font-weight: 400;
   line-height: 18px;
+}
+
+.rate-us-page__reminder {
+  display: inline-block;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 18px;
+  text-align: center;
+  color: var(--secondary-color);
+  cursor: pointer;
+  margin-bottom: 13px;
 }
 </style>
