@@ -37,6 +37,7 @@ export enum ElementsUI {
   close = 'close',
   // elements
   rateUsButton = 'rate_us_button',
+  rateUsReminder = 'remind_later',
   logo = 'logo',
   about = 'about',
   privacy = 'privacy',

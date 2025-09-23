@@ -16,13 +16,13 @@
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import fs from 'node:fs'
-import { RULESET_NAME_PREFIX } from '../../constants.js'
+import { rateUsService } from '@/modules/rate-us/internal/utils'
+import InstalledDetails = chrome.runtime.InstalledDetails;
 
-export const getDnrFilters = (dir, filterIds) => {
-  const condition = new RegExp(`${RULESET_NAME_PREFIX}\\d+`)
-  return fs
-    .readdirSync(dir)
-    .filter(fileName => fileName.match(condition))
-    .filter(fileName => filterIds.some((id) => id === fileName.replace(RULESET_NAME_PREFIX, '')))
+export const onUpdatedHandler = async (details: InstalledDetails): Promise<void> => {
+  if (details.reason === 'update' && details.previousVersion < '1.2.0') {
+    await chrome.storage.local.remove('RATE_US_SHOWN')
+    await rateUsService().visit()
+    await rateUsService().rate()
+  }
 }

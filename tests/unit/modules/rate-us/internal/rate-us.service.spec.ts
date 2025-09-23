@@ -28,6 +28,7 @@ describe('InternalRateUsService', () => {
   let storageMock: DataAccessorInterface<unknown>
   let service: InternalRateUsService
 
+  const existsMock = jest.fn()
   beforeEach(() => {
     counterMock = {
       get: jest.fn(),
@@ -35,27 +36,25 @@ describe('InternalRateUsService', () => {
     } as unknown as CounterInterface
     storageMock = {
       read: jest.fn(),
-      write: jest.fn()
+      write: jest.fn(),
+      exists: existsMock
     } as unknown as DataAccessorInterface<unknown>
     jest.mocked(makeDataAccessor).mockReturnValue(storageMock)
     service = new InternalRateUsService(counterMock)
   })
 
-  it('returns false if RATE_US_SHOWN is true', async () => {
-    jest.mocked(storageMock.read).mockResolvedValue(true)
+  it('returns false if RATE_US_DATA was not settled', async () => {
     const result = await service.needVisit()
     expect(result).toBe(false)
   })
 
-  it('returns true if RATE_US_SHOWN is false and threshold is met', async () => {
-    jest.mocked(storageMock.read).mockResolvedValue(false)
+  it('returns true if RATE_US_DATA was not settled and threshold is met', async () => {
     jest.mocked(counterMock.get).mockResolvedValue(RATE_US_HOME_PAGE_VISITED_THRESHOLD)
     const result = await service.needVisit()
     expect(result).toBe(true)
   })
 
-  it('returns false if RATE_US_SHOWN is false and threshold is not met', async () => {
-    jest.mocked(storageMock.read).mockResolvedValue(false)
+  it('returns false if RATE_US_DATA was not settled and threshold is not met', async () => {
     jest.mocked(counterMock.get).mockResolvedValue(RATE_US_HOME_PAGE_VISITED_THRESHOLD - 1)
     const result = await service.needVisit()
     expect(result).toBe(false)
@@ -63,6 +62,24 @@ describe('InternalRateUsService', () => {
 
   it('writes true to storage when visit is called', async () => {
     await service.visit()
-    expect(storageMock.write).toHaveBeenCalledWith(true)
+    expect(storageMock.write).toHaveBeenCalledWith({ lastVisited: expect.any(Number) })
+  })
+
+  it('should return false if was already rated', async () => {
+    existsMock.mockResolvedValue(true)
+    jest.mocked(storageMock.read).mockResolvedValue({ rated: true })
+    expect(await service.needVisit()).toBe(false)
+  })
+
+  it('should return true if was not rated yet and last visited more than 7 days', async () => {
+    existsMock.mockResolvedValue(true)
+    jest.mocked(storageMock.read).mockResolvedValue({ rated: false, lastVisited: Date.now() - 8 * 24 * 60 * 60 * 1000 })
+    expect(await service.needVisit()).toBe(true)
+  })
+
+  it('should be able to sate rating', async () => {
+    jest.mocked(storageMock.read).mockResolvedValue({})
+    await service.rate()
+    expect(storageMock.write).toHaveBeenCalledWith({ rated: true })
   })
 })

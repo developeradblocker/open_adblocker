@@ -24,4 +24,10 @@ export enum RateUsIdentifiers {
 export interface InternalRateUsServiceInterface {
   visit: () => Promise<void>
   needVisit: () => Promise<boolean>
+  rate: () => Promise<void>
+}
+
+export interface RateUsDataInterface {
+  rated?: boolean
+  lastVisited?: number
 }

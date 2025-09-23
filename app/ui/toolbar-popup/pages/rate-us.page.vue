@@ -18,10 +18,7 @@
 <template>
   <PrimaryLayout class="rate-us-page">
     <template #header>
-      <Header
-        :show-menu="false"
-        @menu-click="onMenuClick"
-      />
+      <Header :with-close="false" />
     </template>
     <template #content>
       <div class="rate-us-page__content">
@@ -36,6 +33,7 @@
         </div>
         <h2 class="rate-us-page__title">Enjoy using Open AdBlocker?</h2>
         <p class="rate-us-page__description">Recommend us to others <br> by rating us on {{ browser }} store</p>
+        <span data-test="reminder" class="rate-us-page__reminder" @click="onRemindClick">Remind later</span>
         <BaseButton label="Rate us!" class="rate-us-page__action" @click="openRateUs"/>
       </div>
     </template>
@@ -50,7 +48,7 @@ import BaseButton from '@/ui/toolbar-popup/components/base-button.vue'
 import { RATE_US_URL } from '@/modules/rate-us/constants'
 import { browser } from '@/utils/env.constants'
 import { useUserActivity } from '@/modules/user-activity/external/utils'
-import { ElementsUI } from '@/modules/user-activity/common/user-activity.types'
+import { ClickEventToAction, ElementsUI } from '@/modules/user-activity/common/user-activity.types'
 import { useRouter } from 'vue-router'
 
 const STAR_COLORS: string[] = ['#5A6BFA', '#5A6BFA', '#5A6BFA', '#5A6BFA', '#BBCCEE']
@@ -66,7 +64,11 @@ const openRateUs = async (): Promise<void> => {
   })
 }
 
-const onMenuClick = async (): Promise<void> => {
+const onRemindClick = async (): Promise<void> => {
+  await activity.click(ElementsUI.rateUsReminder, {
+    page: ROUTE.RATE_US,
+    to: ClickEventToAction.closePage
+  })
   await $router.push({ name: ROUTE.HOME })
 }
 
@@ -83,7 +85,6 @@ const onMenuClick = async (): Promise<void> => {
   gap: 12px;
   align-items: center;
   justify-content: center;
-  margin-bottom: 25px;
 }
 
 .rate-us-page__icon {
@@ -93,7 +94,7 @@ const onMenuClick = async (): Promise<void> => {
 }
 
 .rate-us-page__title {
-  margin-bottom: 12px;
+  margin: 12px 0 4px;
   color: #2D2A3C;
   font-size: 16px;
   font-weight: 700;
@@ -101,10 +102,21 @@ const onMenuClick = async (): Promise<void> => {
 }
 
 .rate-us-page__description {
-  margin-bottom: 28px;
+  margin: 0 0 16px;
   color: var(--primary-color);
   font-size: 14px;
   font-weight: 400;
   line-height: 18px;
+}
+
+.rate-us-page__reminder {
+  display: inline-block;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 18px;
+  text-align: center;
+  color: var(--secondary-color);
+  cursor: pointer;
+  margin-bottom: 13px;
 }
 </style>

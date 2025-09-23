@@ -2,12 +2,11 @@ import { type VueWrapper } from '@vue/test-utils/dist/vueWrapper'
 import { shallowMount } from '@vue/test-utils'
 import TransparentStub from '../../../../helpers/TransparentStub'
 import RateUsPage from '@/ui/toolbar-popup/pages/rate-us.page.vue'
-import Header from '@/ui/toolbar-popup/components/header.vue'
 import { ROUTE } from '@/ui/toolbar-popup/router/route-names'
 import { useRouter } from 'vue-router'
 import { useUserActivity } from '@/modules/user-activity/external/utils'
 import BaseButton from '@/ui/toolbar-popup/components/base-button.vue'
-import { ElementsUI } from '@/modules/user-activity/common/user-activity.types'
+import { ClickEventToAction, ElementsUI } from '@/modules/user-activity/common/user-activity.types'
 import { RATE_US_URL } from '@/modules/rate-us/constants'
 
 jest.mock('vue-router')
@@ -56,8 +55,12 @@ describe('RateUsPage.vue', () => {
       .toBeTruthy()
   })
 
-  it('should navigate to menu on click', () => {
-    wrapper.getComponent(Header).vm.$emit('menu-click')
+  it('should navigate to home remind click', async () => {
+    await wrapper.get('[data-test="reminder"]').trigger('click')
+    expect(clickMock).toHaveBeenLastCalledWith(ElementsUI.rateUsReminder, {
+      page: ROUTE.RATE_US,
+      to: ClickEventToAction.closePage
+    })
     expect(pushMock).toHaveBeenLastCalledWith({ name: ROUTE.HOME })
   })
 

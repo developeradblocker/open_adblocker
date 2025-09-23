@@ -16,11 +16,11 @@
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { type InternalRateUsServiceInterface, RateUsIdentifiers } from '../rate-us.types'
+import { type InternalRateUsServiceInterface, RateUsIdentifiers, RateUsDataInterface } from '../rate-us.types'
 import { makeDataAccessor } from '@/utils/storage/make-data-accessor'
 import { inject } from '@/utils/di/di.types'
 import { CounterInterface } from '@/utils/counter/counter.types'
-import { RATE_US_HOME_PAGE_VISITED_THRESHOLD } from '@/modules/rate-us/constants'
+import { RATE_US_HOME_PAGE_VISITED_THRESHOLD, RATE_US_LAST_VISITED_DAYS_THRESHOLD } from '@/modules/rate-us/constants'
 import { injectable } from 'inversify'
 
 @injectable()
@@ -31,23 +31,38 @@ export class InternalRateUsService implements InternalRateUsServiceInterface {
   ) {
   }
 
-  private storage = makeDataAccessor<boolean>('local', 'RATE_US_SHOWN', {
-    useCache: false,
-    default: false
+  private storage = makeDataAccessor<RateUsDataInterface>('local', 'RATE_US_DATA', {
+    useCache: false
   })
 
   async visit (): Promise<void> {
-    await this.storage.write(true)
+    const lastVisited = Date.now()
+    if (await this.storage.exists()) {
+      const data = await this.storage.read()
+      await this.storage.write({ lastVisited, rated: data.rated })
+      return
+    }
+
+    await this.storage.write({ lastVisited })
   }
 
   async needVisit (): Promise<boolean> {
-    const isShown = await this.storage.read()
+    if (!(await this.storage.exists())) {
+      const homePageVisitedTimes = await this.counter.get()
+      return homePageVisitedTimes >= RATE_US_HOME_PAGE_VISITED_THRESHOLD
+    }
 
-    if (isShown) {
+    const { rated, lastVisited } = await this.storage.read()
+    if (rated) {
       return false
     }
 
-    const homePageVisitedTimes = await this.counter.get()
-    return homePageVisitedTimes >= RATE_US_HOME_PAGE_VISITED_THRESHOLD
+    const DAY_MS = 1000 * 60 * 60 * 24
+    return ((Date.now() - lastVisited) / DAY_MS) >= RATE_US_LAST_VISITED_DAYS_THRESHOLD
+  }
+
+  async rate (): Promise<void> {
+    const data = await this.storage.read()
+    await this.storage.write({ lastVisited: data.lastVisited, rated: true })
   }
 }
