@@ -20,7 +20,7 @@
   "dependencies": {
     "@adguard/agtree": "^3.2.1",
     "@adguard/tsurlfilter": "^3.4.0",
-    "@adguard/tswebextension": "^3.2.4",
+    "@adguard/tswebextension": "^3.2.11",
     "inversify": "^7.5.4",
     "pinia": "^3.0.3",
     "reflect-metadata": "^0.2.2",
