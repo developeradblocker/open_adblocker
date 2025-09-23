@@ -1,56 +1,17 @@
-/**
- * @file
- * This file is part of Open Ad Blocker Browser Extension (https://github.com/developeradblocker/open_adblocker).
- *
- * Open Ad Blocker Browser Extension is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Open Ad Blocker Browser Extension is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
- */
-import { setupInternalRateUs, handleOnHomePageVisited, handleOnRateUsPageVisited, handleUserActivity } from '@/modules/rate-us/internal/rate-us.setup'
-import { inject } from '@/utils/inject/inject'
-import { onUserActivity } from '@/modules/user-activity/internal/expose.messages'
-import { rateUsCounter, rateUsService } from '@/modules/rate-us/internal/utils'
-import { UserActivityType } from '@/modules/user-activity/common/user-activity.types'
+import { ElementsUI, UserActivityType } from '@/modules/user-activity/common/user-activity.types'
+import { handleUserActivity } from '@/modules/user-activity/internal/user-activity.setup'
 import { ROUTE } from '@/ui/toolbar-popup/router/route-names'
-import { jest } from '@jest/globals'
+import { rateUsCounter, rateUsService } from '@/modules/rate-us/internal/utils'
+import { UserActivityMessages } from '@/modules/user-activity/common/user-activity.messages'
 import {
-  UserActivityMessages
-} from '@/modules/user-activity/common/user-activity.messages'
+  handleOnHomePageVisited,
+  handleOnRateUsPageVisited, userActivityHandler
+} from '@/modules/rate-us/internal/handlers/user-activity.handler'
 
-jest.mock('@/utils/inject/inject', () => ({
-  inject: jest.fn()
-}))
-jest.mock('@/modules/user-activity/internal/expose.messages', () => ({
-  onUserActivity: jest.fn()
-}))
 jest.mock('@/modules/rate-us/internal/utils', () => ({
   rateUsCounter: jest.fn(),
   rateUsService: jest.fn()
 }))
-
-describe('setupInternalRateUs', () => {
-  beforeEach(() => {
-    jest.clearAllMocks()
-  })
-
-  it('should call inject with correct injections and register user activity handler', () => {
-    setupInternalRateUs()
-    expect(inject).toHaveBeenCalledTimes(1)
-    expect(onUserActivity).toHaveBeenCalledTimes(1)
-    // Check that onUserActivity was registered with a function
-    const callback = (onUserActivity as jest.Mock).mock.calls[0][0]
-    expect(typeof callback).toBe('function')
-  })
-})
 
 describe('handleOnHomePageVisited', () => {
   beforeEach(() => {
@@ -112,7 +73,7 @@ describe('handleUserActivity', () => {
         page: ROUTE.HOME
       }
     }
-    await handleUserActivity({ message: msg } as any)
+    await userActivityHandler({ message: msg } as any)
 
     expect(increaseMock).toHaveBeenCalledTimes(1)
   })
@@ -128,7 +89,7 @@ describe('handleUserActivity', () => {
         page: ROUTE.RATE_US
       }
     }
-    await handleUserActivity({ message: msg } as any)
+    await userActivityHandler({ message: msg } as any)
 
     expect(visitMock).toHaveBeenCalledTimes(1)
   })
@@ -142,5 +103,19 @@ describe('handleUserActivity', () => {
     }
     const result = await handleUserActivity({ message: msg } as any)
     expect(result).toBeUndefined()
+  })
+
+  it('should handle click on rate us', async () => {
+    const msg = {
+      payload: {
+        type: UserActivityType.click,
+        element: ElementsUI.rateUsButton
+      }
+    }
+    const rateMock = jest.fn()
+    jest.mocked(rateUsService).mockReturnValue({ rate: rateMock } as any)
+
+    await userActivityHandler({ message: msg } as any)
+    expect(rateMock).toHaveBeenCalledTimes(1)
   })
 })

@@ -21,13 +21,10 @@ import { InternalRateUsService } from '@/modules/rate-us/internal/services/rate-
 import { makeCounter } from '@/utils/counter/counter'
 import { HOME_PAGE_VISITED_COUNTER } from '@/modules/rate-us/constants'
 import { onUserActivity } from '@/modules/user-activity/internal/expose.messages'
-import { UserActivityType } from '@/modules/user-activity/common/user-activity.types'
-import { ROUTE } from '@/ui/toolbar-popup/router/route-names'
-import { Box } from '@/utils/dispatcher/dispatcher.types'
-import { UserActivityMessage } from '@/modules/user-activity/common/user-activity.messages'
 import { Injection } from '@/utils/inject/inject.types'
 import { inject } from '@/utils/inject/inject'
-import { rateUsCounter, rateUsService } from '@/modules/rate-us/internal/utils'
+import { userActivityHandler } from '@/modules/rate-us/internal/handlers/user-activity.handler'
+import { onUpdatedHandler } from '@/modules/rate-us/internal/handlers/on-updated.handler'
 
 const injections: Injection[] = [
   {
@@ -47,34 +44,6 @@ const injections: Injection[] = [
 
 export const setupInternalRateUs = (): void => {
   inject(injections)
-  onUserActivity(handleUserActivity)
-}
-
-export const handleOnHomePageVisited = async (): Promise<void> => {
-  await rateUsCounter().increase()
-}
-
-export const handleOnRateUsPageVisited = async (): Promise<void> => {
-  await rateUsService().visit()
-}
-
-export const handleUserActivity = async ({ message }: Box<UserActivityMessage>): Promise<void> => {
-  const { payload } = message
-
-  if (payload.type !== UserActivityType.visitPage) {
-    return
-  }
-
-  const page = payload.page
-
-  const handlers = {
-    [ROUTE.HOME]: handleOnHomePageVisited,
-    [ROUTE.RATE_US]: handleOnRateUsPageVisited
-  } as any
-
-  if (!handlers[page]) {
-    return
-  }
-
-  await handlers[page]()
+  onUserActivity(userActivityHandler)
+  chrome.runtime.onInstalled.addListener(onUpdatedHandler)
 }

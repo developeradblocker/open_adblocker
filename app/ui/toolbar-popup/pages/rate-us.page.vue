@@ -18,10 +18,7 @@
 <template>
   <PrimaryLayout class="rate-us-page">
     <template #header>
-      <Header
-        :with-close="false"
-        @menu-click="onMenuClick"
-      />
+      <Header :with-close="false" />
     </template>
     <template #content>
       <div class="rate-us-page__content">
@@ -36,7 +33,7 @@
         </div>
         <h2 class="rate-us-page__title">Enjoy using Open AdBlocker?</h2>
         <p class="rate-us-page__description">Recommend us to others <br> by rating us on {{ browser }} store</p>
-        <span class="rate-us-page__reminder">Remind later</span>
+        <span data-test="reminder" class="rate-us-page__reminder" @click="onRemindClick">Remind later</span>
         <BaseButton label="Rate us!" class="rate-us-page__action" @click="openRateUs"/>
       </div>
     </template>
@@ -51,7 +48,7 @@ import BaseButton from '@/ui/toolbar-popup/components/base-button.vue'
 import { RATE_US_URL } from '@/modules/rate-us/constants'
 import { browser } from '@/utils/env.constants'
 import { useUserActivity } from '@/modules/user-activity/external/utils'
-import { ElementsUI } from '@/modules/user-activity/common/user-activity.types'
+import { ClickEventToAction, ElementsUI } from '@/modules/user-activity/common/user-activity.types'
 import { useRouter } from 'vue-router'
 
 const STAR_COLORS: string[] = ['#5A6BFA', '#5A6BFA', '#5A6BFA', '#5A6BFA', '#BBCCEE']
@@ -67,7 +64,11 @@ const openRateUs = async (): Promise<void> => {
   })
 }
 
-const onMenuClick = async (): Promise<void> => {
+const onRemindClick = async (): Promise<void> => {
+  await activity.click(ElementsUI.rateUsReminder, {
+    page: ROUTE.RATE_US,
+    to: ClickEventToAction.closePage
+  })
   await $router.push({ name: ROUTE.HOME })
 }
 
