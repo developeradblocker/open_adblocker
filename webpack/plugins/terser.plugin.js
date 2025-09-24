@@ -18,16 +18,18 @@
 
 import TerserPlugin from 'terser-webpack-plugin'
 
-export const terserPlugin = () =>
+export const terserPlugin = ({ isDev = false } = {}) =>
   new TerserPlugin({
     parallel: false,
     terserOptions: {
       compress: {
         keep_fargs: true
       },
+      ...(!isDev && { format: { comments: false } }),
       sourceMap: true,
       keep_classnames: true,
       keep_fnames: true,
       toplevel: false
-    }
+    },
+    ...(!isDev && { extractComments: false })
   })
