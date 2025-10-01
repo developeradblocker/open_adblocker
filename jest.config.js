@@ -40,6 +40,9 @@ export default {
     '!**/config/**',
     '**/app/**/*.{ts,vue}'
   ],
+  setupFiles: [
+    './tests/setupJest.js'
+  ],
   modulePathIgnorePatterns: [
     '<rootDir>/config/',
     '<rootDir>/node_modules/',

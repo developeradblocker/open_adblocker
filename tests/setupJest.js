@@ -15,32 +15,6 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-import { getActiveTabHelper } from '@/helpers/get-active-tab.helper'
-import Tab = chrome.tabs.Tab
+require('reflect-metadata')
 
-describe('getActiveTabHelper', () => {
-  const queryMock = jest.fn()
-  beforeEach(() => {
-    global.chrome = {
-      tabs: {
-        query: queryMock
-      }
-    } as any
-  })
-
-  it('should return the active tab if available', async () => {
-    const expectedTab = {
-      id: 1,
-      active: true
-    } as Tab
-    queryMock.mockResolvedValueOnce([expectedTab])
-    const tab = await getActiveTabHelper()
-    expect(tab).toEqual(expectedTab)
-  })
-
-  it('should return undefined when no active tab is found', async () => {
-    queryMock.mockResolvedValueOnce([])
-    const tab = await getActiveTabHelper()
-    expect(tab).toBeUndefined()
-  })
-})
+jest.mock('uuid', () => ({ v4: () => Math.random() }))

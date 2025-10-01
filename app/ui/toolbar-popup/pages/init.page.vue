@@ -1,7 +1,7 @@
 <template>
   <PrimaryLayout class="init-page" loading>
     <template #header>
-      <Header @menu-click="onMenuClick"/>
+      <Header @menu-click="onMenuClick" :with-close="false" />
     </template>
   </PrimaryLayout>
 </template>

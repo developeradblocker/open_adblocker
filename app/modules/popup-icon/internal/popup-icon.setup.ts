@@ -25,8 +25,8 @@ import { onAdBlockerReady } from '@/modules/ad-blocker/internal/expose.messages'
 import { Injection } from '@/utils/inject/inject.types'
 import { inject } from '@/utils/inject/inject'
 
-import TabActiveInfo = chrome.tabs.TabActiveInfo
-import TabChangeInfo = chrome.tabs.TabChangeInfo
+import OnActivatedInfo = chrome.tabs.OnActivatedInfo
+import OnUpdatedInfo = chrome.tabs.OnUpdatedInfo
 
 const injections: Injection[] = [
   {
@@ -48,7 +48,7 @@ export const setupPopupIcon = (): void => {
 }
 let canHandle = false
 
-const onActivated = async ({ tabId }: TabActiveInfo): Promise<void> => {
+const onActivated = async ({ tabId }: OnActivatedInfo): Promise<void> => {
   if (!canHandle) {
     return
   }
@@ -60,7 +60,7 @@ const onActivated = async ({ tabId }: TabActiveInfo): Promise<void> => {
 
   await draw(tabId, tabInfo.url)
 }
-const onUpdated = async (tabId: number, { status }: TabChangeInfo): Promise<void> => {
+const onUpdated = async (tabId: number, { status }: OnUpdatedInfo): Promise<void> => {
   if (!canHandle) {
     return
   }
