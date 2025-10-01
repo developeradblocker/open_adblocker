@@ -26,7 +26,7 @@
     "reflect-metadata": "^0.2.2",
     "uuid": "^13.0.0",
     "vue": "^3.5.17",
-    "vue-inline-svg": "^3.1.2",
+    "vue-inline-svg": "^4.0.1",
     "vue-router": "^4.5.1"
   },
   "license": "GPL-3.0",
