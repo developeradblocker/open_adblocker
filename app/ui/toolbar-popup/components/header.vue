@@ -97,7 +97,7 @@ const onMenuClick = async (): Promise<void> => {
 .header {
   position: relative;
   display: flex;
-  padding: 16px;
+  padding: 14px 16px;
   border-bottom: 1px solid transparent;
 }
 

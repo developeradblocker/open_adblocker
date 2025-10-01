@@ -30,6 +30,7 @@ import { setupExternalPortChannel } from '@/modules/port/external/port.setup'
 import InlineSvg from 'vue-inline-svg'
 import './style.less'
 import { v4 as uuidv4 } from 'uuid'
+import Popper from 'vue3-popper'
 
 import { setupExternalAdBlocker } from '@/modules/ad-blocker/external/ad-blocker.setup'
 import { setupExternalApp } from '@/modules/app/external/app.setup'
@@ -64,6 +65,7 @@ setupExternalApp();
 
   app.use(createPinia())
   app.component('BaseSvg', InlineSvg)
+  app.component('Popper', Popper)
   app.mount('#app')
   activity.visitPage(ROUTE.INIT)
 })()

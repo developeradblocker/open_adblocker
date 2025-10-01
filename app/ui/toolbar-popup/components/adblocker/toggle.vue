@@ -73,7 +73,7 @@ const onChange = async (): Promise<void> => {
 .ad-blocker-toggle {
   display: flex;
   align-items: center;
-  padding: 28px 12px 28px 24px;
+  padding: 22px 12px 22px 24px;
   gap: 14px;
 }
 

@@ -1,16 +1,14 @@
 <template>
-  <PrimaryLayout class="home-page">
-    <template #header>
-      <Header @menu-click="onMenuClick" />
-    </template>
-    <template #content>
-      <Toggle />
-      <Stats />
-      <Features />
-    </template>
-  </PrimaryLayout>
+  <div class="ad-blocker-features">
+    <Feature icon="web-rtc" label="WebRTC protection" info="Prevent WebRTC from revealing your IP address">
+      <template #action>
+        <BaseToggle :is-active="webRtc" @toggle="onWebRtcToggle" />
+      </template>
+    </Feature>
+  </div>
 </template>
-<script lang="ts" setup>
+
+<script setup lang="ts">
 /**
  * @file
  * This file is part of Open Ad Blocker Browser Extension (https://github.com/developeradblocker/open_adblocker).
@@ -28,16 +26,18 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-import PrimaryLayout from '@/ui/toolbar-popup/layouts/primary.layout.vue'
-import { ROUTE } from '@/ui/toolbar-popup/router/route-names'
-import Header from '@/ui/toolbar-popup/components/header.vue'
-import Stats from '@/ui/toolbar-popup/components/adblocker/stats.vue'
-import Toggle from '@/ui/toolbar-popup/components/adblocker/toggle.vue'
-import { useRouter } from 'vue-router'
-import Features from '@/ui/toolbar-popup/components/adblocker/features.vue'
-const $router = useRouter()
 
-const onMenuClick = async (): Promise<void> => {
-  await $router.push({ name: ROUTE.MENU })
+import Feature from '@/ui/toolbar-popup/components/adblocker/feature.vue'
+import { ref } from 'vue'
+import BaseToggle from '@/ui/toolbar-popup/components/base-toggle.vue'
+const webRtc = ref(false)
+const onWebRtcToggle = (value: boolean): void => {
+  webRtc.value = value
 }
 </script>
+
+<style scoped lang="less">
+  .ad-blocker-features {
+    padding: 12px 8px;
+  }
+</style>

@@ -1,15 +1,16 @@
 <template>
-  <PrimaryLayout class="home-page">
-    <template #header>
-      <Header @menu-click="onMenuClick" />
-    </template>
-    <template #content>
-      <Toggle />
-      <Stats />
-      <Features />
-    </template>
-  </PrimaryLayout>
+  <div
+    class="base-toggle"
+    :class="{
+      'base-toggle--active': isActive,
+      'base-toggle--inactive': !isActive,
+    }"
+    @click="$emit('toggle', !isActive)"
+  >
+    <div class="base-toggle__circle"/>
+  </div>
 </template>
+
 <script lang="ts" setup>
 /**
  * @file
@@ -28,16 +29,42 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-import PrimaryLayout from '@/ui/toolbar-popup/layouts/primary.layout.vue'
-import { ROUTE } from '@/ui/toolbar-popup/router/route-names'
-import Header from '@/ui/toolbar-popup/components/header.vue'
-import Stats from '@/ui/toolbar-popup/components/adblocker/stats.vue'
-import Toggle from '@/ui/toolbar-popup/components/adblocker/toggle.vue'
-import { useRouter } from 'vue-router'
-import Features from '@/ui/toolbar-popup/components/adblocker/features.vue'
-const $router = useRouter()
 
-const onMenuClick = async (): Promise<void> => {
-  await $router.push({ name: ROUTE.MENU })
-}
+defineProps<{ isActive: boolean }>()
+defineEmits(['toggle'])
 </script>
+
+<style lang="less" scoped>
+.base-toggle {
+  position: relative;
+  width: 32px;
+  height: 20px;
+  border-radius: 20px;
+  transition: 0.2s ease;
+  cursor: pointer;
+}
+
+.base-toggle--inactive {
+  background: #B2C9F6;
+}
+
+.base-toggle--active {
+  background: var(--secondary-color);
+
+  .base-toggle__circle {
+    left: 14px;
+  }
+}
+
+.base-toggle__circle {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  background: #FFFFFF;
+  border-radius: 50%;
+  transition: 0.2s ease;
+}
+
+</style>

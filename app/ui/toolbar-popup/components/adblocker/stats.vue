@@ -1,12 +1,15 @@
 <template>
   <div class="ad-blocker-stats">
-    <div class="ad-blocker-stats__box">
-      <p class="ad-blocker-stats__value">{{ current }}</p>
-      <p class="ad-blocker-stats__label">Blocked on this page</p>
-    </div>
-    <div class="ad-blocker-stats__box">
-      <p class="ad-blocker-stats__value">{{ total }}</p>
-      <p class="ad-blocker-stats__label">Blocked all time</p>
+    <div class="ad-blocker-stats__content">
+      <div class="ad-blocker-stats__box">
+        <p class="ad-blocker-stats__value" :class="{ 'ad-blocker-stats__value--hidden': isCurrentStatsHidden }">
+          {{ current }}</p>
+        <p class="ad-blocker-stats__label">Blocked on this page</p>
+      </div>
+      <div class="ad-blocker-stats__box">
+        <p class="ad-blocker-stats__value">{{ total }}</p>
+        <p class="ad-blocker-stats__label">Blocked all time</p>
+      </div>
     </div>
   </div>
 </template>
@@ -34,38 +37,46 @@ import { computed, ComputedRef } from 'vue'
 
 const appStore = useAppStore()
 const total: ComputedRef<number> = computed(() => appStore.app.totalBlocked)
-const current: ComputedRef<number | string> = computed(() => {
-  if (appStore.app.isServicePage || appStore.app.isPaused) {
-    return '-'
-  }
-  return appStore.app.blockedByTab
-})
+const isCurrentStatsHidden: ComputedRef<boolean> = computed(() => appStore.app.isServicePage || appStore.app.isPaused)
+const current: ComputedRef<string> = computed(() =>
+  isCurrentStatsHidden.value ? '-' : `${appStore.app.blockedByTab}`
+)
 </script>
 
 <style scoped>
 .ad-blocker-stats {
-  padding: 20px;
-  color: var(--primary-color);
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 18px;
-  background: var(--secondary-bg-color);
+  padding: 4px 8px;
+}
+
+.ad-blocker-stats__content {
+  border-radius: 6px;
+  padding: 0 16px;
+  display: flex;
+  background: linear-gradient(93.78deg, #DEE9FF 3.1%, #FFFFFF 100%);
 }
 
 .ad-blocker-stats__box {
-  display: flex;
-  padding: 9px 0;
-  gap: 10px;
+  flex: 1;
+  padding: 0 24px;
+  text-align: center;
+  font-weight: 400;
 }
 
 .ad-blocker-stats__value {
-  width: 50px;
-  margin: 0;
-  text-align: center;
+  margin-bottom: 4px;
+  font-size: 14px;
+  line-height: 18px;
+  color: var(--secondary-color)
+}
+
+.ad-blocker-stats__value--hidden {
+  color: var(--primary-color);
 }
 
 .ad-blocker-stats__label {
-  margin: 0;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--primary-color);
 }
 
 </style>

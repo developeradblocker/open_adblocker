@@ -76,7 +76,7 @@ const onRemindClick = async (): Promise<void> => {
 
 <style scoped lang="less">
 .rate-us-page__content {
-  padding: 16px;
+  padding: 36px 16px;
   text-align: center;
 }
 
