@@ -15,11 +15,14 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-import { di } from '@/utils/setup-worker'
-import { UserActivityIdentifiers } from '@/modules/user-activity/external/user-activity.types'
-import { UserActivityService } from '@/modules/user-activity/external/services/user-activity.service'
+export const WebRTCPermissionName = 'privacy'
 
-export const setupExternalUserActivity = (sessionId: string): void => {
-  di.bindConstantValue(UserActivityIdentifiers.sessionId, sessionId)
-  di.bindConstantValue(UserActivityIdentifiers.service, di.resolve(UserActivityService))
+export const requiredWebRTCPermissions: chrome.permissions.Permissions = {
+  permissions: [WebRTCPermissionName]
+}
+export const checkWebRTCPermissions = async (): Promise<boolean> => {
+  return await chrome.permissions.contains(requiredWebRTCPermissions)
+}
+export const requestWebRTCPermissions = async (): Promise<void> => {
+  await chrome.permissions.request(requiredWebRTCPermissions)
 }

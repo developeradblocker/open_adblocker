@@ -15,30 +15,29 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-
-import { AppMessageListener } from '@/utils/dispatcher/dispatcher.types'
-import { AppGetStateMessage, AppMessages } from '../../common/app.messages'
-import { injectable, inject } from 'inversify'
-import { AppState } from '../../common/app.types'
-import { InternalAppIdentifiers, InternalAppServiceInterface } from '@/modules/app/internal/app.types'
+import { inject, injectable } from '@/utils/di/di.types'
+import { AppMessageListener, Box } from '@/utils/dispatcher/dispatcher.types'
+import { InternalWebRTCIdentifiers } from '@/modules/features/web-rtc/internal/web-rtc.types'
+import { WebRTCMessages, WebRTCToggleMessage } from '@/modules/features/web-rtc/common/web-rtc.messages'
+import { WebRTCInterface } from '@/modules/features/web-rtc/common/web-rtc.types'
 
 @injectable()
-export class GetStateListener implements AppMessageListener<AppGetStateMessage, AppState> {
+export class WebRTCToggleListener implements AppMessageListener<WebRTCToggleMessage> {
   constructor (
-    @inject(InternalAppIdentifiers.service)
-    private readonly service: InternalAppServiceInterface
+    @inject(InternalWebRTCIdentifiers.service)
+    private service: WebRTCInterface
   ) {
   }
 
-  on (): AppMessages.getState {
-    return AppMessages.getState
+  on (): WebRTCMessages.toggle {
+    return WebRTCMessages.toggle
   }
 
-  main (): true {
-    return true
+  main (): false {
+    return false
   }
 
-  async handle (): Promise<AppState> {
-    return await this.service.getState()
+  async handle ({ message }: Box<WebRTCToggleMessage>): Promise<void> {
+    await this.service.toggle(message.payload.state)
   }
 }

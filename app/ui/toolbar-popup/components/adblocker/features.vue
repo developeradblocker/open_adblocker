@@ -2,7 +2,7 @@
   <div class="ad-blocker-features">
     <Feature icon="web-rtc" label="WebRTC protection" info="Prevent WebRTC from revealing your IP address">
       <template #action>
-        <BaseToggle :is-active="webRtc" @toggle="onWebRtcToggle" />
+        <BaseToggle id="web-rtc-toggle" :is-active="webRtc" />
       </template>
     </Feature>
   </div>
@@ -28,16 +28,37 @@
  */
 
 import Feature from '@/ui/toolbar-popup/components/adblocker/feature.vue'
-import { ref } from 'vue'
+import { computed, onMounted } from 'vue'
 import BaseToggle from '@/ui/toolbar-popup/components/base-toggle.vue'
-const webRtc = ref(false)
-const onWebRtcToggle = (value: boolean): void => {
-  webRtc.value = value
-}
+import { useAppStore } from '@/ui/toolbar-popup/store/app.store'
+import { checkWebRTCPermissions, requestWebRTCPermissions } from '@/modules/features/web-rtc/common/web-rtc.utils'
+import { useWebRTC } from '@/modules/features/web-rtc/external/web-rtc.utils'
+import { useUserActivity } from '@/modules/user-activity/external/utils'
+import { ElementsUI } from '@/modules/user-activity/common/user-activity.types'
+
+const appStore = useAppStore()
+const webRTC = useWebRTC()
+const activity = useUserActivity()
+const webRtc = computed(() => appStore.app.isWebRTCEnabled)
+
+onMounted(async () => {
+  const webRTCToggle: HTMLDivElement = document.querySelector('#web-rtc-toggle')
+  webRTCToggle.addEventListener('click', async () => {
+    const state = !webRtc.value
+    activity.toggle(ElementsUI.web_rtc, state)
+    if (await checkWebRTCPermissions()) {
+      await webRTC.toggle(state)
+      appStore.updateField('isWebRTCEnabled', state)
+      return
+    }
+    await requestWebRTCPermissions()
+    window.close()
+  })
+})
 </script>
 
 <style scoped lang="less">
-  .ad-blocker-features {
-    padding: 12px 8px;
-  }
+.ad-blocker-features {
+  padding: 12px 8px;
+}
 </style>

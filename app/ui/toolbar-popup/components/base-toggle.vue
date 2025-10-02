@@ -45,11 +45,19 @@ defineEmits(['toggle'])
 }
 
 .base-toggle--inactive {
-  background: #B2C9F6;
+  background: var(--disabled-bg-color);
+
+  &:hover {
+    background: #D9D8DE;
+  }
 }
 
 .base-toggle--active {
   background: var(--secondary-color);
+
+  &:hover {
+    background: #7992FF;
+  }
 
   .base-toggle__circle {
     left: 14px;

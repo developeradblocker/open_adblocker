@@ -34,9 +34,10 @@ import Popper from 'vue3-popper'
 
 import { setupExternalAdBlocker } from '@/modules/ad-blocker/external/ad-blocker.setup'
 import { setupExternalApp } from '@/modules/app/external/app.setup'
-import { setupUserActivity } from '@/modules/user-activity/external/user-activity.setup'
+import { setupExternalUserActivity } from '@/modules/user-activity/external/user-activity.setup'
 import { useUserActivity } from '@/modules/user-activity/external/utils'
 import { PageUI } from '@/modules/user-activity/common/user-activity.types'
+import { setupExternalWebRTC } from '@/modules/features/web-rtc/external/web-rtc.setup'
 
 /**
  * Popup Worker (PW)
@@ -44,7 +45,8 @@ import { PageUI } from '@/modules/user-activity/common/user-activity.types'
 setupWorker('PW')
 setupExternalPortChannel({ name: 'PW' })
 setupExternalAdBlocker()
-setupUserActivity(uuidv4())
+setupExternalUserActivity(uuidv4())
+setupExternalWebRTC()
 setupExternalApp();
 
 (async (): Promise<void> => {

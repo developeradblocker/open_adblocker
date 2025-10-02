@@ -16,7 +16,7 @@
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { BlockedAdsCounter, ValuesOf } from '@/common/types'
+import { BlockedAdsCounter } from '@/common/types'
 
 export interface AppServiceInterface {
   /**
@@ -52,16 +52,9 @@ export interface AppState {
    * Indicates whether the user needs to visit the rate us page.
    */
   needVisitRateUs: boolean
+
+  /**
+   * Checks whenever webRTC feature is enabled
+   */
+  isWebRTCEnabled: boolean
 }
-
-export type AppFields = ValuesOf<AppState>
-export type AppField = keyof AppFields
-export type AppFieldValues = AppState[AppField]
-
-export const AppStateFields: AppFields = {
-  totalBlocked: 'totalBlocked',
-  isServicePage: 'isServicePage',
-  blockedByTab: 'blockedByTab',
-  isPaused: 'isPaused',
-  needVisitRateUs: 'needVisitRateUs'
-} as const

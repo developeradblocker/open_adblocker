@@ -21,12 +21,13 @@ import {
   BaseUserClickPayload,
   UserActivityType,
   UserClickActivity,
-  UserPageVisited
+  UserPageVisited,
+  UserToggleActivity
 } from '@/modules/user-activity/common/user-activity.types'
 import { logger } from '@/utils/logger/logger'
 import { Box } from '@/utils/dispatcher/dispatcher.types'
 
-export const setupUserActivity = (): void => {
+export const setupInternalUserActivity = (): void => {
   dispatcher().on<UserActivityMessage>(
     UserActivityMessages.activity,
     handleUserActivity,
@@ -46,6 +47,11 @@ export const handleOnClick = (activity: UserClickActivity<BaseUserClickPayload>)
   logger.info(message)
 }
 
+export const handleOnToggle = (activity: UserToggleActivity): void => {
+  const message = `user toggles on "${activity.element}". state: "${activity.action}"`
+  logger.info(message)
+}
+
 export const handleOnVisitPage = (activity: UserPageVisited): void => {
   logger.info(`user visits a page "${activity.page}"`)
 }
@@ -61,9 +67,13 @@ export const handleUserActivity = async (
   const onPageVisit = async (): Promise<void> => {
     handleOnVisitPage(message.payload as UserPageVisited)
   }
+  const onToggle = async () : Promise<void> => {
+    handleOnToggle(message.payload as UserToggleActivity)
+  }
   const handlers: UserActivityHandlers = {
     [UserActivityType.click]: onClick,
-    [UserActivityType.visitPage]: onPageVisit
+    [UserActivityType.visitPage]: onPageVisit,
+    [UserActivityType.toggle]: onToggle
   }
 
   const { type } = message.payload

@@ -21,12 +21,13 @@ import { logger } from '@/utils/logger/logger'
 import { setupExternalPortChannel } from '@/modules/port/external/port.setup'
 import { setupExternalAdBlocker } from '@/modules/ad-blocker/external/ad-blocker.setup'
 import { setupExternalApp } from '@/modules/app/external/app.setup'
-import { setupUserActivity } from '@/modules/user-activity/external/user-activity.setup'
+import { setupExternalUserActivity } from '@/modules/user-activity/external/user-activity.setup'
 import { flushPromises } from '../../../helpers/flushPromises'
 import { DispatcherInterface } from '@/utils/dispatcher/dispatcher.types'
 import { createRouter } from 'vue-router'
 import { ROUTE } from '@/ui/toolbar-popup/router/route-names'
 import { useUserActivity } from '@/modules/user-activity/external/utils'
+import { setupExternalWebRTC } from '@/modules/features/web-rtc/external/web-rtc.setup'
 
 jest.mock('vue', () => ({
   defineComponent: jest.fn(),
@@ -77,7 +78,11 @@ jest.mock('@/modules/app/external/app.setup', () => ({
 }))
 
 jest.mock('@/modules/user-activity/external/user-activity.setup', () => ({
-  setupUserActivity: jest.fn()
+  setupExternalUserActivity: jest.fn()
+}))
+
+jest.mock('@/modules/features/web-rtc/external/web-rtc.setup', () => ({
+  setupExternalWebRTC: jest.fn()
 }))
 
 jest.mock('@/modules/user-activity/external/utils', () => ({
@@ -109,7 +114,8 @@ describe('Popup entry script', () => {
       expect(setupWorker).toHaveBeenCalledWith('PW')
       expect(setupExternalPortChannel).toHaveBeenCalledWith({ name: 'PW' })
       expect(setupExternalAdBlocker).toHaveBeenCalled()
-      expect(setupUserActivity).toHaveBeenCalled()
+      expect(setupExternalUserActivity).toHaveBeenCalled()
+      expect(setupExternalWebRTC).toHaveBeenCalled()
       expect(setupExternalApp).toHaveBeenCalled()
       expect(dispatcher).toHaveBeenCalled()
       expect(mockWork).toHaveBeenCalled()

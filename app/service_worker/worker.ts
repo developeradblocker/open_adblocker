@@ -28,8 +28,9 @@ import { onHandledAllRequiredMessages } from '@/utils/on-handled-all-required-me
 import { requiredMessages } from '@/service_worker/required-messages'
 import { AppMessages } from '@/modules/app/common/app.messages'
 import { setupInternalWhitelist } from '@/modules/whitelist/internal/whitelist.setup'
-import { setupUserActivity } from '@/modules/user-activity/internal/user-activity.setup'
+import { setupInternalUserActivity } from '@/modules/user-activity/internal/user-activity.setup'
 import { helloAndGoodbyeSetup } from '@/modules/hello-and-goodbye/internal/hello-and-goodbye.setup'
+import { setupInternalWebRTC } from '@/modules/features/web-rtc/internal/web-rtc.setup'
 
 logger.info('Service Worker preparing')
 /**
@@ -41,8 +42,9 @@ setupAdGuard()
 setupInternalPortChannel()
 setupInternalWhitelist()
 setupInternalAdBlocker()
-setupUserActivity()
+setupInternalUserActivity()
 setupInternalRateUs()
+setupInternalWebRTC()
 setupInternalApp()
 setupPopupIcon();
 

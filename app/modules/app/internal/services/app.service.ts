@@ -29,6 +29,8 @@ import {
 import { getActiveTabHelper } from '@/helpers/get-active-tab.helper'
 import { getFrameUrlHelper } from '@/helpers/get-frame.helper'
 import { getDomainHelper } from '@/helpers/get-domain.helper'
+import { WebRTCInterface } from '@/modules/features/web-rtc/common/web-rtc.types'
+import { InternalWebRTCIdentifiers } from '@/modules/features/web-rtc/internal/web-rtc.types'
 
 @injectable()
 export class InternalAppService implements InternalAppServiceInterface {
@@ -37,7 +39,10 @@ export class InternalAppService implements InternalAppServiceInterface {
     private rateUsService: InternalRateUsServiceInterface,
 
     @inject(InternalAdBlockerIdentifiers.adBlocker)
-    private adBlocker: InternalAdBlockerInterface
+    private adBlocker: InternalAdBlockerInterface,
+
+    @inject(InternalWebRTCIdentifiers.service)
+    private webRtc: WebRTCInterface
   ) {
   }
 
@@ -50,7 +55,8 @@ export class InternalAppService implements InternalAppServiceInterface {
       totalBlocked: await this.adBlocker.getTotalAdCounter(),
       blockedByTab: await this.adBlocker.getAdCounterByTabId(tab.id),
       isServicePage: isServiceUrlHelper(url),
-      needVisitRateUs: await this.rateUsService.needVisit()
+      needVisitRateUs: await this.rateUsService.needVisit(),
+      isWebRTCEnabled: await this.webRtc.getState()
     }
   }
 }

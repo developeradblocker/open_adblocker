@@ -15,11 +15,25 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-import { di } from '@/utils/setup-worker'
-import { UserActivityIdentifiers } from '@/modules/user-activity/external/user-activity.types'
-import { UserActivityService } from '@/modules/user-activity/external/services/user-activity.service'
+import { injectable } from 'inversify'
+import { ExternalPortChannel } from '@/modules/port/external/port.types'
+import { useExternalPort } from '@/modules/port/external/port.setup'
+import { WebRTCBaseInterface } from '@/modules/features/web-rtc/common/web-rtc.types'
+import { WebRTCMessages, WebRTCToggleMessage } from '@/modules/features/web-rtc/common/web-rtc.messages'
 
-export const setupExternalUserActivity = (sessionId: string): void => {
-  di.bindConstantValue(UserActivityIdentifiers.sessionId, sessionId)
-  di.bindConstantValue(UserActivityIdentifiers.service, di.resolve(UserActivityService))
+@injectable()
+export class WebRTCService implements WebRTCBaseInterface {
+  private readonly port: ExternalPortChannel
+  constructor (
+  ) {
+    this.port = useExternalPort()
+  }
+
+  async toggle (state: boolean): Promise<void> {
+    const message: WebRTCToggleMessage = {
+      type: WebRTCMessages.toggle,
+      payload: { state }
+    }
+    await this.port.sendMessage(message)
+  }
 }

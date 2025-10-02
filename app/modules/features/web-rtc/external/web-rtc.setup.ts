@@ -16,10 +16,9 @@
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
 import { di } from '@/utils/setup-worker'
-import { UserActivityIdentifiers } from '@/modules/user-activity/external/user-activity.types'
-import { UserActivityService } from '@/modules/user-activity/external/services/user-activity.service'
+import { ExternalWebRTCIdentifiers } from '@/modules/features/web-rtc/external/web-rtc.types'
+import { WebRTCService } from '@/modules/features/web-rtc/external/services/web-rtc.service'
 
-export const setupExternalUserActivity = (sessionId: string): void => {
-  di.bindConstantValue(UserActivityIdentifiers.sessionId, sessionId)
-  di.bindConstantValue(UserActivityIdentifiers.service, di.resolve(UserActivityService))
+export const setupExternalWebRTC = (): void => {
+  di.bindConstantValue(ExternalWebRTCIdentifiers.service, di.resolve(WebRTCService))
 }

@@ -15,11 +15,9 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-import { di } from '@/utils/setup-worker'
-import { UserActivityIdentifiers } from '@/modules/user-activity/external/user-activity.types'
-import { UserActivityService } from '@/modules/user-activity/external/services/user-activity.service'
-
-export const setupExternalUserActivity = (sessionId: string): void => {
-  di.bindConstantValue(UserActivityIdentifiers.sessionId, sessionId)
-  di.bindConstantValue(UserActivityIdentifiers.service, di.resolve(UserActivityService))
+export enum ExternalWebRTCIdentifiers {
+  /**
+   * @link WebRTCBaseInterface
+   */
+  service = 'WebRTC.Service'
 }

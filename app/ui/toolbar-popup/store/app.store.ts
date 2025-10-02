@@ -26,7 +26,8 @@ export const useAppStore = defineStore('AppStore', {
       blockedByTab: 0,
       totalBlocked: 0,
       isPaused: false,
-      isServicePage: false
+      isServicePage: false,
+      isWebRTCEnabled: false
     } satisfies AppState
   }),
   actions: {
@@ -35,6 +36,10 @@ export const useAppStore = defineStore('AppStore', {
         ...this.app,
         ...payload
       }
+    },
+
+    updateField (key: keyof AppState, value: unknown): void {
+      this.app[key] = value
     }
   }
 })

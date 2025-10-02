@@ -32,7 +32,8 @@ describe('GetStateListener', () => {
     totalBlocked: 12,
     blockedByTab: 2,
     isServicePage: false,
-    needVisitRateUs: true
+    needVisitRateUs: true,
+    isWebRTCEnabled: false
   }
 
   beforeEach(() => {

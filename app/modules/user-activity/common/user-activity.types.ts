@@ -28,6 +28,7 @@ export enum ClickEventToAction {
 export enum UserActivityType {
   click = 'click',
   visitPage = 'visitPage',
+  toggle = 'toggle'
 }
 
 export enum ElementsUI {
@@ -41,34 +42,46 @@ export enum ElementsUI {
   logo = 'logo',
   about = 'about',
   privacy = 'privacy',
-  terms = 'terms'
+  terms = 'terms',
+  web_rtc = 'web_rtc'
 }
 
 export type PageUI = ROUTE
 
+export interface BaseUserActivity {
+  sessionId: string
+  type: UserActivityType
+}
+
 export type UserActivity =
  | UserClickActivity<BaseUserClickPayload>
  | UserPageVisited
+ | UserToggleActivity
 
 export interface BaseUserClickPayload {
   page: PageUI
   to: ClickEventToLink | ClickEventToAction
 }
 
-export interface UserClickActivity<T extends BaseUserClickPayload> {
-  sessionId: string
+export interface UserClickActivity<T extends BaseUserClickPayload> extends BaseUserActivity {
   type: UserActivityType.click
   element: ElementsUI
   payload?: T
 }
 
-export interface UserPageVisited {
-  sessionId: string
+export interface UserPageVisited extends BaseUserActivity {
   type: UserActivityType.visitPage
   page: PageUI
 }
 
+export interface UserToggleActivity extends BaseUserActivity {
+  type: UserActivityType.toggle
+  element: ElementsUI
+  action: boolean
+}
+
 export interface UserActivityInterface {
   visitPage: (page: PageUI) => Promise<void>
+  toggle: (toggleId: ElementsUI, state: boolean) => Promise<void>
   click: <T extends BaseUserClickPayload>(element: ElementsUI, payload?: T) => Promise<void>
 }

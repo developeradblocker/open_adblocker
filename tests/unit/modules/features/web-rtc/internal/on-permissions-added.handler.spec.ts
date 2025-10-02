@@ -15,11 +15,23 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-import { di } from '@/utils/setup-worker'
-import { UserActivityIdentifiers } from '@/modules/user-activity/external/user-activity.types'
-import { UserActivityService } from '@/modules/user-activity/external/services/user-activity.service'
+import { onPermissionsAddedHandler } from '@/modules/features/web-rtc/internal/handlers/on-permissions-added.handler'
+import { useInternalWebRTC } from '@/modules/features/web-rtc/internal/web-rtc.utils'
 
-export const setupExternalUserActivity = (sessionId: string): void => {
-  di.bindConstantValue(UserActivityIdentifiers.sessionId, sessionId)
-  di.bindConstantValue(UserActivityIdentifiers.service, di.resolve(UserActivityService))
-}
+jest.mock('@/modules/features/web-rtc/internal/web-rtc.utils')
+
+describe('onPermissionsAddedHandler', () => {
+  const mockToggle = jest.fn()
+  beforeEach(() => {
+    (useInternalWebRTC as jest.Mock).mockReturnValue({
+      toggle: mockToggle
+    })
+  })
+  it('should be able to toggle web RTC when needed permissions included', async () => {
+    await onPermissionsAddedHandler({ permissions: [] })
+    expect(mockToggle).not.toHaveBeenCalled()
+    await onPermissionsAddedHandler({ permissions: ['privacy'] })
+    expect(mockToggle).toHaveBeenCalledTimes(1)
+    expect(mockToggle).toHaveBeenCalledWith(true)
+  })
+})

@@ -24,6 +24,9 @@
     "management",
     "declarativeNetRequest"
   ],
+  "optional_permissions": [
+    "privacy"
+  ],
   "host_permissions": [
     "<all_urls>"
   ]
