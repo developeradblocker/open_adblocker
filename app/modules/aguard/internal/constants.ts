@@ -17,10 +17,12 @@
  */
 import { Configuration } from '@adguard/tswebextension/mv3'
 import { FilterListPreprocessor } from '@adguard/tsurlfilter'
-import { AVAILABLE_FILTER_IDS } from '../../../../constants'
 
 export const DEFAULT_EXTENSION_CONFIG = (): Configuration => ({
-  staticFiltersIds: AVAILABLE_FILTER_IDS.map(filterId => Number(filterId)),
+  /**
+   * DO NOT MODIFY THIS LIST DUE IT'S CONTROLLED VIA FILTERS MODULE
+   */
+  staticFiltersIds: [],
   // logLevel: LogLevel.Debug,
   customFilters: [],
   trustedDomains: [],

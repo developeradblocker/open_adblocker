@@ -31,6 +31,7 @@ import { setupInternalWhitelist } from '@/modules/whitelist/internal/whitelist.s
 import { setupInternalUserActivity } from '@/modules/user-activity/internal/user-activity.setup'
 import { helloAndGoodbyeSetup } from '@/modules/hello-and-goodbye/internal/hello-and-goodbye.setup'
 import { setupInternalWebRTC } from '@/modules/features/web-rtc/internal/web-rtc.setup'
+import { setupInternalFilters } from '@/modules/filters/internal/filter.setup'
 
 logger.info('Service Worker preparing')
 /**
@@ -41,6 +42,7 @@ helloAndGoodbyeSetup()
 setupAdGuard()
 setupInternalPortChannel()
 setupInternalWhitelist()
+setupInternalFilters()
 setupInternalAdBlocker()
 setupInternalUserActivity()
 setupInternalRateUs()

@@ -1,5 +1,10 @@
 <template>
   <div class="ad-blocker-features">
+    <Feature icon="cookie-cleaner" label="Hide cookie alerts" info="Hide cookie consent dialogs on websites">
+      <template #action>
+        <BaseToggle id="cookie-cleaner-toggle" :is-active="cookieCleaner" @toggle="toggleCookieCleaner"/>
+      </template>
+    </Feature>
     <Feature icon="web-rtc" label="WebRTC protection" info="Prevent WebRTC from revealing your IP address">
       <template #action>
         <BaseToggle id="web-rtc-toggle" :is-active="webRtc" />
@@ -35,12 +40,20 @@ import { checkWebRTCPermissions, requestWebRTCPermissions } from '@/modules/feat
 import { useWebRTC } from '@/modules/features/web-rtc/external/web-rtc.utils'
 import { useUserActivity } from '@/modules/user-activity/external/utils'
 import { ElementsUI } from '@/modules/user-activity/common/user-activity.types'
+import { useFilters } from '@/modules/filters/external/filters.setup'
+import { COOKIE_CLEANER_ID } from '../../../../../constants'
 
 const appStore = useAppStore()
 const webRTC = useWebRTC()
+const filters = useFilters()
 const activity = useUserActivity()
 const webRtc = computed(() => appStore.app.isWebRTCEnabled)
-
+const cookieCleaner = computed(() => appStore.app.isCookieCleanerEnabled)
+const toggleCookieCleaner = async (state: boolean): Promise<void> => {
+  await filters.toggle(Number(COOKIE_CLEANER_ID))
+  appStore.updateField('isCookieCleanerEnabled', state)
+  activity.toggle(ElementsUI.cookie_cleaner, state)
+}
 onMounted(async () => {
   const webRTCToggle: HTMLDivElement = document.querySelector('#web-rtc-toggle')
   webRTCToggle.addEventListener('click', async () => {

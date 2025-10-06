@@ -16,31 +16,26 @@
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { defineStore } from 'pinia'
-import { AppState } from '@/modules/app/common/app.types'
+import { InternalFiltersIdentifiers } from '@/modules/filters/internal/filters.types'
+import { FiltersService } from '@/modules/filters/internal/service/filters.service'
+import { dispatcher } from '@/utils/setup-worker'
+import { FiltersStorage } from '@/modules/filters/internal/storage/filters.storage'
+import { Injection } from '@/utils/inject/inject.types'
+import { inject } from '@/utils/inject/inject'
+import { FiltersToggleListener } from '@/modules/filters/internal/listeners/filters-toggle.listener'
 
-export const useAppStore = defineStore('AppStore', {
-  state: () => ({
-    app: {
-      needVisitRateUs: false,
-      blockedByTab: 0,
-      totalBlocked: 0,
-      isPaused: false,
-      isServicePage: false,
-      isWebRTCEnabled: false,
-      isCookieCleanerEnabled: false
-    } satisfies AppState
-  }),
-  actions: {
-    setAppInfo (payload: AppState): void {
-      this.app = {
-        ...this.app,
-        ...payload
-      }
-    },
-
-    updateField (key: keyof AppState, value: unknown): void {
-      this.app[key] = value
-    }
+const injections: Injection[] = [
+  {
+    key: InternalFiltersIdentifiers.service,
+    use: FiltersService
+  },
+  {
+    key: InternalFiltersIdentifiers._storage,
+    use: FiltersStorage
   }
-})
+]
+
+export const setupInternalFilters = (): void => {
+  inject(injections)
+  dispatcher().onWithClass(FiltersToggleListener)
+}

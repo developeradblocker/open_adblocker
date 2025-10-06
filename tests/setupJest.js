@@ -18,3 +18,6 @@
 require('reflect-metadata')
 
 jest.mock('uuid', () => ({ v4: () => Math.random() }))
+jest.mock('../constants.js', () => ({
+  COOKIE_CLEANER_ID: '18'
+}))

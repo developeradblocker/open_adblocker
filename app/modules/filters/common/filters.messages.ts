@@ -15,32 +15,26 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
+import { AppMessage } from '@/utils/dispatcher/dispatcher.types'
+import { FilterId } from '@/modules/filters/common/filters.types'
 
-import { defineStore } from 'pinia'
-import { AppState } from '@/modules/app/common/app.types'
+export enum FiltersMessages {
+  toggle = 'FiltersMessages.Toggle',
+  filtersUpdated = 'FiltersMessages.FiltersUpdated',
+  isEnabled = 'FiltersMessages.IsEnabled',
+}
 
-export const useAppStore = defineStore('AppStore', {
-  state: () => ({
-    app: {
-      needVisitRateUs: false,
-      blockedByTab: 0,
-      totalBlocked: 0,
-      isPaused: false,
-      isServicePage: false,
-      isWebRTCEnabled: false,
-      isCookieCleanerEnabled: false
-    } satisfies AppState
-  }),
-  actions: {
-    setAppInfo (payload: AppState): void {
-      this.app = {
-        ...this.app,
-        ...payload
-      }
-    },
+export interface ToggleFilterMessage extends AppMessage {
+  type: FiltersMessages.toggle
+  payload: { id: FilterId }
+}
 
-    updateField (key: keyof AppState, value: unknown): void {
-      this.app[key] = value
-    }
-  }
-})
+export interface IsEnabledFilterMessage extends AppMessage {
+  type: FiltersMessages.isEnabled
+  payload: { id: FilterId }
+}
+
+export interface FiltersUpdatedMessage extends AppMessage {
+  type: FiltersMessages.filtersUpdated
+  payload: { enabledFilters: FilterId[] }
+}

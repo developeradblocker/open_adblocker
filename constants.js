@@ -21,6 +21,10 @@
 const AD_BLOCKER_ID = '2'
 
 const SEARCH_ADS_ID = '10'
+/**
+ * Cookie filter. Removes cookies notifications from websites
+ */
+export const COOKIE_CLEANER_ID = '18'
 
 /**
  * a list of available filter IDs
@@ -30,12 +34,15 @@ const SEARCH_ADS_ID = '10'
  */
 export const AVAILABLE_FILTER_IDS = [
   AD_BLOCKER_ID,
-  SEARCH_ADS_ID
+  SEARCH_ADS_ID,
+  COOKIE_CLEANER_ID
 ]
 
-/**
- * at the moment, all available filters are enabled by default
- */
+export const DEFAULT_DISABLED_FILTER_IDS = [
+  COOKIE_CLEANER_ID
+]
+
 export const DEFAULT_ENABLED_FILTER_IDS = AVAILABLE_FILTER_IDS
+  .filter(id => !DEFAULT_DISABLED_FILTER_IDS.includes(id))
 
 export const RULESET_NAME_PREFIX = 'ruleset_'

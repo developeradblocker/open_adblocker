@@ -31,6 +31,7 @@ import { onHandledAllRequiredMessages } from '@/utils/on-handled-all-required-me
 import { AppMessages } from '@/modules/app/common/app.messages'
 import { helloAndGoodbyeSetup } from '@/modules/hello-and-goodbye/internal/hello-and-goodbye.setup'
 import { setupInternalWebRTC } from '@/modules/features/web-rtc/internal/web-rtc.setup'
+import { setupInternalFilters } from '@/modules/filters/internal/filter.setup'
 
 jest.mock('@/utils/setup-worker', () => ({
   setupWorker: jest.fn(),
@@ -69,6 +70,9 @@ jest.mock('@/modules/aguard/internal/adguard.setup', () => ({
 }))
 jest.mock('@/modules/user-activity/internal/user-activity.setup', () => ({
   setupInternalUserActivity: jest.fn()
+}))
+jest.mock('@/modules/filters/internal/filter.setup', () => ({
+  setupInternalFilters: jest.fn()
 }))
 
 jest.mock('@/utils/on-handled-all-required-messages', () => ({
@@ -114,6 +118,7 @@ describe('serviceWorkerSetup', () => {
       expect(setupInternalApp).toHaveBeenCalled()
       expect(setupPopupIcon).toHaveBeenCalled()
       expect(setupInternalWhitelist).toHaveBeenCalled()
+      expect(setupInternalFilters).toHaveBeenCalled()
       await flushPromises()
       const expectedList = [...list, AppMessages.ready]
       expect(onHandledAllRequiredMessages).toHaveBeenCalledWith(expectedList, expect.any(Function))

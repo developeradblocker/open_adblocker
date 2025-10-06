@@ -15,32 +15,20 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
+import { FilterId, FiltersBaseInterface } from '@/modules/filters/common/filters.types'
 
-import { defineStore } from 'pinia'
-import { AppState } from '@/modules/app/common/app.types'
+export enum InternalFiltersIdentifiers {
+  /**
+   * @link FilterServiceInterface
+   */
+  service = 'Filters.Service',
 
-export const useAppStore = defineStore('AppStore', {
-  state: () => ({
-    app: {
-      needVisitRateUs: false,
-      blockedByTab: 0,
-      totalBlocked: 0,
-      isPaused: false,
-      isServicePage: false,
-      isWebRTCEnabled: false,
-      isCookieCleanerEnabled: false
-    } satisfies AppState
-  }),
-  actions: {
-    setAppInfo (payload: AppState): void {
-      this.app = {
-        ...this.app,
-        ...payload
-      }
-    },
+  /**
+   * @link FiltersStorage
+   */
+  _storage = 'Filters.Storage'
+}
 
-    updateField (key: keyof AppState, value: unknown): void {
-      this.app[key] = value
-    }
-  }
-})
+export interface FiltersServiceInterface extends FiltersBaseInterface {
+  getEnabledFilters: () => Promise<FilterId[]>
+}
