@@ -34,6 +34,9 @@ const delay = async (ms: number): Promise<void> => {
   })
 }
 export const setupExternalPortChannel = (options: ExternalPortSetupOptions): ExternalPortChannel => {
+  const portName = `${options.name}-${uuidv4()}`
+  const connectInfo: ConnectInfo = { name: portName }
+
   if (channel) {
     return channel
   }
@@ -44,7 +47,7 @@ export const setupExternalPortChannel = (options: ExternalPortSetupOptions): Ext
     _resolvers: [] as PromiseResolver[],
     async sendMessage<ResponseType> (message: AppMessage): Promise<ResponseType> {
       const box: PortBox<AppMessage> = {
-        port: this._port?.name ?? options.name,
+        port: portName,
         channel: Channel.port,
         id: uuidv4(),
         message
@@ -77,7 +80,6 @@ export const setupExternalPortChannel = (options: ExternalPortSetupOptions): Ext
       this._connection = Connection.CONNECTING
 
       while (true) {
-        const connectInfo: ConnectInfo = { name: `${options.name}-${uuidv4()}` }
         this._port = chrome.runtime.connect(connectInfo)
         const listener = (): void => {
           this._connection = Connection.CONNECTED
@@ -96,15 +98,15 @@ export const setupExternalPortChannel = (options: ExternalPortSetupOptions): Ext
         break
       }
 
-      logger.info(`Port "${this._port.name}" is connected`)
+      logger.info(`Port "${portName}" is connected`)
 
       this._port.onMessage.addListener((box: PortBox<AppMessage>) => {
-        if (box.port !== this._port.name) {
+        if (box.port !== portName) {
           return
         }
 
         if (box?.message?.type === PortMessages.greeting) {
-          logger.info(`Port "${this._port.name}" established connection`)
+          logger.info(`Port "${portName}" established connection`)
           return
         }
         if (box?.message?.type === PortMessages.response) {
@@ -121,7 +123,7 @@ export const setupExternalPortChannel = (options: ExternalPortSetupOptions): Ext
             .then(res => {
               const response: PortBox<PortResponseMessage> = {
                 id: box.id,
-                port: this._port.name,
+                port: portName,
                 channel: Channel.port,
                 message: {
                   type: PortMessages.response,
