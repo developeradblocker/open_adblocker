@@ -18,15 +18,14 @@
 
 import { AppMessageListener, Box } from '@/utils/dispatcher/dispatcher.types'
 import { inject, injectable } from '@/utils/di/di.types'
-import { InternalFiltersIdentifiers } from '@/modules/filters/internal/filters.types'
-import { FiltersBaseInterface } from '@/modules/filters/common/filters.types'
+import { FiltersServiceInterface, InternalFiltersIdentifiers } from '@/modules/filters/internal/filters.types'
 import { FiltersMessages, ToggleFilterMessage } from '@/modules/filters/common/filters.messages'
 
 @injectable()
 export class FiltersToggleListener implements AppMessageListener<ToggleFilterMessage> {
   constructor (
     @inject(InternalFiltersIdentifiers.service)
-    private filters: FiltersBaseInterface
+    private filters: FiltersServiceInterface
   ) {
   }
 

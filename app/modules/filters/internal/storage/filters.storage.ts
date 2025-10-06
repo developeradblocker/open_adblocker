@@ -29,18 +29,19 @@ export class FiltersStorage {
     })
 
   async enable (id: FilterId): Promise<FilterId[]> {
-    const enabledFilters = await this.storage.read()
+    const enabledFilters = await this.get()
     if (enabledFilters.includes(id)) {
-      return await this.get()
+      return enabledFilters
     }
 
     enabledFilters.push(id)
     await this.storage.write(enabledFilters)
-    return await this.get()
+    return enabledFilters
   }
 
   async disable (id: FilterId): Promise<FilterId[]> {
-    const enabledFilters = (await this.storage.read()).filter((filterId: FilterId) => filterId !== id)
+    const enabledFilters = (await this.get())
+      .filter((filterId: FilterId) => filterId !== id)
 
     await this.storage.write(enabledFilters)
     return enabledFilters
