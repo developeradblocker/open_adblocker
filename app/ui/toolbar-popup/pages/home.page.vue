@@ -9,6 +9,12 @@
       <Features />
     </template>
   </PrimaryLayout>
+  <Notification
+    :message="notification.message"
+    :type="notification.type"
+    :duration="notification.duration"
+    :is-visible="notification.isVisible"
+  ></Notification>
 </template>
 <script lang="ts" setup>
 /**
@@ -35,8 +41,11 @@ import Stats from '@/ui/toolbar-popup/components/adblocker/stats.vue'
 import Toggle from '@/ui/toolbar-popup/components/adblocker/toggle.vue'
 import { useRouter } from 'vue-router'
 import Features from '@/ui/toolbar-popup/components/adblocker/features.vue'
-const $router = useRouter()
+import Notification from '@/ui/toolbar-popup/components/notification/notification.vue'
+import { useNotificationStore } from '@/ui/toolbar-popup/components/notification/notification.store'
 
+const $router = useRouter()
+const notification = useNotificationStore()
 const onMenuClick = async (): Promise<void> => {
   await $router.push({ name: ROUTE.MENU })
 }

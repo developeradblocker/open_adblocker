@@ -2,7 +2,11 @@
   <div class="ad-blocker-features">
     <Feature icon="cookie-cleaner" label="Hide cookie alerts" info="Hide cookie consent dialogs on websites">
       <template #action>
-        <BaseToggle id="cookie-cleaner-toggle" :is-active="cookieCleaner" @toggle="toggleCookieCleaner"/>
+        <BaseToggle id="cookie-cleaner-toggle"
+                    :loading="cookieCleanerToggleLoading"
+                    :is-active="cookieCleaner"
+                    @toggle="toggleCookieCleaner"
+        />
       </template>
     </Feature>
     <Feature icon="web-rtc" label="WebRTC protection" info="Prevent WebRTC from revealing your IP address">
@@ -33,7 +37,7 @@
  */
 
 import Feature from '@/ui/toolbar-popup/components/adblocker/feature.vue'
-import { computed, onMounted } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import BaseToggle from '@/ui/toolbar-popup/components/base-toggle.vue'
 import { useAppStore } from '@/ui/toolbar-popup/store/app.store'
 import { checkWebRTCPermissions, requestWebRTCPermissions } from '@/modules/features/web-rtc/common/web-rtc.utils'
@@ -42,17 +46,38 @@ import { useUserActivity } from '@/modules/user-activity/external/utils'
 import { ElementsUI } from '@/modules/user-activity/common/user-activity.types'
 import { useFilters } from '@/modules/filters/external/filters.setup'
 import { COOKIE_CLEANER_ID } from '../../../../../constants'
+import { NotificationTypes, useNotificationStore } from '@/ui/toolbar-popup/components/notification/notification.store'
 
 const appStore = useAppStore()
 const webRTC = useWebRTC()
 const filters = useFilters()
 const activity = useUserActivity()
+const notification = useNotificationStore()
+
+const cookieCleanerToggleLoading = ref(false)
 const webRtc = computed(() => appStore.app.isWebRTCEnabled)
 const cookieCleaner = computed(() => appStore.app.isCookieCleanerEnabled)
+
 const toggleCookieCleaner = async (state: boolean): Promise<void> => {
-  await filters.toggle(Number(COOKIE_CLEANER_ID))
-  appStore.updateField('isCookieCleanerEnabled', state)
-  activity.toggle(ElementsUI.cookie_cleaner, state)
+  cookieCleanerToggleLoading.value = true
+  try {
+    await filters.toggle(Number(COOKIE_CLEANER_ID))
+    appStore.updateField('isCookieCleanerEnabled', state)
+    activity.toggle(ElementsUI.cookie_cleaner, state)
+  } catch (e) {
+    console.error(e)
+    notification.showNotification({
+      message: 'An error has occurred. Please retry',
+      type: NotificationTypes.error
+    })
+    /**
+     * Rolling back previous changes
+     */
+    filters.toggle(Number(COOKIE_CLEANER_ID))
+    appStore.updateField('isCookieCleanerEnabled', !state)
+  } finally {
+    cookieCleanerToggleLoading.value = false
+  }
 }
 onMounted(async () => {
   const webRTCToggle: HTMLDivElement = document.querySelector('#web-rtc-toggle')

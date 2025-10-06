@@ -4,10 +4,14 @@
     :class="{
       'base-toggle--active': isActive,
       'base-toggle--inactive': !isActive,
+      'base-toggle--loading': loading,
     }"
-    @click="$emit('toggle', !isActive)"
+    :aria-disabled="loading"
+    @click="onToggle"
   >
-    <div class="base-toggle__circle"/>
+    <div class="base-toggle__circle">
+      <span v-show="loading" class="base-toggle__loader"/>
+    </div>
   </div>
 </template>
 
@@ -30,8 +34,21 @@
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
 
-defineProps<{ isActive: boolean }>()
-defineEmits(['toggle'])
+const {
+  loading,
+  isActive
+} = defineProps<{
+  isActive: boolean
+  loading?: boolean
+}>()
+
+const $emit = defineEmits<{(e: 'toggle', value: boolean): void}>()
+const onToggle = () => {
+  if (loading) {
+    return
+  }
+  $emit('toggle', !isActive)
+}
 </script>
 
 <style lang="less" scoped>
@@ -64,6 +81,19 @@ defineEmits(['toggle'])
   }
 }
 
+.base-toggle--loading {
+  background: #8C94E1;
+  cursor: wait;
+
+  &:hover {
+    background: #8C94E1;
+  }
+
+  .base-toggle__circle {
+    left: 7px;
+  }
+}
+
 .base-toggle__circle {
   position: absolute;
   top: 2px;
@@ -73,6 +103,30 @@ defineEmits(['toggle'])
   background: #FFFFFF;
   border-radius: 50%;
   transition: 0.2s ease;
+}
+
+.base-toggle__loader {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 2px solid var(--secondary-color);
+  border-top-color: transparent;
+  border-bottom-color: transparent;
+  transform: rotate(45deg);
+  animation: rotate 1.5s linear infinite;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(45deg);
+
+  }
+  to {
+    transform: rotate(405deg);
+  }
 }
 
 </style>

@@ -25,8 +25,10 @@ import { useWebRTC } from '@/modules/features/web-rtc/external/web-rtc.utils'
 import { ElementsUI } from '@/modules/user-activity/common/user-activity.types'
 import { checkWebRTCPermissions, requestWebRTCPermissions } from '@/modules/features/web-rtc/common/web-rtc.utils'
 import { useFilters } from '@/modules/filters/external/filters.setup'
+import { useNotificationStore } from '@/ui/toolbar-popup/components/notification/notification.store'
 
 jest.mock('@/ui/toolbar-popup/store/app.store')
+jest.mock('@/ui/toolbar-popup/components/notification/notification.store')
 jest.mock('@/modules/user-activity/external/utils')
 jest.mock('@/modules/features/web-rtc/external/web-rtc.utils')
 jest.mock('@/modules/features/web-rtc/common/web-rtc.utils')
@@ -63,6 +65,9 @@ describe('Features.vue', () => {
         isCookieCleanerEnabled: false
       },
       updateField: updateFieldMock
+    } as any)
+    jest.mocked(useNotificationStore).mockReturnValue({
+      showNotification: jest.fn()
     } as any)
     jest.mocked(useUserActivity).mockReturnValue({
       toggle: activityToggleMock
