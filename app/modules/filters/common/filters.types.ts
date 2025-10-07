@@ -15,10 +15,9 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-require('reflect-metadata')
+export interface FiltersBaseInterface {
+  toggle: (id: FilterId) => Promise<void>
+  isEnabled: (id: FilterId) => Promise<boolean>
+}
 
-jest.mock('uuid', () => ({ v4: () => Math.random() }))
-jest.mock('../constants.js', () => ({
-  COOKIE_CLEANER_ID: '18',
-  DEFAULT_ENABLED_FILTER_IDS: ['10', '2']
-}))
+export type FilterId = number | string

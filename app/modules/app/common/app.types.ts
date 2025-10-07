@@ -57,4 +57,9 @@ export interface AppState {
    * Checks whenever webRTC feature is enabled
    */
   isWebRTCEnabled: boolean
+
+  /**
+   * Checks whenever cookie-cleaner feature is enabled
+   */
+  isCookieCleanerEnabled: boolean
 }

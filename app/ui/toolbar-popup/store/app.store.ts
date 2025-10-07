@@ -27,7 +27,8 @@ export const useAppStore = defineStore('AppStore', {
       totalBlocked: 0,
       isPaused: false,
       isServicePage: false,
-      isWebRTCEnabled: false
+      isWebRTCEnabled: false,
+      isCookieCleanerEnabled: false
     } satisfies AppState
   }),
   actions: {

@@ -15,10 +15,17 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-require('reflect-metadata')
+import { inject } from '@/utils/inject/inject'
+import { ExternalFiltersIdentifiers } from '@/modules/filters/external/filters.types'
+import { FiltersService } from '@/modules/filters/external/service/filters.service'
+import { Injection } from '@/utils/inject/inject.types'
 
-jest.mock('uuid', () => ({ v4: () => Math.random() }))
-jest.mock('../constants.js', () => ({
-  COOKIE_CLEANER_ID: '18',
-  DEFAULT_ENABLED_FILTER_IDS: ['10', '2']
-}))
+const injections: Injection[] = [
+  {
+    key: ExternalFiltersIdentifiers.service,
+    use: FiltersService
+  }
+]
+export const setupExternalFilters = (): void => {
+  inject(injections)
+}

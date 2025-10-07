@@ -24,17 +24,22 @@ import { useUserActivity } from '@/modules/user-activity/external/utils'
 import { useWebRTC } from '@/modules/features/web-rtc/external/web-rtc.utils'
 import { ElementsUI } from '@/modules/user-activity/common/user-activity.types'
 import { checkWebRTCPermissions, requestWebRTCPermissions } from '@/modules/features/web-rtc/common/web-rtc.utils'
+import { useNotificationStore } from '@/ui/toolbar-popup/components/notification/notification.store'
+import { useExternalFilters } from '@/modules/filters/external/filters.utils'
 
 jest.mock('@/ui/toolbar-popup/store/app.store')
+jest.mock('@/ui/toolbar-popup/components/notification/notification.store')
 jest.mock('@/modules/user-activity/external/utils')
 jest.mock('@/modules/features/web-rtc/external/web-rtc.utils')
 jest.mock('@/modules/features/web-rtc/common/web-rtc.utils')
+jest.mock('@/modules/filters/external/filters.utils')
 describe('Features.vue', () => {
   let wrapper: VueWrapper<any>
 
   const updateFieldMock = jest.fn()
   const activityToggleMock = jest.fn()
   const webRTCToggleMock = jest.fn()
+  const filtersToggleMock = jest.fn()
   const closeMock = jest.fn()
   const doMount = (): void => {
     if (wrapper?.exists()) {
@@ -56,15 +61,22 @@ describe('Features.vue', () => {
   beforeEach(() => {
     jest.mocked(useAppStore).mockReturnValue({
       app: {
-        isWebRTCEnabled: false
+        isWebRTCEnabled: false,
+        isCookieCleanerEnabled: false
       },
       updateField: updateFieldMock
+    } as any)
+    jest.mocked(useNotificationStore).mockReturnValue({
+      showNotification: jest.fn()
     } as any)
     jest.mocked(useUserActivity).mockReturnValue({
       toggle: activityToggleMock
     } as any)
     jest.mocked(useWebRTC).mockReturnValue({
       toggle: webRTCToggleMock
+    } as any)
+    jest.mocked(useExternalFilters).mockReturnValue({
+      toggle: filtersToggleMock
     } as any)
     jest.mocked(checkWebRTCPermissions).mockResolvedValue(true)
     doMount()

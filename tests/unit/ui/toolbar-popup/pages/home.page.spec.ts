@@ -22,8 +22,11 @@ import HomePage from '@/ui/toolbar-popup/pages/home.page.vue'
 import Header from '@/ui/toolbar-popup/components/header.vue'
 import { ROUTE } from '@/ui/toolbar-popup/router/route-names'
 import { useRouter } from 'vue-router'
+import { useNotificationStore } from '@/ui/toolbar-popup/components/notification/notification.store'
+import { NotificationTypes } from '@/ui/toolbar-popup/components/notification/notification.types'
 
 jest.mock('vue-router')
+jest.mock('@/ui/toolbar-popup/components/notification/notification.store')
 
 describe('HomePage.vue', () => {
   let wrapper: VueWrapper<any>
@@ -49,6 +52,12 @@ describe('HomePage.vue', () => {
     jest.mocked(useRouter).mockImplementation(() => ({
       push: pushMock
     }) as any)
+    jest.mocked(useNotificationStore).mockReturnValue({
+      message: '',
+      duration: 20,
+      type: NotificationTypes.info,
+      isVisible: false
+    } as any)
     doMount()
   })
 

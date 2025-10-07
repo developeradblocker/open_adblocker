@@ -15,10 +15,26 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-require('reflect-metadata')
+import { di } from '@/utils/setup-worker'
+import { useInternalFilters } from '@/modules/filters/internal/filters.utils'
+import { InternalFiltersIdentifiers } from '@/modules/filters/internal/filters.types'
 
-jest.mock('uuid', () => ({ v4: () => Math.random() }))
-jest.mock('../constants.js', () => ({
-  COOKIE_CLEANER_ID: '18',
-  DEFAULT_ENABLED_FILTER_IDS: ['10', '2']
+jest.mock('@/utils/setup-worker', () => ({
+  di: {
+    get: jest.fn()
+  }
 }))
+
+describe('utils', () => {
+  beforeEach(() => {
+    jest.clearAllMocks()
+  })
+
+  it('should return FilterService instance with correct identifier', () => {
+    const mockFilters = {}
+    jest.mocked(di.get).mockReturnValueOnce(mockFilters)
+
+    expect(useInternalFilters()).toBe(mockFilters)
+    expect(di.get).toHaveBeenCalledWith(InternalFiltersIdentifiers.service)
+  })
+})
