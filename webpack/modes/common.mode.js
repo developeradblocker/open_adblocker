@@ -24,7 +24,6 @@ import { lessLoader } from '../loaders/less.loader.js'
 import { cssLoader } from '../loaders/css.loader.js'
 import { imageLoader } from '../loaders/image.loader.js'
 import { aliases } from '../alias.js'
-import { terserPlugin } from '../plugins/terser.plugin.js'
 import { dotenvPlugin } from '../plugins/dotenv.plugin.js'
 import { vueLoaderPlugin } from '../plugins/vue-loader.plugin.js'
 import { webpackPlugin } from '../plugins/webpack.plugin.js'
@@ -75,9 +74,6 @@ export const commonMode = (env, mode) => {
     resolve: {
       extensions: ['.tsx', '.ts', '.js', '.vue'],
       alias: aliases
-    },
-    optimization: {
-      minimizer: [terserPlugin()]
     },
     plugins: [
       dotenvPlugin(prepareEnv(mode, browser)),

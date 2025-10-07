@@ -15,7 +15,6 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-
 import { AssetsLoader } from '@adguard/dnr-rulesets'
 import { extractPreprocessedRawFilterList, readMetadataRuleSet } from './filter-extractor'
 import { CosmeticRuleType, FilterListParser, RuleCategory } from '@adguard/agtree'

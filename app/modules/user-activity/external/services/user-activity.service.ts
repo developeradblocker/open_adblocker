@@ -23,7 +23,7 @@ import {
   UserActivityInterface,
   UserActivityType,
   UserClickActivity,
-  UserPageVisited
+  UserPageVisited, UserToggleActivity
 } from '@/modules/user-activity/common/user-activity.types'
 import { useExternalPort } from '@/modules/port/external/port.setup'
 import { ExternalPortChannel } from '@/modules/port/external/port.types'
@@ -66,6 +66,20 @@ export class UserActivityService implements UserActivityInterface {
       payload: activity
     }
 
+    await this.port.sendMessage(message)
+  }
+
+  async toggle (toggleId: ElementsUI, state: boolean): Promise<void> {
+    const activity: UserToggleActivity = {
+      sessionId: this.sessionId,
+      type: UserActivityType.toggle,
+      element: toggleId,
+      action: state
+    }
+    const message: UserActivityMessage = {
+      type: UserActivityMessages.activity,
+      payload: activity
+    }
     await this.port.sendMessage(message)
   }
 }

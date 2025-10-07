@@ -17,8 +17,8 @@
  */
 import { GetStateListener } from '@/modules/app/internal/listeners/get-state.listener'
 import { AppMessages } from '@/modules/app/common/app.messages'
-import { InternalAppServiceInterface } from '../../../../../../app/modules/app/internal/app.types'
-import { AppState } from '../../../../../../app/modules/app/common/app.types'
+import { InternalAppServiceInterface } from '@/modules/app/internal/app.types'
+import { AppState } from '@/modules/app/common/app.types'
 
 describe('GetStateListener', () => {
   let listener: GetStateListener
@@ -32,7 +32,9 @@ describe('GetStateListener', () => {
     totalBlocked: 12,
     blockedByTab: 2,
     isServicePage: false,
-    needVisitRateUs: true
+    needVisitRateUs: true,
+    isWebRTCEnabled: false,
+    isCookieCleanerEnabled: false
   }
 
   beforeEach(() => {

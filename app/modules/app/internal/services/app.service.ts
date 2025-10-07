@@ -22,13 +22,14 @@ import { AppState } from '@/modules/app/common/app.types'
 import { isServiceUrlHelper } from '@/helpers/is-service-url.helper'
 import { inject } from '@/utils/di/di.types'
 import { InternalRateUsServiceInterface, RateUsIdentifiers } from '@/modules/rate-us/internal/rate-us.types'
-import {
-  InternalAdBlockerIdentifiers,
-  InternalAdBlockerInterface
-} from '@/modules/ad-blocker/internal/ad-blocker.types'
+import { InternalAdBlockerIdentifiers, InternalAdBlockerInterface } from '@/modules/ad-blocker/internal/ad-blocker.types'
 import { getActiveTabHelper } from '@/helpers/get-active-tab.helper'
 import { getFrameUrlHelper } from '@/helpers/get-frame.helper'
 import { getDomainHelper } from '@/helpers/get-domain.helper'
+import { WebRTCInterface } from '@/modules/features/web-rtc/common/web-rtc.types'
+import { InternalWebRTCIdentifiers } from '@/modules/features/web-rtc/internal/web-rtc.types'
+import { FiltersServiceInterface, InternalFiltersIdentifiers } from '@/modules/filters/internal/filters.types'
+import { COOKIE_CLEANER_ID } from '../../../../../constants'
 
 @injectable()
 export class InternalAppService implements InternalAppServiceInterface {
@@ -37,7 +38,13 @@ export class InternalAppService implements InternalAppServiceInterface {
     private rateUsService: InternalRateUsServiceInterface,
 
     @inject(InternalAdBlockerIdentifiers.adBlocker)
-    private adBlocker: InternalAdBlockerInterface
+    private adBlocker: InternalAdBlockerInterface,
+
+    @inject(InternalWebRTCIdentifiers.service)
+    private webRtc: WebRTCInterface,
+
+    @inject(InternalFiltersIdentifiers.service)
+    private filters: FiltersServiceInterface
   ) {
   }
 
@@ -50,7 +57,9 @@ export class InternalAppService implements InternalAppServiceInterface {
       totalBlocked: await this.adBlocker.getTotalAdCounter(),
       blockedByTab: await this.adBlocker.getAdCounterByTabId(tab.id),
       isServicePage: isServiceUrlHelper(url),
-      needVisitRateUs: await this.rateUsService.needVisit()
+      needVisitRateUs: await this.rateUsService.needVisit(),
+      isWebRTCEnabled: await this.webRtc.getState(),
+      isCookieCleanerEnabled: await this.filters.isEnabled(COOKIE_CLEANER_ID)
     }
   }
 }

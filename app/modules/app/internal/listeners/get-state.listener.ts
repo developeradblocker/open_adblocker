@@ -18,7 +18,7 @@
 
 import { AppMessageListener } from '@/utils/dispatcher/dispatcher.types'
 import { AppGetStateMessage, AppMessages } from '../../common/app.messages'
-import { inject, injectable } from '../../../../utils/di/di.types'
+import { injectable, inject } from 'inversify'
 import { AppState } from '../../common/app.types'
 import { InternalAppIdentifiers, InternalAppServiceInterface } from '@/modules/app/internal/app.types'
 

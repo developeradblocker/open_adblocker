@@ -19,10 +19,11 @@ import { getActiveTabHelper } from '@/helpers/get-active-tab.helper'
 import Tab = chrome.tabs.Tab
 
 describe('getActiveTabHelper', () => {
+  const queryMock = jest.fn()
   beforeEach(() => {
     global.chrome = {
       tabs: {
-        query: jest.fn()
+        query: queryMock
       }
     } as any
   })
@@ -32,13 +33,13 @@ describe('getActiveTabHelper', () => {
       id: 1,
       active: true
     } as Tab
-    jest.mocked(chrome.tabs.query).mockResolvedValueOnce([expectedTab])
+    queryMock.mockResolvedValueOnce([expectedTab])
     const tab = await getActiveTabHelper()
     expect(tab).toEqual(expectedTab)
   })
 
   it('should return undefined when no active tab is found', async () => {
-    jest.mocked(chrome.tabs.query).mockResolvedValueOnce([])
+    queryMock.mockResolvedValueOnce([])
     const tab = await getActiveTabHelper()
     expect(tab).toBeUndefined()
   })

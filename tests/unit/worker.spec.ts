@@ -25,11 +25,13 @@ import { DispatcherInterface } from '@/utils/dispatcher/dispatcher.types'
 import { setupPopupIcon } from '@/modules/popup-icon/internal/popup-icon.setup'
 import { setupInternalWhitelist } from '@/modules/whitelist/internal/whitelist.setup'
 import { setupAdGuard } from '@/modules/aguard/internal/adguard.setup'
-import { setupUserActivity } from '@/modules/user-activity/internal/user-activity.setup'
+import { setupInternalUserActivity } from '@/modules/user-activity/internal/user-activity.setup'
 import { flushPromises } from '../helpers/flushPromises'
 import { onHandledAllRequiredMessages } from '@/utils/on-handled-all-required-messages'
 import { AppMessages } from '@/modules/app/common/app.messages'
 import { helloAndGoodbyeSetup } from '@/modules/hello-and-goodbye/internal/hello-and-goodbye.setup'
+import { setupInternalWebRTC } from '@/modules/features/web-rtc/internal/web-rtc.setup'
+import { setupInternalFilters } from '@/modules/filters/internal/filter.setup'
 
 jest.mock('@/utils/setup-worker', () => ({
   setupWorker: jest.fn(),
@@ -42,6 +44,10 @@ jest.mock('@/utils/logger/logger', () => ({
 }))
 jest.mock('@/modules/port/internal/port.setup', () => ({
   setupInternalPortChannel: jest.fn()
+}))
+
+jest.mock('@/modules/features/web-rtc/internal/web-rtc.setup', () => ({
+  setupInternalWebRTC: jest.fn()
 }))
 
 jest.mock('@/modules/ad-blocker/internal/ad-blocker.setup', () => ({
@@ -63,7 +69,10 @@ jest.mock('@/modules/aguard/internal/adguard.setup', () => ({
   setupAdGuard: jest.fn()
 }))
 jest.mock('@/modules/user-activity/internal/user-activity.setup', () => ({
-  setupUserActivity: jest.fn()
+  setupInternalUserActivity: jest.fn()
+}))
+jest.mock('@/modules/filters/internal/filter.setup', () => ({
+  setupInternalFilters: jest.fn()
 }))
 
 jest.mock('@/utils/on-handled-all-required-messages', () => ({
@@ -103,11 +112,13 @@ describe('serviceWorkerSetup', () => {
       expect(helloAndGoodbyeSetup).toHaveBeenCalled()
       expect(setupInternalPortChannel).toHaveBeenCalled()
       expect(setupInternalAdBlocker).toHaveBeenCalled()
-      expect(setupUserActivity).toHaveBeenCalled()
+      expect(setupInternalUserActivity).toHaveBeenCalled()
       expect(setupInternalRateUs).toHaveBeenCalled()
+      expect(setupInternalWebRTC).toHaveBeenCalled()
       expect(setupInternalApp).toHaveBeenCalled()
       expect(setupPopupIcon).toHaveBeenCalled()
       expect(setupInternalWhitelist).toHaveBeenCalled()
+      expect(setupInternalFilters).toHaveBeenCalled()
       await flushPromises()
       const expectedList = [...list, AppMessages.ready]
       expect(onHandledAllRequiredMessages).toHaveBeenCalledWith(expectedList, expect.any(Function))

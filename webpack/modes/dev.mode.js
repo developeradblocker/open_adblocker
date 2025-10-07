@@ -17,8 +17,12 @@
  */
 
 import { progressPlugin } from '../plugins/progress.plugin.js'
+import { terserPlugin } from '../plugins/terser.plugin.js'
 export const devMode = () => ({
   mode: 'development',
   devtool: 'inline-source-map',
-  plugins: [progressPlugin()]
+  plugins: [progressPlugin()],
+  optimization: {
+    minimizer: [terserPlugin({ isDev: true })]
+  }
 })

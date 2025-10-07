@@ -15,7 +15,12 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
+import { terserPlugin } from '../plugins/terser.plugin.js'
 
 export const prodMode = () => ({
-  mode: 'production'
+  mode: 'production',
+  optimization: {
+    minimize: true,
+    minimizer: [terserPlugin({ isDev: false })]
+  }
 })

@@ -21,10 +21,6 @@ export enum Channel {
   port = 'port'
 }
 
-export type ValuesOf<Type> = {
-  -readonly [Property in keyof Type]-?: Property
-}
-
 /**
  * Type representing the number of blocked ads.
  */

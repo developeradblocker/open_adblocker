@@ -19,7 +19,7 @@ import { di } from '@/utils/setup-worker'
 import { UserActivityIdentifiers } from '@/modules/user-activity/external/user-activity.types'
 import { UserActivityService } from '@/modules/user-activity/external/services/user-activity.service'
 
-export const setupUserActivity = (sessionId: string): void => {
+export const setupExternalUserActivity = (sessionId: string): void => {
   di.bindConstantValue(UserActivityIdentifiers.sessionId, sessionId)
   di.bindConstantValue(UserActivityIdentifiers.service, di.resolve(UserActivityService))
 }

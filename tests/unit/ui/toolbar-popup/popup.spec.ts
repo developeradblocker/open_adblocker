@@ -1,15 +1,34 @@
+/**
+ * @file
+ * This file is part of Open Ad Blocker Browser Extension (https://github.com/developeradblocker/open_adblocker).
+ *
+ * Open Ad Blocker Browser Extension is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Open Ad Blocker Browser Extension is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
+ */
 import { createApp } from 'vue'
 import { dispatcher, setupWorker } from '@/utils/setup-worker'
 import { logger } from '@/utils/logger/logger'
 import { setupExternalPortChannel } from '@/modules/port/external/port.setup'
 import { setupExternalAdBlocker } from '@/modules/ad-blocker/external/ad-blocker.setup'
 import { setupExternalApp } from '@/modules/app/external/app.setup'
-import { setupUserActivity } from '@/modules/user-activity/external/user-activity.setup'
+import { setupExternalUserActivity } from '@/modules/user-activity/external/user-activity.setup'
 import { flushPromises } from '../../../helpers/flushPromises'
 import { DispatcherInterface } from '@/utils/dispatcher/dispatcher.types'
 import { createRouter } from 'vue-router'
 import { ROUTE } from '@/ui/toolbar-popup/router/route-names'
 import { useUserActivity } from '@/modules/user-activity/external/utils'
+import { setupExternalWebRTC } from '@/modules/features/web-rtc/external/web-rtc.setup'
+import { setupExternalFilters } from '@/modules/filters/external/filters.setup'
 
 jest.mock('vue', () => ({
   defineComponent: jest.fn(),
@@ -60,7 +79,15 @@ jest.mock('@/modules/app/external/app.setup', () => ({
 }))
 
 jest.mock('@/modules/user-activity/external/user-activity.setup', () => ({
-  setupUserActivity: jest.fn()
+  setupExternalUserActivity: jest.fn()
+}))
+
+jest.mock('@/modules/features/web-rtc/external/web-rtc.setup', () => ({
+  setupExternalWebRTC: jest.fn()
+}))
+
+jest.mock('@/modules/filters/external/filters.setup', () => ({
+  setupExternalFilters: jest.fn()
 }))
 
 jest.mock('@/modules/user-activity/external/utils', () => ({
@@ -92,8 +119,10 @@ describe('Popup entry script', () => {
       expect(setupWorker).toHaveBeenCalledWith('PW')
       expect(setupExternalPortChannel).toHaveBeenCalledWith({ name: 'PW' })
       expect(setupExternalAdBlocker).toHaveBeenCalled()
-      expect(setupUserActivity).toHaveBeenCalled()
+      expect(setupExternalUserActivity).toHaveBeenCalled()
+      expect(setupExternalWebRTC).toHaveBeenCalled()
       expect(setupExternalApp).toHaveBeenCalled()
+      expect(setupExternalFilters).toHaveBeenCalled()
       expect(dispatcher).toHaveBeenCalled()
       expect(mockWork).toHaveBeenCalled()
       expect(logger.info).toHaveBeenCalledWith('Popup started...')
