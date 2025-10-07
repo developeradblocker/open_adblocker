@@ -22,7 +22,8 @@ import HomePage from '@/ui/toolbar-popup/pages/home.page.vue'
 import Header from '@/ui/toolbar-popup/components/header.vue'
 import { ROUTE } from '@/ui/toolbar-popup/router/route-names'
 import { useRouter } from 'vue-router'
-import { NotificationTypes, useNotificationStore } from '@/ui/toolbar-popup/components/notification/notification.store'
+import { useNotificationStore } from '@/ui/toolbar-popup/components/notification/notification.store'
+import { NotificationTypes } from '@/ui/toolbar-popup/components/notification/notification.types'
 
 jest.mock('vue-router')
 jest.mock('@/ui/toolbar-popup/components/notification/notification.store')

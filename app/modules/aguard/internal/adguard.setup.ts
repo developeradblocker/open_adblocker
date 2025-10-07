@@ -26,7 +26,7 @@ import { AdGuardMessages, AdGuardOnReadyMessage } from '@/modules/aguard/common/
 import { whiteList } from '@/modules/whitelist/internal/utils'
 import { Injection } from '@/utils/inject/inject.types'
 import { inject } from '@/utils/inject/inject'
-import { filters } from '@/modules/filters/internal/filters.utils'
+import { useInternalFilters } from '@/modules/filters/internal/filters.utils'
 import { FiltersUpdatedListener } from '@/modules/aguard/internal/listeners/filters-updated.listener'
 
 const injections: Injection[] = [
@@ -68,6 +68,6 @@ const adGuardSetupAsync = async (): Promise<void> => {
 export const getConfiguration = async (): Promise<ConfigurationMV3> => {
   const config = DEFAULT_EXTENSION_CONFIG()
   config.allowlist = await whiteList().getDomains()
-  config.staticFiltersIds = await filters().getEnabledFilters()
+  config.staticFiltersIds = await useInternalFilters().getEnabledFilters()
   return config
 }

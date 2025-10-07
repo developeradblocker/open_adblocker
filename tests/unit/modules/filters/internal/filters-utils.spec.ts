@@ -16,7 +16,7 @@
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
 import { di } from '@/utils/setup-worker'
-import { filters } from '@/modules/filters/internal/filters.utils'
+import { useInternalFilters } from '@/modules/filters/internal/filters.utils'
 import { InternalFiltersIdentifiers } from '@/modules/filters/internal/filters.types'
 
 jest.mock('@/utils/setup-worker', () => ({
@@ -34,7 +34,7 @@ describe('utils', () => {
     const mockFilters = {}
     jest.mocked(di.get).mockReturnValueOnce(mockFilters)
 
-    expect(filters()).toBe(mockFilters)
+    expect(useInternalFilters()).toBe(mockFilters)
     expect(di.get).toHaveBeenCalledWith(InternalFiltersIdentifiers.service)
   })
 })

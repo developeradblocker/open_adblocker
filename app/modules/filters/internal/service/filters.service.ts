@@ -30,12 +30,13 @@ export class FiltersService implements FiltersServiceInterface {
   ) {}
 
   async toggle (id: FilterId): Promise<void> {
+    const filterId = Number(id)
     let enabledFilters = await this.storage.get()
 
-    if (enabledFilters.includes(id)) {
-      enabledFilters = await this.storage.disable(id)
+    if (enabledFilters.includes(filterId)) {
+      enabledFilters = await this.storage.disable(filterId)
     } else {
-      enabledFilters = await this.storage.enable(id)
+      enabledFilters = await this.storage.enable(filterId)
     }
 
     const message: FiltersUpdatedMessage = {
@@ -48,10 +49,10 @@ export class FiltersService implements FiltersServiceInterface {
 
   async isEnabled (id: FilterId): Promise<boolean> {
     const enabledFilters = await this.storage.get()
-    return enabledFilters.includes(id)
+    return enabledFilters.includes(Number(id))
   }
 
-  async getEnabledFilters (): Promise<FilterId[]> {
+  async getEnabledFilters (): Promise<number[]> {
     return await this.storage.get()
   }
 }

@@ -20,4 +20,4 @@ export interface FiltersBaseInterface {
   isEnabled: (id: FilterId) => Promise<boolean>
 }
 
-export type FilterId = number
+export type FilterId = number | string

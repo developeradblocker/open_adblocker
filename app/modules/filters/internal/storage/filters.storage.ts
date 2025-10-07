@@ -20,7 +20,7 @@ import { FilterId } from '@/modules/filters/common/filters.types'
 import { DEFAULT_ENABLED_FILTER_IDS } from '../../../../../constants.js'
 
 export class FiltersStorage {
-  private readonly storage = makeDataAccessor<FilterId[]>(
+  private readonly storage = makeDataAccessor<number[]>(
     'local',
     'ENABLED_FILTERS',
     {
@@ -28,7 +28,7 @@ export class FiltersStorage {
       default: DEFAULT_ENABLED_FILTER_IDS.map(Number)
     })
 
-  async enable (id: FilterId): Promise<FilterId[]> {
+  async enable (id: number): Promise<number[]> {
     const enabledFilters = await this.get()
     if (enabledFilters.includes(id)) {
       return enabledFilters
@@ -39,7 +39,7 @@ export class FiltersStorage {
     return enabledFilters
   }
 
-  async disable (id: FilterId): Promise<FilterId[]> {
+  async disable (id: number): Promise<number[]> {
     const enabledFilters = (await this.get())
       .filter((filterId: FilterId) => filterId !== id)
 
@@ -47,7 +47,7 @@ export class FiltersStorage {
     return enabledFilters
   }
 
-  async get (): Promise<FilterId[]> {
+  async get (): Promise<number[]> {
     return await this.storage.read()
   }
 }

@@ -44,13 +44,14 @@ import { checkWebRTCPermissions, requestWebRTCPermissions } from '@/modules/feat
 import { useWebRTC } from '@/modules/features/web-rtc/external/web-rtc.utils'
 import { useUserActivity } from '@/modules/user-activity/external/utils'
 import { ElementsUI } from '@/modules/user-activity/common/user-activity.types'
-import { useFilters } from '@/modules/filters/external/filters.setup'
 import { COOKIE_CLEANER_ID } from '../../../../../constants'
-import { NotificationTypes, useNotificationStore } from '@/ui/toolbar-popup/components/notification/notification.store'
+import { useNotificationStore } from '@/ui/toolbar-popup/components/notification/notification.store'
+import { useExternalFilters } from '@/modules/filters/external/filters.utils'
+import { NotificationTypes } from '@/ui/toolbar-popup/components/notification/notification.types'
 
 const appStore = useAppStore()
 const webRTC = useWebRTC()
-const filters = useFilters()
+const filters = useExternalFilters()
 const activity = useUserActivity()
 const notification = useNotificationStore()
 
@@ -61,19 +62,19 @@ const cookieCleaner = computed(() => appStore.app.isCookieCleanerEnabled)
 const toggleCookieCleaner = async (state: boolean): Promise<void> => {
   cookieCleanerToggleLoading.value = true
   try {
-    await filters.toggle(Number(COOKIE_CLEANER_ID))
+    await filters.toggle(COOKIE_CLEANER_ID)
     appStore.updateField('isCookieCleanerEnabled', state)
     activity.toggle(ElementsUI.cookie_cleaner, state)
   } catch (e) {
     console.error(e)
-    notification.showNotification({
-      message: 'An error has occurred. Please retry',
-      type: NotificationTypes.error
-    })
+    notification.showNotification(
+      'An error has occurred. Please retry',
+      NotificationTypes.error
+    )
     /**
      * Rolling back previous changes
      */
-    filters.toggle(Number(COOKIE_CLEANER_ID))
+    filters.toggle(COOKIE_CLEANER_ID)
     appStore.updateField('isCookieCleanerEnabled', !state)
   } finally {
     cookieCleanerToggleLoading.value = false

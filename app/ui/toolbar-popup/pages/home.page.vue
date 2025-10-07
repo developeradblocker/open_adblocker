@@ -12,7 +12,6 @@
   <Notification
     :message="notification.message"
     :type="notification.type"
-    :duration="notification.duration"
     :is-visible="notification.isVisible"
   ></Notification>
 </template>

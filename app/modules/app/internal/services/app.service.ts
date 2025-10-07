@@ -59,7 +59,7 @@ export class InternalAppService implements InternalAppServiceInterface {
       isServicePage: isServiceUrlHelper(url),
       needVisitRateUs: await this.rateUsService.needVisit(),
       isWebRTCEnabled: await this.webRtc.getState(),
-      isCookieCleanerEnabled: await this.filters.isEnabled(Number(COOKIE_CLEANER_ID))
+      isCookieCleanerEnabled: await this.filters.isEnabled(COOKIE_CLEANER_ID)
     }
   }
 }

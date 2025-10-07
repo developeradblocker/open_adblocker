@@ -28,6 +28,7 @@ import { createRouter } from 'vue-router'
 import { ROUTE } from '@/ui/toolbar-popup/router/route-names'
 import { useUserActivity } from '@/modules/user-activity/external/utils'
 import { setupExternalWebRTC } from '@/modules/features/web-rtc/external/web-rtc.setup'
+import { setupExternalFilters } from '@/modules/filters/external/filters.setup'
 
 jest.mock('vue', () => ({
   defineComponent: jest.fn(),
@@ -85,6 +86,10 @@ jest.mock('@/modules/features/web-rtc/external/web-rtc.setup', () => ({
   setupExternalWebRTC: jest.fn()
 }))
 
+jest.mock('@/modules/filters/external/filters.setup', () => ({
+  setupExternalFilters: jest.fn()
+}))
+
 jest.mock('@/modules/user-activity/external/utils', () => ({
   useUserActivity: jest.fn(() => ({
     visitPage: jest.fn()
@@ -117,6 +122,7 @@ describe('Popup entry script', () => {
       expect(setupExternalUserActivity).toHaveBeenCalled()
       expect(setupExternalWebRTC).toHaveBeenCalled()
       expect(setupExternalApp).toHaveBeenCalled()
+      expect(setupExternalFilters).toHaveBeenCalled()
       expect(dispatcher).toHaveBeenCalled()
       expect(mockWork).toHaveBeenCalled()
       expect(logger.info).toHaveBeenCalledWith('Popup started...')

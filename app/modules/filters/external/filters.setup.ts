@@ -15,44 +15,17 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-import { useExternalPort } from '@/modules/port/external/port.setup'
-import { FilterId, FiltersBaseInterface } from '@/modules/filters/common/filters.types'
-import { FiltersMessages, IsEnabledFilterMessage, ToggleFilterMessage } from '@/modules/filters/common/filters.messages'
+import { inject } from '@/utils/inject/inject'
+import { ExternalFiltersIdentifiers } from '@/modules/filters/external/filters.types'
+import { FiltersService } from '@/modules/filters/external/service/filters.service'
+import { Injection } from '@/utils/inject/inject.types'
 
-let filters: FiltersBaseInterface
-export const setupExternalFilters = (): FiltersBaseInterface => {
-  if (filters) {
-    return filters
+const injections: Injection[] = [
+  {
+    key: ExternalFiltersIdentifiers.service,
+    use: FiltersService
   }
-
-  filters = {
-    async toggle (id: FilterId): Promise<void> {
-      const message: ToggleFilterMessage = {
-        type: FiltersMessages.toggle,
-        payload: { id }
-      }
-
-      const port = useExternalPort()
-      await port.sendMessage(message)
-    },
-
-    async isEnabled (id: FilterId): Promise<boolean> {
-      const message: IsEnabledFilterMessage = {
-        type: FiltersMessages.isEnabled,
-        payload: { id }
-      }
-
-      const port = useExternalPort()
-      return await port.sendMessage(message)
-    }
-  }
-
-  return filters
-}
-
-export const useFilters = (): FiltersBaseInterface => {
-  if (!filters) {
-    throw new Error('FiltersModule is not set up. Please call "setupExternalFilters" first.')
-  }
-  return filters
+]
+export const setupExternalFilters = (): void => {
+  inject(injections)
 }

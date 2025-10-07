@@ -16,26 +16,14 @@
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
 import { defineStore } from 'pinia'
+import { NotificationStore, NotificationTypes } from '@/ui/toolbar-popup/components/notification/notification.types'
+import { NOTIFICATION_DEFAULT_DURATION } from '@/ui/toolbar-popup/components/notification/constants'
 
-export enum NotificationTypes {
-  info = 'info',
-  success = 'success',
-  error = 'error',
-  warning = 'warning'
-}
-interface NotificationStore {
-  message: string
-  type: NotificationTypes
-  isVisible: boolean
-  duration: number
-  timeoutId: any
-}
 export const useNotificationStore = defineStore('notification', {
   state: (): NotificationStore => ({
     message: '',
     type: NotificationTypes.info, // success, error, warning, info
     isVisible: false,
-    duration: 3000,
     timeoutId: null
   } satisfies NotificationStore),
   actions: {
@@ -45,12 +33,11 @@ export const useNotificationStore = defineStore('notification', {
      * @param {string} [type='info'] - The type of notification.
      * @param {number} [duration=3000] - Duration in ms. 0 for permanent.
      */
-    showNotification ({ message, type = NotificationTypes.info, duration = 3000 }: Partial<NotificationStore>) {
+    showNotification (message: string, type = NotificationTypes.info, duration = NOTIFICATION_DEFAULT_DURATION) {
       this.clearTimer()
 
       this.message = message
       this.type = type
-      this.duration = duration
       this.isVisible = true
 
       if (duration > 0) {

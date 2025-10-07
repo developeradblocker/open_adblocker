@@ -23,7 +23,6 @@ export const DEFAULT_EXTENSION_CONFIG = (): Configuration => ({
    * DO NOT MODIFY THIS LIST DUE IT'S CONTROLLED VIA FILTERS MODULE
    */
   staticFiltersIds: [],
-  // logLevel: LogLevel.Debug,
   customFilters: [],
   trustedDomains: [],
   /**

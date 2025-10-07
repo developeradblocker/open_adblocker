@@ -24,15 +24,15 @@ import { useUserActivity } from '@/modules/user-activity/external/utils'
 import { useWebRTC } from '@/modules/features/web-rtc/external/web-rtc.utils'
 import { ElementsUI } from '@/modules/user-activity/common/user-activity.types'
 import { checkWebRTCPermissions, requestWebRTCPermissions } from '@/modules/features/web-rtc/common/web-rtc.utils'
-import { useFilters } from '@/modules/filters/external/filters.setup'
 import { useNotificationStore } from '@/ui/toolbar-popup/components/notification/notification.store'
+import { useExternalFilters } from '@/modules/filters/external/filters.utils'
 
 jest.mock('@/ui/toolbar-popup/store/app.store')
 jest.mock('@/ui/toolbar-popup/components/notification/notification.store')
 jest.mock('@/modules/user-activity/external/utils')
 jest.mock('@/modules/features/web-rtc/external/web-rtc.utils')
 jest.mock('@/modules/features/web-rtc/common/web-rtc.utils')
-jest.mock('@/modules/filters/external/filters.setup')
+jest.mock('@/modules/filters/external/filters.utils')
 describe('Features.vue', () => {
   let wrapper: VueWrapper<any>
 
@@ -75,7 +75,7 @@ describe('Features.vue', () => {
     jest.mocked(useWebRTC).mockReturnValue({
       toggle: webRTCToggleMock
     } as any)
-    jest.mocked(useFilters).mockReturnValue({
+    jest.mocked(useExternalFilters).mockReturnValue({
       toggle: filtersToggleMock
     } as any)
     jest.mocked(checkWebRTCPermissions).mockResolvedValue(true)

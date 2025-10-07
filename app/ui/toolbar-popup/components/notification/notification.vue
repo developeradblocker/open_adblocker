@@ -1,6 +1,6 @@
 <template>
   <transition name="slide-up">
-    <div v-if="isVisible" :class="['base-notification__wrapper', typeClass]">
+    <div v-if="isVisible" :class="['base-notification', typeClass]">
       <div class="base-notification__content">
         <p class="base-notification__message">{{ message }}</p>
       </div>
@@ -8,7 +8,7 @@
   </transition>
 </template>
 
-<script setup>
+<script setup lang="ts">
 /**
  * @file
  * This file is part of Open Ad Blocker Browser Extension (https://github.com/developeradblocker/open_adblocker).
@@ -27,31 +27,28 @@
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
 import { computed } from 'vue'
-import { NotificationTypes } from '@/ui/toolbar-popup/components/notification/notification.store'
 
-const props = defineProps({
-  message: {
-    type: String,
-    required: true
-  },
-  type: {
-    type: String,
-    default: NotificationTypes.info,
-    validator: (value) => Object.values(NotificationTypes).includes(value)
-  },
-  isVisible: {
-    type: Boolean,
-    required: true
-  }
-})
+import { NotificationTypes } from '@/ui/toolbar-popup/components/notification/notification.types'
+
+interface NotificationProps {
+  message: string
+  type?: NotificationTypes
+  isVisible: boolean
+}
+
+const {
+  type = NotificationTypes.info,
+  isVisible,
+  message
+} = defineProps<NotificationProps>()
 
 const typeClass = computed(() => {
-  return `base-notification--${props.type}`
+  return `base-notification--${type}`
 })
 </script>
 
-<style scoped>
-.base-notification__wrapper {
+<style scoped lang="less">
+.base-notification {
   position: fixed;
   bottom: 0;
   left: 50%;
@@ -60,22 +57,7 @@ const typeClass = computed(() => {
   width: 100vw;
   padding: 8px 16px;
   color: white;
-}
 
-.base-notification__content {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.base-notification__message {
-  margin: 0;
-  font-size: 12px;
-  flex-grow: 1;
-  text-align: center;
-}
-
-.base-notification {
   &--success {
     background-color: #4CAF50;
   }
@@ -91,6 +73,19 @@ const typeClass = computed(() => {
   &--info {
     background-color: #2196F3;
   }
+}
+
+.base-notification__content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.base-notification__message {
+  margin: 0;
+  font-size: 12px;
+  flex-grow: 1;
+  text-align: center;
 }
 
 .slide-up-enter-active, .slide-up-leave-active {
