@@ -40,7 +40,7 @@
     "@babel/preset-env": "^7.26.9",
     "@babel/runtime": "^7.27.0",
     "@eslint/js": "^9.31.0",
-    "@types/chrome": "^0.1.12",
+    "@types/chrome": "^0.1.22",
     "@types/jest": "^29.5.10",
     "@types/node": "^24.5.2",
     "@types/webpack-env": "^1.18.8",
