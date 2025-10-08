@@ -38,6 +38,7 @@ import { setupExternalUserActivity } from '@/modules/user-activity/external/user
 import { useUserActivity } from '@/modules/user-activity/external/utils'
 import { PageUI } from '@/modules/user-activity/common/user-activity.types'
 import { setupExternalWebRTC } from '@/modules/features/web-rtc/external/web-rtc.setup'
+import { setupExternalFilters } from '@/modules/filters/external/filters.setup'
 
 /**
  * Popup Worker (PW)
@@ -45,6 +46,7 @@ import { setupExternalWebRTC } from '@/modules/features/web-rtc/external/web-rtc
 setupWorker('PW')
 setupExternalPortChannel({ name: 'PW' })
 setupExternalAdBlocker()
+setupExternalFilters()
 setupExternalUserActivity(uuidv4())
 setupExternalWebRTC()
 setupExternalApp();

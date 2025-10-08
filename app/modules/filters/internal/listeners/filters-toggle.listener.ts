@@ -15,10 +15,30 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-require('reflect-metadata')
 
-jest.mock('uuid', () => ({ v4: () => Math.random() }))
-jest.mock('../constants.js', () => ({
-  COOKIE_CLEANER_ID: '18',
-  DEFAULT_ENABLED_FILTER_IDS: ['10', '2']
-}))
+import { AppMessageListener, Box } from '@/utils/dispatcher/dispatcher.types'
+import { inject, injectable } from '@/utils/di/di.types'
+import { FiltersServiceInterface, InternalFiltersIdentifiers } from '@/modules/filters/internal/filters.types'
+import { FiltersMessages, ToggleFilterMessage } from '@/modules/filters/common/filters.messages'
+
+@injectable()
+export class FiltersToggleListener implements AppMessageListener<ToggleFilterMessage> {
+  constructor (
+    @inject(InternalFiltersIdentifiers.service)
+    private filters: FiltersServiceInterface
+  ) {
+  }
+
+  on (): FiltersMessages.toggle {
+    return FiltersMessages.toggle
+  }
+
+  main (): false {
+    return false
+  }
+
+  async handle ({ message }: Box<ToggleFilterMessage>): Promise<void> {
+    const { id } = message.payload
+    await this.filters.toggle(id)
+  }
+}

@@ -43,7 +43,8 @@ export enum ElementsUI {
   about = 'about',
   privacy = 'privacy',
   terms = 'terms',
-  web_rtc = 'web_rtc'
+  web_rtc = 'web_rtc',
+  cookie_cleaner = 'cookie_cleaner'
 }
 
 export type PageUI = ROUTE
