@@ -32,6 +32,7 @@ import { AppMessages } from '@/modules/app/common/app.messages'
 import { helloAndGoodbyeSetup } from '@/modules/hello-and-goodbye/internal/hello-and-goodbye.setup'
 import { setupInternalWebRTC } from '@/modules/features/web-rtc/internal/web-rtc.setup'
 import { setupInternalFilters } from '@/modules/filters/internal/filter.setup'
+import { setupInternalConfig } from '@/modules/config/internal/config.setup'
 
 jest.mock('@/utils/setup-worker', () => ({
   setupWorker: jest.fn(),
@@ -85,6 +86,10 @@ jest.mock('@/service_worker/required-messages', () => ({
   requiredMessages: list
 }))
 
+jest.mock('@/modules/config/internal/config.setup', () => ({
+  setupInternalConfig: jest.fn()
+}))
+
 jest.mock('@/modules/hello-and-goodbye/internal/hello-and-goodbye.setup', () => ({
   helloAndGoodbyeSetup: jest.fn()
 }))
@@ -119,6 +124,7 @@ describe('serviceWorkerSetup', () => {
       expect(setupPopupIcon).toHaveBeenCalled()
       expect(setupInternalWhitelist).toHaveBeenCalled()
       expect(setupInternalFilters).toHaveBeenCalled()
+      expect(setupInternalConfig).toHaveBeenCalled()
       await flushPromises()
       const expectedList = [...list, AppMessages.ready]
       expect(onHandledAllRequiredMessages).toHaveBeenCalledWith(expectedList, expect.any(Function))

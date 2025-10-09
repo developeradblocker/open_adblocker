@@ -15,9 +15,9 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
+import { isDev } from '../utils/is-dev.js'
 
 export const typescriptLoader = (mode) => {
-  const isDevMode = mode === 'development'
   return ({
     test: /\.tsx?$/,
     exclude: [/tests/],
@@ -26,7 +26,7 @@ export const typescriptLoader = (mode) => {
       options: {
         appendTsSuffixTo: [/.vue$/],
         compilerOptions: {
-          ...(isDevMode && {
+          ...(isDev(mode) && {
             sourceMap: true,
             noUnusedLocals: false
           })

@@ -17,8 +17,9 @@
  */
 
 import FileManagerPlugin from 'filemanager-webpack-plugin'
+import { isDev } from '../utils/is-dev.js'
 
-export const fileManagerPlugin = ({ distName, filters }) => {
+export const fileManagerPlugin = ({ distName, filters, mode }) => {
   const declarativeFilters = filters.map(filter => ({
     source: `./app/filters/declarative/${filter}/${filter}.json`,
     destination: `./build/filters/declarative/${filter}/${filter}.json`
@@ -63,7 +64,19 @@ export const fileManagerPlugin = ({ distName, filters }) => {
                 dot: true
               }
             }
-          }]
+          },
+          ...(isDev(mode)
+            ? [{
+                source: './server',
+                destination: 'dist/Open_AdBlocker_server.zip',
+                options: {
+                  globOptions: {
+                    dot: true
+                  }
+                }
+              }]
+            : [])
+          ]
         }),
         delete: [
           './manifest.temp.json'

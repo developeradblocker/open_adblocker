@@ -19,6 +19,9 @@ import { setupInternalRateUs } from '@/modules/rate-us/internal/rate-us.setup'
 import { inject } from '@/utils/inject/inject'
 import { onUserActivity } from '@/modules/user-activity/internal/expose.messages'
 import { jest } from '@jest/globals'
+import { onConfigReady } from '@/modules/config/internal/expose.messages'
+import { Box } from '@/utils/dispatcher/dispatcher.types'
+import { ConfigOnReadyMessage } from '@/modules/config/common/config.messages'
 
 jest.mock('@/utils/inject/inject', () => ({
   inject: jest.fn()
@@ -26,6 +29,8 @@ jest.mock('@/utils/inject/inject', () => ({
 jest.mock('@/modules/user-activity/internal/expose.messages', () => ({
   onUserActivity: jest.fn()
 }))
+
+jest.mock('@/modules/config/internal/expose.messages')
 
 describe('setupInternalRateUs', () => {
   const addListenerMock = jest.fn()
@@ -42,6 +47,8 @@ describe('setupInternalRateUs', () => {
 
   it('should call inject with correct injections and register user activity handler', () => {
     setupInternalRateUs()
+    const cb = jest.mocked(onConfigReady).mock.calls[0][0]
+    cb({} as Box<ConfigOnReadyMessage>)
     expect(inject).toHaveBeenCalledTimes(1)
     expect(onUserActivity).toHaveBeenCalledTimes(1)
     // Check that onUserActivity was registered with a function

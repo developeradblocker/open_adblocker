@@ -22,7 +22,8 @@
     "webNavigation",
     "storage",
     "management",
-    "declarativeNetRequest"
+    "declarativeNetRequest",
+    "alarms"
   ],
   "optional_permissions": [
     "privacy"

@@ -15,21 +15,45 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-import { isDev } from '../utils/is-dev.js'
+import { Config } from '@/modules/config/common/config.types'
 
-const removeDataTestAttrs = node => {
-  if (node.type === 1) {
-    node.props = node.props.filter(prop => prop.name !== 'data-test')
-  }
+export interface StoredConfig {
+  updated: number
+  config: Config
 }
-export const vueLoader = (mode) => {
-  return ({
-    test: /\.vue$/,
-    loader: 'vue-loader',
-    options: {
-      compilerOptions: {
-        nodeTransforms: isDev(mode) ? [] : [removeDataTestAttrs]
-      }
-    }
-  })
+
+export interface ApiConfig {
+  config: Config
+}
+
+export enum InternalConfigIdentifiers {
+  /**
+   * @link ConfigServiceInterface
+   */
+  service = 'Config.Service',
+
+  /**
+   * @link ConfigStorageInterface
+   */
+  _storage = 'Config.Storage',
+
+  /**
+   * @link string
+   */
+  url = 'Config.Url',
+
+  /**
+   * @link number
+   */
+  intervalDays = 'Config.IntervalDays',
+}
+
+export interface ConfigServiceInterface {
+  update: () => Promise<void>
+  get: () => Promise<Config>
+}
+
+export interface ConfigStorageInterface {
+  get: () => Promise<StoredConfig>
+  set: (config: ApiConfig) => Promise<void>
 }

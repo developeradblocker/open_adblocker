@@ -15,21 +15,27 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-import { isDev } from '../utils/is-dev.js'
+import { makeDataAccessor } from '@/utils/storage/make-data-accessor'
+import { ApiConfig, ConfigStorageInterface, StoredConfig } from '@/modules/config/internal/config.types'
+import { DEFAULT_CONFIG } from '@/modules/config/common/config.constants'
 
-const removeDataTestAttrs = node => {
-  if (node.type === 1) {
-    node.props = node.props.filter(prop => prop.name !== 'data-test')
-  }
-}
-export const vueLoader = (mode) => {
-  return ({
-    test: /\.vue$/,
-    loader: 'vue-loader',
-    options: {
-      compilerOptions: {
-        nodeTransforms: isDev(mode) ? [] : [removeDataTestAttrs]
+export class ConfigStorage implements ConfigStorageInterface {
+  private readonly storage = makeDataAccessor<StoredConfig>(
+    'local',
+    'CONFIG',
+    {
+      useCache: false,
+      default: {
+        config: DEFAULT_CONFIG,
+        updated: null
       }
-    }
-  })
+    })
+
+  async get (): Promise<StoredConfig> {
+    return await this.storage.read()
+  }
+
+  async set ({ config }: ApiConfig): Promise<void> {
+    await this.storage.write({ config, updated: Date.now() })
+  }
 }
