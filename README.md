@@ -9,6 +9,7 @@
 - `npm run lint:fix`: run linter and automatically fix issues.
 - `npm run sync-rules`: syncs the rules from the specified source.
 - `npm run test`: run tests
+- `npm run server`: rus local server. Can be used as dev environment (Config endpoint). In case you need to use a SPECIFIC port, add `PORT` variable before running a command.
 ## Contributing
 
 We welcome contributions from the community! Please follow these guidelines to ensure a smooth collaboration process.

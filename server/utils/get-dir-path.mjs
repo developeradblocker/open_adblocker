@@ -15,21 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-import { isDev } from '../utils/is-dev.js'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 
-const removeDataTestAttrs = node => {
-  if (node.type === 1) {
-    node.props = node.props.filter(prop => prop.name !== 'data-test')
-  }
-}
-export const vueLoader = (mode) => {
-  return ({
-    test: /\.vue$/,
-    loader: 'vue-loader',
-    options: {
-      compilerOptions: {
-        nodeTransforms: isDev(mode) ? [] : [removeDataTestAttrs]
-      }
-    }
-  })
-}
+export const getDirPath = () => path.join(path.dirname(fileURLToPath(import.meta.url)), '..')

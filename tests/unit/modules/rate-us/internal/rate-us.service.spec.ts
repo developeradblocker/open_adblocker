@@ -20,6 +20,9 @@ import { makeDataAccessor } from '@/utils/storage/make-data-accessor'
 import { RATE_US_HOME_PAGE_VISITED_THRESHOLD } from '@/modules/rate-us/constants'
 import { DataAccessorInterface } from '@/utils/storage/storage.types'
 import { InternalRateUsService } from '@/modules/rate-us/internal/services/rate-us.service'
+import { dayToMs } from '@/helpers/time/day-to-ms'
+import { ConfigServiceInterface } from '@/modules/config/internal/config.types'
+import { DEFAULT_CONFIG } from '@/modules/config/common/config.constants'
 
 jest.mock('@/utils/storage/make-data-accessor')
 
@@ -27,6 +30,7 @@ describe('InternalRateUsService', () => {
   let counterMock: CounterInterface
   let storageMock: DataAccessorInterface<unknown>
   let service: InternalRateUsService
+  let configService: ConfigServiceInterface
 
   const existsMock = jest.fn()
   beforeEach(() => {
@@ -39,8 +43,11 @@ describe('InternalRateUsService', () => {
       write: jest.fn(),
       exists: existsMock
     } as unknown as DataAccessorInterface<unknown>
+    configService = {
+      get: jest.fn().mockResolvedValue(DEFAULT_CONFIG)
+    } as unknown as ConfigServiceInterface
     jest.mocked(makeDataAccessor).mockReturnValue(storageMock)
-    service = new InternalRateUsService(counterMock)
+    service = new InternalRateUsService(counterMock, configService)
   })
 
   it('returns false if RATE_US_DATA was not settled', async () => {
@@ -73,7 +80,7 @@ describe('InternalRateUsService', () => {
 
   it('should return true if was not rated yet and last visited more than 7 days', async () => {
     existsMock.mockResolvedValue(true)
-    jest.mocked(storageMock.read).mockResolvedValue({ rated: false, lastVisited: Date.now() - 8 * 24 * 60 * 60 * 1000 })
+    jest.mocked(storageMock.read).mockResolvedValue({ rated: false, lastVisited: Date.now() - dayToMs(8) })
     expect(await service.needVisit()).toBe(true)
   })
 

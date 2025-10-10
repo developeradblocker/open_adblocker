@@ -25,6 +25,7 @@ import { Injection } from '@/utils/inject/inject.types'
 import { inject } from '@/utils/inject/inject'
 import { userActivityHandler } from '@/modules/rate-us/internal/handlers/user-activity.handler'
 import { onUpdatedHandler } from '@/modules/rate-us/internal/handlers/on-updated.handler'
+import { onConfigReady } from '@/modules/config/internal/expose.messages'
 
 const injections: Injection[] = [
   {
@@ -43,6 +44,10 @@ const injections: Injection[] = [
 ]
 
 export const setupInternalRateUs = (): void => {
+  onConfigReady(handleOnConfigReady)
+}
+
+const handleOnConfigReady = async (): Promise<void> => {
   inject(injections)
   onUserActivity(userActivityHandler)
   chrome.runtime.onInstalled.addListener(onUpdatedHandler)
