@@ -20,14 +20,19 @@ import { type InternalRateUsServiceInterface, RateUsIdentifiers, RateUsDataInter
 import { makeDataAccessor } from '@/utils/storage/make-data-accessor'
 import { inject } from '@/utils/di/di.types'
 import { CounterInterface } from '@/utils/counter/counter.types'
-import { RATE_US_HOME_PAGE_VISITED_THRESHOLD, RATE_US_LAST_VISITED_DAYS_THRESHOLD } from '@/modules/rate-us/constants'
+import { RATE_US_HOME_PAGE_VISITED_THRESHOLD } from '@/modules/rate-us/constants'
 import { injectable } from 'inversify'
+import { ConfigServiceInterface, InternalConfigIdentifiers } from '@/modules/config/internal/config.types'
+import { dayToMs } from '@/helpers/time/day-to-ms'
 
 @injectable()
 export class InternalRateUsService implements InternalRateUsServiceInterface {
   constructor (
     @inject(RateUsIdentifiers._counter)
-    private readonly counter: CounterInterface
+    private readonly counter: CounterInterface,
+
+    @inject(InternalConfigIdentifiers.service)
+    private readonly config: ConfigServiceInterface
   ) {
   }
 
@@ -57,8 +62,8 @@ export class InternalRateUsService implements InternalRateUsServiceInterface {
       return false
     }
 
-    const DAY_MS = 1000 * 60 * 60 * 24
-    return ((Date.now() - lastVisited) / DAY_MS) >= RATE_US_LAST_VISITED_DAYS_THRESHOLD
+    const { rateUsReminderDays } = await this.config.get()
+    return (Date.now() - lastVisited) >= dayToMs(rateUsReminderDays)
   }
 
   async rate (): Promise<void> {

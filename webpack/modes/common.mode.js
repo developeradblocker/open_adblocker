@@ -79,7 +79,11 @@ export const commonMode = (env, mode) => {
       dotenvPlugin(prepareEnv(mode, browser)),
       vueLoaderPlugin(),
       webpackPlugin(),
-      fileManagerPlugin({ distName: archiveName({ version, mode, browser }), filters })
+      fileManagerPlugin({
+        distName: archiveName({ version, mode, browser }),
+        filters,
+        mode
+      })
     ],
     output: {
       filename: '[name].js',

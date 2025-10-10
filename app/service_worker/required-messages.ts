@@ -17,11 +17,13 @@
  */
 import { AdGuardMessages } from '@/modules/aguard/common/adguard.messages'
 import { AdBlockerMessages } from '@/modules/ad-blocker/common/ad-blocker.messages'
+import { ConfigMessages } from '@/modules/config/common/config.messages'
 
 /**
  * Messages that must be received before the service worker can start
  */
 export const requiredMessages = [
+  ConfigMessages.ready,
   AdGuardMessages.ready,
   AdBlockerMessages.ready
 ]

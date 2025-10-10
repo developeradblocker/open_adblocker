@@ -16,7 +16,8 @@
     "lint:fix": "npx eslint ./ --fix",
     "test:watch": "npm run test -- --watch",
     "test:coverage": "jest --coverage --no-cache",
-    "prepare": "husky"
+    "prepare": "husky",
+    "server": "node server/index.mjs"
   },
   "dependencies": {
     "vue3-popper": "^1.5.0",

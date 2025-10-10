@@ -32,6 +32,7 @@ import { setupInternalUserActivity } from '@/modules/user-activity/internal/user
 import { helloAndGoodbyeSetup } from '@/modules/hello-and-goodbye/internal/hello-and-goodbye.setup'
 import { setupInternalWebRTC } from '@/modules/features/web-rtc/internal/web-rtc.setup'
 import { setupInternalFilters } from '@/modules/filters/internal/filter.setup'
+import { setupInternalConfig } from '@/modules/config/internal/config.setup'
 
 logger.info('Service Worker preparing')
 /**
@@ -39,6 +40,7 @@ logger.info('Service Worker preparing')
  */
 setupWorker('SW')
 helloAndGoodbyeSetup()
+setupInternalConfig(process.env.CONFIG_API_URL, Number(process.env.CONFIG_UPDATE_INTERVAL))
 setupAdGuard()
 setupInternalPortChannel()
 setupInternalWhitelist()
