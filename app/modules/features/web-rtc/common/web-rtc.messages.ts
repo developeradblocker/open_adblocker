@@ -18,10 +18,16 @@
 import { AppMessage } from '@/utils/dispatcher/dispatcher.types'
 
 export enum WebRTCMessages {
-  toggle = 'WebRTC.Toggle'
+  toggle = 'WebRTC.Toggle',
+  stateChanged = 'WebRTC.StateChanged'
 }
 
 export interface WebRTCToggleMessage extends AppMessage {
   type: WebRTCMessages.toggle
+  payload: { state: boolean }
+}
+
+export interface WebRTCStateChangedMessage extends AppMessage {
+  type: WebRTCMessages.stateChanged
   payload: { state: boolean }
 }

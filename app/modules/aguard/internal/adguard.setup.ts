@@ -27,7 +27,9 @@ import { whiteList } from '@/modules/whitelist/internal/utils'
 import { Injection } from '@/utils/inject/inject.types'
 import { inject } from '@/utils/inject/inject'
 import { useInternalFilters } from '@/modules/filters/internal/filters.utils'
-import { FiltersUpdatedListener } from '@/modules/aguard/internal/listeners/filters-updated.listener'
+import { FiltersUpdatedListener } from '@/modules/aguard/internal/listeners/filters/filters-updated.listener'
+import { useInternalWebRTC } from '@/modules/features/web-rtc/internal/web-rtc.utils'
+import { WebRTCStateChangedListener } from '@/modules/aguard/internal/listeners/web-rtc/state-changed.listener'
 
 const injections: Injection[] = [
   {
@@ -58,6 +60,7 @@ const adGuardSetupAsync = async (): Promise<void> => {
   })
   inject(injections)
   dispatcher().onWithClass(FiltersUpdatedListener)
+  dispatcher().onWithClass(WebRTCStateChangedListener)
   const message: AdGuardOnReadyMessage = {
     type: AdGuardMessages.ready,
     force: true
@@ -69,5 +72,6 @@ export const getConfiguration = async (): Promise<ConfigurationMV3> => {
   const config = DEFAULT_EXTENSION_CONFIG()
   config.allowlist = await whiteList().getDomains()
   config.staticFiltersIds = await useInternalFilters().getEnabledFilters()
+  config.settings.stealth.blockWebRTC = await useInternalWebRTC().getState()
   return config
 }
