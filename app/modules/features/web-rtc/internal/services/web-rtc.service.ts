@@ -19,6 +19,8 @@ import { injectable } from 'inversify'
 import { WebRTCInterface } from '@/modules/features/web-rtc/common/web-rtc.types'
 import { checkWebRTCPermissions } from '@/modules/features/web-rtc/common/web-rtc.utils'
 import { logger } from '@/utils/logger/logger'
+import { WebRTCMessages, WebRTCStateChangedMessage } from '@/modules/features/web-rtc/common/web-rtc.messages'
+import { dispatcher } from '@/utils/setup-worker'
 
 @injectable()
 export class WebRTCService implements WebRTCInterface {
@@ -29,6 +31,14 @@ export class WebRTCService implements WebRTCInterface {
       } else {
         await chrome.privacy.network.webRTCIPHandlingPolicy.set({ value: chrome.privacy.IPHandlingPolicy.DEFAULT })
       }
+
+      const message: WebRTCStateChangedMessage = {
+        type: WebRTCMessages.stateChanged,
+        payload: {
+          state
+        }
+      }
+      await dispatcher().sendMessage(message)
     } catch (error) {
       logger.warn('WebRTCLeakPrevention: An error has occurred during setting the policy', error)
     }
