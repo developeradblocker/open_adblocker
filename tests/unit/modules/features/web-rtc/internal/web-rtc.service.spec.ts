@@ -19,14 +19,27 @@ import { WebRTCService } from '@/modules/features/web-rtc/internal/services/web-
 
 import { logger } from '@/utils/logger/logger'
 import { checkWebRTCPermissions } from '@/modules/features/web-rtc/common/web-rtc.utils'
+import { dispatcher } from '@/utils/setup-worker'
+import { DispatcherInterface } from '@/utils/dispatcher/dispatcher.types'
+import { WebRTCMessages } from '@/modules/features/web-rtc/common/web-rtc.messages'
 jest.mock('@/utils/logger/logger')
 jest.mock('@/modules/features/web-rtc/common/web-rtc.utils')
+jest.mock('@/utils/setup-worker', () => ({
+  dispatcher: jest.fn()
+}))
 
 describe('WebRTCService', () => {
   let service: WebRTCService
+  let sendMessageMock: jest.Mock
+
   const getMock = jest.fn()
   const setMock = jest.fn()
+
   beforeEach(() => {
+    sendMessageMock = jest.fn()
+    jest.mocked(dispatcher).mockReturnValue(
+      { sendMessage: sendMessageMock } as unknown as DispatcherInterface
+    )
     global.chrome = {
       privacy: {
         IPHandlingPolicy: {
@@ -48,12 +61,25 @@ describe('WebRTCService', () => {
     await service.toggle(false)
     expect(setMock).toHaveBeenLastCalledWith({ value: 'default' })
     expect(logger.warn).not.toHaveBeenCalled()
+    expect(sendMessageMock).toHaveBeenLastCalledWith({
+      type: WebRTCMessages.stateChanged,
+      payload: {
+        state: false
+      }
+    })
     await service.toggle(true)
     expect(setMock).toHaveBeenLastCalledWith({ value: 'disable_non_proxied_udp' })
     expect(logger.warn).not.toHaveBeenCalled()
+    expect(sendMessageMock).toHaveBeenLastCalledWith({
+      type: WebRTCMessages.stateChanged,
+      payload: {
+        state: true
+      }
+    })
     setMock.mockRejectedValue('Testing')
     await service.toggle(true)
     expect(logger.warn).toHaveBeenLastCalledWith('WebRTCLeakPrevention: An error has occurred during setting the policy', 'Testing')
+    expect(sendMessageMock).toHaveBeenCalledTimes(2)
   })
 
   it('should be able to get state', async () => {

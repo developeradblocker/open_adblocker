@@ -48,7 +48,7 @@ export const DEFAULT_EXTENSION_CONFIG = (): Configuration => ({
     collectStats: true,
     allowlistEnabled: true,
     allowlistInverted: false,
-    stealthModeEnabled: false,
+    stealthModeEnabled: true,
     filteringEnabled: true,
     debugScriptlets: false,
     stealth: {
