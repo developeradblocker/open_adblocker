@@ -22,8 +22,6 @@ import { TsWebExtension } from '@adguard/tswebextension/mv3'
 import { ConfigurationMV3 } from '@adguard/tswebextension/dist/types/lib/mv3/background/configuration'
 import { WhitelistIdentifiers } from '@/modules/whitelist/internal/whitelist.types'
 import { WhitelistInterface } from '@/modules/whitelist/common/whetelist.types'
-import { InternalWebRTCIdentifiers } from '@/modules/features/web-rtc/internal/web-rtc.types'
-import { WebRTCInterface } from '@/modules/features/web-rtc/common/web-rtc.types'
 
 @injectable()
 export class AdGuardService implements AdGuardServiceInterface {
@@ -35,10 +33,7 @@ export class AdGuardService implements AdGuardServiceInterface {
     private readonly tsWebExtension: TsWebExtension,
 
     @inject(WhitelistIdentifiers.service)
-    private readonly whitelist: WhitelistInterface,
-
-    @inject(InternalWebRTCIdentifiers.service)
-    private readonly webRTC: WebRTCInterface
+    private readonly whitelist: WhitelistInterface
   ) {
   }
 
