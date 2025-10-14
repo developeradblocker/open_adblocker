@@ -30,17 +30,15 @@ import { computed } from 'vue'
 
 import { NotificationTypes } from '@/ui/toolbar-popup/components/notification/notification.types'
 
-interface NotificationProps {
-  message: string
-  type?: NotificationTypes
-  isVisible: boolean
-}
-
 const {
   type = NotificationTypes.info,
   isVisible,
   message
-} = defineProps<NotificationProps>()
+} = defineProps<{
+  message: string
+  type?: NotificationTypes
+  isVisible: boolean
+}>()
 
 const typeClass = computed(() => {
   return `base-notification--${type}`

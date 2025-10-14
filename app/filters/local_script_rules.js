@@ -1,24 +1,16 @@
 /**
- *  To fully comply with Chrome Web Store policies regarding remote code execution,
- *  we implement a strict security-focused approach for JavaScript rule execution:
+ * Search for 'JS_RULES_EXECUTION' to find all parts of script execution
+ * process in the extension.
  *
- *  1. For standard users (default mode):
- *     - We collect and pre-build script rules from the filters and statically bundle
- *       them into the extension - STEP 1. See 'updateLocalResourcesForChromiumMv3' in our build tools.
- *     - These pre-verified local scripts are passed to the engine - STEP 2.
- *     - At runtime, we check if each script rule is included in our local scripts list (STEP 3).
- *     - Only pre-verified local scripts are executed via chrome.scripting API (STEP 4.1 and 4.2).
- *       All other scripts are discarded.
+ * 1. We collect and bundle all scripts that can be executed on web pages into
+ *     the extension package into so-called `localScriptRules`.
+ * 2. Rules that control when and where these scripts can be executed are also
+ *     bundled within the extension package inside ruleset files.
+ * 3. The rules look like: `example.org#%#scripttext`. Whenever the rule is
+ *     matched, we check if there's a function for scripttext in
+ *     `localScriptRules`, retrieve it from there and execute it.
  *
- *  2. For advanced users with developer mode explicitly enabled:
- *     - JavaScript rules from custom filters can be executed using the browser's built-in
- *       userScripts API (STEP 4.3), which provides a secure sandbox.
- *     - This execution bypasses the local script verification process but remains
- *       isolated and secure through Chrome's native sandboxing.
- *     - This mode requires explicit user activation and is intended for advanced users only.
- *
- *  This dual-path implementation ensures perfect compliance with Chrome Web Store policies
- *  while providing necessary functionality for users with different needs.
+ * Below is the file with all the registered scripts that can be executed.
  */
 export const localScriptRules = {
     '(function(){var a=document.currentScript,b=String.prototype.charCodeAt,c=function(){return true;};Object.defineProperty(String.prototype,"charCodeAt",{get:function(){return document.currentScript===a?b:c},set:function(a){}})})();': () => {
@@ -44,6 +36,52 @@ export const localScriptRules = {
             });
         } catch (t) {
             console.error('Error executing AG js rule with uniqueId "a415b8ebbf930b083a9d813bb1a1367a" due to: ' + t);
+        }
+    },
+    '(()=>{document.addEventListener("DOMContentLoaded",(()=>{if(typeof $==="function"){var $player=$(".player");$player.html($player.html().replace(/\x3c!--|--\x3e/g,""));}}));})();': () => {
+        try {
+            const e = "done";
+            if (Window.prototype.toString.e781468d8e503942bd8a2b5d75e820e3 === e) return;
+            document.addEventListener("DOMContentLoaded", (() => {
+                if ("function" == typeof $) {
+                    var e = $(".player");
+                    e.html(e.html().replace(/<!--|-->/g, ""));
+                }
+            }));
+            Object.defineProperty(Window.prototype.toString, "e781468d8e503942bd8a2b5d75e820e3", {
+                value: e,
+                enumerable: !1,
+                writable: !1,
+                configurable: !1
+            });
+        } catch (e) {
+            console.error('Error executing AG js rule with uniqueId "e781468d8e503942bd8a2b5d75e820e3" due to: ' + e);
+        }
+    },
+    '(()=>{const t=window.Map.prototype.values,a={apply:(a,e,p)=>{try{const a=Array.from(t.call(e))[0];(a?.parentElement?.matches(".supbar")||a?.matches?.(".rotator"))&&(e=new Map)}catch(t){}return Reflect.apply(a,e,p)}};window.Map.prototype.values=new Proxy(window.Map.prototype.values,a)})();': () => {
+        try {
+            const e = "done";
+            if (Window.prototype.toString.d64b4dac3a9d8fa9ed65b3d8c658a01f === e) return;
+            (() => {
+                const e = window.Map.prototype.values, t = {
+                    apply: (t, a, r) => {
+                        try {
+                            const t = Array.from(e.call(a))[0];
+                            (t?.parentElement?.matches(".supbar") || t?.matches?.(".rotator")) && (a = new Map);
+                        } catch (e) {}
+                        return Reflect.apply(t, a, r);
+                    }
+                };
+                window.Map.prototype.values = new Proxy(window.Map.prototype.values, t);
+            })();
+            Object.defineProperty(Window.prototype.toString, "d64b4dac3a9d8fa9ed65b3d8c658a01f", {
+                value: e,
+                enumerable: !1,
+                writable: !1,
+                configurable: !1
+            });
+        } catch (e) {
+            console.error('Error executing AG js rule with uniqueId "d64b4dac3a9d8fa9ed65b3d8c658a01f" due to: ' + e);
         }
     },
     "(function() { var isSet = false; Object.defineProperty(window, 'vas', { get: function() { return isSet ? false : undefined; }, set: function() { isSet = false; } }); })();": () => {
@@ -259,7 +297,7 @@ export const localScriptRules = {
             if (Window.prototype.toString["52c186b38202f876b11210bbe1307dcf"] === e) return;
             !function() {
                 var e = 0;
-                e = setInterval(function() {
+                e = setInterval((function() {
                     try {
                         if ("undefined" != typeof BeSeedRotator && BeSeedRotator.Container.player) {
                             clearInterval(e);
@@ -267,7 +305,7 @@ export const localScriptRules = {
                             BeSeedRotator.reCache();
                         }
                     } catch (e) {}
-                }, 100);
+                }), 100);
             }();
             Object.defineProperty(Window.prototype.toString, "52c186b38202f876b11210bbe1307dcf", {
                 value: e,
@@ -348,6 +386,33 @@ export const localScriptRules = {
             console.error('Error executing AG js rule with uniqueId "ff8cf9783100a66d151550ce6ced34a2" due to: ' + e);
         }
     },
+    "(()=>{const a={apply:(a,t,r)=>{try{!0===r[0]?.parameters?.[1]?.autoplay&&(r[0].parameters[1].autoplay=!1)}catch(a){console.trace(a)}return Reflect.apply(a,t,r)}};window.JSON.stringify=new Proxy(window.JSON.stringify,a)})();": () => {
+        try {
+            const e = "done";
+            if (Window.prototype.toString["4f79921d4ac95552f4af81dfd58692a0"] === e) return;
+            (() => {
+                const e = {
+                    apply: (e, r, t) => {
+                        try {
+                            !0 === t[0]?.parameters?.[1]?.autoplay && (t[0].parameters[1].autoplay = !1);
+                        } catch (e) {
+                            console.trace(e);
+                        }
+                        return Reflect.apply(e, r, t);
+                    }
+                };
+                window.JSON.stringify = new Proxy(window.JSON.stringify, e);
+            })();
+            Object.defineProperty(Window.prototype.toString, "4f79921d4ac95552f4af81dfd58692a0", {
+                value: e,
+                enumerable: !1,
+                writable: !1,
+                configurable: !1
+            });
+        } catch (e) {
+            console.error('Error executing AG js rule with uniqueId "4f79921d4ac95552f4af81dfd58692a0" due to: ' + e);
+        }
+    },
     '(()=>{const a=(a,b,c)=>{const d=Reflect.apply(a,b,c),e="div[id^=\'atf\']:empty { display: none !important; }";if("adoptedStyleSheets"in document){const a=new CSSStyleSheet;a.replaceSync(e),d.adoptedStyleSheets=[a]}else{const a=document.createElement("style");a.innerText=e,d.appendChild(a)}return d};window.Element.prototype.attachShadow=new Proxy(window.Element.prototype.attachShadow,{apply:a})})();': () => {
         try {
             const e = "done";
@@ -398,10 +463,10 @@ export const localScriptRules = {
         try {
             const e = "done";
             if (Window.prototype.toString.bdadee2d2471bf842565a6d2880f96f2 === e) return;
-            document.addEventListener("DOMContentLoaded", () => {
+            document.addEventListener("DOMContentLoaded", (() => {
                 const e = document.querySelector(".adsbygoogle:not(.adsbygoogle-noablate)"), t = document.createElement("div");
                 t.textContent = ".".repeat(3e3), e.appendChild(t);
-            });
+            }));
             Object.defineProperty(Window.prototype.toString, "bdadee2d2471bf842565a6d2880f96f2", {
                 value: e,
                 enumerable: !1,
@@ -505,6 +570,23 @@ export const localScriptRules = {
             });
         } catch (e) {
             console.error('Error executing AG js rule with uniqueId "ad3cc2fb594ccbd52529466a1f774118" due to: ' + e);
+        }
+    },
+    '(()=>{document.addEventListener("DOMContentLoaded",(()=>{"function"==typeof load_3rdparties&&load_3rdparties()}));})();': () => {
+        try {
+            const e = "done";
+            if (Window.prototype.toString.d32c830c0e926685887f2481f9379565 === e) return;
+            document.addEventListener("DOMContentLoaded", (() => {
+                "function" == typeof load_3rdparties && load_3rdparties();
+            }));
+            Object.defineProperty(Window.prototype.toString, "d32c830c0e926685887f2481f9379565", {
+                value: e,
+                enumerable: !1,
+                writable: !1,
+                configurable: !1
+            });
+        } catch (e) {
+            console.error('Error executing AG js rule with uniqueId "d32c830c0e926685887f2481f9379565" due to: ' + e);
         }
     },
     '!function(){if(-1<window.location.href.indexOf("/?u=aHR0c")){var a=location.href.split("/?u=");if(a[1])try{window.location=atob(a[1])}catch(b){}}}();': () => {
@@ -619,9 +701,9 @@ export const localScriptRules = {
             if (Window.prototype.toString["103de1b5e23e730a477b9b7da10564a4"] === e) return;
             window.TATM = window.TATM || {}, TATM.init = () => {}, TATM.initAdUnits = () => {}, 
             TATM.pageReady = () => {}, TATM.getVast = function(e) {
-                return new Promise(e => {
+                return new Promise((e => {
                     e();
-                });
+                }));
             }, TATM.push = function(e) {
                 if ("function" == typeof e) try {
                     e();
@@ -643,20 +725,20 @@ export const localScriptRules = {
         try {
             const e = "done";
             if (Window.prototype.toString["962185cb0a55f058eae7c7389bbc7327"] === e) return;
-            document.location.href.includes("/pop_advisor") && window.addEventListener("load", () => {
+            document.location.href.includes("/pop_advisor") && window.addEventListener("load", (() => {
                 const e = new CustomEvent("visibilitychange"), t = document.querySelector("button.btn-continu");
-                t && t.addEventListener("click", t => {
+                t && t.addEventListener("click", (t => {
                     Object.defineProperty(t.view.top.document, "hidden", {
                         value: !0,
                         writable: !0
-                    }), t.view.top.document.dispatchEvent(e), setTimeout(() => {
+                    }), t.view.top.document.dispatchEvent(e), setTimeout((() => {
                         Object.defineProperty(t.view.top.document, "hidden", {
                             value: !1,
                             writable: !0
                         }), t.view.top.document.dispatchEvent(e);
-                    }, 100);
-                });
-            });
+                    }), 100);
+                }));
+            }));
             Object.defineProperty(Window.prototype.toString, "962185cb0a55f058eae7c7389bbc7327", {
                 value: e,
                 enumerable: !1,
@@ -671,20 +753,20 @@ export const localScriptRules = {
         try {
             const e = "done";
             if (Window.prototype.toString.a715b406996eaeeeaf44515461187620 === e) return;
-            document.location.href.includes("/iframe_ad") && window.addEventListener("load", () => {
+            document.location.href.includes("/iframe_ad") && window.addEventListener("load", (() => {
                 const e = new CustomEvent("visibilitychange"), t = document.querySelector("a.btn-ad-iframe");
-                t && t.addEventListener("click", () => {
+                t && t.addEventListener("click", (() => {
                     Object.defineProperty(document, "hidden", {
                         value: !0,
                         writable: !0
-                    }), document.dispatchEvent(e), setTimeout(() => {
+                    }), document.dispatchEvent(e), setTimeout((() => {
                         Object.defineProperty(document, "hidden", {
                             value: !1,
                             writable: !0
                         }), document.dispatchEvent(e);
-                    }, 100);
-                });
-            });
+                    }), 100);
+                }));
+            }));
             Object.defineProperty(Window.prototype.toString, "a715b406996eaeeeaf44515461187620", {
                 value: e,
                 enumerable: !1,
@@ -720,9 +802,9 @@ export const localScriptRules = {
                             "function" == typeof t && t();
                         } catch (t) {}
                     };
-                    "complete" === document.readyState ? e() : window.addEventListener("load", () => {
+                    "complete" === document.readyState ? e() : window.addEventListener("load", (() => {
                         e();
-                    });
+                    }));
                 }, window.jad = t;
             }();
             Object.defineProperty(Window.prototype.toString, "176456e95ac0c8ff1ac49bbf30461c8b", {
@@ -840,12 +922,12 @@ export const localScriptRules = {
             if (Window.prototype.toString["2bca593aa0d901f23a66e9e0ba973abc"] === e) return;
             (() => {
                 let e;
-                const t = new MutationObserver((t, a) => {
+                const t = new MutationObserver(((t, a) => {
                     const o = e?.querySelector('button[data-testid="button-agree"]');
-                    o && (setTimeout(() => {
+                    o && (setTimeout((() => {
                         o.click();
-                    }, 500), a.disconnect());
-                }), a = {
+                    }), 500), a.disconnect());
+                })), a = {
                     apply: (a, o, r) => {
                         const n = Reflect.apply(a, o, r);
                         return o.matches(".szn-cmp-dialog-container") && (e = n), t.observe(n, {
@@ -1633,9 +1715,9 @@ export const localScriptRules = {
             const e = "done";
             if (Window.prototype.toString["61e6ac2655edf1e9450373c1fd849cd0"] === e) return;
             !function(e, t, o, n, r, c, i) {
-                (i = e[o] || e["WebKit" + o] || e["Moz" + o]) && (c = new i(function() {
+                (i = e[o] || e["WebKit" + o] || e["Moz" + o]) && (c = new i((function() {
                     t[n].contains(r) && (t[n].remove(r), c.disconnect());
-                })).observe(t, {
+                }))).observe(t, {
                     attributes: !0,
                     attributeFilter: [ "class" ]
                 });
@@ -1714,10 +1796,10 @@ export const localScriptRules = {
             if (Window.prototype.toString["7d2a68c5db67d5c0b987bcc67516ef8e"] === e) return;
             (() => {
                 let e, t = !1;
-                const c = new MutationObserver((t, c) => {
+                const c = new MutationObserver(((t, c) => {
                     const o = e?.querySelector("button.uc-deny-button");
                     o && (o.click(), c.disconnect());
-                }), o = {
+                })), o = {
                     apply: (o, r, n) => {
                         const d = Reflect.apply(o, r, n);
                         return !t && r.matches("#usercentrics-cmp-ui") && (t = !0, e = d), c.observe(d, {
@@ -1744,10 +1826,10 @@ export const localScriptRules = {
             if (Window.prototype.toString.c3fa9bec7cb9559b8965f87071a37fc6 === e) return;
             (() => {
                 let e, t = !1;
-                const c = new MutationObserver((t, c) => {
+                const c = new MutationObserver(((t, c) => {
                     const o = e?.querySelector('button[data-testid="uc-accept-all-button"]');
                     o && (o.click(), c.disconnect());
-                }), o = {
+                })), o = {
                     apply: (o, r, n) => {
                         const a = Reflect.apply(o, r, n);
                         return !t && r.matches("#usercentrics-root") && (t = !0, e = a), c.observe(a, {
@@ -1768,34 +1850,34 @@ export const localScriptRules = {
             console.error('Error executing AG js rule with uniqueId "c3fa9bec7cb9559b8965f87071a37fc6" due to: ' + e);
         }
     },
-    "(()=>{let t,e=!1;const o=new MutationObserver(((e,o)=>{const c=t?.querySelector('button#accept');c&&(c.click(),o.disconnect())})),c={apply:(c,n,p)=>{const r=Reflect.apply(c,n,p);return!e&&n.matches(\"#usercentrics-cmp-ui\")&&(e=!0,t=r),o.observe(r,{subtree:!0,childList:!0}),r}};window.Element.prototype.attachShadow=new Proxy(window.Element.prototype.attachShadow,c)})();": () => {
+    '(()=>{let t,e=!1;const o=new MutationObserver(((e,o)=>{const c=t?.querySelector(\'button[data-testid="uc-deny-all-button"]\');c&&(c.click(),o.disconnect())})),c={apply:(c,n,p)=>{const r=Reflect.apply(c,n,p);return!e&&n.matches("#usercentrics-root")&&(e=!0,t=r),o.observe(r,{subtree:!0,childList:!0}),r}};window.Element.prototype.attachShadow=new Proxy(window.Element.prototype.attachShadow,c)})();': () => {
         try {
             const e = "done";
-            if (Window.prototype.toString.c357ef7f6286b9d1497dd27602788dfe === e) return;
+            if (Window.prototype.toString["7924c03c0efcdc958073d4f764522f33"] === e) return;
             (() => {
                 let e, t = !1;
-                const o = new MutationObserver((t, o) => {
-                    const r = e?.querySelector("button#accept");
-                    r && (r.click(), o.disconnect());
-                }), r = {
-                    apply: (r, c, n) => {
-                        const d = Reflect.apply(r, c, n);
-                        return !t && c.matches("#usercentrics-cmp-ui") && (t = !0, e = d), o.observe(d, {
+                const o = new MutationObserver(((t, o) => {
+                    const c = e?.querySelector('button[data-testid="uc-deny-all-button"]');
+                    c && (c.click(), o.disconnect());
+                })), c = {
+                    apply: (c, r, n) => {
+                        const d = Reflect.apply(c, r, n);
+                        return !t && r.matches("#usercentrics-root") && (t = !0, e = d), o.observe(d, {
                             subtree: !0,
                             childList: !0
                         }), d;
                     }
                 };
-                window.Element.prototype.attachShadow = new Proxy(window.Element.prototype.attachShadow, r);
+                window.Element.prototype.attachShadow = new Proxy(window.Element.prototype.attachShadow, c);
             })();
-            Object.defineProperty(Window.prototype.toString, "c357ef7f6286b9d1497dd27602788dfe", {
+            Object.defineProperty(Window.prototype.toString, "7924c03c0efcdc958073d4f764522f33", {
                 value: e,
                 enumerable: !1,
                 writable: !1,
                 configurable: !1
             });
         } catch (e) {
-            console.error('Error executing AG js rule with uniqueId "c357ef7f6286b9d1497dd27602788dfe" due to: ' + e);
+            console.error('Error executing AG js rule with uniqueId "7924c03c0efcdc958073d4f764522f33" due to: ' + e);
         }
     },
     '(()=>{let t,e=!1;const o=new MutationObserver(((e,o)=>{const c=t?.querySelector("#cmpbox a.cmptxt_btn_yes");c&&(c.click(),o.disconnect())})),c={apply:(c,n,p)=>{const r=Reflect.apply(c,n,p);return!e&&n.matches("#cmpwrapper")&&(e=!0,t=r),o.observe(r,{subtree:!0,childList:!0}),r}};window.Element.prototype.attachShadow=new Proxy(window.Element.prototype.attachShadow,c)})();': () => {
@@ -1804,10 +1886,10 @@ export const localScriptRules = {
             if (Window.prototype.toString["9c5d8cfc5b5533f486ab90d24d15e42c"] === e) return;
             (() => {
                 let e, t = !1;
-                const c = new MutationObserver((t, c) => {
+                const c = new MutationObserver(((t, c) => {
                     const o = e?.querySelector("#cmpbox a.cmptxt_btn_yes");
                     o && (o.click(), c.disconnect());
-                }), o = {
+                })), o = {
                     apply: (o, r, n) => {
                         const d = Reflect.apply(o, r, n);
                         return !t && r.matches("#cmpwrapper") && (t = !0, e = d), c.observe(d, {
@@ -1828,47 +1910,6 @@ export const localScriptRules = {
             console.error('Error executing AG js rule with uniqueId "9c5d8cfc5b5533f486ab90d24d15e42c" due to: ' + e);
         }
     },
-    '(function(){window.self!==window.top||document.cookie.includes("visitor=")||(document.cookie="visitor=1; path=/;",document.cookie&&location.reload())})();': () => {
-        try {
-            const o = "done";
-            if (Window.prototype.toString["9907768cd527256baba4120870996330"] === o) return;
-            window.self !== window.top || document.cookie.includes("visitor=") || (document.cookie = "visitor=1; path=/;", 
-            document.cookie && location.reload());
-            Object.defineProperty(Window.prototype.toString, "9907768cd527256baba4120870996330", {
-                value: o,
-                enumerable: !1,
-                writable: !1,
-                configurable: !1
-            });
-        } catch (o) {
-            console.error('Error executing AG js rule with uniqueId "9907768cd527256baba4120870996330" due to: ' + o);
-        }
-    },
-    '(function(){try{var time=(new Date).getTime();var cookieDate=new Date(time+1314E6);var hostname=location.host;var locSubString=null;if(!hostname.startsWith("google.")&&!hostname.startsWith("youtube."))locSubString=hostname.substring(hostname.indexOf(".")+1);var loc=locSubString||hostname;if(document.cookie.indexOf("CONSENT=YES")!==-1)return;document.cookie="CONSENT=YES+; domain="+loc+"; path=/; expires="+cookieDate.toUTCString()}catch(ex){console.error("AG: failed to set consent cookie: "+ex)}})();': () => {
-        try {
-            const e = "done";
-            if (Window.prototype.toString.e1a7ebd323b27eb0aa0e7a309ebca4e9 === e) return;
-            !function() {
-                try {
-                    var e = (new Date).getTime(), t = new Date(e + 1314e6), o = location.host, r = null;
-                    o.startsWith("google.") || o.startsWith("youtube.") || (r = o.substring(o.indexOf(".") + 1));
-                    var a = r || o;
-                    if (-1 !== document.cookie.indexOf("CONSENT=YES")) return;
-                    document.cookie = "CONSENT=YES+; domain=" + a + "; path=/; expires=" + t.toUTCString();
-                } catch (e) {
-                    console.error("AG: failed to set consent cookie: " + e);
-                }
-            }();
-            Object.defineProperty(Window.prototype.toString, "e1a7ebd323b27eb0aa0e7a309ebca4e9", {
-                value: e,
-                enumerable: !1,
-                writable: !1,
-                configurable: !1
-            });
-        } catch (e) {
-            console.error('Error executing AG js rule with uniqueId "e1a7ebd323b27eb0aa0e7a309ebca4e9" due to: ' + e);
-        }
-    },
     '(function(o){function a(a){return{get:function(){return a},set:b}}function b(){}function c(){throw"Adguard: stopped a script execution.";}var d={},e=a(function(a){a(!1)}),f={},g=EventTarget.prototype.addEventListener;o(d,{spid_control_callback:a(b),content_control_callback:a(b),vid_control_callback:a(b)});o(f,{config:a(d),_setSpKey:{get:c,set:c},checkState:e,isAdBlocking:e,getSafeUri:a(function(a){return a}),pageChange:a(b),setupSmartBeacons:a(b)});Object.defineProperty(window,"_sp_",a(f));EventTarget.prototype.addEventListener=function(a){"sp.blocking"!=a&&"sp.not_blocking"!=a&&g.apply(this,arguments)}})(Object.defineProperties);': () => {
         try {
             const e = "done";
@@ -1886,9 +1927,9 @@ export const localScriptRules = {
                 function o() {
                     throw "Adguard: stopped a script execution.";
                 }
-                var r = {}, c = t(function(e) {
+                var r = {}, c = t((function(e) {
                     e(!1);
-                }), a = {}, i = EventTarget.prototype.addEventListener;
+                })), a = {}, i = EventTarget.prototype.addEventListener;
                 e(r, {
                     spid_control_callback: t(n),
                     content_control_callback: t(n),
@@ -1902,9 +1943,9 @@ export const localScriptRules = {
                     },
                     checkState: c,
                     isAdBlocking: c,
-                    getSafeUri: t(function(e) {
+                    getSafeUri: t((function(e) {
                         return e;
-                    }),
+                    })),
                     pageChange: t(n),
                     setupSmartBeacons: t(n)
                 });
@@ -1921,6 +1962,32 @@ export const localScriptRules = {
             });
         } catch (e) {
             console.error('Error executing AG js rule with uniqueId "a1233e00aac3b1e9bd547e64ca938543" due to: ' + e);
+        }
+    },
+    '(()=>{const e={apply:(e,t,l)=>{try{const e=(new Error).stack;if(e?.includes?.("initAdBlockDetection")&&4===l[0]?.length)return Promise.resolve()}catch(e){}return Reflect.apply(e,t,l)}};window.Promise.allSettled=new Proxy(window.Promise.allSettled,e)})();': () => {
+        try {
+            const e = "done";
+            if (Window.prototype.toString.c2e008a1d6491e8fa4125943a91eb8b8 === e) return;
+            (() => {
+                const e = {
+                    apply: (e, t, r) => {
+                        try {
+                            const e = (new Error).stack;
+                            if (e?.includes?.("initAdBlockDetection") && 4 === r[0]?.length) return Promise.resolve();
+                        } catch (e) {}
+                        return Reflect.apply(e, t, r);
+                    }
+                };
+                window.Promise.allSettled = new Proxy(window.Promise.allSettled, e);
+            })();
+            Object.defineProperty(Window.prototype.toString, "c2e008a1d6491e8fa4125943a91eb8b8", {
+                value: e,
+                enumerable: !1,
+                writable: !1,
+                configurable: !1
+            });
+        } catch (e) {
+            console.error('Error executing AG js rule with uniqueId "c2e008a1d6491e8fa4125943a91eb8b8" due to: ' + e);
         }
     },
     '(()=>{const d={getUserConsentStatusForVendor:()=>!0};window.didomiOnReady=window.didomiOnReady||[],window.didomiOnReady.push=n=>{"function"==typeof n&&n(d)}})();': () => {
@@ -2224,7 +2291,7 @@ export const localScriptRules = {
             window.Function.prototype.apply = new Proxy(window.Function.prototype.apply, {
                 apply(e, t, c) {
                     let n = t.toString();
-                    return n.includes("veta") && n.includes("http") && n.includes("/gfp/") && n.includes("().mark((") ? Reflect.apply(e, async () => !1, []) : Reflect.apply(e, t, c);
+                    return n.includes("veta") && n.includes("http") && n.includes("/gfp/") && n.includes("().mark((") ? Reflect.apply(e, (async () => !1), []) : Reflect.apply(e, t, c);
                 }
             });
             Object.defineProperty(Window.prototype.toString, "2eb1c0de2ccaf6cb36c187f9ae65492e", {
@@ -2243,10 +2310,10 @@ export const localScriptRules = {
             if (Window.prototype.toString["7ff1ec00ee1e83864c8bcaba82126a50"] === e) return;
             (() => {
                 const e = document.documentElement;
-                new MutationObserver(() => {
+                new MutationObserver((() => {
                     const e = document.querySelector('body > div[role="dialog"].neon-border-purple > p.text-center + button.neon-button-purple');
                     e && e.textContent.includes("I Understand") && e.click();
-                }).observe(e, {
+                })).observe(e, {
                     attributes: !0,
                     childList: !0,
                     subtree: !0
@@ -2496,7 +2563,7 @@ export const localScriptRules = {
                         if (!(e instanceof Error)) throw Error();
                     }
                 });
-            }(function() {});
+            }((function() {}));
             Object.defineProperty(Window.prototype.toString, "e7cde92d3ed85b2159f3eefcc50b7ab6", {
                 value: e,
                 enumerable: !1,
@@ -2557,6 +2624,227 @@ export const localScriptRules = {
             console.error('Error executing AG js rule with uniqueId "22514194ad8441cc56e68716b1f75f69" due to: ' + e);
         }
     },
+    '(()=>{const e=()=>{},t=function(){return this},n=()=>null,o=()=>[],r=new Map,i=new Map,s=new Map,a=new Map,d=new Map,l=new Map,g=function(e,t){return d.has(e)||d.set(e,new Set),d.get(e).add(t),this},c=function(e,t){return!!d.has(e)&&d.get(e).delete(t)},p=(e,t)=>new Promise((n=>{requestAnimationFrame((()=>{const o=[0,0],r=d.get(e)||[],i=Array.from(r);for(let e=0;e<i.length;e+=1)i[e]({isEmpty:!0,size:o,slot:t});n()}))})),m=e=>{if(!e)return;const t=e.getSlotElementId();if(!document.getElementById(t))return p("rewardedSlotGranted",e),void setTimeout((()=>p("rewardedSlotClosed",e)),5e3);const n=document.getElementById(t);n&&n.appendChild(document.createElement("div")),(e=>{const t=document.getElementById(e.getSlotElementId());for(;t?.lastChild;)t.lastChild.remove()})(e),(e=>{const t=`google_ads_iframe_${e.getId()}`;document.getElementById(t)?.remove();const n=document.getElementById(e.getSlotElementId());if(n){const e=document.createElement("iframe");e.id=t,e.srcdoc="<body></body>",e.style="position:absolute; width:0; height:0; left:0; right:0; z-index:-1; border:0",e.setAttribute("width",0),e.setAttribute("height",0),e.setAttribute("data-load-complete",!0),e.setAttribute("data-google-container-id",!0),e.setAttribute("sandbox",""),n.appendChild(e)}})(e),p("slotRenderEnded",e),p("slotRequested",e),p("slotResponseReceived",e),p("slotOnload",e),p("impressionViewable",e)},u={addEventListener:g,removeEventListener:c,enableSyncLoading:e,setRefreshUnfilledSlots:e,getSlots:o},y={addEventListener:g,removeEventListener:c,setContent:e};function f(){}function E(){}f.prototype.display=e,f.prototype.get=n,f.prototype.set=t,f.prototype.setClickUrl=t,f.prototype.setTagForChildDirectedTreatment=t,f.prototype.setTargeting=t,f.prototype.updateTargetingFromMap=t,E.prototype.addSize=t,E.prototype.build=n;const h=e=>{if("string"==typeof e)return[e];try{return Array.prototype.flat.call(e)}catch{}return[]},b=(e,n,o)=>{if(i.has(o))return document.getElementById(o)?.remove(),i.get(o);const d=new Map,g=new Map,c=new Set,p={advertiserId:void 0,campaignId:void 0,creativeId:void 0,creativeTemplateId:void 0,lineItemId:void 0},m=[{getHeight:()=>2,getWidth:()=>2}],u=(s.get(e)||0)+1;s.set(e,u);const y=`${e}_${u}`;let f="",E=null;const b=new Set,S={addService:e=>(b.add(e),S),clearCategoryExclusions:t,clearTargeting(e){void 0===e?g.clear():g.delete(e)},defineSizeMapping(e){return a.set(o,e),this},get:e=>d.get(e),getAdUnitPath:()=>e,getAttributeKeys:()=>Array.from(d.keys()),getCategoryExclusions:()=>Array.from(c),getClickUrl:()=>f,getCollapseEmptyDiv:()=>E,getContentUrl:()=>"",getDivStartsCollapsed:()=>null,getDomId:()=>o,getEscapedQemQueryId:()=>"",getFirstLook:()=>0,getId:()=>y,getHtml:()=>"",getName:()=>y,getOutOfPage:()=>!1,getResponseInformation:()=>p,getServices:()=>Array.from(b),getSizes:()=>m,getSlotElementId:()=>o,getSlotId:()=>S,getTargeting:e=>g.get(e)||l.get(e)||[],getTargetingKeys:()=>Array.from(new Set(Array.of(...l.keys(),...g.keys()))),getTargetingMap:()=>Object.assign(Object.fromEntries(l.entries()),Object.fromEntries(g.entries())),set:(e,t)=>(d.set(e,t),S),setCategoryExclusion:e=>(c.add(e),S),setClickUrl:e=>(f=e,S),setCollapseEmptyDiv:e=>(E=!!e,S),setSafeFrameConfig:t,setTagForChildDirectedTreatment:t,setTargeting:(e,t)=>(g.set(e,h(t)),S),toString:()=>y,updateTargetingFromMap:e=>(((e,t)=>{if("object"==typeof t)for(const n in t)Object.prototype.hasOwnProperty.call(t,n)&&e.set(n,h(t[n]))})(g,e),S)};return r.set(e,S),i.set(o,S),a.set(o,n),S},S={addEventListener:g,removeEventListener:c,clear:e,clearCategoryExclusions:t,clearTagForChildDirectedTreatment:t,clearTargeting(e){void 0===e?l.clear():l.delete(e)},collapseEmptyDivs:e,defineOutOfPagePassback:()=>new f,definePassback:()=>new f,disableInitialLoad:e,display:e,enableAsyncRendering:e,enableLazyLoad:e,enableSingleRequest:e,enableSyncRendering:e,enableVideoAds:e,get:n,getAttributeKeys:o,getTargeting:o,getTargetingKeys:o,getSlots:o,isInitialLoadDisabled:()=>!0,refresh:e,set:t,setCategoryExclusion:t,setCentering:e,setCookieOptions:t,setForceSafeFrame:t,setLocation:t,setPrivacySettings:t,setPublisherProvidedId:t,setRequestNonPersonalizedAds:t,setSafeFrameConfig:t,setTagForChildDirectedTreatment:t,setTargeting:t,setVideoContent:t,updateCorrelator:e},{googletag:v={}}=window,{cmd:C=[]}=v;for(v.apiReady=!0,v.cmd=[],v.cmd.push=e=>{try{e()}catch(e){console.trace(e)}return 1},v.companionAds=()=>u,v.content=()=>y,v.defineOutOfPageSlot=b,v.defineSlot=b,v.destroySlots=function(){r.clear(),i.clear()},v.disablePublisherConsole=e,v.display=function(e){let t;t=e?.getSlotElementId?e.getSlotElementId():e?.nodeType?e.id:String(e),m(i.get(t))},v.enableServices=e,v.getVersion=()=>"",v.pubads=()=>S,v.pubadsReady=!0,v.setAdIframeTitle=e,v.sizeMapping=()=>new E,v.enums={OutOfPageFormat:{REWARDED:"REWARDED"}},window.googletag=v;0!==C.length;)v.cmd.push(C.shift())})();': () => {
+        try {
+            const e = "done";
+            if (Window.prototype.toString["3fed16eb400f779de1afec5bc42b57fc"] === e) return;
+            (() => {
+                const e = () => {}, t = function() {
+                    return this;
+                }, n = () => null, r = () => [], o = new Map, i = new Map, a = new Map, s = new Map, d = new Map, l = new Map, g = function(e, t) {
+                    return d.has(e) || d.set(e, new Set), d.get(e).add(t), this;
+                }, c = function(e, t) {
+                    return !!d.has(e) && d.get(e).delete(t);
+                }, p = (e, t) => new Promise((n => {
+                    requestAnimationFrame((() => {
+                        const r = [ 0, 0 ], o = d.get(e) || [], i = Array.from(o);
+                        for (let e = 0; e < i.length; e += 1) i[e]({
+                            isEmpty: !0,
+                            size: r,
+                            slot: t
+                        });
+                        n();
+                    }));
+                })), m = {
+                    addEventListener: g,
+                    removeEventListener: c,
+                    enableSyncLoading: e,
+                    setRefreshUnfilledSlots: e,
+                    getSlots: r
+                }, u = {
+                    addEventListener: g,
+                    removeEventListener: c,
+                    setContent: e
+                };
+                function f() {}
+                function y() {}
+                f.prototype.display = e, f.prototype.get = n, f.prototype.set = t, f.prototype.setClickUrl = t, 
+                f.prototype.setTagForChildDirectedTreatment = t, f.prototype.setTargeting = t, f.prototype.updateTargetingFromMap = t, 
+                y.prototype.addSize = t, y.prototype.build = n;
+                const b = e => {
+                    if ("string" == typeof e) return [ e ];
+                    try {
+                        return Array.prototype.flat.call(e);
+                    } catch {}
+                    return [];
+                }, h = (e, n, r) => {
+                    if (i.has(r)) return document.getElementById(r)?.remove(), i.get(r);
+                    const d = new Map, g = new Map, c = new Set, p = {
+                        advertiserId: void 0,
+                        campaignId: void 0,
+                        creativeId: void 0,
+                        creativeTemplateId: void 0,
+                        lineItemId: void 0
+                    }, m = [ {
+                        getHeight: () => 2,
+                        getWidth: () => 2
+                    } ], u = (a.get(e) || 0) + 1;
+                    a.set(e, u);
+                    const f = `${e}_${u}`;
+                    let y = "", h = null;
+                    const E = new Set, S = {
+                        addService: e => (E.add(e), S),
+                        clearCategoryExclusions: t,
+                        clearTargeting(e) {
+                            void 0 === e ? g.clear() : g.delete(e);
+                        },
+                        defineSizeMapping(e) {
+                            return s.set(r, e), this;
+                        },
+                        get: e => d.get(e),
+                        getAdUnitPath: () => e,
+                        getAttributeKeys: () => Array.from(d.keys()),
+                        getCategoryExclusions: () => Array.from(c),
+                        getClickUrl: () => y,
+                        getCollapseEmptyDiv: () => h,
+                        getContentUrl: () => "",
+                        getDivStartsCollapsed: () => null,
+                        getDomId: () => r,
+                        getEscapedQemQueryId: () => "",
+                        getFirstLook: () => 0,
+                        getId: () => f,
+                        getHtml: () => "",
+                        getName: () => f,
+                        getOutOfPage: () => !1,
+                        getResponseInformation: () => p,
+                        getServices: () => Array.from(E),
+                        getSizes: () => m,
+                        getSlotElementId: () => r,
+                        getSlotId: () => S,
+                        getTargeting: e => g.get(e) || l.get(e) || [],
+                        getTargetingKeys: () => Array.from(new Set(Array.of(...l.keys(), ...g.keys()))),
+                        getTargetingMap: () => Object.assign(Object.fromEntries(l.entries()), Object.fromEntries(g.entries())),
+                        set: (e, t) => (d.set(e, t), S),
+                        setCategoryExclusion: e => (c.add(e), S),
+                        setClickUrl: e => (y = e, S),
+                        setCollapseEmptyDiv: e => (h = !!e, S),
+                        setSafeFrameConfig: t,
+                        setTagForChildDirectedTreatment: t,
+                        setTargeting: (e, t) => (g.set(e, b(t)), S),
+                        toString: () => f,
+                        updateTargetingFromMap: e => (((e, t) => {
+                            if ("object" == typeof t) for (const n in t) Object.prototype.hasOwnProperty.call(t, n) && e.set(n, b(t[n]));
+                        })(g, e), S)
+                    };
+                    return o.set(e, S), i.set(r, S), s.set(r, n), S;
+                }, E = {
+                    addEventListener: g,
+                    removeEventListener: c,
+                    clear: e,
+                    clearCategoryExclusions: t,
+                    clearTagForChildDirectedTreatment: t,
+                    clearTargeting(e) {
+                        void 0 === e ? l.clear() : l.delete(e);
+                    },
+                    collapseEmptyDivs: e,
+                    defineOutOfPagePassback: () => new f,
+                    definePassback: () => new f,
+                    disableInitialLoad: e,
+                    display: e,
+                    enableAsyncRendering: e,
+                    enableLazyLoad: e,
+                    enableSingleRequest: e,
+                    enableSyncRendering: e,
+                    enableVideoAds: e,
+                    get: n,
+                    getAttributeKeys: r,
+                    getTargeting: r,
+                    getTargetingKeys: r,
+                    getSlots: r,
+                    isInitialLoadDisabled: () => !0,
+                    refresh: e,
+                    set: t,
+                    setCategoryExclusion: t,
+                    setCentering: e,
+                    setCookieOptions: t,
+                    setForceSafeFrame: t,
+                    setLocation: t,
+                    setPrivacySettings: t,
+                    setPublisherProvidedId: t,
+                    setRequestNonPersonalizedAds: t,
+                    setSafeFrameConfig: t,
+                    setTagForChildDirectedTreatment: t,
+                    setTargeting: t,
+                    setVideoContent: t,
+                    updateCorrelator: e
+                }, {googletag: S = {}} = window, {cmd: v = []} = S;
+                for (S.apiReady = !0, S.cmd = [], S.cmd.push = e => {
+                    try {
+                        e();
+                    } catch (e) {
+                        console.trace(e);
+                    }
+                    return 1;
+                }, S.companionAds = () => m, S.content = () => u, S.defineOutOfPageSlot = h, S.defineSlot = h, 
+                S.destroySlots = function() {
+                    o.clear(), i.clear();
+                }, S.disablePublisherConsole = e, S.display = function(e) {
+                    let t;
+                    t = e?.getSlotElementId ? e.getSlotElementId() : e?.nodeType ? e.id : String(e), 
+                    (e => {
+                        if (!e) return;
+                        const t = e.getSlotElementId();
+                        if (!document.getElementById(t)) return p("rewardedSlotGranted", e), void setTimeout((() => p("rewardedSlotClosed", e)), 5e3);
+                        const n = document.getElementById(t);
+                        n && n.appendChild(document.createElement("div")), (e => {
+                            const t = document.getElementById(e.getSlotElementId());
+                            for (;t?.lastChild; ) t.lastChild.remove();
+                        })(e), (e => {
+                            const t = `google_ads_iframe_${e.getId()}`;
+                            document.getElementById(t)?.remove();
+                            const n = document.getElementById(e.getSlotElementId());
+                            if (n) {
+                                const e = document.createElement("iframe");
+                                e.id = t, e.srcdoc = "<body></body>", e.style = "position:absolute; width:0; height:0; left:0; right:0; z-index:-1; border:0", 
+                                e.setAttribute("width", 0), e.setAttribute("height", 0), e.setAttribute("data-load-complete", !0), 
+                                e.setAttribute("data-google-container-id", !0), e.setAttribute("sandbox", ""), n.appendChild(e);
+                            }
+                        })(e), p("slotRenderEnded", e), p("slotRequested", e), p("slotResponseReceived", e), 
+                        p("slotOnload", e), p("impressionViewable", e);
+                    })(i.get(t));
+                }, S.enableServices = e, S.getVersion = () => "", S.pubads = () => E, S.pubadsReady = !0, 
+                S.setAdIframeTitle = e, S.sizeMapping = () => new y, S.enums = {
+                    OutOfPageFormat: {
+                        REWARDED: "REWARDED"
+                    }
+                }, window.googletag = S; 0 !== v.length; ) S.cmd.push(v.shift());
+            })();
+            Object.defineProperty(Window.prototype.toString, "3fed16eb400f779de1afec5bc42b57fc", {
+                value: e,
+                enumerable: !1,
+                writable: !1,
+                configurable: !1
+            });
+        } catch (e) {
+            console.error('Error executing AG js rule with uniqueId "3fed16eb400f779de1afec5bc42b57fc" due to: ' + e);
+        }
+    },
+    '(()=>{const t={apply:(t,n,o)=>{try{const t=n,e=o[0];if("{}"===t&&"google"===e)return!0}catch(t){}return Reflect.apply(t,n,o)}};window.String.prototype.includes=new Proxy(window.String.prototype.includes,t)})();': () => {
+        try {
+            const e = "done";
+            if (Window.prototype.toString["6212dddf8146db41c33f7121175843aa"] === e) return;
+            (() => {
+                const e = {
+                    apply: (e, t, r) => {
+                        try {
+                            const e = t, o = r[0];
+                            if ("{}" === e && "google" === o) return !0;
+                        } catch (e) {}
+                        return Reflect.apply(e, t, r);
+                    }
+                };
+                window.String.prototype.includes = new Proxy(window.String.prototype.includes, e);
+            })();
+            Object.defineProperty(Window.prototype.toString, "6212dddf8146db41c33f7121175843aa", {
+                value: e,
+                enumerable: !1,
+                writable: !1,
+                configurable: !1
+            });
+        } catch (e) {
+            console.error('Error executing AG js rule with uniqueId "6212dddf8146db41c33f7121175843aa" due to: ' + e);
+        }
+    },
     '(()=>{window.GADS={init:function(n){n&&"function"==typeof n.onFinish&&n.onFinish()}};})();': () => {
         try {
             const e = "done";
@@ -2574,6 +2862,108 @@ export const localScriptRules = {
             });
         } catch (e) {
             console.error('Error executing AG js rule with uniqueId "c2ffc94b6ce8e97f2c432d64690cfc9d" due to: ' + e);
+        }
+    },
+    '(()=>{const t={apply:(t,e,o)=>{try{0===e?.size&&"function"==typeof o[0]&&(o[0]?.toString().includes("\'DISAB\'+")||o[0]?.toString().includes(";break;case"))&&e.add(4)}catch(t){}return Reflect.apply(t,e,o)}};window.Set.prototype.forEach=new Proxy(window.Set.prototype.forEach,t)})();': () => {
+        try {
+            const e = "done";
+            if (Window.prototype.toString["39d3df67ef8420c3af9eb477482f8dad"] === e) return;
+            (() => {
+                const e = {
+                    apply: (e, t, o) => {
+                        try {
+                            0 === t?.size && "function" == typeof o[0] && (o[0]?.toString().includes("'DISAB'+") || o[0]?.toString().includes(";break;case")) && t.add(4);
+                        } catch (e) {}
+                        return Reflect.apply(e, t, o);
+                    }
+                };
+                window.Set.prototype.forEach = new Proxy(window.Set.prototype.forEach, e);
+            })();
+            Object.defineProperty(Window.prototype.toString, "39d3df67ef8420c3af9eb477482f8dad", {
+                value: e,
+                enumerable: !1,
+                writable: !1,
+                configurable: !1
+            });
+        } catch (e) {
+            console.error('Error executing AG js rule with uniqueId "39d3df67ef8420c3af9eb477482f8dad" due to: ' + e);
+        }
+    },
+    '(()=>{const t={apply:(t,e,r)=>{try{3===e.length&&e.every((t=>"function"==typeof t&&t.toString().includes("element:")))&&(r[0]=()=>!1)}catch(t){}return Reflect.apply(t,e,r)}};window.Array.prototype.map=new Proxy(window.Array.prototype.map,t)})();': () => {
+        try {
+            const e = "done";
+            if (Window.prototype.toString["545fecd7ca7408e726395a9ff0ce0d51"] === e) return;
+            (() => {
+                const e = {
+                    apply: (e, t, r) => {
+                        try {
+                            3 === t.length && t.every((e => "function" == typeof e && e.toString().includes("element:"))) && (r[0] = () => !1);
+                        } catch (e) {}
+                        return Reflect.apply(e, t, r);
+                    }
+                };
+                window.Array.prototype.map = new Proxy(window.Array.prototype.map, e);
+            })();
+            Object.defineProperty(Window.prototype.toString, "545fecd7ca7408e726395a9ff0ce0d51", {
+                value: e,
+                enumerable: !1,
+                writable: !1,
+                configurable: !1
+            });
+        } catch (e) {
+            console.error('Error executing AG js rule with uniqueId "545fecd7ca7408e726395a9ff0ce0d51" due to: ' + e);
+        }
+    },
+    '(()=>{const e={apply:(e,o,t)=>{try{const e=o;e.length>0&&e.length<5&&"object"==typeof e[0]&&null!==e[0]&&Object.hasOwn(e[0],"blocked")&&(e.forEach((e=>{e&&"object"==typeof e&&Object.hasOwn(e,"blocked")&&(e.blocked=!1)})),o=e)}catch(e){}return Reflect.apply(e,o,t)}};window.Array.prototype.some=new Proxy(window.Array.prototype.some,e)})();': () => {
+        try {
+            const e = "done";
+            if (Window.prototype.toString.a2560bc95989a0cc443785391b553c8b === e) return;
+            (() => {
+                const e = {
+                    apply: (e, o, t) => {
+                        try {
+                            const e = o;
+                            e.length > 0 && e.length < 5 && "object" == typeof e[0] && null !== e[0] && Object.hasOwn(e[0], "blocked") && (e.forEach((e => {
+                                e && "object" == typeof e && Object.hasOwn(e, "blocked") && (e.blocked = !1);
+                            })), o = e);
+                        } catch (e) {}
+                        return Reflect.apply(e, o, t);
+                    }
+                };
+                window.Array.prototype.some = new Proxy(window.Array.prototype.some, e);
+            })();
+            Object.defineProperty(Window.prototype.toString, "a2560bc95989a0cc443785391b553c8b", {
+                value: e,
+                enumerable: !1,
+                writable: !1,
+                configurable: !1
+            });
+        } catch (e) {
+            console.error('Error executing AG js rule with uniqueId "a2560bc95989a0cc443785391b553c8b" due to: ' + e);
+        }
+    },
+    '(()=>{const n={construct:(n,o,t)=>{const c=o[0];return"function"==typeof c&&c.toString().includes("(){Date.now()>=")&&(o[0]=()=>{}),Reflect.construct(n,o,t)}};window.Promise=new Proxy(window.Promise,n)})();': () => {
+        try {
+            const e = "done";
+            if (Window.prototype.toString.c57e5717d58ce76bdbc1d365c949ba2e === e) return;
+            (() => {
+                const e = {
+                    construct: (e, t, o) => {
+                        const c = t[0];
+                        return "function" == typeof c && c.toString().includes("(){Date.now()>=") && (t[0] = () => {}), 
+                        Reflect.construct(e, t, o);
+                    }
+                };
+                window.Promise = new Proxy(window.Promise, e);
+            })();
+            Object.defineProperty(Window.prototype.toString, "c57e5717d58ce76bdbc1d365c949ba2e", {
+                value: e,
+                enumerable: !1,
+                writable: !1,
+                configurable: !1
+            });
+        } catch (e) {
+            console.error('Error executing AG js rule with uniqueId "c57e5717d58ce76bdbc1d365c949ba2e" due to: ' + e);
         }
     },
     '(()=>{const a=function(a){"function"==typeof a&&a()};window.aiptag={adplayer:"",cmd:[]},window.aiptag.cmd.player=[],window.aiptag.cmd.display=[],window.aiptag.cmd.push=a,window.aiptag.cmd.player.push=a,window.aiptag.cmd.display.push=a,window.aipDisplayTag={display:function(){}},window.aipPlayer=function(a){a&&a.AIP_COMPLETE&&(this.startPreRoll=a.AIP_COMPLETE)}})();': () => {
@@ -2614,7 +3004,7 @@ export const localScriptRules = {
                 }, o = [ "beforeReward", "adViewed", "adBreakDone" ];
                 window.adsbygoogle = window.adsbygoogle || [], window.adsbygoogle.push = function(r) {
                     var d;
-                    r && "object" == typeof r && (d = r, o.every(e => e in d && "function" == typeof d[e])) && (r.beforeReward(), 
+                    r && "object" == typeof r && (d = r, o.every((e => e in d && "function" == typeof d[e]))) && (r.beforeReward(), 
                     r.adViewed(), r.adBreakDone(e));
                 };
             })();
@@ -2699,9 +3089,9 @@ export const localScriptRules = {
         try {
             const e = "done";
             if (Window.prototype.toString.b8746b82569fc49e330a8e697f35c050 === e) return;
-            window.detectIncognito = () => new Promise(e => e({
+            window.detectIncognito = () => new Promise((e => e({
                 isPrivate: !0
-            }));
+            })));
             Object.defineProperty(Window.prototype.toString, "b8746b82569fc49e330a8e697f35c050", {
                 value: e,
                 enumerable: !1,
@@ -2749,7 +3139,7 @@ export const localScriptRules = {
                 }, t = [ "adblockEnabled", "=!!parseInt(", "disable_adb" ], o = {
                     apply: (o, n, r) => {
                         const d = r[0];
-                        return "function" == typeof d && t.some(e => d.toString().includes(e)) && (r[0] = new Proxy(r[0], e)), 
+                        return "function" == typeof d && t.some((e => d.toString().includes(e))) && (r[0] = new Proxy(r[0], e)), 
                         Reflect.apply(o, n, r);
                     }
                 };
@@ -2774,13 +3164,13 @@ export const localScriptRules = {
                     apply: (t, e, n) => {
                         if (n[0] && null === n[0].html?.detected && "function" == typeof n[0].html?.instance?.start && "function" == typeof n[0].env?.instance?.start && "function" == typeof n[0].http?.instance?.start) {
                             const t = function() {
-                                Object.keys(this).forEach(t => {
+                                Object.keys(this).forEach((t => {
                                     "boolean" == typeof this[t] && (this[t] = !1);
-                                });
+                                }));
                             };
-                            [ "html", "env", "http" ].forEach(e => {
+                            [ "html", "env", "http" ].forEach((e => {
                                 n[0][e].instance.start = t;
-                            });
+                            }));
                         }
                         return Reflect.apply(t, e, n);
                     }
@@ -2801,13 +3191,13 @@ export const localScriptRules = {
         try {
             const e = "done";
             if (Window.prototype.toString["660d8dc0098c8febc0f6d884977e6d4e"] === e) return;
-            document.addEventListener("DOMContentLoaded", () => {
+            document.addEventListener("DOMContentLoaded", (() => {
                 var e = document.body, t = document.createElement("div");
                 if (e) {
                     e.appendChild(t);
                     t.setAttribute("id", "QGSBETJjtZkYH");
                 }
-            });
+            }));
             Object.defineProperty(Window.prototype.toString, "660d8dc0098c8febc0f6d884977e6d4e", {
                 value: e,
                 enumerable: !1,
@@ -2822,13 +3212,13 @@ export const localScriptRules = {
         try {
             const e = "done";
             if (Window.prototype.toString["44c722190e3d03dbed05660dc5040600"] === e) return;
-            document.addEventListener("DOMContentLoaded", () => {
+            document.addEventListener("DOMContentLoaded", (() => {
                 const e = document.querySelector("#widescreen1");
                 if (e) {
                     const t = document.createElement("div");
                     t.setAttribute("id", "google_ads_iframe_"), e.appendChild(t);
                 }
-            });
+            }));
             Object.defineProperty(Window.prototype.toString, "44c722190e3d03dbed05660dc5040600", {
                 value: e,
                 enumerable: !1,
@@ -2934,19 +3324,19 @@ export const localScriptRules = {
             if (Window.prototype.toString["788553a11ab6cd27600ce601f07d7af8"] === e) return;
             (() => {
                 const e = () => {
-                    document.querySelectorAll(".chakra-portal").forEach(e => {
+                    document.querySelectorAll(".chakra-portal").forEach((e => {
                         e.querySelector('.chakra-modal__overlay[style*="opacity"]') && e.setAttribute("style", "display: none !important;");
-                    });
+                    }));
                 }, t = () => {}, r = function(t, r) {
                     const a = {
                         name: t,
                         listener: r
                     };
-                    requestAnimationFrame(() => {
+                    requestAnimationFrame((() => {
                         try {
                             "rewardedSlotGranted" === a.name && setTimeout(e, 2e3), a.listener();
                         } catch (e) {}
-                    });
+                    }));
                 };
                 window.googletag = {
                     cmd: [],
@@ -2993,7 +3383,7 @@ export const localScriptRules = {
         try {
             const e = "done";
             if (Window.prototype.toString["793501cfe6b6465e5f629489b079c172"] === e) return;
-            document.addEventListener("DOMContentLoaded", () => {
+            document.addEventListener("DOMContentLoaded", (() => {
                 if (window.CryptoJSAesJson && window.CryptoJSAesJson.decrypt) {
                     const t = document.createElement("link");
                     function e() {
@@ -3017,29 +3407,29 @@ export const localScriptRules = {
                         return A(e() + 2 * g * 2, i, t * (2 * s));
                     }, h = (e, t) => CryptoJSAesJson.decrypt(e, t);
                     let q = document.querySelectorAll(".reading-content .page-break img");
-                    q.forEach(e => {
+                    q.forEach((e => {
                         const t = e.getAttribute("id"), r = h(t, f().toString());
                         e.setAttribute("id", r);
-                    }), q = document.querySelectorAll(".reading-content .page-break img"), q.forEach(e => {
+                    })), q = document.querySelectorAll(".reading-content .page-break img"), q.forEach((e => {
                         const t = e.getAttribute("id"), r = parseInt(t.replace(/image-(\d+)[a-z]+/i, "$1"));
                         document.querySelectorAll(".reading-content .page-break")[r].appendChild(e);
-                    }), q = document.querySelectorAll(".reading-content .page-break img"), q.forEach(e => {
+                    })), q = document.querySelectorAll(".reading-content .page-break img"), q.forEach((e => {
                         const t = e.getAttribute("id"), r = t.slice(-1);
                         a += r, e.setAttribute("id", t.slice(0, -1));
-                    }), q = document.querySelectorAll(".reading-content .page-break img"), q.forEach(e => {
+                    })), q = document.querySelectorAll(".reading-content .page-break img"), q.forEach((e => {
                         const t = e.getAttribute("dta"), r = h(t, S().toString());
                         e.setAttribute("dta", r);
-                    }), q = document.querySelectorAll(".reading-content .page-break img"), q.forEach(e => {
+                    })), q = document.querySelectorAll(".reading-content .page-break img"), q.forEach((e => {
                         const t = e.getAttribute("dta").slice(-2);
                         i += t, e.removeAttribute("dta");
-                    }), q.forEach(e => {
+                    })), q.forEach((e => {
                         var t = e.getAttribute("data-src"), r = h(t, y().toString());
                         e.setAttribute("data-src", r);
-                    }), q.forEach(e => {
+                    })), q.forEach((e => {
                         e.classList.add("wp-manga-chapter-img", "img-responsive", "lazyload", "effect-fade");
-                    });
+                    }));
                 }
-            });
+            }));
             Object.defineProperty(Window.prototype.toString, "793501cfe6b6465e5f629489b079c172", {
                 value: e,
                 enumerable: !1,
@@ -3069,13 +3459,13 @@ export const localScriptRules = {
                     const t = {
                         type: tv.freewheel.SDK.EVENT_SLOT_ENDED
                     }, o = e.get("EVENT_SLOT_ENDED");
-                    o && setTimeout(() => {
+                    o && setTimeout((() => {
                         try {
                             o(t);
                         } catch (e) {
                             console.error(e);
                         }
-                    }, 1);
+                    }), 1);
                 }, window.tv = {
                     freewheel: {
                         SDK: {
@@ -3143,9 +3533,9 @@ export const localScriptRules = {
         try {
             const e = "done";
             if (Window.prototype.toString.ac3452ef83db17c4e84323d15083a03b === e) return;
-            document.addEventListener("DOMContentLoaded", () => {
+            document.addEventListener("DOMContentLoaded", (() => {
                 "function" == typeof ViewModelBase && "object" == typeof ViewModelBase.prototype && "function" == typeof ViewModelBase.prototype.LoadBrandAdAsync && (ViewModelBase.prototype.LoadBrandAdAsync = function() {});
-            });
+            }));
             Object.defineProperty(Window.prototype.toString, "ac3452ef83db17c4e84323d15083a03b", {
                 value: e,
                 enumerable: !1,
@@ -3160,14 +3550,14 @@ export const localScriptRules = {
         try {
             const e = "done";
             if (Window.prototype.toString["81b55e3b01cb8f931036cccb4d1056b6"] === e) return;
-            document.addEventListener("DOMContentLoaded", () => {
+            document.addEventListener("DOMContentLoaded", (() => {
                 var e = document.querySelectorAll("ins.adsbygoogle");
-                e.length && e.forEach(e => {
+                e.length && e.forEach((e => {
                     var t = document.createElement("iframe");
                     t.style = "display: none !important;", e.setAttribute("data-ad-status", "filled"), 
                     e.appendChild(t);
-                });
-            });
+                }));
+            }));
             Object.defineProperty(Window.prototype.toString, "81b55e3b01cb8f931036cccb4d1056b6", {
                 value: e,
                 enumerable: !1,
@@ -3176,6 +3566,25 @@ export const localScriptRules = {
             });
         } catch (e) {
             console.error('Error executing AG js rule with uniqueId "81b55e3b01cb8f931036cccb4d1056b6" due to: ' + e);
+        }
+    },
+    '(()=>{if(!location.href.includes("://embed.wcostream.com/inc/embed/index.php?file="))return;const e=`/inc/embed/video-js.php${location.search}`;location.href=e})();': () => {
+        try {
+            const e = "done";
+            if (Window.prototype.toString.b906e269a72b6af7c1d463b60f868697 === e) return;
+            (() => {
+                if (!location.href.includes("://embed.wcostream.com/inc/embed/index.php?file=")) return;
+                const e = `/inc/embed/video-js.php${location.search}`;
+                location.href = e;
+            })();
+            Object.defineProperty(Window.prototype.toString, "b906e269a72b6af7c1d463b60f868697", {
+                value: e,
+                enumerable: !1,
+                writable: !1,
+                configurable: !1
+            });
+        } catch (e) {
+            console.error('Error executing AG js rule with uniqueId "b906e269a72b6af7c1d463b60f868697" due to: ' + e);
         }
     },
     '(function(){window.adnPopConfig={zoneId:"149"}})();': () => {
@@ -3219,8 +3628,8 @@ export const localScriptRules = {
         try {
             const a = "done";
             if (Window.prototype.toString["802366024dd441867900263826a1b687"] === a) return;
-            document.addEventListener("DOMContentLoaded", () => {
-                var a = new MutationObserver(function() {
+            document.addEventListener("DOMContentLoaded", (() => {
+                var a = new MutationObserver((function() {
                     try {
                         for (var e, t = function(a) {
                             for (var e = "", t = 0; t < a; t++) e += "0123456789".charAt(Math.floor(10 * Math.random()));
@@ -3232,24 +3641,24 @@ export const localScriptRules = {
                         if (e) {
                             var r = `<ins class="adsbygoogle" data-adsbygoogle-status="done" style="display: block; height: 200px; width: 200px;" data-ad-status="unfilled"><ins id="aswift_0_expand" style="border: none; height: 0px; width: 0px; margin: 0px; padding: 0px; position: relative; visibility: visible; background-color: transparent; display: inline-table;" tabindex="0" title="Advertisement" aria-label="Advertisement"><ins id="aswift_0_anchor" style="border: none; height: 0px; width: 0px; margin: 0px; padding: 0px; position: relative; visibility: visible; background-color: transparent; display: block;"><iframe id="aswift_0" name="aswift_0" style="left:0;position:absolute;top:0;border:0;width:200px;height:200px;" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" frameborder="0" src="https://googleads.g.doubleclick.net/pagead/ads?client=${e}&amp;output=html&amp;adk=${t(10)}&amp;adf=${t(10)}&amp;lmt=${t(10)}&amp;plat=${t(100)};&amp;format=0x0&amp;url=${encodeURIComponent(document.location.href)}&amp;ea=0&amp;flash=0&amp;pra=5&amp;wgl=1&amp;uach=${t(100)}&amp;bpp=2&amp;bdt=${t(3)}&amp;idt=${t(3)}&amp;shv=r${t(8)}&amp;mjsv=m${t(8)}&amp;ptt=${t(1)}&amp;saldr=aa&amp;abxe=1&amp;nras=1&amp;correlator=${t(8)}&amp;frm=${t(2)}&amp;pv=2&amp;ga_vid=${t(10)}.${t(10)}&amp;ga_sid=${t(10)}&amp;ga_hid=${t(10)}&amp;ga_fc=0&amp;u_tz=${t(3)}&amp;u_his=8&amp;u_java=0&amp;u_h=${t(4)}&amp;u_w=${t(4)}&amp;u_ah=${t(4)}&amp;u_aw=${t(4)}&amp;u_cd=${t(2)}&amp;u_nplug=${t(1)}&amp;u_nmime=${t(1)}&amp;adx=-${t(8)}&amp;ady=-${t(8)}&amp;biw=${t(4)}&amp;bih=${t(4)}&amp;scr_x=0&amp;scr_y=0&amp;eid=${t(30)}&amp;oid=${t(1)}&amp;pvsid=${t(16)}&amp;pem=${t(3)}&amp;eae=${t(1)}&amp;fc=${t(4)}&amp;brdim=${t(20)}&amp;vis=1&amp;rsz=${t(6)}&amp;abl=NS&amp;fu=${t(4)}&amp;bc=${t(2)}&amp;ifi=1&amp;uci=a!1&amp;fsb=1&amp;dtd=128" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" data-google-container-id="a!1" data-load-complete="true"></iframe></ins></ins></ins>`, p = document.querySelector("body > *"), n = document.querySelectorAll(".phpbb-ads-center > .adsbygoogle");
                             p && n.length && (!p.querySelector("iframe#aswift_0") && p.insertAdjacentHTML("afterend", r), 
-                            n.forEach(a => {
+                            n.forEach((a => {
                                 a.querySelector("iframe#aswift_0") || (a.parentNode.style.height = "200px", a.parentNode.style.width = "200px", 
                                 a.parentNode.innerHTML = r);
-                            }));
+                            })));
                         }
                         var d = document.querySelector(".page-body"), l = document.querySelectorAll(".adsbygoogle, .phpbb-ads-center");
-                        d && !d.innerText.includes("deactivating your Ad-Blocker") && l.length && (l.forEach(a => {
+                        d && !d.innerText.includes("deactivating your Ad-Blocker") && l.length && (l.forEach((a => {
                             a.remove();
-                        }), a.disconnect());
+                        })), a.disconnect());
                     } catch (e) {}
-                });
+                }));
                 a.observe(document, {
                     childList: !0,
                     subtree: !0
-                }), setTimeout(function() {
+                }), setTimeout((function() {
                     a.disconnect();
-                }, 1e4);
-            });
+                }), 1e4);
+            }));
             Object.defineProperty(Window.prototype.toString, "802366024dd441867900263826a1b687", {
                 value: a,
                 enumerable: !1,
@@ -3258,6 +3667,32 @@ export const localScriptRules = {
             });
         } catch (a) {
             console.error('Error executing AG js rule with uniqueId "802366024dd441867900263826a1b687" due to: ' + a);
+        }
+    },
+    '(()=>{const e=Object.getOwnPropertyDescriptor(Element.prototype,"innerHTML").set,t=Object.getOwnPropertyDescriptor(Element.prototype,"innerHTML").get;Object.defineProperty(Element.prototype,"innerHTML",{get(){return t.call(this)},set(t){if(t?.includes?.("disable your adblocker"))throw new Error;e.call(this,t)}})})();': () => {
+        try {
+            const e = "done";
+            if (Window.prototype.toString["96cd53fdc3f56d04903d4a180e507d95"] === e) return;
+            (() => {
+                const e = Object.getOwnPropertyDescriptor(Element.prototype, "innerHTML").set, t = Object.getOwnPropertyDescriptor(Element.prototype, "innerHTML").get;
+                Object.defineProperty(Element.prototype, "innerHTML", {
+                    get() {
+                        return t.call(this);
+                    },
+                    set(t) {
+                        if (t?.includes?.("disable your adblocker")) throw new Error;
+                        e.call(this, t);
+                    }
+                });
+            })();
+            Object.defineProperty(Window.prototype.toString, "96cd53fdc3f56d04903d4a180e507d95", {
+                value: e,
+                enumerable: !1,
+                writable: !1,
+                configurable: !1
+            });
+        } catch (e) {
+            console.error('Error executing AG js rule with uniqueId "96cd53fdc3f56d04903d4a180e507d95" due to: ' + e);
         }
     },
     '(()=>{const e={apply:(e,o,t)=>(null===t[0]&&(t[0]={isUserSubscriber:!0}),Reflect.apply(e,o,t))},o={apply:(o,t,n)=>{const r=n[0];return"function"==typeof r&&r.toString().includes("AdBlockDetector")&&(n[0]=()=>{}),"function"==typeof r&&r.toString().includes("Preroll Ad")&&(n[0]=new Proxy(n[0],e)),Reflect.apply(o,t,n)}};window.Promise.prototype.then=new Proxy(window.Promise.prototype.then,o)})();': () => {
@@ -3287,6 +3722,32 @@ export const localScriptRules = {
             });
         } catch (e) {
             console.error('Error executing AG js rule with uniqueId "785fddde2c2648fbf7b3c872780aab8f" due to: ' + e);
+        }
+    },
+    '(()=>{const e=Object.getOwnPropertyDescriptor(Element.prototype,"innerHTML").set,t=Object.getOwnPropertyDescriptor(Element.prototype,"innerHTML").get;Object.defineProperty(Element.prototype,"innerHTML",{get(){return t.call(this)},set(t){if(t?.includes?.("allow adblock"))throw new Error;e.call(this,t)}})})();': () => {
+        try {
+            const e = "done";
+            if (Window.prototype.toString["27477abfbce9ce3be4dd5c5e090561b7"] === e) return;
+            (() => {
+                const e = Object.getOwnPropertyDescriptor(Element.prototype, "innerHTML").set, t = Object.getOwnPropertyDescriptor(Element.prototype, "innerHTML").get;
+                Object.defineProperty(Element.prototype, "innerHTML", {
+                    get() {
+                        return t.call(this);
+                    },
+                    set(t) {
+                        if (t?.includes?.("allow adblock")) throw new Error;
+                        e.call(this, t);
+                    }
+                });
+            })();
+            Object.defineProperty(Window.prototype.toString, "27477abfbce9ce3be4dd5c5e090561b7", {
+                value: e,
+                enumerable: !1,
+                writable: !1,
+                configurable: !1
+            });
+        } catch (e) {
+            console.error('Error executing AG js rule with uniqueId "27477abfbce9ce3be4dd5c5e090561b7" due to: ' + e);
         }
     },
     "window.adsbygoogle = { loaded: !0 };": () => {
@@ -3864,6 +4325,34 @@ export const localScriptRules = {
             console.error('Error executing AG js rule with uniqueId "cc60c320cd31f7c797cace7d0a8f787a" due to: ' + c);
         }
     },
+    "(()=>{const e={apply:(e,r,t)=>{try{const e=r[0];e?.adTree&&(r.shift(),t=[])}catch(e){console.trace(e)}return Reflect.apply(e,r,t)}};window.Array.prototype.splice=new Proxy(window.Array.prototype.splice,e)})();": () => {
+        try {
+            const e = "done";
+            if (Window.prototype.toString["2fa6b0fc3f291729ed8dab8e63b1df26"] === e) return;
+            (() => {
+                const e = {
+                    apply: (e, r, t) => {
+                        try {
+                            const e = r[0];
+                            e?.adTree && (r.shift(), t = []);
+                        } catch (e) {
+                            console.trace(e);
+                        }
+                        return Reflect.apply(e, r, t);
+                    }
+                };
+                window.Array.prototype.splice = new Proxy(window.Array.prototype.splice, e);
+            })();
+            Object.defineProperty(Window.prototype.toString, "2fa6b0fc3f291729ed8dab8e63b1df26", {
+                value: e,
+                enumerable: !1,
+                writable: !1,
+                configurable: !1
+            });
+        } catch (e) {
+            console.error('Error executing AG js rule with uniqueId "2fa6b0fc3f291729ed8dab8e63b1df26" due to: ' + e);
+        }
+    },
     "!function(){if(location.pathname.indexOf(\"/iframe/player\")===-1){Object.defineProperty(Object.prototype, 'kununu_mul', { get: function(){ throw null; }, set: function(){ throw null; }});}}();": () => {
         try {
             const e = "done";
@@ -4067,10 +4556,10 @@ export const localScriptRules = {
         try {
             const e = "done";
             if (Window.prototype.toString["931980a2c6180f6edbcd6f228a2db536"] === e) return;
-            document.addEventListener("DOMContentLoaded", () => {
+            document.addEventListener("DOMContentLoaded", (() => {
                 var e = document.querySelector("body");
                 document.location.hostname.includes("skmedix.pl") && e && e.insertAdjacentHTML("beforeend", '<ins class="adsbygoogle" data-ad-status="filled"><div id="aswift_" style="position: absolute !important; left: -3000px !important;"><iframe id="aswift_"></iframe></div></ins><iframe src="/aframe"></iframe>');
-            });
+            }));
             Object.defineProperty(Window.prototype.toString, "931980a2c6180f6edbcd6f228a2db536", {
                 value: e,
                 enumerable: !1,
@@ -4085,11 +4574,11 @@ export const localScriptRules = {
         try {
             const e = "done";
             if (Window.prototype.toString["66e1a81529963f50c62391d4d9356ef0"] === e) return;
-            document.addEventListener("DOMContentLoaded", () => {
-                setTimeout(function() {
+            document.addEventListener("DOMContentLoaded", (() => {
+                setTimeout((function() {
                     "function" == typeof show_game_iframe && show_game_iframe();
-                }, 1e3);
-            });
+                }), 1e3);
+            }));
             Object.defineProperty(Window.prototype.toString, "66e1a81529963f50c62391d4d9356ef0", {
                 value: e,
                 enumerable: !1,
@@ -4124,9 +4613,9 @@ export const localScriptRules = {
                         console.error(e);
                     }
                 };
-                "complete" === document.readyState ? e(sas_idmnet.cmd, t) : window.addEventListener("load", () => {
+                "complete" === document.readyState ? e(sas_idmnet.cmd, t) : window.addEventListener("load", (() => {
                     e(sas_idmnet.cmd, t);
-                });
+                }));
             })();
             Object.defineProperty(Window.prototype.toString, "35966fc2cd75edd8c085792a4413cc08", {
                 value: e,
@@ -4175,6 +4664,23 @@ export const localScriptRules = {
             });
         } catch (t) {
             console.error('Error executing AG js rule with uniqueId "4706a9dfd57dc72a9584b54986a27381" due to: ' + t);
+        }
+    },
+    "Object.defineProperty(Object.prototype,'getCreativeId',{value:()=>{}});": () => {
+        try {
+            const e = "done";
+            if (Window.prototype.toString.bb1e9134a8b4e3c7a0b399a46c02c14b === e) return;
+            Object.defineProperty(Object.prototype, "getCreativeId", {
+                value: () => {}
+            });
+            Object.defineProperty(Window.prototype.toString, "bb1e9134a8b4e3c7a0b399a46c02c14b", {
+                value: e,
+                enumerable: !1,
+                writable: !1,
+                configurable: !1
+            });
+        } catch (e) {
+            console.error('Error executing AG js rule with uniqueId "bb1e9134a8b4e3c7a0b399a46c02c14b" due to: ' + e);
         }
     },
     '(()=>{const t=Object.getOwnPropertyDescriptor,e={apply:(e,n,r)=>{const o=r[0];if(o?.toString?.()?.includes("EventTarget")){const e=t(o,"addEventListener");e?.set?.toString&&(e.set.toString=function(){}),e?.get?.toString&&(e.get.toString=function(){})}return Reflect.apply(e,n,r)}};window.Object.getOwnPropertyDescriptors=new Proxy(window.Object.getOwnPropertyDescriptors,e)})();': () => {
@@ -4441,13 +4947,32 @@ export const localScriptRules = {
             console.error('Error executing AG js rule with uniqueId "14b2658c5d58ff999b0f841402be6327" due to: ' + e);
         }
     },
+    '(()=>{if(!location.href.includes("/player.php?url="))return;const a=new URLSearchParams(location.search).get("url");a&&location.assign(a)})();': () => {
+        try {
+            const e = "done";
+            if (Window.prototype.toString.a9a1e83dfb5f1117af5ce4dfbce68798 === e) return;
+            (() => {
+                if (!location.href.includes("/player.php?url=")) return;
+                const e = new URLSearchParams(location.search).get("url");
+                e && location.assign(e);
+            })();
+            Object.defineProperty(Window.prototype.toString, "a9a1e83dfb5f1117af5ce4dfbce68798", {
+                value: e,
+                enumerable: !1,
+                writable: !1,
+                configurable: !1
+            });
+        } catch (e) {
+            console.error('Error executing AG js rule with uniqueId "a9a1e83dfb5f1117af5ce4dfbce68798" due to: ' + e);
+        }
+    },
     '(()=>{window.addEventListener("load",(()=>{"object"==typeof window.player&&"function"==typeof window.player.trigger&&window.player.trigger("playlistComplete")}));})();': () => {
         try {
             const e = "done";
             if (Window.prototype.toString["777ecb0cee36adcb947f146ce7e592d2"] === e) return;
-            window.addEventListener("load", () => {
+            window.addEventListener("load", (() => {
                 "object" == typeof window.player && "function" == typeof window.player.trigger && window.player.trigger("playlistComplete");
-            });
+            }));
             Object.defineProperty(Window.prototype.toString, "777ecb0cee36adcb947f146ce7e592d2", {
                 value: e,
                 enumerable: !1,
@@ -4464,10 +4989,10 @@ export const localScriptRules = {
             if (Window.prototype.toString.aae0d51166190a469962b4394ad11852 === e) return;
             !function() {
                 if (location.pathname.includes("/source/playerads")) {
-                    var e = new MutationObserver(function() {
+                    var e = new MutationObserver((function() {
                         var t = document.querySelector('script[type="text/javascript"]');
                         t && t.textContent.includes('"ads": [') && (e.disconnect(), t.textContent = t.textContent.replace(/("ads": \[\{)[\s\S]*?(\}\])/, "$1$2"));
-                    });
+                    }));
                     e.observe(document, {
                         childList: !0,
                         subtree: !0
@@ -4544,6 +5069,43 @@ export const localScriptRules = {
             console.error('Error executing AG js rule with uniqueId "a8d7f5b4e27b5a94d3b0c3528bdccb9c" due to: ' + e);
         }
     },
+    '((e,t)=>{const n={apply:(n,o,r)=>{try{const s=r[1];if(!s)return Reflect.apply(n,o,r);const c=typeof s;if("string"===c&&s.includes?.(t)){const t=new URL(s);t.searchParams.delete(e);const n=t.href.replace("%2CCuepointPlaylist","");r[1]=n}else if("object"===c&&s instanceof URL&&s.href?.includes?.(t)){s.searchParams.delete(e);const t=s.href.replace("%2CCuepointPlaylist","");r[1]=t}}catch(e){}return Reflect.apply(n,o,r)}};window.XMLHttpRequest.prototype.open=new Proxy(window.XMLHttpRequest.prototype.open,n)})("deviceAdInsertionTypeOverride","/GetPlaybackResources?");': () => {
+        try {
+            const e = "done";
+            if (Window.prototype.toString["5f0cb8ad699e93dee39f5abf0dfec256"] === e) return;
+            ((e, t) => {
+                const r = {
+                    apply: (r, o, n) => {
+                        try {
+                            const c = n[1];
+                            if (!c) return Reflect.apply(r, o, n);
+                            const a = typeof c;
+                            if ("string" === a && c.includes?.(t)) {
+                                const t = new URL(c);
+                                t.searchParams.delete(e);
+                                const r = t.href.replace("%2CCuepointPlaylist", "");
+                                n[1] = r;
+                            } else if ("object" === a && c instanceof URL && c.href?.includes?.(t)) {
+                                c.searchParams.delete(e);
+                                const t = c.href.replace("%2CCuepointPlaylist", "");
+                                n[1] = t;
+                            }
+                        } catch (e) {}
+                        return Reflect.apply(r, o, n);
+                    }
+                };
+                window.XMLHttpRequest.prototype.open = new Proxy(window.XMLHttpRequest.prototype.open, r);
+            })("deviceAdInsertionTypeOverride", "/GetPlaybackResources?");
+            Object.defineProperty(Window.prototype.toString, "5f0cb8ad699e93dee39f5abf0dfec256", {
+                value: e,
+                enumerable: !1,
+                writable: !1,
+                configurable: !1
+            });
+        } catch (e) {
+            console.error('Error executing AG js rule with uniqueId "5f0cb8ad699e93dee39f5abf0dfec256" due to: ' + e);
+        }
+    },
     '(()=>{if(window.self!==window.top)try{if("object"==typeof localStorage)return}catch(a){delete window.localStorage,window.localStorage={setItem(){},getItem(){},removeItem(){},clear(){}}}})();': () => {
         try {
             const e = "done";
@@ -4570,13 +5132,62 @@ export const localScriptRules = {
             console.error('Error executing AG js rule with uniqueId "6c5874d9ea24235e4a8490028ce09e66" due to: ' + e);
         }
     },
+    '(()=>{const e=Object.getOwnPropertyDescriptor(Element.prototype,"innerHTML").set,t=Object.getOwnPropertyDescriptor(Element.prototype,"innerHTML").get;Object.defineProperty(Element.prototype,"innerHTML",{get(){const e=t.call(this);return e.includes("delete window")?"":e},set(t){e.call(this,t)}})})();': () => {
+        try {
+            const e = "done";
+            if (Window.prototype.toString.e233c6aa26d14c122933ca24bb028498 === e) return;
+            (() => {
+                const e = Object.getOwnPropertyDescriptor(Element.prototype, "innerHTML").set, t = Object.getOwnPropertyDescriptor(Element.prototype, "innerHTML").get;
+                Object.defineProperty(Element.prototype, "innerHTML", {
+                    get() {
+                        const e = t.call(this);
+                        return e.includes("delete window") ? "" : e;
+                    },
+                    set(t) {
+                        e.call(this, t);
+                    }
+                });
+            })();
+            Object.defineProperty(Window.prototype.toString, "e233c6aa26d14c122933ca24bb028498", {
+                value: e,
+                enumerable: !1,
+                writable: !1,
+                configurable: !1
+            });
+        } catch (e) {
+            console.error('Error executing AG js rule with uniqueId "e233c6aa26d14c122933ca24bb028498" due to: ' + e);
+        }
+    },
+    '(()=>{const e=new Event("resize");window.addEventListener("load",(()=>{const t=document.querySelector(".flexrow.app > div");(0===localStorage.length||void 0===JSON.parse(localStorage._ppp)["0_uid"])&&t&&t.clientWidth<window.innerWidth&&(Object.defineProperty(window,"innerWidth",{get:()=>document.documentElement.offsetWidth+320}),window.dispatchEvent(e))}))})();': () => {
+        try {
+            const e = "done";
+            if (Window.prototype.toString["9fa8fe26de187d02e8c9a8860d06fa4c"] === e) return;
+            (() => {
+                const e = new Event("resize");
+                window.addEventListener("load", (() => {
+                    const t = document.querySelector(".flexrow.app > div");
+                    (0 === localStorage.length || void 0 === JSON.parse(localStorage._ppp)["0_uid"]) && t && t.clientWidth < window.innerWidth && (Object.defineProperty(window, "innerWidth", {
+                        get: () => document.documentElement.offsetWidth + 320
+                    }), window.dispatchEvent(e));
+                }));
+            })();
+            Object.defineProperty(Window.prototype.toString, "9fa8fe26de187d02e8c9a8860d06fa4c", {
+                value: e,
+                enumerable: !1,
+                writable: !1,
+                configurable: !1
+            });
+        } catch (e) {
+            console.error('Error executing AG js rule with uniqueId "9fa8fe26de187d02e8c9a8860d06fa4c" due to: ' + e);
+        }
+    },
     '(()=>{document.addEventListener("DOMContentLoaded",(()=>{"function"==typeof getfull&&getfull()}));})();': () => {
         try {
             const e = "done";
             if (Window.prototype.toString["45e2ee4fbb5fd647b76cf34c6f5c7222"] === e) return;
-            document.addEventListener("DOMContentLoaded", () => {
+            document.addEventListener("DOMContentLoaded", (() => {
                 "function" == typeof getfull && getfull();
-            });
+            }));
             Object.defineProperty(Window.prototype.toString, "45e2ee4fbb5fd647b76cf34c6f5c7222", {
                 value: e,
                 enumerable: !1,
@@ -4642,10 +5253,10 @@ export const localScriptRules = {
             if (Window.prototype.toString.ede6f5f26db9cc9b12941b760f3f2911 === e) return;
             (() => {
                 const e = document.documentElement;
-                new MutationObserver(() => {
+                new MutationObserver((() => {
                     const e = document.querySelector(".skeleton-video-cover-noanimate > .relative > a[href] + button");
                     e && e.click();
-                }).observe(e, {
+                })).observe(e, {
                     attributes: !0,
                     childList: !0,
                     subtree: !0
@@ -4699,9 +5310,9 @@ export const localScriptRules = {
                 BOLT_AD_ERROR: "AD_ERROR"
             }, window.ramp = window.ramp || {}, window.ramp.addUnits = () => Promise.resolve(), 
             window.ramp.displayUnits = () => {
-                setTimeout(() => {
+                setTimeout((() => {
                     "function" == typeof window.ramp.onPlayerReady && window.ramp.onPlayerReady();
-                }, 1);
+                }), 1);
             };
             Object.defineProperty(Window.prototype.toString, "13196ca8ba80be48cb3a530394beced8", {
                 value: e,
@@ -4765,9 +5376,9 @@ export const localScriptRules = {
                     AboveTheFold: 1
                 }, window.ANAWeb.PlaybackMethod = {
                     ClickSoundOn: 1
-                }, window.addEventListener("load", function() {
+                }, window.addEventListener("load", (function() {
                     document.dispatchEvent(new CustomEvent("ANAReady"));
-                });
+                }));
             })();
             Object.defineProperty(Window.prototype.toString, "3b3aa026a1d7fa6e2ba077f743a7d54d", {
                 value: e,
@@ -4812,13 +5423,13 @@ export const localScriptRules = {
                 apply(e, r, t) {
                     const c = Reflect.apply(e, r, t), o = c?.results;
                     try {
-                        if (o && Array.isArray(o)) c?.results && (c.results = c.results.filter(e => {
+                        if (o && Array.isArray(o)) c?.results && (c.results = c.results.filter((e => {
                             if (!Object.prototype.hasOwnProperty.call(e, "adTitle")) return e;
-                        })); else for (let e in c) {
+                        }))); else for (let e in c) {
                             const r = c[e]?.results;
-                            r && Array.isArray(r) && (c[e].results = c[e].results.filter(e => {
+                            r && Array.isArray(r) && (c[e].results = c[e].results.filter((e => {
                                 if (!Object.prototype.hasOwnProperty.call(e, "adTitle")) return e;
-                            }));
+                            })));
                         }
                     } catch (e) {}
                     return c;
@@ -4922,13 +5533,13 @@ export const localScriptRules = {
             if (Window.prototype.toString["52a467e415654146fde7899c49035b7f"] === e) return;
             (() => {
                 const e = function() {
-                    [ ...arguments ].forEach(e => {
+                    [ ...arguments ].forEach((e => {
                         if ("function" == typeof e) try {
                             e(!0);
                         } catch (e) {
                             console.debug(e);
                         }
-                    });
+                    }));
                 }, t = [];
                 t.push = e, window.PQ = {
                     cmd: t,
@@ -4992,6 +5603,28 @@ export const localScriptRules = {
             });
         } catch (e) {
             console.error('Error executing AG js rule with uniqueId "5eccf85ec7e71ba4deefe939741fb145" due to: ' + e);
+        }
+    },
+    "(()=>{const e={apply:(e,t,l)=>{if(!t.matches('a[href][target=\"_blank\"]'))return Reflect.apply(e,t,l)}};window.HTMLElement.prototype.click=new Proxy(window.HTMLElement.prototype.click,e)})();": () => {
+        try {
+            const e = "done";
+            if (Window.prototype.toString["0a528b39acd15b3dec81e240fde05757"] === e) return;
+            (() => {
+                const e = {
+                    apply: (e, t, r) => {
+                        if (!t.matches('a[href][target="_blank"]')) return Reflect.apply(e, t, r);
+                    }
+                };
+                window.HTMLElement.prototype.click = new Proxy(window.HTMLElement.prototype.click, e);
+            })();
+            Object.defineProperty(Window.prototype.toString, "0a528b39acd15b3dec81e240fde05757", {
+                value: e,
+                enumerable: !1,
+                writable: !1,
+                configurable: !1
+            });
+        } catch (e) {
+            console.error('Error executing AG js rule with uniqueId "0a528b39acd15b3dec81e240fde05757" due to: ' + e);
         }
     },
     '(()=>{const t=[];t.push=function(t){try{t()}catch(t){}};window.headertag={cmd:t,buildGamMvt:function(t,c){const n={[c]:"https://securepubads.g.doubleclick.net/gampad/ads"};return n||{}},retrieveVideoDemand:function(t,c,n){const e=t[0]?.htSlotName;if("function"==typeof c)try{c(e)}catch(t){}}}})();': () => {
@@ -5195,14 +5828,14 @@ export const localScriptRules = {
                 u.prototype.getSettings = function() {
                     return this.settings;
                 }, u.prototype.getVersion = () => e, u.prototype.requestAds = function(e, t) {
-                    requestAnimationFrame(() => {
+                    requestAnimationFrame((() => {
                         const {ADS_MANAGER_LOADED: r} = d.Type, i = new n.AdsManagerLoadedEvent(r, e, t);
                         this._dispatch(i);
-                    });
+                    }));
                     const r = new n.AdError("adPlayError", 1205, 1205, "The browser prevented playback initiated without user interaction.", e, t);
-                    requestAnimationFrame(() => {
+                    requestAnimationFrame((() => {
                         this._dispatch(new n.AdErrorEvent(r));
-                    });
+                    }));
                 };
                 const E = t, A = function() {};
                 A.prototype = {
@@ -5442,11 +6075,11 @@ export const localScriptRules = {
             (() => {
                 const e = [];
                 e.push = function(e) {
-                    "object" == typeof e && e.events && Object.values(e.events).forEach(e => {
+                    "object" == typeof e && e.events && Object.values(e.events).forEach((e => {
                         if ("function" == typeof e) try {
                             e();
                         } catch (e) {}
-                    });
+                    }));
                 }, window.AdBridg = {
                     cmd: e
                 };
@@ -5505,7 +6138,7 @@ export const localScriptRules = {
                     const n = o[1];
                     if ("string" != typeof n || 0 === n.length) return Reflect.apply(e, t, o);
                     const r = /topaz\.dai\.viacomcbs\.digital\/ondemand\/hls\/.*\.m3u8/.test(n), a = /dai\.google\.com\/ondemand\/v.*\/hls\/content\/.*\/vid\/.*\/stream/.test(n);
-                    return (r || a) && t.addEventListener("readystatechange", function() {
+                    return (r || a) && t.addEventListener("readystatechange", (function() {
                         if (4 === t.readyState) {
                             const e = t.response;
                             if (Object.defineProperty(t, "response", {
@@ -5518,7 +6151,7 @@ export const localScriptRules = {
                                 t.response = o, t.responseText = o;
                             }
                         }
-                    }), Reflect.apply(e, t, o);
+                    })), Reflect.apply(e, t, o);
                 }
             });
             Object.defineProperty(Window.prototype.toString, "a8c6f78e34ee76b7ae128e62027dec2f", {
@@ -5621,7 +6254,7 @@ export const localScriptRules = {
             window.XMLHttpRequest.prototype.open = new Proxy(window.XMLHttpRequest.prototype.open, {
                 apply: async (e, t, o) => {
                     const r = o[1];
-                    return "string" != typeof r || 0 === r.length || r.match(/pubads\.g\.doubleclick.net\/ondemand\/hls\/.*\.m3u8/) && t.addEventListener("readystatechange", function() {
+                    return "string" != typeof r || 0 === r.length || r.match(/pubads\.g\.doubleclick.net\/ondemand\/hls\/.*\.m3u8/) && t.addEventListener("readystatechange", (function() {
                         if (4 === t.readyState) {
                             const e = t.response;
                             Object.defineProperty(t, "response", {
@@ -5632,7 +6265,7 @@ export const localScriptRules = {
                             const o = e.replaceAll(/#EXTINF:(\d|\d\.\d+)\,\nhttps:\/\/redirector\.googlevideo\.com\/videoplayback\?[\s\S]*?&source=dclk_video_ads&[\s\S]*?\n/g, "");
                             t.response = o, t.responseText = o;
                         }
-                    }), Reflect.apply(e, t, o);
+                    })), Reflect.apply(e, t, o);
                 }
             });
             Object.defineProperty(Window.prototype.toString, "0664f2a8c7617fced3e7790a26b1c7f8", {
@@ -5745,7 +6378,7 @@ export const localScriptRules = {
             window.XMLHttpRequest.prototype.open = new Proxy(window.XMLHttpRequest.prototype.open, {
                 apply: async (e, t, o) => {
                     const r = o[1];
-                    return "string" != typeof r || 0 === r.length || r.match(/manifest\..*\.theplatform\.com\/.*\/.*\.m3u8\?.*|manifest\..*\.theplatform\.com\/.*\/*\.meta.*/) && t.addEventListener("readystatechange", function() {
+                    return "string" != typeof r || 0 === r.length || r.match(/manifest\..*\.theplatform\.com\/.*\/.*\.m3u8\?.*|manifest\..*\.theplatform\.com\/.*\/*\.meta.*/) && t.addEventListener("readystatechange", (function() {
                         if (4 === t.readyState) {
                             const e = t.response;
                             Object.defineProperty(t, "response", {
@@ -5756,7 +6389,7 @@ export const localScriptRules = {
                             const o = e.replaceAll(/#EXTINF:.*\n.*tvessaiprod\.nbcuni\.com\/video\/[\s\S]*?#EXT-X-DISCONTINUITY|#EXT-X-VMAP-AD-BREAK[\s\S]*?#EXT-X-ENDLIST/g, "");
                             t.response = o, t.responseText = o;
                         }
-                    }), Reflect.apply(e, t, o);
+                    })), Reflect.apply(e, t, o);
                 }
             });
             Object.defineProperty(Window.prototype.toString, "6f3d40e53e83daab7ecb0b1ff3b3d011", {
@@ -5926,14 +6559,14 @@ export const localScriptRules = {
         try {
             const e = "done";
             if (Window.prototype.toString.d4ca083794994e22dcb36f8fd698d98e === e) return;
-            document.addEventListener("DOMContentLoaded", () => {
-                setTimeout(function() {
+            document.addEventListener("DOMContentLoaded", (() => {
+                setTimeout((function() {
                     window.AdFuel = {
                         queueRegistry() {},
                         destroySlots() {}
                     };
-                }, 500);
-            });
+                }), 500);
+            }));
             Object.defineProperty(Window.prototype.toString, "d4ca083794994e22dcb36f8fd698d98e", {
                 value: e,
                 enumerable: !1,
@@ -5971,9 +6604,9 @@ export const localScriptRules = {
         try {
             const e = "done";
             if (Window.prototype.toString["3238470ccdeda8472a95e2bbb72a4f2a"] === e) return;
-            window.addEventListener("DOMContentLoaded", function() {
+            window.addEventListener("DOMContentLoaded", (function() {
                 document.body.innerHTML = document.body.innerHTML.replace(/Adverts/g, "");
-            });
+            }));
             Object.defineProperty(Window.prototype.toString, "3238470ccdeda8472a95e2bbb72a4f2a", {
                 value: e,
                 enumerable: !1,
@@ -6006,47 +6639,47 @@ export const localScriptRules = {
             console.error('Error executing AG js rule with uniqueId "642c5e10be75a4087f7ce1326ec9a7ee" due to: ' + e);
         }
     },
-    '(()=>{const t=new MutationObserver((t=>{for(let e of t){const t=e.target;if(t?.querySelector?.("div:not([class], [id]):first-child + div:not([class], [id]):not([class], [id]):last-child")){const e=t.querySelector("div:not([class], [id]):last-child");if("#advertisement"===e?.shadowRoot?.querySelector?.("div:not([class], [id]) > div:not([class], [id])")?.textContent)try{e.remove()}catch(t){console.trace(t)}}}})),e={apply:(e,o,c)=>{try{c[0].mode="open"}catch(t){console.error(t)}const s=Reflect.apply(e,o,c);return t.observe(s,{subtree:!0,childList:!0}),s}};window.Element.prototype.attachShadow=new Proxy(window.Element.prototype.attachShadow,e)})();': () => {
+    '(()=>{const t=new MutationObserver((t=>{for(let e of t){const t=e.target;if(t?.querySelector?.("div:not([class], [id]):first-child + div:not([class], [id]):not([class], [id]):last-child")){const e=t.querySelector("div:not([class], [id]):last-child"),o=e?.shadowRoot?.querySelector?.("div:not([class], [id]) > div:not([class], [id])")?.textContent?.trim?.()?.toLowerCase?.();if(o&&o.length<20&&o.includes?.("advertisement"))try{e.remove()}catch(t){console.trace(t)}}}})),e={apply:(e,o,s)=>{try{s[0].mode="open"}catch(t){console.error(t)}const c=Reflect.apply(e,o,s);return t.observe(c,{subtree:!0,childList:!0}),c}};window.Element.prototype.attachShadow=new Proxy(window.Element.prototype.attachShadow,e)})();': () => {
         try {
-            const e = "done";
-            if (Window.prototype.toString.f38ee646df1545faf01c3d32666dd4c7 === e) return;
+            const t = "done";
+            if (Window.prototype.toString.ad28df58aaf20377983494d5153f190f === t) return;
             (() => {
-                const e = new MutationObserver(e => {
-                    for (let t of e) {
-                        const o = t.target;
+                const t = new MutationObserver((t => {
+                    for (let e of t) {
+                        const o = e.target;
                         if (o?.querySelector?.("div:not([class], [id]):first-child + div:not([class], [id]):not([class], [id]):last-child")) {
-                            const t = o.querySelector("div:not([class], [id]):last-child");
-                            if ("#advertisement" === t?.shadowRoot?.querySelector?.("div:not([class], [id]) > div:not([class], [id])")?.textContent) try {
-                                t.remove();
-                            } catch (e) {
-                                console.trace(e);
+                            const e = o.querySelector("div:not([class], [id]):last-child"), r = e?.shadowRoot?.querySelector?.("div:not([class], [id]) > div:not([class], [id])")?.textContent?.trim?.()?.toLowerCase?.();
+                            if (r && r.length < 20 && r.includes?.("advertisement")) try {
+                                e.remove();
+                            } catch (t) {
+                                console.trace(t);
                             }
                         }
                     }
-                }), t = {
-                    apply: (t, o, r) => {
+                })), e = {
+                    apply: (e, o, r) => {
                         try {
                             r[0].mode = "open";
-                        } catch (e) {
-                            console.error(e);
+                        } catch (t) {
+                            console.error(t);
                         }
-                        const c = Reflect.apply(t, o, r);
-                        return e.observe(c, {
+                        const n = Reflect.apply(e, o, r);
+                        return t.observe(n, {
                             subtree: !0,
                             childList: !0
-                        }), c;
+                        }), n;
                     }
                 };
-                window.Element.prototype.attachShadow = new Proxy(window.Element.prototype.attachShadow, t);
+                window.Element.prototype.attachShadow = new Proxy(window.Element.prototype.attachShadow, e);
             })();
-            Object.defineProperty(Window.prototype.toString, "f38ee646df1545faf01c3d32666dd4c7", {
-                value: e,
+            Object.defineProperty(Window.prototype.toString, "ad28df58aaf20377983494d5153f190f", {
+                value: t,
                 enumerable: !1,
                 writable: !1,
                 configurable: !1
             });
-        } catch (e) {
-            console.error('Error executing AG js rule with uniqueId "f38ee646df1545faf01c3d32666dd4c7" due to: ' + e);
+        } catch (t) {
+            console.error('Error executing AG js rule with uniqueId "ad28df58aaf20377983494d5153f190f" due to: ' + t);
         }
     },
     'document.cookie="vpn=1; path=/;";': () => {
@@ -6068,9 +6701,9 @@ export const localScriptRules = {
         try {
             const e = "done";
             if (Window.prototype.toString["1e2d5574e33a449dcd46c38824d46820"] === e) return;
-            document.addEventListener("DOMContentLoaded", () => {
+            document.addEventListener("DOMContentLoaded", (() => {
                 jQuery("#SearchButtom").unbind("click");
-            });
+            }));
             Object.defineProperty(Window.prototype.toString, "1e2d5574e33a449dcd46c38824d46820", {
                 value: e,
                 enumerable: !1,
@@ -6085,9 +6718,9 @@ export const localScriptRules = {
         try {
             const e = "done";
             if (Window.prototype.toString.c89cf796658574c24a11e4139372f1f6 === e) return;
-            document.addEventListener("DOMContentLoaded", () => {
+            document.addEventListener("DOMContentLoaded", (() => {
                 videofunc();
-            });
+            }));
             Object.defineProperty(Window.prototype.toString, "c89cf796658574c24a11e4139372f1f6", {
                 value: e,
                 enumerable: !1,
@@ -6137,11 +6770,11 @@ export const localScriptRules = {
                 const e = {
                     get(e, t, r) {
                         try {
-                            return "disabled" === t && "function" == typeof e.start ? (queueMicrotask(() => {
+                            return "disabled" === t && "function" == typeof e.start ? (queueMicrotask((() => {
                                 try {
                                     e.start();
                                 } catch (e) {}
-                            }), !0) : Reflect.get(e, t, r);
+                            })), !0) : Reflect.get(e, t, r);
                         } catch (c) {
                             return Reflect.get(e, t, r);
                         }
@@ -6330,12 +6963,12 @@ export const localScriptRules = {
         try {
             const e = "done";
             if (Window.prototype.toString["9f6813ab855c342f13c90469c95da251"] === e) return;
-            new MutationObserver(function() {
-                document.querySelectorAll("span[data-nosnippet] > .q-box").forEach(function(e) {
+            new MutationObserver((function() {
+                document.querySelectorAll("span[data-nosnippet] > .q-box").forEach((function(e) {
                     var o = e.innerText;
                     o && (void 0 === o || !0 !== o.includes("Sponsored") && !0 !== o.includes("Ad by") && !0 !== o.includes("Promoted by") || (e.style = "display:none!important;"));
-                });
-            }).observe(document, {
+                }));
+            })).observe(document, {
                 childList: !0,
                 subtree: !0
             });
@@ -6353,12 +6986,12 @@ export const localScriptRules = {
         try {
             const e = "done";
             if (Window.prototype.toString["17b3983e043325b0965b454cc7394766"] === e) return;
-            new MutationObserver(function() {
-                document.querySelectorAll(".paged_list_wrapper > .pagedlist_item").forEach(function(e) {
+            new MutationObserver((function() {
+                document.querySelectorAll(".paged_list_wrapper > .pagedlist_item").forEach((function(e) {
                     var t = e.innerHTML;
                     t && void 0 !== t && !0 === t.includes("Hide This Ad</span>") && (e.style = "display:none!important;");
-                });
-            }).observe(document, {
+                }));
+            })).observe(document, {
                 childList: !0,
                 subtree: !0
             });
@@ -6376,18 +7009,18 @@ export const localScriptRules = {
         try {
             const e = "done";
             if (Window.prototype.toString["54509270c0f548739cf1d7c18ae3d312"] === e) return;
-            new MutationObserver(function() {
-                document.querySelectorAll("article > div[class] > div[class]").forEach(function(e) {
-                    Object.keys(e).forEach(function(t) {
+            new MutationObserver((function() {
+                document.querySelectorAll("article > div[class] > div[class]").forEach((function(e) {
+                    Object.keys(e).forEach((function(t) {
                         if (t.includes("__reactEvents") || t.includes("__reactProps")) {
                             t = e[t];
                             try {
                                 t.children?.props?.adFragmentKey?.items && e.parentNode.remove();
                             } catch (t) {}
                         }
-                    });
-                });
-            }).observe(document, {
+                    }));
+                }));
+            })).observe(document, {
                 childList: !0,
                 subtree: !0
             });
@@ -6408,9 +7041,9 @@ export const localScriptRules = {
             (() => {
                 let e = 0;
                 const t = [];
-                new MutationObserver(function() {
-                    document.querySelectorAll("div[role='list'] > div[role='listitem']:not([style*='display: none']) div[data-test-id='pinWrapper'], div[role='list'] > div[role='listitem']:not([style*='display: none']) div[data-test-id='pinWrapper'] > div[data-test-id]").forEach(i => {
-                        Object.keys(i).forEach(r => {
+                new MutationObserver((function() {
+                    document.querySelectorAll("div[role='list'] > div[role='listitem']:not([style*='display: none']) div[data-test-id='pinWrapper'], div[role='list'] > div[role='listitem']:not([style*='display: none']) div[data-test-id='pinWrapper'] > div[data-test-id]").forEach((i => {
+                        Object.keys(i).forEach((r => {
                             if (r.includes("__reactProps")) {
                                 const o = i[r];
                                 try {
@@ -6426,9 +7059,9 @@ export const localScriptRules = {
                                     console.error(e);
                                 }
                             }
-                        });
-                    });
-                }).observe(document, {
+                        }));
+                    }));
+                })).observe(document, {
                     childList: !0,
                     subtree: !0
                 });
@@ -6448,9 +7081,9 @@ export const localScriptRules = {
             const e = "done";
             if (Window.prototype.toString.cb487be2d2edd22f1a9ce90cd6ffe9cf === e) return;
             !function() {
-                var e = new MutationObserver(function() {
+                var e = new MutationObserver((function() {
                     var e = document.querySelectorAll("div[id^='mount_']");
-                    (0 < e.length ? document.querySelectorAll('div[role="feed"] > div[data-pagelet^="FeedUnit"] > div[class]:not([style*="height"])') : document.querySelectorAll('[id^="substream"] > div:not(.hidden_elem) div[id^="hyperfeed_story_id"]')).forEach(function(t) {
+                    (0 < e.length ? document.querySelectorAll('div[role="feed"] > div[data-pagelet^="FeedUnit"] > div[class]:not([style*="height"])') : document.querySelectorAll('[id^="substream"] > div:not(.hidden_elem) div[id^="hyperfeed_story_id"]')).forEach((function(t) {
                         function c(n, t) {
                             for (0 < e.length ? "0" == (h = n.querySelectorAll('div[role="article"] span[dir="auto"] > a > span > span > span[data-content]')).length && (h = n.querySelectorAll('div[role="article"] span[dir="auto"] > a > span[aria-label]')) : h = n.querySelectorAll(".userContentWrapper h5 + div[data-testid] a [class] [class]"), 
                             socheck = 0; socheck < h.length; socheck++) h[socheck].innerText.contains(t) && (d = [ "1" ], 
@@ -6510,8 +7143,8 @@ export const localScriptRules = {
                             n += 1, console.log("--------"), console.log("Ad hidden from: " + g), console.log("Total ads hidden: " + n), 
                             console.log("--------"), t.style = "display:none!important;");
                         }
-                    });
-                }), n = 0;
+                    }));
+                })), n = 0;
                 e.observe(document, {
                     childList: !0,
                     subtree: !0
@@ -6527,41 +7160,41 @@ export const localScriptRules = {
             console.error('Error executing AG js rule with uniqueId "cb487be2d2edd22f1a9ce90cd6ffe9cf" due to: ' + e);
         }
     },
-    '!function(){var b=0,d=[];new MutationObserver(function(){document.querySelectorAll("div[data-pagelet^=\\"FeedUnit\\"]:not([style*=\\"display: none\\"]), div[role=\\"feed\\"] > div:not([style*=\\"display: none\\"]), div[role=\\"feed\\"] > span:not([style*=\\"display: none\\"]), #ssrb_feed_start + div > div[class]:not([style*=\\"display: none\\"]), #ssrb_feed_start + div span > h3 ~ div[class]:not([style*=\\"display: none\\"]), #ssrb_feed_start + div h3~ div[class]:not([style*=\\"display: none\\"]), #ssrb_feed_start + div h3 ~ div > div[class]:not([style*=\\"display: none\\"]), div[role=\\"main\\"] div[class] > #ssrb_feed_start ~ div > h3 ~ div > div[class]:not([style*=\\"display: none\\"]), div[role=\\"main\\"] div > h3 ~ div > div[class]:not([style*=\\"display: none\\"]), #ssrb_feed_start + div > div > div[class]:not([style*=\\"display: none\\"]), div[role=\\"main\\"] div > h2 ~ div > div[class]:not([style*=\\"display: none\\"]), #ssrb_feed_start + div > div > div[class] > div:not([class], [id]) div:not([class], [id]):not([style*=\\"display: none\\"]), div[role=\\"main\\"] div > h3 ~ div > div[class] > div:not([class], [id]) div:not([class], [id], [dir], [data-0], [style]), div[role=\\"main\\"] div > h2 ~ div > div[class] > div > div:not([style*=\\"display: none\\"]), div[role=\\"main\\"] h3[dir=\\"auto\\"] + div > div[class]:not([style*=\\"display: none\\"]), div[role=\\"main\\"] div > h2 ~ div > div[class] > div > div:not([style*=\\"display: none\\"]) > div:not([style*=\\"display: none\\"]), div[role=\\"main\\"] div > h2 ~ div > div > div > div:not([style*=\\"display: none\\"]) > div:not([style*=\\"display: none\\"]), div[role=\\"main\\"] div > h3 ~ div > div > div > div:not([style*=\\"display: none\\"]) > div:not([style*=\\"display: none\\"]), div[role=\\"main\\"] div > :is(h2, h3) ~ div > * div[class] > div > div:not([style*=\\"display: none\\"]), div[role=\\"main\\"] div > :is(h2, h3) ~ div > * > div > div[class]:not([style*=\\"display: none\\"]), div[role=\\"main\\"] div > :is(h2, h3) ~ div > * > div > div > span > div:not([style*=\\"display: none\\"])").forEach(function(e){Object.keys(e).forEach(function(a){if(a.includes?.("__reactEvents")||a.includes?.("__reactProps")){a=e[a];try{if(a.children?.props?.category?.includes("SPONSORED")||a.children?.props?.children?.props?.category?.includes("SPONSORED")||a.children?.props?.feedEdge?.category?.includes("SPONSORED")||a.children?.props?.children?.props?.feedEdge?.category?.includes("SPONSORED")||a.children?.props?.children?.props?.children?.props?.feedEdge?.category?.includes("SPONSORED")||a.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.category?.includes("SPONSORED")||a.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.feed_story_category?.includes("SPONSORED")||a.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.story_category?.includes("SPONSORED")||a.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.story_cat?.includes("SPONSORED")||a.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.category_sensitive?.cat?.includes("SPONSORED")||a.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.node?.sponsored_data?.brs_filter_setting||a.children?.props?.children?.props?.children?.props?.children?.props?.feedUnit?.lbl_sp_data?.ad_id||a.children?.props?.children?.props?.minGapType?.includes("SPONSORED")||a.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.node?.sponsored_data?.brs_filter_setting||a.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.node?.spons_data?.brs_filter_setting||a.children?.props?.children?.props?.feedEdge?.cat_sensitive?.cat?.includes("SPONSORED")||a.children?.props?.children?.props?.feedEdge?.node?.sponso_dat_flag?.brs_filter_setting||a.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.node?.sponso_dat_flag?.brs_filter_setting||a.children?.props?.children?.props?.children?.props?.children?.props?.minGapType?.includes("SPONSORED")||a.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.cat_sensitive?.cat?.includes("SPONSORED")||a.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.category?.includes("SPONSORED")){b++,e.style="display: none !important;";var f=e.querySelector("a[href][aria-label]:not([aria-hidden])");f&&(d.push(["Ad blocked based on property ["+b+"] -> "+f.ariaLabel]),console.table(d))}}catch(a){}}})})}).observe(document,{childList:!0,subtree:!0})}();': () => {
+    '!function(){var b=0,d=[];new MutationObserver(function(){document.querySelectorAll("div[data-pagelet^=\\"FeedUnit\\"]:not([style*=\\"display: none\\"]), div[role=\\"feed\\"] > div:not([style*=\\"display: none\\"]), div[role=\\"feed\\"] > span:not([style*=\\"display: none\\"]), #ssrb_feed_start + div > div[class]:not([style*=\\"display: none\\"]), #ssrb_feed_start + div span > h3 ~ div[class]:not([style*=\\"display: none\\"]), #ssrb_feed_start + div h3~ div[class]:not([style*=\\"display: none\\"]), #ssrb_feed_start + div h3 ~ div > div[class]:not([style*=\\"display: none\\"]), div[role=\\"main\\"] div[class] > #ssrb_feed_start ~ div > h3 ~ div > div[class]:not([style*=\\"display: none\\"]), div[role=\\"main\\"] div > h3 ~ div > div[class]:not([style*=\\"display: none\\"]), #ssrb_feed_start + div > div > div[class]:not([style*=\\"display: none\\"]), div[role=\\"main\\"] div > h2 ~ div > div[class]:not([style*=\\"display: none\\"]), #ssrb_feed_start + div > div > div[class] > div:not([class], [id]) div:not([class], [id]):not([style*=\\"display: none\\"]), div[role=\\"main\\"] div > h3 ~ div > div[class] > div:not([class], [id]) div:not([class], [id], [dir], [data-0], [style]), div[role=\\"main\\"] div > h2 ~ div > div[class] > div > div:not([style*=\\"display: none\\"]), div[role=\\"main\\"] h3[dir=\\"auto\\"] + div > div[class]:not([style*=\\"display: none\\"]), div[role=\\"main\\"] div > h2 ~ div > div[class] > div > div:not([style*=\\"display: none\\"]) > div:not([style*=\\"display: none\\"]), div[role=\\"main\\"] div > h2 ~ div > div > div > div:not([style*=\\"display: none\\"]) > div:not([style*=\\"display: none\\"]), div[role=\\"main\\"] div > h3 ~ div > div > div > div:not([style*=\\"display: none\\"]) > div:not([style*=\\"display: none\\"]), div[role=\\"main\\"] div > :is(h2, h3) ~ div > * div[class] > div > div:not([style*=\\"display: none\\"]), div[role=\\"main\\"] div > :is(h2, h3) ~ div > * > div > div[class]:not([style*=\\"display: none\\"]), div[role=\\"main\\"] div > :is(h2, h3) ~ div > * > div > div > span > div:not([style*=\\"display: none\\"]), div[role=\\"main\\"] div > :is(h2, h3) ~ div > * > div div span > div:not([style*=\\"display: none\\"]), div[role=\\"main\\"] div > :is(h2, h3) ~ div > * > div div span > div > div:not([style*=\\"display: none\\"]), div[role=\\"main\\"] div > :is(h2, h3) ~ div > * > div span > div:not([style*=\\"display: none\\"]), div[role=\\"main\\"] div > :is(h2, h3) ~ div > * > div span div[class=\\"\\"]:not([style*=\\"display: none\\"])").forEach(function(e){Object.keys(e).forEach(function(a){if(a.includes?.("__reactEvents")||a.includes?.("__reactProps")){a=e[a];try{if(a.children?.props?.category?.includes("SPONSORED")||a.children?.props?.children?.props?.category?.includes("SPONSORED")||a.children?.props?.feedEdge?.category?.includes("SPONSORED")||a.children?.props?.children?.props?.feedEdge?.category?.includes("SPONSORED")||a.children?.props?.children?.props?.children?.props?.feedEdge?.category?.includes("SPONSORED")||a.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.category?.includes("SPONSORED")||a.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.feed_story_category?.includes("SPONSORED")||a.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.story_category?.includes("SPONSORED")||a.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.story_cat?.includes("SPONSORED")||a.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.category_sensitive?.cat?.includes("SPONSORED")||a.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.node?.sponsored_data?.brs_filter_setting||a.children?.props?.children?.props?.children?.props?.children?.props?.feedUnit?.lbl_sp_data?.ad_id||a.children?.props?.children?.props?.minGapType?.includes("SPONSORED")||a.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.node?.sponsored_data?.brs_filter_setting||a.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.node?.spons_data?.brs_filter_setting||a.children?.props?.children?.props?.feedEdge?.cat_sensitive?.cat?.includes("SPONSORED")||a.children?.props?.children?.props?.feedEdge?.node?.sponso_dat_flag?.brs_filter_setting||a.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.node?.sponso_dat_flag?.brs_filter_setting||a.children?.props?.children?.props?.children?.props?.children?.props?.minGapType?.includes("SPONSORED")||a.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.cat_sensitive?.cat?.includes("SPONSORED")||a.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.category?.includes("SPONSORED")){b++,e.style="display: none !important;";var f=e.querySelector("a[href][aria-label]:not([aria-hidden])");f&&(d.push(["Ad blocked based on property ["+b+"] -> "+f.ariaLabel]),console.table(d))}}catch(a){}}})})}).observe(document,{childList:!0,subtree:!0})}();': () => {
         try {
             const e = "done";
-            if (Window.prototype.toString["82bb454fe1311fa2fe985ec45dc91798"] === e) return;
+            if (Window.prototype.toString["1208b0a57e04f9ead4d111dcd8f80935"] === e) return;
             !function() {
                 var e = 0, d = [];
-                new MutationObserver(function() {
-                    document.querySelectorAll('div[data-pagelet^="FeedUnit"]:not([style*="display: none"]), div[role="feed"] > div:not([style*="display: none"]), div[role="feed"] > span:not([style*="display: none"]), #ssrb_feed_start + div > div[class]:not([style*="display: none"]), #ssrb_feed_start + div span > h3 ~ div[class]:not([style*="display: none"]), #ssrb_feed_start + div h3~ div[class]:not([style*="display: none"]), #ssrb_feed_start + div h3 ~ div > div[class]:not([style*="display: none"]), div[role="main"] div[class] > #ssrb_feed_start ~ div > h3 ~ div > div[class]:not([style*="display: none"]), div[role="main"] div > h3 ~ div > div[class]:not([style*="display: none"]), #ssrb_feed_start + div > div > div[class]:not([style*="display: none"]), div[role="main"] div > h2 ~ div > div[class]:not([style*="display: none"]), #ssrb_feed_start + div > div > div[class] > div:not([class], [id]) div:not([class], [id]):not([style*="display: none"]), div[role="main"] div > h3 ~ div > div[class] > div:not([class], [id]) div:not([class], [id], [dir], [data-0], [style]), div[role="main"] div > h2 ~ div > div[class] > div > div:not([style*="display: none"]), div[role="main"] h3[dir="auto"] + div > div[class]:not([style*="display: none"]), div[role="main"] div > h2 ~ div > div[class] > div > div:not([style*="display: none"]) > div:not([style*="display: none"]), div[role="main"] div > h2 ~ div > div > div > div:not([style*="display: none"]) > div:not([style*="display: none"]), div[role="main"] div > h3 ~ div > div > div > div:not([style*="display: none"]) > div:not([style*="display: none"]), div[role="main"] div > :is(h2, h3) ~ div > * div[class] > div > div:not([style*="display: none"]), div[role="main"] div > :is(h2, h3) ~ div > * > div > div[class]:not([style*="display: none"]), div[role="main"] div > :is(h2, h3) ~ div > * > div > div > span > div:not([style*="display: none"])').forEach(function(i) {
-                        Object.keys(i).forEach(function(s) {
+                new MutationObserver((function() {
+                    document.querySelectorAll('div[data-pagelet^="FeedUnit"]:not([style*="display: none"]), div[role="feed"] > div:not([style*="display: none"]), div[role="feed"] > span:not([style*="display: none"]), #ssrb_feed_start + div > div[class]:not([style*="display: none"]), #ssrb_feed_start + div span > h3 ~ div[class]:not([style*="display: none"]), #ssrb_feed_start + div h3~ div[class]:not([style*="display: none"]), #ssrb_feed_start + div h3 ~ div > div[class]:not([style*="display: none"]), div[role="main"] div[class] > #ssrb_feed_start ~ div > h3 ~ div > div[class]:not([style*="display: none"]), div[role="main"] div > h3 ~ div > div[class]:not([style*="display: none"]), #ssrb_feed_start + div > div > div[class]:not([style*="display: none"]), div[role="main"] div > h2 ~ div > div[class]:not([style*="display: none"]), #ssrb_feed_start + div > div > div[class] > div:not([class], [id]) div:not([class], [id]):not([style*="display: none"]), div[role="main"] div > h3 ~ div > div[class] > div:not([class], [id]) div:not([class], [id], [dir], [data-0], [style]), div[role="main"] div > h2 ~ div > div[class] > div > div:not([style*="display: none"]), div[role="main"] h3[dir="auto"] + div > div[class]:not([style*="display: none"]), div[role="main"] div > h2 ~ div > div[class] > div > div:not([style*="display: none"]) > div:not([style*="display: none"]), div[role="main"] div > h2 ~ div > div > div > div:not([style*="display: none"]) > div:not([style*="display: none"]), div[role="main"] div > h3 ~ div > div > div > div:not([style*="display: none"]) > div:not([style*="display: none"]), div[role="main"] div > :is(h2, h3) ~ div > * div[class] > div > div:not([style*="display: none"]), div[role="main"] div > :is(h2, h3) ~ div > * > div > div[class]:not([style*="display: none"]), div[role="main"] div > :is(h2, h3) ~ div > * > div > div > span > div:not([style*="display: none"]), div[role="main"] div > :is(h2, h3) ~ div > * > div div span > div:not([style*="display: none"]), div[role="main"] div > :is(h2, h3) ~ div > * > div div span > div > div:not([style*="display: none"]), div[role="main"] div > :is(h2, h3) ~ div > * > div span > div:not([style*="display: none"]), div[role="main"] div > :is(h2, h3) ~ div > * > div span div[class=""]:not([style*="display: none"])').forEach((function(i) {
+                        Object.keys(i).forEach((function(s) {
                             if (s.includes?.("__reactEvents") || s.includes?.("__reactProps")) {
                                 s = i[s];
                                 try {
                                     if (s.children?.props?.category?.includes("SPONSORED") || s.children?.props?.children?.props?.category?.includes("SPONSORED") || s.children?.props?.feedEdge?.category?.includes("SPONSORED") || s.children?.props?.children?.props?.feedEdge?.category?.includes("SPONSORED") || s.children?.props?.children?.props?.children?.props?.feedEdge?.category?.includes("SPONSORED") || s.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.category?.includes("SPONSORED") || s.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.feed_story_category?.includes("SPONSORED") || s.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.story_category?.includes("SPONSORED") || s.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.story_cat?.includes("SPONSORED") || s.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.category_sensitive?.cat?.includes("SPONSORED") || s.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.node?.sponsored_data?.brs_filter_setting || s.children?.props?.children?.props?.children?.props?.children?.props?.feedUnit?.lbl_sp_data?.ad_id || s.children?.props?.children?.props?.minGapType?.includes("SPONSORED") || s.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.node?.sponsored_data?.brs_filter_setting || s.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.node?.spons_data?.brs_filter_setting || s.children?.props?.children?.props?.feedEdge?.cat_sensitive?.cat?.includes("SPONSORED") || s.children?.props?.children?.props?.feedEdge?.node?.sponso_dat_flag?.brs_filter_setting || s.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.node?.sponso_dat_flag?.brs_filter_setting || s.children?.props?.children?.props?.children?.props?.children?.props?.minGapType?.includes("SPONSORED") || s.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.cat_sensitive?.cat?.includes("SPONSORED") || s.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.category?.includes("SPONSORED")) {
                                         e++, i.style = "display: none !important;";
-                                        var r = i.querySelector("a[href][aria-label]:not([aria-hidden])");
-                                        r && (d.push([ "Ad blocked based on property [" + e + "] -> " + r.ariaLabel ]), 
+                                        var n = i.querySelector("a[href][aria-label]:not([aria-hidden])");
+                                        n && (d.push([ "Ad blocked based on property [" + e + "] -> " + n.ariaLabel ]), 
                                         console.table(d));
                                     }
                                 } catch (s) {}
                             }
-                        });
-                    });
-                }).observe(document, {
+                        }));
+                    }));
+                })).observe(document, {
                     childList: !0,
                     subtree: !0
                 });
             }();
-            Object.defineProperty(Window.prototype.toString, "82bb454fe1311fa2fe985ec45dc91798", {
+            Object.defineProperty(Window.prototype.toString, "1208b0a57e04f9ead4d111dcd8f80935", {
                 value: e,
                 enumerable: !1,
                 writable: !1,
                 configurable: !1
             });
         } catch (e) {
-            console.error('Error executing AG js rule with uniqueId "82bb454fe1311fa2fe985ec45dc91798" due to: ' + e);
+            console.error('Error executing AG js rule with uniqueId "1208b0a57e04f9ead4d111dcd8f80935" due to: ' + e);
         }
     },
     '(()=>{const e=new MutationObserver((()=>{const n=document.querySelectorAll(\'div[role="complementary"] div[class*=" "] > div[class] > div:not([class]) > div:not([class], [style*="display: none"]), div[role="complementary"] div[class*=" "] > div[class] > div:not([class]) > span[class] > div[class]:not([style*="display: none"]), div[role="complementary"] div:has(+ div[data-visualcompletion]) > div:not([style*="display: none"])\');for(const s of n){const n=Object.keys(s).find((e=>e.includes("__reactFiber")));if(n){const t=s[n];if(t?.pendingProps?.children?.props?.match?.__fragmentPropName?.includes("adsSideFeedUnit"))return s.style.display="none",void e.disconnect()}}}));e.observe(document.documentElement,{childList:!0,subtree:!0})})();': () => {
@@ -6569,17 +7202,17 @@ export const localScriptRules = {
             const e = "done";
             if (Window.prototype.toString.e5520b88f1ab8a8177c19ea7ed1eea60 === e) return;
             (() => {
-                const e = new MutationObserver(() => {
+                const e = new MutationObserver((() => {
                     const n = document.querySelectorAll('div[role="complementary"] div[class*=" "] > div[class] > div:not([class]) > div:not([class], [style*="display: none"]), div[role="complementary"] div[class*=" "] > div[class] > div:not([class]) > span[class] > div[class]:not([style*="display: none"]), div[role="complementary"] div:has(+ div[data-visualcompletion]) > div:not([style*="display: none"])');
                     for (const t of n) {
-                        const n = Object.keys(t).find(e => e.includes("__reactFiber"));
+                        const n = Object.keys(t).find((e => e.includes("__reactFiber")));
                         if (n) {
                             const o = t[n];
                             if (o?.pendingProps?.children?.props?.match?.__fragmentPropName?.includes("adsSideFeedUnit")) return t.style.display = "none", 
                             void e.disconnect();
                         }
                     }
-                });
+                }));
                 e.observe(document.documentElement, {
                     childList: !0,
                     subtree: !0
@@ -6599,9 +7232,9 @@ export const localScriptRules = {
         try {
             const e = "done";
             if (Window.prototype.toString["21d8e78f9157f1f1188b26cd68182732"] === e) return;
-            new MutationObserver(function() {
-                window.location.href.includes("/watch") && document.querySelectorAll('#watch_feed div:not([class]):not([id]) > div[class*=" "]:not([style*="display: none !important"]) div[class^="_"] > div[class*=" "]').forEach(function(e) {
-                    Object.keys(e).forEach(function(t) {
+            new MutationObserver((function() {
+                window.location.href.includes("/watch") && document.querySelectorAll('#watch_feed div:not([class]):not([id]) > div[class*=" "]:not([style*="display: none !important"]) div[class^="_"] > div[class*=" "]').forEach((function(e) {
+                    Object.keys(e).forEach((function(t) {
                         if (t.includes("__reactFiber")) {
                             t = e[t];
                             try {
@@ -6609,9 +7242,9 @@ export const localScriptRules = {
                                 null != (n = t) && null != (o = n.return) && null != (r = o.memoizedProps) && null != (i = r.story) && i.sponsored_data && (e.closest('#watch_feed div[class*=" "] div:not([class]):not([id]) > div[class*=" "]:not([style*="display: none !important"])').style = "display: none !important;");
                             } catch (e) {}
                         }
-                    });
-                });
-            }).observe(document, {
+                    }));
+                }));
+            })).observe(document, {
                 childList: !0,
                 subtree: !0,
                 attributeFilter: [ "style" ]
@@ -6633,9 +7266,9 @@ export const localScriptRules = {
             !function() {
                 if (location.href.includes("marketplace/item")) {
                     var e = 0, r = [];
-                    new MutationObserver(function() {
-                        document.querySelectorAll("div[aria-label='Marketplace listing viewer'] > div div + div + span:not([style*='display: none']), #ssrb_feed_start + div > div div + div + span:not([style*='display: none'])").forEach(function(t) {
-                            Object.keys(t).forEach(function(i) {
+                    new MutationObserver((function() {
+                        document.querySelectorAll("div[aria-label='Marketplace listing viewer'] > div div + div + span:not([style*='display: none']), #ssrb_feed_start + div > div div + div + span:not([style*='display: none'])").forEach((function(t) {
+                            Object.keys(t).forEach((function(i) {
                                 if (i.includes("__reactEvents") || i.includes("__reactProps")) {
                                     i = t[i];
                                     try {
@@ -6647,9 +7280,9 @@ export const localScriptRules = {
                                         }
                                     } catch (i) {}
                                 }
-                            });
-                        });
-                    }).observe(document, {
+                            }));
+                        }));
+                    })).observe(document, {
                         childList: !0,
                         subtree: !0
                     });
@@ -6670,8 +7303,8 @@ export const localScriptRules = {
             const e = "done";
             if (Window.prototype.toString.c20e5794d5ff5adb72bad3179e0fd5f5 === e) return;
             !function() {
-                var e = new MutationObserver(function() {
-                    document.querySelectorAll('[id^="substream"] > div:not(.hidden_elem) div[id^="hyperfeed_story_id"]').forEach(function(e) {
+                var e = new MutationObserver((function() {
+                    document.querySelectorAll('[id^="substream"] > div:not(.hidden_elem) div[id^="hyperfeed_story_id"]').forEach((function(e) {
                         function o(e, t) {
                             for (c = e.querySelectorAll('.userContentWrapper h5 + div[data-testid*="sub"] a [class] [class]'), 
                             socheck = 0; socheck < c.length; socheck++) c[socheck].innerText.contains(t) && (d = [ "1" ], 
@@ -6717,8 +7350,8 @@ export const localScriptRules = {
                                 }
                             }
                         }
-                    });
-                }), t = 0;
+                    }));
+                })), t = 0;
                 e.observe(document, {
                     childList: !0,
                     subtree: !0,
@@ -6742,16 +7375,16 @@ export const localScriptRules = {
             if (Window.prototype.toString.e6189b04febc53c553beba1616cdd078 === e) return;
             !function() {
                 var e, t;
-                0 < window.location.href.indexOf("marketplace") && (e = new MutationObserver(function() {
-                    document.querySelectorAll('div[role="main"] div[class][style^="max-width:"] div[class][style^="max-width:"]').forEach(function(e) {
+                0 < window.location.href.indexOf("marketplace") && (e = new MutationObserver((function() {
+                    document.querySelectorAll('div[role="main"] div[class][style^="max-width:"] div[class][style^="max-width:"]').forEach((function(e) {
                         var o, l = e.querySelectorAll('a[href*="ads/about"]');
                         "display: none !important;" == e.getAttribute("style") || e.classList.contains("hidden_elem") || 0 < l.length && (t += 1, 
                         "" == (o = e.querySelectorAll("a[href]")[0].innerText) && (o = e.querySelectorAll("a[href]")[1].innerText), 
                         "" == o && (o = e.querySelectorAll("a[href]")[0].querySelectorAll("a[aria-label]")[0]?.getAttribute("aria-label")), 
                         console.log("--------"), console.log("Ad hidden from: " + o), console.log("Total ads hidden: " + t), 
                         console.log("H length: " + l.length), console.log("--------"), e.style = "display:none!important;");
-                    });
-                }), t = 0, e.observe(document, {
+                    }));
+                })), t = 0, e.observe(document, {
                     childList: !0,
                     subtree: !0
                 }));
@@ -6770,18 +7403,18 @@ export const localScriptRules = {
         try {
             const e = "done";
             if (Window.prototype.toString["9201edecacad19e52ef0fb416ec8c902"] === e) return;
-            new MutationObserver(function() {
-                document.querySelectorAll('div[role="main"] div[class][style^="max-width:"] div[class][style*="max-width:"]:not([style*="display: none"])').forEach(function(e) {
-                    Object.keys(e).forEach(function(t) {
+            new MutationObserver((function() {
+                document.querySelectorAll('div[role="main"] div[class][style^="max-width:"] div[class][style*="max-width:"]:not([style*="display: none"])').forEach((function(e) {
+                    Object.keys(e).forEach((function(t) {
                         if (t.includes("__reactEvents") || t.includes("__reactProps")) {
                             t = e[t];
                             try {
                                 t.children?.props?.adSurface?.startsWith("Marketplace") && (e.style = "display: none !important;");
                             } catch (t) {}
                         }
-                    });
-                });
-            }).observe(document, {
+                    }));
+                }));
+            })).observe(document, {
                 childList: !0,
                 subtree: !0
             });
@@ -6804,11 +7437,11 @@ export const localScriptRules = {
                     apply: (e, t, r) => {
                         try {
                             if (r[2]?.[0] && r[2][0]?.includes?.("MarketplaceFeedAdStory")) {
-                                const e = r[2][0].split(/\r?\n|\r/).map(e => JSON.parse(e));
-                                e.forEach(e => {
-                                    e.data?.viewer?.marketplace_feed_stories?.edges && (e.data.viewer.marketplace_feed_stories.edges = e.data.viewer.marketplace_feed_stories.edges.filter(e => !e.node?.__typename?.includes("MarketplaceFeedAdStory")));
-                                });
-                                const t = e.map(e => JSON.stringify(e)).join("\r\n");
+                                const e = r[2][0].split(/\r?\n|\r/).map((e => JSON.parse(e)));
+                                e.forEach((e => {
+                                    e.data?.viewer?.marketplace_feed_stories?.edges && (e.data.viewer.marketplace_feed_stories.edges = e.data.viewer.marketplace_feed_stories.edges.filter((e => !e.node?.__typename?.includes("MarketplaceFeedAdStory"))));
+                                }));
+                                const t = e.map((e => JSON.stringify(e))).join("\r\n");
                                 r[2][0] = t;
                             }
                             return Reflect.apply(e, t, r);
@@ -6833,12 +7466,12 @@ export const localScriptRules = {
         try {
             const e = "done";
             if (Window.prototype.toString["53a0bb610abe908070c9b157e3ec2214"] === e) return;
-            window.location.href.includes("/marketplace/") && new MutationObserver(function() {
-                document.querySelectorAll('div[data-testid="marketplace_home_feed"] div[class][data-testid^="MarketplaceUpsell-"] > div > div').forEach(function(e) {
+            window.location.href.includes("/marketplace/") && new MutationObserver((function() {
+                document.querySelectorAll('div[data-testid="marketplace_home_feed"] div[class][data-testid^="MarketplaceUpsell-"] > div > div').forEach((function(e) {
                     var t = e.outerHTML;
                     t && void 0 !== t && !0 === t.includes("/ads/about/") && (e.style = "display:none!important;");
-                });
-            }).observe(document, {
+                }));
+            })).observe(document, {
                 childList: !0,
                 subtree: !0
             });
@@ -6973,12 +7606,12 @@ export const localScriptRules = {
         try {
             const t = "done";
             if (Window.prototype.toString["9c145fd1fa9c4877477d33378243415b"] === t) return;
-            document.addEventListener("DOMContentLoaded", function() {
+            document.addEventListener("DOMContentLoaded", (function() {
                 if (-1 != window.location.href.indexOf("hpinterstitialnew.html")) {
                     window.setCookie1("sitecapture_interstitial", 1, 1);
                     window.location.href = "http://www.ndtv.com/";
                 }
-            });
+            }));
             Object.defineProperty(Window.prototype.toString, "9c145fd1fa9c4877477d33378243415b", {
                 value: t,
                 enumerable: !1,
@@ -7008,15 +7641,15 @@ export const localScriptRules = {
         try {
             const e = "done";
             if (Window.prototype.toString.bea12eedfd9b904b94659dc26fd1e724 === e) return;
-            document.addEventListener("DOMContentLoaded", () => {
+            document.addEventListener("DOMContentLoaded", (() => {
                 prerollskip();
-                setTimeout(function() {
+                setTimeout((function() {
                     prerollskip();
-                }, 100);
-                setTimeout(function() {
+                }), 100);
+                setTimeout((function() {
                     prerollskip();
-                }, 300);
-            });
+                }), 300);
+            }));
             Object.defineProperty(Window.prototype.toString, "bea12eedfd9b904b94659dc26fd1e724", {
                 value: e,
                 enumerable: !1,
@@ -7032,9 +7665,9 @@ export const localScriptRules = {
             const e = "done";
             if (Window.prototype.toString["58ce3922fa2965f0d4a1f9e3d1857281"] === e) return;
             !function(e) {
-                new MutationObserver(function() {
+                new MutationObserver((function() {
                     e.classList.contains("idle") && e.classList.remove("idle");
-                }).observe(e, {
+                })).observe(e, {
                     attributes: !0,
                     attributeFilter: [ "class" ]
                 });
@@ -7098,10 +7731,10 @@ export const localScriptRules = {
         try {
             const o = "done";
             if (Window.prototype.toString.dc40c845363864583b847cd52bfc4bd3 === o) return;
-            setTimeout(function() {
+            setTimeout((function() {
                 window.show_popup = !1;
                 window.download_inited = !0;
-            }, 300);
+            }), 300);
             Object.defineProperty(Window.prototype.toString, "dc40c845363864583b847cd52bfc4bd3", {
                 value: o,
                 enumerable: !1,
@@ -7184,7 +7817,7 @@ export const localScriptRules = {
                 const c = {
                     apply: (o, n, c) => {
                         const l = r();
-                        return t.includes.call(l, e) && c[0] && n?.includes?.("setTimeout") && (n = t.filter.call(n, e => !t.includes.call(e, "setTimeout"))), 
+                        return t.includes.call(l, e) && c[0] && n?.includes?.("setTimeout") && (n = t.filter.call(n, (e => !t.includes.call(e, "setTimeout")))), 
                         Reflect.apply(o, n, c);
                     }
                 };
@@ -7282,7 +7915,7 @@ export const localScriptRules = {
                     n.length = 0, r = !0, c.call(t, i[0]), c.call(n, i[0].id)), r && 0 !== i[0]?.start && !n.includes(i[0].id) && (c.call(t, i[0]), 
                     c.call(n, i[0].id))), Reflect.apply(e, o, i))
                 };
-                window.Array.prototype.push = new Proxy(window.Array.prototype.push, i), document.addEventListener("DOMContentLoaded", function() {
+                window.Array.prototype.push = new Proxy(window.Array.prototype.push, i), document.addEventListener("DOMContentLoaded", (function() {
                     if (!window.yt?.config_?.EXPERIMENT_FLAGS?.html5_enable_ssap_entity_id) return;
                     const c = () => {
                         const e = document.querySelector("video");
@@ -7298,14 +7931,14 @@ export const localScriptRules = {
                         }
                     };
                     c();
-                    new MutationObserver(() => {
+                    new MutationObserver((() => {
                         e !== document.location.href && (e = document.location.href, t.length = 0, n.length = 0, 
                         r = !1), c();
-                    }).observe(document, {
+                    })).observe(document, {
                         childList: !0,
                         subtree: !0
                     });
-                });
+                }));
             })();
             Object.defineProperty(Window.prototype.toString, "ae4fa77cc5169989696ccbb4288099b4", {
                 value: e,
@@ -7317,64 +7950,107 @@ export const localScriptRules = {
             console.error('Error executing AG js rule with uniqueId "ae4fa77cc5169989696ccbb4288099b4" due to: ' + e);
         }
     },
-    '(()=>{const e={construct:(e,t,c)=>{try{const n=t[0];let r=t[1]?.body;if(!n?.includes("youtubei")||location.href.includes("/shorts/")||!r)return Reflect.construct(e,t,c);if((r.includes(\'"contentPlaybackContext"\')||r.includes(\'"adSignalsInfo"\'))&&(!r.includes(\'"params":"yAEB\')||!r.includes(\'"clientScreen":"ADUNIT"\'))){const n=JSON.parse(r);if(!n.context?.client)return Reflect.construct(e,t,c);n.context.client.clientScreen="ADUNIT",n.playbackContext&&(n.params=`yAEB${n.params?n.params:""}`),n.playerRequest&&(n.playerRequest.params=`yAEB${n.playerRequest.params?n.playerRequest.params:""}`),r=JSON.stringify(n),t[1].body=r}}catch(e){console.trace("Error occurred:",e)}return Reflect.construct(e,t,c)}};window.Request=new Proxy(window.Request,e)})();': () => {
+    '(()=>{const t={construct:(t,e,c)=>{try{const n=e[0];let o=e[1]?.body;if(!n?.includes("youtubei")||location.href.includes("/shorts/")||location.href.includes("youtube.com/tv")||!o)return Reflect.construct(t,e,c);if(o.includes(\'"contentPlaybackContext"\')||o.includes(\'"adSignalsInfo"\')){const n=JSON.parse(o);if(!n.context?.client)return Reflect.construct(t,e,c);n.playbackContext&&(n.playbackContext.adPlaybackContext={pyv:!0}),n.playerRequest&&(n.playerRequest.playbackContext.adPlaybackContext={pyv:!0}),o=JSON.stringify(n),e[1].body=o}}catch(t){}return Reflect.construct(t,e,c)}};window.Request=new Proxy(window.Request,t)})();': () => {
         try {
             const e = "done";
-            if (Window.prototype.toString["8101008ad648ae0c89f1d5c621aec48b"] === e) return;
+            if (Window.prototype.toString["10b2f0062210af1eedd3774b265124e1"] === e) return;
             (() => {
                 const e = {
-                    construct: (e, t, c) => {
+                    construct: (e, t, n) => {
                         try {
-                            const r = t[0];
-                            let n = t[1]?.body;
-                            if (!r?.includes("youtubei") || location.href.includes("/shorts/") || !n) return Reflect.construct(e, t, c);
-                            if ((n.includes('"contentPlaybackContext"') || n.includes('"adSignalsInfo"')) && (!n.includes('"params":"yAEB') || !n.includes('"clientScreen":"ADUNIT"'))) {
-                                const r = JSON.parse(n);
-                                if (!r.context?.client) return Reflect.construct(e, t, c);
-                                r.context.client.clientScreen = "ADUNIT", r.playbackContext && (r.params = `yAEB${r.params ? r.params : ""}`), 
-                                r.playerRequest && (r.playerRequest.params = `yAEB${r.playerRequest.params ? r.playerRequest.params : ""}`), 
-                                n = JSON.stringify(r), t[1].body = n;
+                            const o = t[0];
+                            let c = t[1]?.body;
+                            if (!o?.includes("youtubei") || location.href.includes("/shorts/") || location.href.includes("youtube.com/tv") || !c) return Reflect.construct(e, t, n);
+                            if (c.includes('"contentPlaybackContext"') || c.includes('"adSignalsInfo"')) {
+                                const o = JSON.parse(c);
+                                if (!o.context?.client) return Reflect.construct(e, t, n);
+                                o.playbackContext && (o.playbackContext.adPlaybackContext = {
+                                    pyv: !0
+                                }), o.playerRequest && (o.playerRequest.playbackContext.adPlaybackContext = {
+                                    pyv: !0
+                                }), c = JSON.stringify(o), t[1].body = c;
                             }
-                        } catch (e) {
-                            console.trace("Error occurred:", e);
-                        }
-                        return Reflect.construct(e, t, c);
+                        } catch (e) {}
+                        return Reflect.construct(e, t, n);
                     }
                 };
                 window.Request = new Proxy(window.Request, e);
             })();
-            Object.defineProperty(Window.prototype.toString, "8101008ad648ae0c89f1d5c621aec48b", {
+            Object.defineProperty(Window.prototype.toString, "10b2f0062210af1eedd3774b265124e1", {
                 value: e,
                 enumerable: !1,
                 writable: !1,
                 configurable: !1
             });
         } catch (e) {
-            console.error('Error executing AG js rule with uniqueId "8101008ad648ae0c89f1d5c621aec48b" due to: ' + e);
+            console.error('Error executing AG js rule with uniqueId "10b2f0062210af1eedd3774b265124e1" due to: ' + e);
         }
     },
-    '(()=>{window.JSON.parse=new Proxy(JSON.parse,{apply(r,e,t){const n=Reflect.apply(r,e,t);if(!location.pathname.startsWith("/shorts/"))return n;const a=n?.entries;return a&&Array.isArray(a)&&(n.entries=n.entries.filter((r=>{if(!r?.command?.reelWatchEndpoint?.adClientParams?.isAd)return r}))),n}});})();': () => {
+    '(()=>{const e={apply:(e,t,n)=>{if(location.href.includes("/shorts/")||location.href.includes("youtube.com/tv"))return Reflect.apply(e,t,n);try{let o=n[0];if(o&&(o.includes(\'"contentPlaybackContext"\')||o.includes(\'"adSignalsInfo"\'))){const c=JSON.parse(o);if(!c.context?.client)return Reflect.apply(e,t,n);c.playbackContext&&(c.playbackContext.adPlaybackContext={pyv:!0}),c.playerRequest&&(c.playerRequest.playbackContext.adPlaybackContext={pyv:!0}),o=JSON.stringify(c),n[0]=o}}catch(e){}return Reflect.apply(e,t,n)}};window.TextEncoder.prototype.encode=new Proxy(window.TextEncoder.prototype.encode,e)})();': () => {
         try {
             const e = "done";
-            if (Window.prototype.toString.f4df2111ba88e1c013b85786c3efab38 === e) return;
-            window.JSON.parse = new Proxy(JSON.parse, {
-                apply(e, r, t) {
-                    const n = Reflect.apply(e, r, t);
-                    if (!location.pathname.startsWith("/shorts/")) return n;
-                    const a = n?.entries;
-                    return a && Array.isArray(a) && (n.entries = n.entries.filter(e => {
-                        if (!e?.command?.reelWatchEndpoint?.adClientParams?.isAd) return e;
-                    })), n;
-                }
-            });
-            Object.defineProperty(Window.prototype.toString, "f4df2111ba88e1c013b85786c3efab38", {
+            if (Window.prototype.toString["87a11ca8b8054ab37fe4593e67647e9f"] === e) return;
+            (() => {
+                const e = {
+                    apply: (e, t, o) => {
+                        if (location.href.includes("/shorts/") || location.href.includes("youtube.com/tv")) return Reflect.apply(e, t, o);
+                        try {
+                            let n = o[0];
+                            if (n && (n.includes('"contentPlaybackContext"') || n.includes('"adSignalsInfo"'))) {
+                                const a = JSON.parse(n);
+                                if (!a.context?.client) return Reflect.apply(e, t, o);
+                                a.playbackContext && (a.playbackContext.adPlaybackContext = {
+                                    pyv: !0
+                                }), a.playerRequest && (a.playerRequest.playbackContext.adPlaybackContext = {
+                                    pyv: !0
+                                }), n = JSON.stringify(a), o[0] = n;
+                            }
+                        } catch (e) {}
+                        return Reflect.apply(e, t, o);
+                    }
+                };
+                window.TextEncoder.prototype.encode = new Proxy(window.TextEncoder.prototype.encode, e);
+            })();
+            Object.defineProperty(Window.prototype.toString, "87a11ca8b8054ab37fe4593e67647e9f", {
                 value: e,
                 enumerable: !1,
                 writable: !1,
                 configurable: !1
             });
         } catch (e) {
-            console.error('Error executing AG js rule with uniqueId "f4df2111ba88e1c013b85786c3efab38" due to: ' + e);
+            console.error('Error executing AG js rule with uniqueId "87a11ca8b8054ab37fe4593e67647e9f" due to: ' + e);
+        }
+    },
+    '(()=>{const t={apply:(t,e,a)=>{if(location.href.includes("/shorts/")||location.href.includes("youtube.com/tv"))return Reflect.apply(t,e,a);try{const n=a[0];if(!n?.context?.client)return Reflect.apply(t,e,a);n.playbackContext&&(n.playbackContext.adPlaybackContext={pyv:!0}),n.playerRequest&&(n.playerRequest.playbackContext.adPlaybackContext={pyv:!0}),a[0]=n}catch(t){}return Reflect.apply(t,e,a)}};window.JSON.stringify=new Proxy(window.JSON.stringify,t)})();': () => {
+        try {
+            const e = "done";
+            if (Window.prototype.toString["7f39e6ff264fffcfaa5e1bc59b590f08"] === e) return;
+            (() => {
+                const e = {
+                    apply: (e, t, f) => {
+                        if (location.href.includes("/shorts/") || location.href.includes("youtube.com/tv")) return Reflect.apply(e, t, f);
+                        try {
+                            const o = f[0];
+                            if (!o?.context?.client) return Reflect.apply(e, t, f);
+                            o.playbackContext && (o.playbackContext.adPlaybackContext = {
+                                pyv: !0
+                            }), o.playerRequest && (o.playerRequest.playbackContext.adPlaybackContext = {
+                                pyv: !0
+                            }), f[0] = o;
+                        } catch (e) {}
+                        return Reflect.apply(e, t, f);
+                    }
+                };
+                window.JSON.stringify = new Proxy(window.JSON.stringify, e);
+            })();
+            Object.defineProperty(Window.prototype.toString, "7f39e6ff264fffcfaa5e1bc59b590f08", {
+                value: e,
+                enumerable: !1,
+                writable: !1,
+                configurable: !1
+            });
+        } catch (e) {
+            console.error('Error executing AG js rule with uniqueId "7f39e6ff264fffcfaa5e1bc59b590f08" due to: ' + e);
         }
     },
     '(()=>{const t="/file/";if(!location.pathname.includes(t))return;const e=(new Date).toISOString(),n=location.pathname.split(t)[1];document.cookie=`adsRedirect_${n}=${e}; path=/;`})();': () => {
@@ -7427,12 +8103,12 @@ export const localScriptRules = {
         try {
             const e = "done";
             if (Window.prototype.toString["639105ecfaab3d5ad7901b589aedc339"] === e) return;
-            document.addEventListener("DOMContentLoaded", () => {
-                document.querySelectorAll('a[href^="https://af.gog.com/game/"]').forEach(e => {
+            document.addEventListener("DOMContentLoaded", (() => {
+                document.querySelectorAll('a[href^="https://af.gog.com/game/"]').forEach((e => {
                     const t = e.getAttribute("href").replace("https://af.gog.com/", "https://www.gog.com/");
                     e.setAttribute("href", t);
-                });
-            });
+                }));
+            }));
             Object.defineProperty(Window.prototype.toString, "639105ecfaab3d5ad7901b589aedc339", {
                 value: e,
                 enumerable: !1,
@@ -7447,9 +8123,9 @@ export const localScriptRules = {
         try {
             const e = "done";
             if (Window.prototype.toString["30a2cb89c6bbab38b94dced993fe90d2"] === e) return;
-            window.addEventListener("load", () => {
+            window.addEventListener("load", (() => {
                 window.stop();
-            });
+            }));
             Object.defineProperty(Window.prototype.toString, "30a2cb89c6bbab38b94dced993fe90d2", {
                 value: e,
                 enumerable: !1,
@@ -7484,6 +8160,68 @@ export const localScriptRules = {
             });
         } catch (e) {
             console.error('Error executing AG js rule with uniqueId "671bbc53b2753ab1de38c607e44cff6b" due to: ' + e);
+        }
+    },
+    '(()=>{const t={apply:(t,e,n)=>"data:text/javascript;base64,KCk9Pnt9"!==e&&Reflect.apply(t,e,n)};window.String.prototype.includes=new Proxy(window.String.prototype.includes,t)})();': () => {
+        try {
+            const e = "done";
+            if (Window.prototype.toString.be0a03459654f3c6591908806278974c === e) return;
+            (() => {
+                const e = {
+                    apply: (e, t, o) => "data:text/javascript;base64,KCk9Pnt9" !== t && Reflect.apply(e, t, o)
+                };
+                window.String.prototype.includes = new Proxy(window.String.prototype.includes, e);
+            })();
+            Object.defineProperty(Window.prototype.toString, "be0a03459654f3c6591908806278974c", {
+                value: e,
+                enumerable: !1,
+                writable: !1,
+                configurable: !1
+            });
+        } catch (e) {
+            console.error('Error executing AG js rule with uniqueId "be0a03459654f3c6591908806278974c" due to: ' + e);
+        }
+    },
+    '(()=>{const t={apply:async(t,e,r)=>{try{const o=await Reflect.apply(t,e,r);return o?.feed&&Array.isArray(o.feed)&&o.feed.forEach((t=>{t?.data?.shortUrl&&t?.data?.webStoryAction&&Object.keys(t.data.webStoryAction).forEach((e=>{const r=t.data.webStoryAction.webUrl;if("string"==typeof r){const e=r.split("web-blocker"),o=e.length>1?e[1]:null;if(o){const e=document.querySelector(`a[href*="${o}"]`);e&&(e.href=t.data.shortUrl,e.setAttribute("web-blocker","true"))}}t.data.webStoryAction[e]=t.data.shortUrl}))})),o}catch(t){console.trace("Error occurred:",t)}return await Reflect.apply(t,e,r)}};window.Response.prototype.json=new Proxy(window.Response.prototype.json,t),window.addEventListener("click",(function(t){t&&("A"===t.target?.nodeName||"H3"===t.target?.nodeName&&t.target?.closest("li")?.querySelector(\'a[web-blocker="true"]\'))&&t.stopPropagation()}),!0)})();': () => {
+        try {
+            const e = "done";
+            if (Window.prototype.toString["32d2bdde9819ba509479277938f60b35"] === e) return;
+            (() => {
+                const e = {
+                    apply: async (e, t, r) => {
+                        try {
+                            const o = await Reflect.apply(e, t, r);
+                            return o?.feed && Array.isArray(o.feed) && o.feed.forEach((e => {
+                                e?.data?.shortUrl && e?.data?.webStoryAction && Object.keys(e.data.webStoryAction).forEach((t => {
+                                    const r = e.data.webStoryAction.webUrl;
+                                    if ("string" == typeof r) {
+                                        const t = r.split("web-blocker"), o = t.length > 1 ? t[1] : null;
+                                        if (o) {
+                                            const t = document.querySelector(`a[href*="${o}"]`);
+                                            t && (t.href = e.data.shortUrl, t.setAttribute("web-blocker", "true"));
+                                        }
+                                    }
+                                    e.data.webStoryAction[t] = e.data.shortUrl;
+                                }));
+                            })), o;
+                        } catch (e) {
+                            console.trace("Error occurred:", e);
+                        }
+                        return await Reflect.apply(e, t, r);
+                    }
+                };
+                window.Response.prototype.json = new Proxy(window.Response.prototype.json, e), window.addEventListener("click", (function(e) {
+                    e && ("A" === e.target?.nodeName || "H3" === e.target?.nodeName && e.target?.closest("li")?.querySelector('a[web-blocker="true"]')) && e.stopPropagation();
+                }), !0);
+            })();
+            Object.defineProperty(Window.prototype.toString, "32d2bdde9819ba509479277938f60b35", {
+                value: e,
+                enumerable: !1,
+                writable: !1,
+                configurable: !1
+            });
+        } catch (e) {
+            console.error('Error executing AG js rule with uniqueId "32d2bdde9819ba509479277938f60b35" due to: ' + e);
         }
     },
     'document.cookie="dl-mobile-banner=hidden;path=/";': () => {
@@ -7606,30 +8344,30 @@ export const localScriptRules = {
             const e = "done";
             if (Window.prototype.toString.f8538b151cd703002da3f4fc86771de0 === e) return;
             (() => {
-                var e = EventTarget.prototype.addEventListener, t = new MutationObserver(function() {
+                var e = EventTarget.prototype.addEventListener, t = new MutationObserver((function() {
                     var e = document.querySelector(".Modal-wrapper .signFlowModal > .Modal-closeButton");
                     e && (t.disconnect(), o.disconnect(), e.click());
-                });
+                }));
                 t.observe(document, {
                     childList: !0,
                     subtree: !0
                 });
-                var o = new MutationObserver(o => {
+                var o = new MutationObserver((o => {
                     !function(e, o) {
                         var n = document.querySelector("button.AppHeader-login, .AppHeader-userInfo > .AppHeader-profile > div > button.Button--blue");
-                        n && o.bind(n)("click", function() {
+                        n && o.bind(n)("click", (function() {
                             t.disconnect();
-                        }, {
+                        }), {
                             once: !0
                         });
                     }(0, e);
-                });
+                }));
                 o.observe(document, {
                     childList: !0,
                     subtree: !0
-                }), setTimeout(function() {
+                }), setTimeout((function() {
                     o.disconnect(), t.disconnect();
-                }, 5e3);
+                }), 5e3);
             })();
             Object.defineProperty(Window.prototype.toString, "f8538b151cd703002da3f4fc86771de0", {
                 value: e,
@@ -7762,8 +8500,8 @@ export const localScriptRules = {
             const e = "done";
             if (Window.prototype.toString["2d5a4b03ebe219d77f997c0a788b2eed"] === e) return;
             !function() {
-                var e = new MutationObserver(function() {
-                    document.querySelectorAll('div[id^="substream_"] div[id^="hyperfeed_story_id"]').forEach(function(e) {
+                var e = new MutationObserver((function() {
+                    document.querySelectorAll('div[id^="substream_"] div[id^="hyperfeed_story_id"]').forEach((function(e) {
                         var n = e.querySelectorAll(".userContentWrapper > div[class] > div[class] > div[class]"), t = e.querySelectorAll(".userContentWrapper > div[class] > div > div span");
                         if ("display: none !important;" != e.getAttribute("style")) {
                             if (0 < n.length && n[0].innerText.contains("Suggested")) {
@@ -7777,8 +8515,8 @@ export const localScriptRules = {
                             console.log("Annoyance hidden from: " + l), console.log("Total annoyances Hidden: " + o), 
                             console.log("F length: " + n.length), console.log("--------"), e.style = "display:none!important;");
                         }
-                    });
-                }), o = 0;
+                    }));
+                })), o = 0;
                 e.observe(document, {
                     childList: !0,
                     subtree: !0
@@ -7798,12 +8536,12 @@ export const localScriptRules = {
         try {
             const e = "done";
             if (Window.prototype.toString["03e8fcb55c09dc00ea2c8fbc43ccc9ac"] === e) return;
-            new MutationObserver(function() {
-                document.querySelectorAll('div[role="feed"] > div[data-pagelet^="FeedUnit"] > div[class]:not([style*="height"])').forEach(function(e) {
+            new MutationObserver((function() {
+                document.querySelectorAll('div[role="feed"] > div[data-pagelet^="FeedUnit"] > div[class]:not([style*="height"])').forEach((function(e) {
                     "display: none !important;" == e.getAttribute("style") || e.classList.contains("hidden_elem") || e.querySelectorAll("div[aria-posinset] div[style] div[class] > div[class] > div[class] > div[class] > span")[0].innerText.contains("Suggested for you") && (console.log("--------"), 
                     console.log("Annoyances hidden (Suggested for you)"), e.style = "display:none!important;");
-                });
-            }).observe(document, {
+                }));
+            })).observe(document, {
                 childList: !0,
                 subtree: !0
             });
@@ -7821,12 +8559,12 @@ export const localScriptRules = {
         try {
             const e = "done";
             if (Window.prototype.toString["7658e09af099cd1524b0fba53dd1cb1c"] === e) return;
-            new MutationObserver(function() {
-                document.querySelectorAll('div[role="feed"] > span').forEach(function(e) {
+            new MutationObserver((function() {
+                document.querySelectorAll('div[role="feed"] > span').forEach((function(e) {
                     "display: none !important;" == e.getAttribute("style") || e.classList.contains("hidden_elem") || e.querySelectorAll("div[aria-posinset] div[style] div[class] > div[class] > div[class] > div[class] > span")[0].innerText.contains("Suggested for you") && (console.log("--------"), 
                     console.log("Annoyances hidden (Suggested for you)"), e.style = "display:none!important;");
-                });
-            }).observe(document, {
+                }));
+            })).observe(document, {
                 childList: !0,
                 subtree: !0
             });
@@ -7846,9 +8584,9 @@ export const localScriptRules = {
             if (Window.prototype.toString.b1df923a63194358ca6f0ed1143474e5 === e) return;
             !function() {
                 var e = 0, r = [];
-                new MutationObserver(function() {
-                    document.querySelectorAll('#ssrb_feed_start + div > div[class]:not([style*="display: none"]), #ssrb_feed_start + div span > h3 ~ div[class]:not([style*="display: none"]), #ssrb_feed_start + div h3~ div[class]:not([style*="display: none"]), #ssrb_feed_start + div h3 ~ div > div[class]:not([style*="display: none"]), div[role="main"] div > h3 ~ div > div[class]:not([style*="display: none"])').forEach(function(n) {
-                        Object.keys(n).forEach(function(s) {
+                new MutationObserver((function() {
+                    document.querySelectorAll('#ssrb_feed_start + div > div[class]:not([style*="display: none"]), #ssrb_feed_start + div span > h3 ~ div[class]:not([style*="display: none"]), #ssrb_feed_start + div h3~ div[class]:not([style*="display: none"]), #ssrb_feed_start + div h3 ~ div > div[class]:not([style*="display: none"]), div[role="main"] div > h3 ~ div > div[class]:not([style*="display: none"])').forEach((function(n) {
+                        Object.keys(n).forEach((function(s) {
                             if (s.includes("__reactEvents") || s.includes("__reactProps")) {
                                 s = n[s];
                                 try {
@@ -7860,9 +8598,9 @@ export const localScriptRules = {
                                     }
                                 } catch (s) {}
                             }
-                        });
-                    });
-                }).observe(document, {
+                        }));
+                    }));
+                })).observe(document, {
                     childList: !0,
                     subtree: !0
                 });
@@ -7881,13 +8619,13 @@ export const localScriptRules = {
         try {
             const e = "done";
             if (Window.prototype.toString["6037ae33aba3b05f056f756787dd2f13"] === e) return;
-            setInterval(function() {
+            setInterval((function() {
                 var e = document.querySelector(".howto-video video");
                 if (e) {
                     e.pause();
                     e.src = "";
                 }
-            }, 100);
+            }), 100);
             Object.defineProperty(Window.prototype.toString, "6037ae33aba3b05f056f756787dd2f13", {
                 value: e,
                 enumerable: !1,
@@ -7902,8 +8640,8 @@ export const localScriptRules = {
         try {
             const e = "done";
             if (Window.prototype.toString.f8726a98e9ee7f87afd7c9376374eb99 === e) return;
-            document.addEventListener("DOMContentLoaded", function() {
-                setTimeout(function() {
+            document.addEventListener("DOMContentLoaded", (function() {
+                setTimeout((function() {
                     var e = document.querySelector(".onp-sl-content");
                     if ("function" == typeof jQuery && "object" == typeof bizpanda.lockerOptions && e) try {
                         e = 0;
@@ -7929,8 +8667,8 @@ export const localScriptRules = {
                             }
                         }
                     } catch (e) {}
-                }, 1e3);
-            });
+                }), 1e3);
+            }));
             Object.defineProperty(Window.prototype.toString, "f8726a98e9ee7f87afd7c9376374eb99", {
                 value: e,
                 enumerable: !1,
@@ -7945,15 +8683,15 @@ export const localScriptRules = {
         try {
             const e = "done";
             if (Window.prototype.toString["7d835d508a44fa6f33710266eee3a2c3"] === e) return;
-            location.href.includes("/download-") && document.addEventListener("DOMContentLoaded", () => {
-                document.querySelectorAll('#downloadpage > form[action][method="POST"] > input[value^="https://"]').forEach(e => {
+            location.href.includes("/download-") && document.addEventListener("DOMContentLoaded", (() => {
+                document.querySelectorAll('#downloadpage > form[action][method="POST"] > input[value^="https://"]').forEach((e => {
                     const o = e.closest("form");
                     var t, n;
-                    o && (t = o, n = e.value, t.addEventListener("click", e => {
+                    o && (t = o, n = e.value, t.addEventListener("click", (e => {
                         e.preventDefault(), window.location.href = n;
-                    }));
-                });
-            });
+                    })));
+                }));
+            }));
             Object.defineProperty(Window.prototype.toString, "7d835d508a44fa6f33710266eee3a2c3", {
                 value: e,
                 enumerable: !1,
@@ -8027,19 +8765,19 @@ export const localScriptRules = {
             if (Window.prototype.toString.eb7c35a03ee3cc3b96b7bb0b0d90a333 === e) return;
             !function() {
                 if (location.href.includes("wpsafelink")) {
-                    var e = new MutationObserver(function() {
+                    var e = new MutationObserver((function() {
                         try {
                             var t = document.querySelector('form#landing > input[name="go"][value]'), n = document.querySelector("body > script");
                             t && t.value.startsWith("aHR0c") && n && n.textContent.includes("document.getElementById('landing').submit();") && (n.remove(), 
                             e.disconnect(), location.assign(atob(t.value)));
                         } catch (e) {}
-                    });
+                    }));
                     e.observe(document, {
                         childList: !0,
                         subtree: !0
-                    }), setTimeout(function() {
+                    }), setTimeout((function() {
                         e.disconnect();
-                    }, 1e4);
+                    }), 1e4);
                 }
             }();
             Object.defineProperty(Window.prototype.toString, "eb7c35a03ee3cc3b96b7bb0b0d90a333", {
@@ -8210,8 +8948,8 @@ export const localScriptRules = {
         try {
             const e = "done";
             if (Window.prototype.toString["1aa697d9b99b2928e92895ee3e7133f4"] === e) return;
-            "function" == typeof fetch && location.href.includes("/?id=") && fetch(location.href).then(function(e) {
-                e.headers.forEach(function(e, t) {
+            "function" == typeof fetch && location.href.includes("/?id=") && fetch(location.href).then((function(e) {
+                e.headers.forEach((function(e, t) {
                     if ("refresh" === t && e.includes("url=http")) try {
                         if (e.includes("&url=aHR0c")) {
                             var o, r = null == (o = e.split(/&url=/)) ? void 0 : o[1];
@@ -8221,8 +8959,8 @@ export const localScriptRules = {
                             location = r = null == (n = e.split(/url=(.+)/)) ? void 0 : n[1];
                         }
                     } catch (e) {}
-                });
-            });
+                }));
+            }));
             Object.defineProperty(Window.prototype.toString, "1aa697d9b99b2928e92895ee3e7133f4", {
                 value: e,
                 enumerable: !1,
@@ -8312,7 +9050,7 @@ export const localScriptRules = {
         try {
             const t = "done";
             if (Window.prototype.toString["9cac65361b045047e010c7826d557bc0"] === t) return;
-            document.addEventListener("DOMContentLoaded", () => {
+            document.addEventListener("DOMContentLoaded", (() => {
                 const t = function() {
                     if ("object" == typeof _sharedData && "string" == typeof _sharedData[0]?.destination) {
                         const t = function(t) {
@@ -8324,17 +9062,17 @@ export const localScriptRules = {
                     }
                 };
                 if (window._sharedData) t(); else {
-                    const e = new MutationObserver(function() {
+                    const e = new MutationObserver((function() {
                         window._sharedData && (e.disconnect(), t());
-                    });
+                    }));
                     e.observe(document, {
                         childList: !0,
                         subtree: !0
-                    }), setTimeout(function() {
+                    }), setTimeout((function() {
                         e.disconnect();
-                    }, 1e4);
+                    }), 1e4);
                 }
-            });
+            }));
             Object.defineProperty(Window.prototype.toString, "9cac65361b045047e010c7826d557bc0", {
                 value: t,
                 enumerable: !1,
@@ -8519,24 +9257,24 @@ export const localScriptRules = {
         try {
             const e = "done";
             if (Window.prototype.toString["1b7a3b5c1b1b60eb96bdd9dfb49f36ed"] === e) return;
-            document.addEventListener("DOMContentLoaded", () => {
+            document.addEventListener("DOMContentLoaded", (() => {
                 if (-1 < location.pathname.indexOf("/go/")) {
-                    var e = new MutationObserver(function() {
+                    var e = new MutationObserver((function() {
                         if (document.querySelector("#get_link_btn")) try {
-                            [].slice.call(document.getElementsByTagName("script")).some(function(e) {
+                            [].slice.call(document.getElementsByTagName("script")).some((function(e) {
                                 e.text.match(/goToUrl \("/) && (e = e.text.split(/goToUrl \("([\s\S]*?)"\);/), location = e[1]);
-                            });
+                            }));
                         } catch (e) {}
-                    });
+                    }));
                     e.observe(document, {
                         childList: !0,
                         subtree: !0
                     });
-                    setTimeout(function() {
+                    setTimeout((function() {
                         e.disconnect();
-                    }, 1e4);
+                    }), 1e4);
                 }
-            });
+            }));
             Object.defineProperty(Window.prototype.toString, "1b7a3b5c1b1b60eb96bdd9dfb49f36ed", {
                 value: e,
                 enumerable: !1,
@@ -8551,11 +9289,11 @@ export const localScriptRules = {
         try {
             const e = "done";
             if (Window.prototype.toString["034a6d2e27669874997985e584d3fc8b"] === e) return;
-            document.addEventListener("DOMContentLoad", function() {
-                setTimeout(function() {
+            document.addEventListener("DOMContentLoad", (function() {
+                setTimeout((function() {
                     second = 0;
-                }, 300);
-            });
+                }), 300);
+            }));
             Object.defineProperty(Window.prototype.toString, "034a6d2e27669874997985e584d3fc8b", {
                 value: e,
                 enumerable: !1,
@@ -8613,13 +9351,13 @@ export const localScriptRules = {
         try {
             const e = "done";
             if (Window.prototype.toString["6d9ca9f617340a6d9976710f1e5a7b50"] === e) return;
-            document.addEventListener("DOMContentLoaded", () => {
-                setTimeout(function() {
+            document.addEventListener("DOMContentLoaded", (() => {
+                setTimeout((function() {
                     if ("undefined" != typeof aesCrypto && "function" == typeof aesCrypto.decrypt && -1 < window.location.href.indexOf("#?o=")) try {
                         window.location = aesCrypto.decrypt(window.location.href.split("#?o=")[1].replace(/^\s+/, "").replace(/\s+$/, ""), "root".replace(/^\s+/, "").replace(/\s+$/, ""));
                     } catch (e) {}
-                }, 300);
-            });
+                }), 300);
+            }));
             Object.defineProperty(Window.prototype.toString, "6d9ca9f617340a6d9976710f1e5a7b50", {
                 value: e,
                 enumerable: !1,
@@ -8634,13 +9372,13 @@ export const localScriptRules = {
         try {
             const e = "done";
             if (Window.prototype.toString.e3c828d254377a11d58cabf38f975080 === e) return;
-            document.addEventListener("DOMContentLoaded", () => {
-                setTimeout(function() {
+            document.addEventListener("DOMContentLoaded", (() => {
+                setTimeout((function() {
                     if ("undefined" != typeof aesCrypto && "function" == typeof aesCrypto.decrypt && -1 < window.location.href.indexOf("#?o=")) try {
                         window.location = aesCrypto.decrypt($.urlParam("o").replace(/^\s+/, "").replace(/\s+$/, ""), "root".replace(/^\s+/, "").replace(/\s+$/, ""));
                     } catch (e) {}
-                }, 300);
-            });
+                }), 300);
+            }));
             Object.defineProperty(Window.prototype.toString, "e3c828d254377a11d58cabf38f975080", {
                 value: e,
                 enumerable: !1,
@@ -8655,13 +9393,13 @@ export const localScriptRules = {
         try {
             const e = "done";
             if (Window.prototype.toString.e50329594db3b07068dcf74209e441a3 === e) return;
-            document.addEventListener("DOMContentLoaded", () => {
-                setTimeout(function() {
+            document.addEventListener("DOMContentLoaded", (() => {
+                setTimeout((function() {
                     if ("function" == typeof convertstr && "function" == typeof aesCrypto.decrypt && -1 < window.location.href.indexOf("html#?o=")) try {
                         window.location = aesCrypto.decrypt(convertstr($.urlParam("o")), convertstr("root"));
                     } catch (e) {}
-                }, 300);
-            });
+                }), 300);
+            }));
             Object.defineProperty(Window.prototype.toString, "e50329594db3b07068dcf74209e441a3", {
                 value: e,
                 enumerable: !1,
@@ -8697,7 +9435,7 @@ export const localScriptRules = {
             const e = "done";
             if (Window.prototype.toString["36bc1f9853e93deac861c56d6200a5b0"] === e) return;
             (() => {
-                const e = new MutationObserver(function() {
+                const e = new MutationObserver((function() {
                     const t = document.querySelector('script[src^="/assets/js/unlock.js"]');
                     if (t) {
                         e.disconnect();
@@ -8706,11 +9444,11 @@ export const localScriptRules = {
                             o = e.textContent;
                             break;
                         }
-                        o && setTimeout(function() {
+                        o && setTimeout((function() {
                             location.assign(atob(o));
-                        }, 500);
+                        }), 500);
                     }
-                });
+                }));
                 e.observe(document, {
                     childList: !0,
                     subtree: !0
@@ -8730,20 +9468,20 @@ export const localScriptRules = {
         try {
             const e = "done";
             if (Window.prototype.toString["1ef1848adf82a2225338e1cf0d384d9f"] === e) return;
-            document.addEventListener("DOMContentLoaded", () => {
+            document.addEventListener("DOMContentLoaded", (() => {
                 if (-1 !== window.location.href.indexOf("onet.pl/?utm_source=")) {
-                    const e = new MutationObserver(function() {
+                    const e = new MutationObserver((function() {
                         var o = document.querySelector('a[href][onclick*="Nitro_clickmore"][onclick*="czytaj_wiecej"], a[href][class^="NitroCard_sectionLink_"], article[class^="NitroCard_nitroCard__"] > a[href][class^="Common_sectionLink__"]:not([href^="undefined"])');
                         o && (e.disconnect(), location.replace(o.href));
-                    });
+                    }));
                     e.observe(document, {
                         childList: !0,
                         subtree: !0
-                    }), setTimeout(function() {
+                    }), setTimeout((function() {
                         e.disconnect();
-                    }, 1e4);
+                    }), 1e4);
                 }
-            });
+            }));
             Object.defineProperty(Window.prototype.toString, "1ef1848adf82a2225338e1cf0d384d9f", {
                 value: e,
                 enumerable: !1,
@@ -8824,11 +9562,11 @@ export const localScriptRules = {
         try {
             const e = "done";
             if (Window.prototype.toString.a74d879c7ac45de88fa5296db6cc0537 === e) return;
-            document.addEventListener("DOMContentLoaded", () => {
-                setTimeout(function() {
+            document.addEventListener("DOMContentLoaded", (() => {
+                setTimeout((function() {
                     void 0 !== player.pause && player.pause();
-                }, 3e3);
-            });
+                }), 3e3);
+            }));
             Object.defineProperty(Window.prototype.toString, "a74d879c7ac45de88fa5296db6cc0537", {
                 value: e,
                 enumerable: !1,
@@ -8884,7 +9622,7 @@ export const localScriptRules = {
         try {
             const e = "done";
             if (Window.prototype.toString["7b45e913b52ddafeab6005ad59c3472a"] === e) return;
-            document.addEventListener("DOMContentLoaded", () => {
+            document.addEventListener("DOMContentLoaded", (() => {
                 var e = document.getElementById("sm_dl_wait");
                 if (e) {
                     var t = document.createElement("a");
@@ -8895,7 +9633,7 @@ export const localScriptRules = {
                     e.parentNode.insertBefore(t, e);
                     e.parentNode.insertBefore(n, e);
                 }
-            });
+            }));
             Object.defineProperty(Window.prototype.toString, "7b45e913b52ddafeab6005ad59c3472a", {
                 value: e,
                 enumerable: !1,
@@ -8910,11 +9648,11 @@ export const localScriptRules = {
         try {
             const e = "done";
             if (Window.prototype.toString["58381ff8715080c5ddef89be33326b0c"] === e) return;
-            [ "contextmenu", "copy", "selectstart" ].forEach(e => {
-                window.addEventListener(e, e => {
+            [ "contextmenu", "copy", "selectstart" ].forEach((e => {
+                window.addEventListener(e, (e => {
                     e.stopPropagation();
-                }, !0);
-            });
+                }), !0);
+            }));
             Object.defineProperty(Window.prototype.toString, "58381ff8715080c5ddef89be33326b0c", {
                 value: e,
                 enumerable: !1,
@@ -8929,12 +9667,12 @@ export const localScriptRules = {
         try {
             const e = "done";
             if (Window.prototype.toString.f5bda0983617c9e82a78a551426bbb32 === e) return;
-            window.addEventListener("contextmenu", function(e) {
+            window.addEventListener("contextmenu", (function(e) {
                 e.stopPropagation();
-            }, !0);
-            window.addEventListener("copy", function(e) {
+            }), !0);
+            window.addEventListener("copy", (function(e) {
                 e.stopPropagation();
-            }, !0);
+            }), !0);
             Object.defineProperty(Window.prototype.toString, "f5bda0983617c9e82a78a551426bbb32", {
                 value: e,
                 enumerable: !1,
@@ -8969,9 +9707,9 @@ export const localScriptRules = {
         try {
             const e = "done";
             if (Window.prototype.toString["99382d0bad7923913149eaceb54a5bcd"] === e) return;
-            window.addEventListener("contextmenu", function(e) {
+            window.addEventListener("contextmenu", (function(e) {
                 e.stopPropagation();
-            }, !0);
+            }), !0);
             Object.defineProperty(Window.prototype.toString, "99382d0bad7923913149eaceb54a5bcd", {
                 value: e,
                 enumerable: !1,
@@ -8991,10 +9729,10 @@ export const localScriptRules = {
                     const e = Math.pow(10, 11), o = Math.pow(10, 12);
                     return Math.floor(Math.random() * (o - e) + e);
                 }();
-                window.addEventListener("load", function() {
+                window.addEventListener("load", (function() {
                     window.google_image_requests = [], window.google_global_correlator = e, window._hmt = window._hmt || [], 
                     _hmt.id = e;
-                });
+                }));
             }();
             Object.defineProperty(Window.prototype.toString, "eb04a415377ef4ca383dbeb96bc0959d", {
                 value: e,
@@ -9011,11 +9749,11 @@ export const localScriptRules = {
             const r = "done";
             if (Window.prototype.toString["2c65b37bc179c213f5741f032fbc81bd"] === r) return;
             function preventError(r) {
-                window.addEventListener("error", function(e) {
+                window.addEventListener("error", (function(e) {
                     if (e.srcElement && e.srcElement.src) {
                         new RegExp(r).test(e.srcElement.src) && (e.srcElement.onerror = function() {});
                     }
-                }, !0);
+                }), !0);
             }
             preventError(/^(?!.*(rt-error.js)).*$/);
             Object.defineProperty(Window.prototype.toString, "2c65b37bc179c213f5741f032fbc81bd", {
@@ -9088,11 +9826,11 @@ export const localScriptRules = {
                 let e = !1;
                 window.qyMesh = window.qyMesh || {}, window.qyMesh = new Proxy(window.qyMesh, {
                     get: function(t, d, o) {
-                        return !e && t?.preload?.Page_recommend_1?.response?.items && (t.preload.Page_recommend_1.response.items.forEach(e => {
-                            e.extData?.dataExtAd && (e.extData.dataExtAd = {}), e.video && e.video.forEach(e => {
-                                e.adverts && (e.adverts = []), e.data && (e.data = e.data.filter(e => !e.ad));
-                            });
-                        }), e = !0), Reflect.get(t, d, o);
+                        return !e && t?.preload?.Page_recommend_1?.response?.items && (t.preload.Page_recommend_1.response.items.forEach((e => {
+                            e.extData?.dataExtAd && (e.extData.dataExtAd = {}), e.video && e.video.forEach((e => {
+                                e.adverts && (e.adverts = []), e.data && (e.data = e.data.filter((e => !e.ad)));
+                            }));
+                        })), e = !0), Reflect.get(t, d, o);
                     }
                 });
             })();
@@ -9115,9 +9853,9 @@ export const localScriptRules = {
                     apply: (e, a, o) => {
                         const r = Reflect.apply(e, a, o);
                         if ("object" == typeof r && r.banners) try {
-                            r.banners.forEach((e, a) => {
+                            r.banners.forEach(((e, a) => {
                                 e.commercial && (e.commercial = {});
-                            });
+                            }));
                         } catch (e) {
                             console.debug(e);
                         }
@@ -9162,10 +9900,10 @@ export const localScriptRules = {
         try {
             const e = "done";
             if (Window.prototype.toString.a07f45c054f1a02c9581416dcc133e06 === e) return;
-            setTimeout(function() {
+            setTimeout((function() {
                 var e = document.querySelector('input[name="dfp"]');
                 e && (e.value = "1234567890123456");
-            }, 300);
+            }), 300);
             Object.defineProperty(Window.prototype.toString, "a07f45c054f1a02c9581416dcc133e06", {
                 value: e,
                 enumerable: !1,
@@ -9213,20 +9951,20 @@ export const localScriptRules = {
             window.analytics = [], analytics.user = function() {
                 return this;
             }, analytics.track = function() {}, analytics.anonymousId = function() {}, analytics.push = function() {
-                [ ...arguments ].forEach(c => {
+                [ ...arguments ].forEach((c => {
                     if ("function" == typeof c) try {
                         c();
                     } catch (c) {
                         console.debug(c);
                     }
-                    Array.isArray(c) && [ ...c ].forEach(c => {
+                    Array.isArray(c) && [ ...c ].forEach((c => {
                         if ("function" == typeof c) try {
                             c();
                         } catch (c) {
                             console.debug(c);
                         }
-                    });
-                });
+                    }));
+                }));
             };
             Object.defineProperty(Window.prototype.toString, "c5eccff17c5bfd7b81d14b2ae2d579e6", {
                 value: c,
@@ -9406,9 +10144,9 @@ export const localScriptRules = {
         try {
             const e = "done";
             if (Window.prototype.toString["2ca94c74fb35fa6f5e63d15da842f5b6"] === e) return;
-            new MutationObserver(function() {
+            new MutationObserver((function() {
                 var e = [ "?fbclid", "%3Ffbclid", "&fbclid", "%26fbclid", "&__tn__", "%__26tn__", "%3Futm", "?utm", "&fbc=", "%26fbc%3D", "?share=", "%3Fshare%3D", "%3F__twitter_impression%3D", "?__twitter_impression=", "?wtmc=", "%3Fwtmc%3D", "?originalReferrer=", "%3ForiginalReferrer%3D", "?wtrid=", "%3Fwtrid%3D", "?trbo=", "%3Ftrbo%3D", "?GEPC=", "%3FGEPC%3D", "?whatsapp=", "%3Fwhatsapp%3D", "?fbc=", "%3Ffbc%3D", "?dmcid=", "%3Fdmcid%3D" ];
-                document.querySelectorAll('a[target="_blank"]').forEach(function(r) {
+                document.querySelectorAll('a[target="_blank"]').forEach((function(r) {
                     for (i = 0; i < e.length; i++) {
                         var t;
                         r.href.includes(e[i]) && (t = (t = (t = r.href.split("#!")[1]) || r.href.split("%23%21")[1]) || "", 
@@ -9418,8 +10156,8 @@ export const localScriptRules = {
                         t = (t = (t = r.href.split("&h=")[1]) || r.href.split("%26h%3D")[1]) || "", r.href.includes("&h=") && (t = "&h=" + t), 
                         r.href.includes("%26h%3D") && (t = "%26h%3D" + t), r.setAttribute("href", r.href.split(e[i])[0] + t));
                     }
-                });
-            }).observe(document, {
+                }));
+            })).observe(document, {
                 childList: !0,
                 subtree: !0
             });
@@ -9437,12 +10175,12 @@ export const localScriptRules = {
         try {
             const e = "done";
             if (Window.prototype.toString.b53943d876c5b199f25b9db1658e015b === e) return;
-            new MutationObserver(function() {
+            new MutationObserver((function() {
                 var e = [ "&eid=", "%26eid%3D", "?eid=", "%3Feid%3D", "?__tn__=", "%3F%5F%5Ftn%5F%5F%3D", "&__tn__=", "%26%5F%5Ftn%5F%5F%3D", "?source=", "%3Fsource%3D", "?__xts__", "%3F%5F%5Fxts%5F%5F", "&__xts__", "%26%5F%5Fxts%5F%5F", "&amp;__xts__%5B", "?ref=", "%3Fref%3D", "?fref=", "%3Ffref%3D", "?epa=", "%3Fepa%3D", "&ifg=", "%26ifg%3D", "?comment_tracking=", "%3Fcomment_tracking%3D", "?av=", "%3Fav%3D", "&av=", "%26av%3D", "?acontext=", "%3Facontext%3D", "&session_id=", "%26session_id%3D", "&amp;session_id=", "?hc_location=", "%3Fhc_location%3D", "&fref=", "%26fref%3D", "?__cft", "%3f__cft" ];
-                document.querySelectorAll('a:not([target="_blank"]):not([href*="2fac/"])').forEach(function(t) {
+                document.querySelectorAll('a:not([target="_blank"]):not([href*="2fac/"])').forEach((function(t) {
                     for (i = 0; i < e.length; i++) t.href.includes(e[i]) && t.setAttribute("href", t.href.split(e[i])[0]);
-                });
-            }).observe(document, {
+                }));
+            })).observe(document, {
                 childList: !0,
                 subtree: !0
             });
@@ -9616,29 +10354,6 @@ export const localScriptRules = {
             console.error('Error executing AG js rule with uniqueId "c0325f223958d06b946b83a6dd260418" due to: ' + e);
         }
     },
-    "var addthis = { init: function() {}, addEventListener: function() {}, button: function() {}, counter: function() {}, update: function() {}, toolbox: function() {}, layers: function() {} };": () => {
-        try {
-            const t = "done";
-            if (Window.prototype.toString.ba82b6651325f357520ba8af3cd8a9cc === t) return;
-            var addthis = {
-                init: function() {},
-                addEventListener: function() {},
-                button: function() {},
-                counter: function() {},
-                update: function() {},
-                toolbox: function() {},
-                layers: function() {}
-            };
-            Object.defineProperty(Window.prototype.toString, "ba82b6651325f357520ba8af3cd8a9cc", {
-                value: t,
-                enumerable: !1,
-                writable: !1,
-                configurable: !1
-            });
-        } catch (t) {
-            console.error('Error executing AG js rule with uniqueId "ba82b6651325f357520ba8af3cd8a9cc" due to: ' + t);
-        }
-    },
     "twttr={events: { bind: function() {} }};": () => {
         try {
             const e = "done";
@@ -9658,109 +10373,118 @@ export const localScriptRules = {
             console.error('Error executing AG js rule with uniqueId "14a0dfcfc56570b45c7aa35014affd67" due to: ' + e);
         }
     },
-    '(()=>{const e={apply:(e,t,n)=>{try{let c=n[0];if(!c)return Reflect.apply(e,t,n);const r=Array.isArray(c),a=r?c[0]:c;if((c.includes(\'"contentPlaybackContext"\')||c.includes(\'"adSignalsInfo"\'))&&(!a.includes(\'"params":"yAEB\')||!a.includes(\'"clientScreen":"ADUNIT"\'))){const c=JSON.parse(a);if(!c.context?.client)return Reflect.apply(e,t,n);c.context.client.clientScreen="ADUNIT",c.playbackContext&&(c.params=`yAEB${c.params?c.params:""}`);const o=JSON.stringify(c);r?n[0][0]=o:n[0]=o}}catch(e){console.trace("Error occurred:",e)}return Reflect.apply(e,t,n)}};window.XMLHttpRequest.prototype.send=new Proxy(window.XMLHttpRequest.prototype.send,e)})();': () => {
+    '(()=>{const t={apply:(t,e,n)=>{try{let a=n[0];if(!a||location.href.includes("youtube.com/tv"))return Reflect.apply(t,e,n);const o=Array.isArray(a),c=o?a[0]:a;if(c.includes(\'"contentPlaybackContext"\')||c.includes(\'"adSignalsInfo"\')){const a=JSON.parse(c);if(!a.context?.client)return Reflect.apply(t,e,n);a.playbackContext&&(a.playbackContext.adPlaybackContext={pyv:!0}),a.playerRequest&&(a.playerRequest.playbackContext.adPlaybackContext={pyv:!0});const l=JSON.stringify(a);o?n[0][0]=l:n[0]=l}}catch(t){}return Reflect.apply(t,e,n)}};window.XMLHttpRequest.prototype.send=new Proxy(window.XMLHttpRequest.prototype.send,t)})();': () => {
         try {
             const e = "done";
-            if (Window.prototype.toString.af55bcec7796cf4614034b81bdd87074 === e) return;
+            if (Window.prototype.toString["8b493c01de17a3e2594def8475fa654d"] === e) return;
             (() => {
                 const e = {
-                    apply: (e, t, r) => {
+                    apply: (e, t, n) => {
                         try {
-                            let n = r[0];
-                            if (!n) return Reflect.apply(e, t, r);
-                            const c = Array.isArray(n), o = c ? n[0] : n;
-                            if ((n.includes('"contentPlaybackContext"') || n.includes('"adSignalsInfo"')) && (!o.includes('"params":"yAEB') || !o.includes('"clientScreen":"ADUNIT"'))) {
-                                const n = JSON.parse(o);
-                                if (!n.context?.client) return Reflect.apply(e, t, r);
-                                n.context.client.clientScreen = "ADUNIT", n.playbackContext && (n.params = `yAEB${n.params ? n.params : ""}`);
-                                const a = JSON.stringify(n);
-                                c ? r[0][0] = a : r[0] = a;
+                            let o = n[0];
+                            if (!o || location.href.includes("youtube.com/tv")) return Reflect.apply(e, t, n);
+                            const a = Array.isArray(o), r = a ? o[0] : o;
+                            if (r.includes('"contentPlaybackContext"') || r.includes('"adSignalsInfo"')) {
+                                const o = JSON.parse(r);
+                                if (!o.context?.client) return Reflect.apply(e, t, n);
+                                o.playbackContext && (o.playbackContext.adPlaybackContext = {
+                                    pyv: !0
+                                }), o.playerRequest && (o.playerRequest.playbackContext.adPlaybackContext = {
+                                    pyv: !0
+                                });
+                                const c = JSON.stringify(o);
+                                a ? n[0][0] = c : n[0] = c;
                             }
-                        } catch (e) {
-                            console.trace("Error occurred:", e);
-                        }
-                        return Reflect.apply(e, t, r);
+                        } catch (e) {}
+                        return Reflect.apply(e, t, n);
                     }
                 };
                 window.XMLHttpRequest.prototype.send = new Proxy(window.XMLHttpRequest.prototype.send, e);
             })();
-            Object.defineProperty(Window.prototype.toString, "af55bcec7796cf4614034b81bdd87074", {
+            Object.defineProperty(Window.prototype.toString, "8b493c01de17a3e2594def8475fa654d", {
                 value: e,
                 enumerable: !1,
                 writable: !1,
                 configurable: !1
             });
         } catch (e) {
-            console.error('Error executing AG js rule with uniqueId "af55bcec7796cf4614034b81bdd87074" due to: ' + e);
+            console.error('Error executing AG js rule with uniqueId "8b493c01de17a3e2594def8475fa654d" due to: ' + e);
         }
     },
-    '(()=>{const e=Function.prototype.call;let t=!1,o=!1;const n={apply:(n,c,r)=>{const a=r[0];if(a?.requestNumber&&a?.snapshot)try{t=((e,t=5)=>{if("object"!=typeof e||null===e)return!1;const n=new Array(1e3);let c=0;const r=new WeakSet;for(n[c++]={obj:e,depth:0};c>0&&!o;){const{obj:e,depth:a}=n[--c];if(a>t||"object"!=typeof e||null===e||r.has(e))continue;let l;r.add(e);try{l=Object.hasOwn(e,"backoffTimeMs")}catch(e){console.trace("Error while checking for backoffTimeMs:",e)}if(l)return void 0!==e.backoffTimeMs||(o=!0,!1);for(const t in e)if(Object.hasOwn(e,t)){let o;try{o=e[t]}catch(e){console.trace("Error while accessing property:",e)}null!==o&&"object"==typeof o&&!r.has(o)&&c<n.length&&(n[c++]={obj:o,depth:a+1})}}return!1})(a),(t||o)&&(Function.prototype.call=e)}catch(e){console.trace("Error while checking for backoffTimeMs:",e)}return Reflect.apply(n,c,r)}};window.Function.prototype.call=new Proxy(window.Function.prototype.call,n),window.addEventListener("load",(()=>{if(!t)return void(Function.prototype.call=e);const o=document.querySelector(".html5-video-player"),n=window.location.search,c=new URLSearchParams(n).get("v"),r=new URLSearchParams(n).get("t")??0;if(!o||!c)return;const a=parseInt(r,10);o.loadVideoById(c,a)}))})();': () => {
+    '(()=>{const t=Function.prototype.call;let e=!1,o=!1,n=!1;const c={apply:(c,r,a)=>{const l=a[0];if(l?.requestNumber&&l?.snapshot)try{o=((t,e=5)=>{if("object"!=typeof t||null===t)return!1;const o=new Array(1e3);let c=0;const r=new WeakSet;for(o[c++]={obj:t,depth:0};c>0&&!n;){const{obj:t,depth:a}=o[--c];if(a>e||"object"!=typeof t||null===t||r.has(t))continue;let l;r.add(t);try{l=Object.hasOwn(t,"backoffTimeMs")}catch(t){}if(l)return void 0!==t.backoffTimeMs||(n=!0,!1);for(const e in t)if(Object.hasOwn(t,e)){let n;try{n=t[e]}catch(t){}null!==n&&"object"==typeof n&&!r.has(n)&&c<o.length&&(o[c++]={obj:n,depth:a+1})}}return!1})(l),e=!0,(o||n)&&(Function.prototype.call=t)}catch(t){}return Reflect.apply(c,r,a)}};window.Function.prototype.call=new Proxy(window.Function.prototype.call,c);window.addEventListener("load",(async()=>{if(Function.prototype.call=t,!o&&e)return;const n=window.location.search,c=new URLSearchParams(n).get("v");if(!c)return;const r=await(a="#movie_player",l=200,i=1e4,new Promise((t=>{if(!a||!l||!i)return void t(null);const e=Date.now()+i,o=()=>{const n=document.querySelector(a);n?t(n):Date.now()>e?t(null):setTimeout(o,l)};o()})));var a,l,i;if(!r)return;const s=new URLSearchParams(n).get("t")??"0",u=parseInt(s,10);if("function"==typeof r.loadVideoById)try{r.loadVideoById(c,u)}catch(t){}}))})();': () => {
         try {
             const e = "done";
-            if (Window.prototype.toString["0efe2c6870fcc8613710aec52bba2dca"] === e) return;
+            if (Window.prototype.toString["0ec54e33a67947118e2943fefd47d510"] === e) return;
             (() => {
                 const e = Function.prototype.call;
-                let t = !1, o = !1;
-                const c = {
-                    apply: (c, r, n) => {
-                        const a = n[0];
-                        if (a?.requestNumber && a?.snapshot) try {
-                            t = ((e, t = 5) => {
+                let t = !1, o = !1, n = !1;
+                const r = {
+                    apply: (r, c, a) => {
+                        const i = a[0];
+                        if (i?.requestNumber && i?.snapshot) try {
+                            o = ((e, t = 5) => {
                                 if ("object" != typeof e || null === e) return !1;
-                                const c = new Array(1e3);
+                                const o = new Array(1e3);
                                 let r = 0;
-                                const n = new WeakSet;
-                                for (c[r++] = {
+                                const c = new WeakSet;
+                                for (o[r++] = {
                                     obj: e,
                                     depth: 0
-                                }; r > 0 && !o; ) {
-                                    const {obj: a, depth: i} = c[--r];
-                                    if (i > t || "object" != typeof a || null === a || n.has(a)) continue;
+                                }; r > 0 && !n; ) {
+                                    const {obj: a, depth: i} = o[--r];
+                                    if (i > t || "object" != typeof a || null === a || c.has(a)) continue;
                                     let l;
-                                    n.add(a);
+                                    c.add(a);
                                     try {
                                         l = Object.hasOwn(a, "backoffTimeMs");
-                                    } catch (e) {
-                                        console.trace("Error while checking for backoffTimeMs:", e);
-                                    }
-                                    if (l) return void 0 !== a.backoffTimeMs || (o = !0, !1);
+                                    } catch (e) {}
+                                    if (l) return void 0 !== a.backoffTimeMs || (n = !0, !1);
                                     for (const t in a) if (Object.hasOwn(a, t)) {
-                                        let o;
+                                        let n;
                                         try {
-                                            o = a[t];
-                                        } catch (e) {
-                                            console.trace("Error while accessing property:", e);
-                                        }
-                                        null !== o && "object" == typeof o && !n.has(o) && r < c.length && (c[r++] = {
-                                            obj: o,
+                                            n = a[t];
+                                        } catch (e) {}
+                                        null !== n && "object" == typeof n && !c.has(n) && r < o.length && (o[r++] = {
+                                            obj: n,
                                             depth: i + 1
                                         });
                                     }
                                 }
                                 return !1;
-                            })(a), (t || o) && (Function.prototype.call = e);
-                        } catch (e) {
-                            console.trace("Error while checking for backoffTimeMs:", e);
-                        }
-                        return Reflect.apply(c, r, n);
+                            })(i), t = !0, (o || n) && (Function.prototype.call = e);
+                        } catch (e) {}
+                        return Reflect.apply(r, c, a);
                     }
                 };
-                window.Function.prototype.call = new Proxy(window.Function.prototype.call, c), window.addEventListener("load", () => {
-                    if (!t) return void (Function.prototype.call = e);
-                    const o = document.querySelector(".html5-video-player"), c = window.location.search, r = new URLSearchParams(c).get("v"), n = new URLSearchParams(c).get("t") ?? 0;
-                    if (!o || !r) return;
-                    const a = parseInt(n, 10);
-                    o.loadVideoById(r, a);
-                });
+                window.Function.prototype.call = new Proxy(window.Function.prototype.call, r);
+                window.addEventListener("load", (async () => {
+                    if (Function.prototype.call = e, !o && t) return;
+                    const n = window.location.search, r = new URLSearchParams(n).get("v");
+                    if (!r) return;
+                    const c = await (a = "#movie_player", new Promise((e => {
+                        0;
+                        const t = Date.now() + 1e4, o = () => {
+                            const n = document.querySelector(a);
+                            n ? e(n) : Date.now() > t ? e(null) : setTimeout(o, 200);
+                        };
+                        o();
+                    })));
+                    var a;
+                    if (!c) return;
+                    const i = new URLSearchParams(n).get("t") ?? "0", l = parseInt(i, 10);
+                    if ("function" == typeof c.loadVideoById) try {
+                        c.loadVideoById(r, l);
+                    } catch (e) {}
+                }));
             })();
-            Object.defineProperty(Window.prototype.toString, "0efe2c6870fcc8613710aec52bba2dca", {
+            Object.defineProperty(Window.prototype.toString, "0ec54e33a67947118e2943fefd47d510", {
                 value: e,
                 enumerable: !1,
                 writable: !1,
                 configurable: !1
             });
         } catch (e) {
-            console.error('Error executing AG js rule with uniqueId "0efe2c6870fcc8613710aec52bba2dca" due to: ' + e);
+            console.error('Error executing AG js rule with uniqueId "0ec54e33a67947118e2943fefd47d510" due to: ' + e);
         }
     },
     "!function(){window.somtag={cmd:function(){}};}();": () => {
@@ -9808,6 +10532,23 @@ export const localScriptRules = {
             });
         } catch (e) {
             console.error('Error executing AG js rule with uniqueId "a44a6107aec5ff60e35ccabb1052df4d" due to: ' + e);
+        }
+    },
+    '(()=>{document.addEventListener("DOMContentLoaded",(()=>{"function"==typeof initPage&&initPage()}));})();': () => {
+        try {
+            const e = "done";
+            if (Window.prototype.toString["094835ecb49c317258d87cdb8826694a"] === e) return;
+            document.addEventListener("DOMContentLoaded", (() => {
+                "function" == typeof initPage && initPage();
+            }));
+            Object.defineProperty(Window.prototype.toString, "094835ecb49c317258d87cdb8826694a", {
+                value: e,
+                enumerable: !1,
+                writable: !1,
+                configurable: !1
+            });
+        } catch (e) {
+            console.error('Error executing AG js rule with uniqueId "094835ecb49c317258d87cdb8826694a" due to: ' + e);
         }
     },
     '(()=>{const a=(a,b,c)=>{const d=Reflect.apply(a,b,c),e=".list-programmatic-ad-item--multi-line, .list-inbox-ad-item--multi-line { display: none !important; }";if("adoptedStyleSheets"in document){const a=new CSSStyleSheet;a.replaceSync(e),d.adoptedStyleSheets=[a]}else{const a=document.createElement("style");a.innerText=e,d.appendChild(a)}return d};window.Element.prototype.attachShadow=new Proxy(window.Element.prototype.attachShadow,{apply:a})})();': () => {
@@ -9865,19 +10606,19 @@ export const localScriptRules = {
         try {
             const e = "done";
             if (Window.prototype.toString["457e0165e3e3728dbee48f0406d58268"] === e) return;
-            document.addEventListener("DOMContentLoaded", () => {
+            document.addEventListener("DOMContentLoaded", (() => {
                 const e = [];
-                [ ...document.scripts ].forEach(t => {
+                [ ...document.scripts ].forEach((t => {
                     const o = t.innerText, n = /window\..*\["(.*)"]/;
                     if (o.includes('"impr":')) {
                         const t = o.match(n)[1];
                         e.push(t);
                     }
-                }), e.forEach(e => {
+                })), e.forEach((e => {
                     const t = document.querySelector(`.${e}`);
                     t && t.remove();
-                });
-            });
+                }));
+            }));
             Object.defineProperty(Window.prototype.toString, "457e0165e3e3728dbee48f0406d58268", {
                 value: e,
                 enumerable: !1,
@@ -9938,9 +10679,9 @@ export const localScriptRules = {
                             "function" == typeof t && t();
                         } catch (t) {}
                     };
-                    "complete" === document.readyState ? o() : window.addEventListener("load", () => {
+                    "complete" === document.readyState ? o() : window.addEventListener("load", (() => {
                         o();
-                    });
+                    }));
                 }, window.jad = t;
             }();
             Object.defineProperty(Window.prototype.toString, "f1c7875f7971c5540a49992dc8a2bd9e", {
@@ -10006,89 +10747,28 @@ export const localScriptRules = {
             console.error('Error executing AG js rule with uniqueId "c3123d07eda7051ae1561c7613cf6cd8" due to: ' + e);
         }
     },
-    '(function(b,d,e){function a(){}b={get:function(){return a},set:a},d={};Object.defineProperties(d,{spid_control_callback:b,content_control_callback:b,vid_control_callback:b});e=new Proxy({},{get:function(a,c){switch(c){case "config":return d;case "_setSpKey":throw Error();default:return a[c]}},set:function(a,c,b){switch(c){case "config":return!0;case "bootstrap":case "mms":return a[c]=b,!0;default:throw Error();}}});Object.defineProperty(window,"_sp_",{get:function(){return e},set:a})})();': () => {
-        try {
-            const e = "done";
-            if (Window.prototype.toString.cc4cbb964104e3ca9c968d0801cc2a98 === e) return;
-            !function(e, c, t) {
-                function r() {}
-                e = {
-                    get: function() {
-                        return r;
-                    },
-                    set: r
-                }, c = {};
-                Object.defineProperties(c, {
-                    spid_control_callback: e,
-                    content_control_callback: e,
-                    vid_control_callback: e
-                });
-                t = new Proxy({}, {
-                    get: function(e, t) {
-                        switch (t) {
-                          case "config":
-                            return c;
-
-                          case "_setSpKey":
-                            throw Error();
-
-                          default:
-                            return e[t];
-                        }
-                    },
-                    set: function(e, c, t) {
-                        switch (c) {
-                          case "config":
-                            return !0;
-
-                          case "bootstrap":
-                          case "mms":
-                            return e[c] = t, !0;
-
-                          default:
-                            throw Error();
-                        }
-                    }
-                });
-                Object.defineProperty(window, "_sp_", {
-                    get: function() {
-                        return t;
-                    },
-                    set: r
-                });
-            }();
-            Object.defineProperty(Window.prototype.toString, "cc4cbb964104e3ca9c968d0801cc2a98", {
-                value: e,
-                enumerable: !1,
-                writable: !1,
-                configurable: !1
-            });
-        } catch (e) {
-            console.error('Error executing AG js rule with uniqueId "cc4cbb964104e3ca9c968d0801cc2a98" due to: ' + e);
-        }
-    },
     '(()=>{let e=[];document.addEventListener("DOMContentLoaded",(()=>{const t=document.querySelector("body script").textContent.match(/"] = \'(.*?)\'/g);if(!t)return;t.forEach((t=>{const r=t.replace(/.*\'(.*?)\'/,"$1");e.push(r)}));const r=document.querySelector(\'.dl_button[href*="preview"]\').href.split("?")[1];e.includes(r)&&(e=e.filter((e=>e!==r)));document.querySelectorAll(".dl_button[href]").forEach((t=>{let r=t.cloneNode(!0);r.href=t.href.replace(/\\?.*/,`?${e[0]}`),t.after(r);let o=t.cloneNode(!0);o.href=t.href.replace(/\\?.*/,`?${e[1]}`),t.after(o)}))}))})();': () => {
         try {
             const e = "done";
             if (Window.prototype.toString.dd2ab3ea1b069f5b262d0c2924b695ca === e) return;
             (() => {
                 let e = [];
-                document.addEventListener("DOMContentLoaded", () => {
+                document.addEventListener("DOMContentLoaded", (() => {
                     const t = document.querySelector("body script").textContent.match(/"] = '(.*?)'/g);
                     if (!t) return;
-                    t.forEach(t => {
+                    t.forEach((t => {
                         const r = t.replace(/.*'(.*?)'/, "$1");
                         e.push(r);
-                    });
+                    }));
                     const r = document.querySelector('.dl_button[href*="preview"]').href.split("?")[1];
-                    e.includes(r) && (e = e.filter(e => e !== r));
-                    document.querySelectorAll(".dl_button[href]").forEach(t => {
+                    e.includes(r) && (e = e.filter((e => e !== r)));
+                    document.querySelectorAll(".dl_button[href]").forEach((t => {
                         let r = t.cloneNode(!0);
                         r.href = t.href.replace(/\?.*/, `?${e[0]}`), t.after(r);
                         let o = t.cloneNode(!0);
                         o.href = t.href.replace(/\?.*/, `?${e[1]}`), t.after(o);
-                    });
-                });
+                    }));
+                }));
             })();
             Object.defineProperty(Window.prototype.toString, "dd2ab3ea1b069f5b262d0c2924b695ca", {
                 value: e,
@@ -10184,9 +10864,9 @@ export const localScriptRules = {
                             "function" == typeof t && t();
                         } catch (t) {}
                     };
-                    "complete" === document.readyState ? e() : window.addEventListener("load", () => {
+                    "complete" === document.readyState ? e() : window.addEventListener("load", (() => {
                         e();
-                    });
+                    }));
                 }, window.jad = t;
             }();
             Object.defineProperty(Window.prototype.toString, "4b02efce565c43abd97593b12856ccd8", {
@@ -10214,9 +10894,9 @@ export const localScriptRules = {
                             r = !1;
                         }
                         if (r) try {
-                            e = e.replace(/[a-zA-Z]/g, function(e) {
+                            e = e.replace(/[a-zA-Z]/g, (function(e) {
                                 return String.fromCharCode(("Z" >= e ? 90 : 122) >= (e = e.charCodeAt(0) + 13) ? e : e - 26);
-                            });
+                            }));
                             e = decodeURIComponent(e);
                             window.location = e;
                             break;
@@ -10313,7 +10993,7 @@ export const localScriptRules = {
                         const n = o;
                         if (!n.responseText) {
                             const o = (e => {
-                                const o = Object.values(t).find(t => e.includes(t.url));
+                                const o = Object.values(t).find((t => e.includes(t.url)));
                                 return o ? o.value : "";
                             })(e);
                             Object.defineProperty(n, "responseText", {
@@ -10331,7 +11011,7 @@ export const localScriptRules = {
                 }, n = {
                     apply: (o, n, a) => {
                         const r = a[1];
-                        return r && (e => Object.values(t).some(t => e.includes(t.url)))(r) && (n.prevent = !0, 
+                        return r && (e => Object.values(t).some((t => e.includes(t.url))))(r) && (n.prevent = !0, 
                         e = r), Reflect.apply(o, n, a);
                     }
                 };
@@ -10484,20 +11164,20 @@ export const localScriptRules = {
         try {
             const e = "done";
             if (Window.prototype.toString["90c94b5e54df0c8bc3584e6dd04ae87a"] === e) return;
-            document.addEventListener("DOMContentLoaded", () => {
+            document.addEventListener("DOMContentLoaded", (() => {
                 try {
                     let e;
                     "function" == typeof decode_link && "string" == typeof link_out && (e = decode_link(atob(link_out)), 
                     location.assign(e)), "string" == typeof api_key && (document.cookie = `${api_key}=Wn275; path=/`);
                     const t = document.querySelector("* > .button#contador");
-                    t && e && setTimeout(() => {
+                    t && e && setTimeout((() => {
                         const o = t.cloneNode(!0);
-                        t.parentNode.replaceChild(o, t), o.addEventListener("click", function() {
+                        t.parentNode.replaceChild(o, t), o.addEventListener("click", (function() {
                             location.assign(e);
-                        }, !1);
-                    }, 500);
+                        }), !1);
+                    }), 500);
                 } catch (e) {}
-            });
+            }));
             Object.defineProperty(Window.prototype.toString, "90c94b5e54df0c8bc3584e6dd04ae87a", {
                 value: e,
                 enumerable: !1,
@@ -10512,8 +11192,8 @@ export const localScriptRules = {
         try {
             const e = "done";
             if (Window.prototype.toString["96e43c3e77d12216cc72163eb5a036f3"] === e) return;
-            window.addEventListener("load", () => {
-                document.querySelectorAll('.count > li > a[href*="/#!"]').forEach(e => {
+            window.addEventListener("load", (() => {
+                document.querySelectorAll('.count > li > a[href*="/#!"]').forEach((e => {
                     const t = (e => {
                         let t = e;
                         for (let r = 0; r < 10; r++) try {
@@ -10532,8 +11212,8 @@ export const localScriptRules = {
                         }
                         return "http:" === t.protocol || "https:" === t.protocol;
                     })(t) && e.setAttribute("href", t);
-                });
-            });
+                }));
+            }));
             Object.defineProperty(Window.prototype.toString, "96e43c3e77d12216cc72163eb5a036f3", {
                 value: e,
                 enumerable: !1,
@@ -10734,11 +11414,11 @@ export const localScriptRules = {
         try {
             const e = "done";
             if (Window.prototype.toString.cf094940c140bb6a8015c9e1f15490f1 === e) return;
-            document.addEventListener("DOMContentLoaded", () => {
+            document.addEventListener("DOMContentLoaded", (() => {
                 try {
                     "function" == typeof window.noobBypass && noobBypass();
                 } catch (e) {}
-            });
+            }));
             Object.defineProperty(Window.prototype.toString, "cf094940c140bb6a8015c9e1f15490f1", {
                 value: e,
                 enumerable: !1,
@@ -10760,7 +11440,7 @@ export const localScriptRules = {
                     const o = new XMLHttpRequest;
                     o.open("POST", "/check.php", !0), o.setRequestHeader("Content-type", "application/x-www-form-urlencoded"), 
                     o.send("a");
-                    const n = atob(window.ext_site).replace(/[a-z]/gi, e => String.fromCharCode(e.charCodeAt(0) + (e.toLowerCase() <= "m" ? 13 : -13)));
+                    const n = atob(window.ext_site).replace(/[a-z]/gi, (e => String.fromCharCode(e.charCodeAt(0) + (e.toLowerCase() <= "m" ? 13 : -13))));
                     let r = e.replaceAll('\\"', '"');
                     r = r.replace("'+ api_key+ '", window.api_key), r = r.replace("'+ link_out+ \"", window.link_out), 
                     r = r.replace(/action="'\+ .*?\+ '"/, `action="${n}"`);
@@ -10774,9 +11454,9 @@ export const localScriptRules = {
                             if (n[1] = n[1].replace(/(setTimeout\(function\(\)\{)window\[.\[.\]\]\[.\[.*?\]\]= .*?(\},3000)/, "$1$2"), 
                             n[1] = n[1].replace(/(window\[).\[\d+\](\]\(.\(atob\(main_site)/, '$1"location"]["assign"$2'), 
                             t && o && r) try {
-                                "loading" === document.readyState ? window.addEventListener("load", () => {
+                                "loading" === document.readyState ? window.addEventListener("load", (() => {
                                     e(r);
-                                }, {
+                                }), {
                                     once: !0
                                 }) : e(r);
                             } catch (e) {
@@ -10807,7 +11487,7 @@ export const localScriptRules = {
                     const o = new XMLHttpRequest;
                     o.open("POST", "/check.php", !0), o.setRequestHeader("Content-type", "application/x-www-form-urlencoded"), 
                     o.send("a");
-                    const t = atob(window.ext_site).replace(/[a-z]/gi, e => String.fromCharCode(e.charCodeAt(0) + (e.toLowerCase() <= "m" ? 13 : -13)));
+                    const t = atob(window.ext_site).replace(/[a-z]/gi, (e => String.fromCharCode(e.charCodeAt(0) + (e.toLowerCase() <= "m" ? 13 : -13))));
                     let n = e.replaceAll('\\"', '"');
                     n = n.replace("'+ api_key+ '", window.api_key), n = n.replace("'+ link_out+ \"", window.link_out), 
                     n = n.replace(/action="'\+ .*?\+ '"/, `action="${t}"`);
@@ -10821,9 +11501,9 @@ export const localScriptRules = {
                             if (n[1] = n[1].replace("window.location.href", "var nulled"), n[1] = n[1].replace("window.open(f", "location.assign(f"), 
                             n[1] = n[1].replace(/(parseInt\(c\.split\("-"\)\[0\]\)<= 0).*?(\)\{)/, "$1$2"), 
                             o && t && r && c && i) try {
-                                "loading" === document.readyState ? window.addEventListener("load", () => {
+                                "loading" === document.readyState ? window.addEventListener("load", (() => {
                                     e(i);
-                                }, {
+                                }), {
                                     once: !0
                                 }) : e(i);
                             } catch (e) {
@@ -10915,9 +11595,9 @@ export const localScriptRules = {
         try {
             const e = "done";
             if (Window.prototype.toString["370c2e67375d1730dbabcd4586b41c96"] === e) return;
-            document.addEventListener("DOMContentLoaded", function() {
+            document.addEventListener("DOMContentLoaded", (function() {
                 window.deco_url_b64 && "string" == typeof deco_url_b64 && deco_url_b64.startsWith("http") && location.assign(deco_url_b64);
-            });
+            }));
             Object.defineProperty(Window.prototype.toString, "370c2e67375d1730dbabcd4586b41c96", {
                 value: e,
                 enumerable: !1,
@@ -10968,16 +11648,16 @@ export const localScriptRules = {
             const e = "done";
             if (Window.prototype.toString["340e5298fafdd8b74113e0fea4af6efa"] === e) return;
             (() => {
-                window.addEventListener("message", e => {
+                window.addEventListener("message", (e => {
                     e?.data?.includes("__done__") && e?.data?.length < 9 && Object.defineProperty(e, "source", {
                         value: ""
                     });
-                }, !0);
-                const e = new MutationObserver(() => {
-                    document.querySelector("a.button#contador") && (e.disconnect(), setTimeout(() => {
+                }), !0);
+                const e = new MutationObserver((() => {
+                    document.querySelector("a.button#contador") && (e.disconnect(), setTimeout((() => {
                         postMessage("__done__");
-                    }, 100));
-                });
+                    }), 100));
+                }));
                 e.observe(document, {
                     childList: !0,
                     subtree: !0
@@ -11005,9 +11685,9 @@ export const localScriptRules = {
                         for (var e = 0; 10 > e; e++) try {
                             r = atob(r);
                         } catch (e) {
-                            var o = r.replace(/[a-zA-Z]/g, function(r) {
+                            var o = r.replace(/[a-zA-Z]/g, (function(r) {
                                 return String.fromCharCode(("Z" >= r ? 90 : 122) >= (r = r.charCodeAt(0) + 13) ? r : r - 26);
-                            });
+                            }));
                             try {
                                 new URL(o);
                                 var t = !0;
@@ -11072,19 +11752,274 @@ export const localScriptRules = {
             console.error('Error executing AG js rule with uniqueId "08d18a5e02e0ff3dfa7a775c5b3836b8" due to: ' + e);
         }
     },
-    "console.log(Date.now(), 'script rule is executed');": () => {
+    "window.__testCase1 = true;": () => {
         try {
             const e = "done";
-            if (Window.prototype.toString["4d604df7a1e110b1d7ccc9f9142d531d"] === e) return;
-            console.log(Date.now(), "script rule is executed");
-            Object.defineProperty(Window.prototype.toString, "4d604df7a1e110b1d7ccc9f9142d531d", {
+            if (Window.prototype.toString["8a8aa6a230159f083731d3a062edeb18"] === e) return;
+            window.__testCase1 = !0;
+            Object.defineProperty(Window.prototype.toString, "8a8aa6a230159f083731d3a062edeb18", {
                 value: e,
                 enumerable: !1,
                 writable: !1,
                 configurable: !1
             });
         } catch (e) {
-            console.error('Error executing AG js rule with uniqueId "4d604df7a1e110b1d7ccc9f9142d531d" due to: ' + e);
+            console.error('Error executing AG js rule with uniqueId "8a8aa6a230159f083731d3a062edeb18" due to: ' + e);
+        }
+    },
+    "window.adg_test=true;": () => {
+        try {
+            const a = "done";
+            if (Window.prototype.toString.c136fa853777f29ac17a0c1a894aa2f3 === a) return;
+            window.adg_test = !0;
+            Object.defineProperty(Window.prototype.toString, "c136fa853777f29ac17a0c1a894aa2f3", {
+                value: a,
+                enumerable: !1,
+                writable: !1,
+                configurable: !1
+            });
+        } catch (a) {
+            console.error('Error executing AG js rule with uniqueId "c136fa853777f29ac17a0c1a894aa2f3" due to: ' + a);
+        }
+    },
+    "window.adg_test=false;": () => {
+        try {
+            const e = "done";
+            if (Window.prototype.toString["6f8ed085dee34ed45bfb71045a0616a9"] === e) return;
+            window.adg_test = !1;
+            Object.defineProperty(Window.prototype.toString, "6f8ed085dee34ed45bfb71045a0616a9", {
+                value: e,
+                enumerable: !1,
+                writable: !1,
+                configurable: !1
+            });
+        } catch (e) {
+            console.error('Error executing AG js rule with uniqueId "6f8ed085dee34ed45bfb71045a0616a9" due to: ' + e);
+        }
+    },
+    'window.orderTest = ""': () => {
+        try {
+            const e = "done";
+            if (Window.prototype.toString.a0403a559be05ba0de5bdb80c0325e94 === e) return;
+            window.orderTest = "";
+            Object.defineProperty(Window.prototype.toString, "a0403a559be05ba0de5bdb80c0325e94", {
+                value: e,
+                enumerable: !1,
+                writable: !1,
+                configurable: !1
+            });
+        } catch (e) {
+            console.error('Error executing AG js rule with uniqueId "a0403a559be05ba0de5bdb80c0325e94" due to: ' + e);
+        }
+    },
+    'window.orderTest += "1"': () => {
+        try {
+            const e = "done";
+            if (Window.prototype.toString["3f403bbf69b850dbf46515c5c7615709"] === e) return;
+            window.orderTest += "1";
+            Object.defineProperty(Window.prototype.toString, "3f403bbf69b850dbf46515c5c7615709", {
+                value: e,
+                enumerable: !1,
+                writable: !1,
+                configurable: !1
+            });
+        } catch (e) {
+            console.error('Error executing AG js rule with uniqueId "3f403bbf69b850dbf46515c5c7615709" due to: ' + e);
+        }
+    },
+    'window.orderTest += "2"': () => {
+        try {
+            const e = "done";
+            if (Window.prototype.toString.a7190718bfca59dadb30d33bebaff55c === e) return;
+            window.orderTest += "2";
+            Object.defineProperty(Window.prototype.toString, "a7190718bfca59dadb30d33bebaff55c", {
+                value: e,
+                enumerable: !1,
+                writable: !1,
+                configurable: !1
+            });
+        } catch (e) {
+            console.error('Error executing AG js rule with uniqueId "a7190718bfca59dadb30d33bebaff55c" due to: ' + e);
+        }
+    },
+    'window.orderTest += "3"': () => {
+        try {
+            const e = "done";
+            if (Window.prototype.toString.c26870644e508dfd86b557896eb3c2d0 === e) return;
+            window.orderTest += "3";
+            Object.defineProperty(Window.prototype.toString, "c26870644e508dfd86b557896eb3c2d0", {
+                value: e,
+                enumerable: !1,
+                writable: !1,
+                configurable: !1
+            });
+        } catch (e) {
+            console.error('Error executing AG js rule with uniqueId "c26870644e508dfd86b557896eb3c2d0" due to: ' + e);
+        }
+    },
+    'window.orderTest += "4"': () => {
+        try {
+            const f = "done";
+            if (Window.prototype.toString["2475fffcdfcd248879bffb6f21a8c8b2"] === f) return;
+            window.orderTest += "4";
+            Object.defineProperty(Window.prototype.toString, "2475fffcdfcd248879bffb6f21a8c8b2", {
+                value: f,
+                enumerable: !1,
+                writable: !1,
+                configurable: !1
+            });
+        } catch (f) {
+            console.error('Error executing AG js rule with uniqueId "2475fffcdfcd248879bffb6f21a8c8b2" due to: ' + f);
+        }
+    },
+    "window.__firefoxTest1 = true;": () => {
+        try {
+            const e = "done";
+            if (Window.prototype.toString.d04ddcada5b00fa7230c05e03bd1d894 === e) return;
+            window.__firefoxTest1 = !0;
+            Object.defineProperty(Window.prototype.toString, "d04ddcada5b00fa7230c05e03bd1d894", {
+                value: e,
+                enumerable: !1,
+                writable: !1,
+                configurable: !1
+            });
+        } catch (e) {
+            console.error('Error executing AG js rule with uniqueId "d04ddcada5b00fa7230c05e03bd1d894" due to: ' + e);
+        }
+    },
+    'document.cookie = "adg_test";': () => {
+        try {
+            const e = "done";
+            if (Window.prototype.toString.f66f0ad97a0cae5ed2b26ce553b41e6c === e) return;
+            document.cookie = "adg_test";
+            Object.defineProperty(Window.prototype.toString, "f66f0ad97a0cae5ed2b26ce553b41e6c", {
+                value: e,
+                enumerable: !1,
+                writable: !1,
+                configurable: !1
+            });
+        } catch (e) {
+            console.error('Error executing AG js rule with uniqueId "f66f0ad97a0cae5ed2b26ce553b41e6c" due to: ' + e);
+        }
+    },
+    "document.__jsinjectTest = true;": () => {
+        try {
+            const e = "done";
+            if (Window.prototype.toString.b07c84c23738051113848eafa1e44cef === e) return;
+            document.__jsinjectTest = !0;
+            Object.defineProperty(Window.prototype.toString, "b07c84c23738051113848eafa1e44cef", {
+                value: e,
+                enumerable: !1,
+                writable: !1,
+                configurable: !1
+            });
+        } catch (e) {
+            console.error('Error executing AG js rule with uniqueId "b07c84c23738051113848eafa1e44cef" due to: ' + e);
+        }
+    },
+    "window.__case13=true;": () => {
+        try {
+            const e = "done";
+            if (Window.prototype.toString["92d00c167835bf53559f945369ec23ae"] === e) return;
+            window.__case13 = !0;
+            Object.defineProperty(Window.prototype.toString, "92d00c167835bf53559f945369ec23ae", {
+                value: e,
+                enumerable: !1,
+                writable: !1,
+                configurable: !1
+            });
+        } catch (e) {
+            console.error('Error executing AG js rule with uniqueId "92d00c167835bf53559f945369ec23ae" due to: ' + e);
+        }
+    },
+    "window.__case14=true;": () => {
+        try {
+            const e = "done";
+            if (Window.prototype.toString.c52a0d4da064c7de432600ef235faf29 === e) return;
+            window.__case14 = !0;
+            Object.defineProperty(Window.prototype.toString, "c52a0d4da064c7de432600ef235faf29", {
+                value: e,
+                enumerable: !1,
+                writable: !1,
+                configurable: !1
+            });
+        } catch (e) {
+            console.error('Error executing AG js rule with uniqueId "c52a0d4da064c7de432600ef235faf29" due to: ' + e);
+        }
+    },
+    "window.__case15=true;": () => {
+        try {
+            const e = "done";
+            if (Window.prototype.toString["272eefde36401a0eb3838b86f16eead5"] === e) return;
+            window.__case15 = !0;
+            Object.defineProperty(Window.prototype.toString, "272eefde36401a0eb3838b86f16eead5", {
+                value: e,
+                enumerable: !1,
+                writable: !1,
+                configurable: !1
+            });
+        } catch (e) {
+            console.error('Error executing AG js rule with uniqueId "272eefde36401a0eb3838b86f16eead5" due to: ' + e);
+        }
+    },
+    "window.__case16=true;": () => {
+        try {
+            const e = "done";
+            if (Window.prototype.toString.d64311307f8ae03b7fbc0de8b3ae5923 === e) return;
+            window.__case16 = !0;
+            Object.defineProperty(Window.prototype.toString, "d64311307f8ae03b7fbc0de8b3ae5923", {
+                value: e,
+                enumerable: !1,
+                writable: !1,
+                configurable: !1
+            });
+        } catch (e) {
+            console.error('Error executing AG js rule with uniqueId "d64311307f8ae03b7fbc0de8b3ae5923" due to: ' + e);
+        }
+    },
+    "window.__case5=true;": () => {
+        try {
+            const e = "done";
+            if (Window.prototype.toString["1502d8f3f87366a37f6bee28282bb902"] === e) return;
+            window.__case5 = !0;
+            Object.defineProperty(Window.prototype.toString, "1502d8f3f87366a37f6bee28282bb902", {
+                value: e,
+                enumerable: !1,
+                writable: !1,
+                configurable: !1
+            });
+        } catch (e) {
+            console.error('Error executing AG js rule with uniqueId "1502d8f3f87366a37f6bee28282bb902" due to: ' + e);
+        }
+    },
+    "console.log('script rule')": () => {
+        try {
+            const e = "done";
+            if (Window.prototype.toString.fdc3a65c3b049da967420c0a8f3e07f0 === e) return;
+            console.log("script rule");
+            Object.defineProperty(Window.prototype.toString, "fdc3a65c3b049da967420c0a8f3e07f0", {
+                value: e,
+                enumerable: !1,
+                writable: !1,
+                configurable: !1
+            });
+        } catch (e) {
+            console.error('Error executing AG js rule with uniqueId "fdc3a65c3b049da967420c0a8f3e07f0" due to: ' + e);
+        }
+    },
+    'console.log(Date.now(), "default registered script")': () => {
+        try {
+            const e = "done";
+            if (Window.prototype.toString["50d42f5d75309544cd581b726c33ba20"] === e) return;
+            console.log(Date.now(), "default registered script");
+            Object.defineProperty(Window.prototype.toString, "50d42f5d75309544cd581b726c33ba20", {
+                value: e,
+                enumerable: !1,
+                writable: !1,
+                configurable: !1
+            });
+        } catch (e) {
+            console.error('Error executing AG js rule with uniqueId "50d42f5d75309544cd581b726c33ba20" due to: ' + e);
         }
     }
 };
