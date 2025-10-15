@@ -9,7 +9,7 @@
     "build:prod:edge": "webpack --config webpack/webpack.config.js --mode=production --env BROWSER=edge",
     "build:dev:all": "npm run build:dev:chrome && npm run build:dev:edge",
     "build:prod:all": "npm run build:prod:chrome && npm run build:prod:edge",
-    "sync-rules": "tsx tools/sync-rules.ts",
+    "sync-rules": "npm update @adguard/dnr-rulesets && tsx tools/sync-rules.ts",
     "disclaimer": "npm run lint | tsx tools/add-disclaimer.ts",
     "test": "jest",
     "lint": "npx eslint ./",
