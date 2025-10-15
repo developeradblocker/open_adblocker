@@ -50,7 +50,7 @@
     "babel-loader": "^10.0.0",
     "css-loader": "^7.1.2",
     "dotenv-webpack": "^8.1.1",
-    "eslint": "^9.31.0",
+    "eslint": "^9.37.0",
     "eslint-plugin-jsdoc": "^60.3.0",
     "eslint-plugin-vue": "^10.5.0",
     "filemanager-webpack-plugin": "^8.0.0",
