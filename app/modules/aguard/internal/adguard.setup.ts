@@ -48,6 +48,7 @@ const adGuardSetupAsync = async (): Promise<void> => {
   await tsWebExtension.initStorage()
   const config = await getConfiguration()
   await tsWebExtension.start(config)
+  setUpTsWebExtensionMessages(tsWebExtension)
   injections.push({
     key: AdGuardIdentifiers._config,
     use: config,
@@ -74,4 +75,19 @@ export const getConfiguration = async (): Promise<ConfigurationMV3> => {
   config.staticFiltersIds = await useInternalFilters().getEnabledFilters()
   config.settings.stealth.blockWebRTC = await useInternalWebRTC().getState()
   return config
+}
+
+/**
+ * To enable message handling from tsWebExtension content script
+ * @param tsWebExtension {TsWebExtension} - the TsWebExtension instance
+ */
+const setUpTsWebExtensionMessages = (tsWebExtension: TsWebExtension): void => {
+  const messageHandler = tsWebExtension.getMessageHandler()
+
+  chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    messageHandler(message, sender)
+      .then(res => sendResponse(res))
+
+    return true
+  })
 }
