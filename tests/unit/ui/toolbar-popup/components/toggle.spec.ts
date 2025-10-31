@@ -23,7 +23,7 @@ import { useAppStore } from '@/ui/toolbar-popup/store/app.store'
 import { useExternalAdBlocker } from '@/modules/ad-blocker/external/ad-blocker.setup'
 import { useUserActivity } from '@/modules/user-activity/external/utils'
 import { ClickEventToAction, ElementsUI } from '@/modules/user-activity/common/user-activity.types'
-import { ROUTE } from '@/ui/toolbar-popup/router/route-names'
+import { POPUP_ROUTE } from '@/ui/toolbar-popup/router/route-names'
 
 jest.mock('@/ui/toolbar-popup/store/app.store')
 jest.mock('@/modules/user-activity/external/utils')
@@ -70,7 +70,7 @@ describe('Toggle.vue', () => {
     expect(clickMock).toHaveBeenCalledTimes(1)
     expect(clickMock).toHaveBeenCalledWith(ElementsUI.adblockerToggle, {
       to: ClickEventToAction.pause,
-      page: ROUTE.HOME
+      page: POPUP_ROUTE.HOME
     })
 
     expect(toggleMock).toHaveBeenCalledTimes(1)

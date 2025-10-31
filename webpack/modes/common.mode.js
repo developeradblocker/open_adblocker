@@ -67,6 +67,7 @@ export const commonMode = (env, mode) => {
     entry: {
       [`${buildPath}/service_worker`]: './app/service_worker/worker.ts',
       [`${buildPath}/popup/popup`]: './app/ui/toolbar-popup/popup.ts',
+      [`${buildPath}/settings/settings`]: './app/ui/settings/settings.ts',
       [`${buildPath}/content/content-script`]: './node_modules/@adguard/tswebextension/dist/content-script.mv3.js'
     },
     module: {

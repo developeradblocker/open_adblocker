@@ -19,41 +19,26 @@
 import 'reflect-metadata'
 import { createApp } from 'vue'
 
-import { POPUP_ROUTE } from '@/ui/toolbar-popup/router/route-names'
-import { createRouter, createWebHashHistory, RouteLocationNormalized, RouterOptions } from 'vue-router'
+import { createRouter, createWebHashHistory, RouterOptions } from 'vue-router'
 import App from './app.vue'
+import './style.less'
 import { createPinia } from 'pinia'
-import { routes } from './router/routes'
 import { dispatcher, setupWorker } from '@/utils/setup-worker'
 import { logger } from '@/utils/logger/logger'
 import { setupExternalPortChannel } from '@/modules/port/external/port.setup'
 import InlineSvg from 'vue-inline-svg'
-import './style.less'
-import { v4 as uuidv4 } from 'uuid'
-import Popper from 'vue3-popper'
 
-import { setupExternalAdBlocker } from '@/modules/ad-blocker/external/ad-blocker.setup'
-import { setupExternalApp } from '@/modules/app/external/app.setup'
-import { setupExternalUserActivity } from '@/modules/user-activity/external/user-activity.setup'
-import { useUserActivity } from '@/modules/user-activity/external/utils'
-import { PageUI } from '@/modules/user-activity/common/user-activity.types'
-import { setupExternalWebRTC } from '@/modules/features/web-rtc/external/web-rtc.setup'
-import { setupExternalFilters } from '@/modules/filters/external/filters.setup'
+import { routes } from '@/ui/settings/router/routes'
 
 /**
- * Popup Worker (PW)
+ * Settings Worker (PW)
  */
-setupWorker('PW')
-setupExternalPortChannel({ name: 'PW' })
-setupExternalAdBlocker()
-setupExternalFilters()
-setupExternalUserActivity(uuidv4())
-setupExternalWebRTC()
-setupExternalApp();
+setupWorker('Settings')
+setupExternalPortChannel({ name: 'Settings' });
 
 (async (): Promise<void> => {
   await dispatcher().work()
-  logger.info('Popup started...')
+  logger.info('Settings started...')
   const routerOpts: RouterOptions = {
     history: createWebHashHistory(),
     routes
@@ -62,14 +47,7 @@ setupExternalApp();
   const router = createRouter(routerOpts)
   app.use(router)
 
-  const activity = useUserActivity()
-  router.afterEach((to: RouteLocationNormalized): void => {
-    activity.visitPage(to.name as PageUI)
-  })
-
   app.use(createPinia())
   app.component('BaseSvg', InlineSvg)
-  app.component('Popper', Popper)
-  app.mount('#toolbar-popup-app')
-  activity.visitPage(POPUP_ROUTE.INIT)
+  app.mount('#settings-app')
 })()

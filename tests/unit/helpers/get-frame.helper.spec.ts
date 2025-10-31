@@ -30,7 +30,7 @@ describe('getFrameUrlHelper', () => {
   it('should return the frame URL when frame is found', async () => {
     const expectedUrl = 'https://example.com'
     const frame = { url: expectedUrl } as GetFrameResultDetails
-    jest.mocked(chrome.webNavigation.getFrame).mockResolvedValueOnce(frame)
+    jest.mocked(chrome.webNavigation.getFrame).mockResolvedValueOnce(frame as never)
 
     const result = await getFrameUrlHelper(1, 2)
     expect(result).toBe(expectedUrl)
@@ -42,7 +42,7 @@ describe('getFrameUrlHelper', () => {
   })
 
   it('should return undefined when no frame is found', async () => {
-    jest.mocked(chrome.webNavigation.getFrame).mockResolvedValueOnce(undefined)
+    jest.mocked(chrome.webNavigation.getFrame).mockResolvedValueOnce(undefined as never)
     const result = await getFrameUrlHelper(3, 4)
     expect(result).toBeUndefined()
     const expectedResult = {

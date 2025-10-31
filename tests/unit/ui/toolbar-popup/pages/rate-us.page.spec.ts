@@ -19,7 +19,7 @@ import { type VueWrapper } from '@vue/test-utils/dist/vueWrapper'
 import { shallowMount } from '@vue/test-utils'
 import TransparentStub from '../../../../helpers/TransparentStub'
 import RateUsPage from '@/ui/toolbar-popup/pages/rate-us.page.vue'
-import { ROUTE } from '@/ui/toolbar-popup/router/route-names'
+import { POPUP_ROUTE } from '@/ui/toolbar-popup/router/route-names'
 import { useRouter } from 'vue-router'
 import { useUserActivity } from '@/modules/user-activity/external/utils'
 import BaseButton from '@/ui/toolbar-popup/components/base-button.vue'
@@ -75,17 +75,17 @@ describe('RateUsPage.vue', () => {
   it('should navigate to home remind click', async () => {
     await wrapper.get('[data-test="reminder"]').trigger('click')
     expect(clickMock).toHaveBeenLastCalledWith(ElementsUI.rateUsReminder, {
-      page: ROUTE.RATE_US,
+      page: POPUP_ROUTE.RATE_US,
       to: ClickEventToAction.closePage
     })
-    expect(pushMock).toHaveBeenLastCalledWith({ name: ROUTE.HOME })
+    expect(pushMock).toHaveBeenLastCalledWith({ name: POPUP_ROUTE.HOME })
   })
 
   it('should open rate us on button click', async () => {
     await wrapper.getComponent(BaseButton).trigger('click')
     expect(clickMock).toHaveBeenLastCalledWith(ElementsUI.rateUsButton, {
       to: RATE_US_URL,
-      page: ROUTE.RATE_US
+      page: POPUP_ROUTE.RATE_US
     })
     expect(createMock).toHaveBeenCalledTimes(1)
     expect(createMock).toHaveBeenCalledWith({

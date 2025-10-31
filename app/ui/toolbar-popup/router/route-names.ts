@@ -16,7 +16,7 @@
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
 
-export enum ROUTE {
+export enum POPUP_ROUTE {
   HOME = 'HOME',
   INIT = 'INIT',
   RATE_US = 'RATE_US',

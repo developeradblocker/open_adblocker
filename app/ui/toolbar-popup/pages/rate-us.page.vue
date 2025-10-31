@@ -43,7 +43,7 @@
  */
 import PrimaryLayout from '@/ui/toolbar-popup/layouts/primary.layout.vue'
 import Header from '@/ui/toolbar-popup/components/header.vue'
-import { ROUTE } from '@/ui/toolbar-popup/router/route-names'
+import { POPUP_ROUTE } from '@/ui/toolbar-popup/router/route-names'
 import BaseButton from '@/ui/toolbar-popup/components/base-button.vue'
 import { RATE_US_URL } from '@/modules/rate-us/constants'
 import { browser } from '@/utils/env.constants'
@@ -57,7 +57,7 @@ const activity = useUserActivity()
 const openRateUs = async (): Promise<void> => {
   await activity.click(ElementsUI.rateUsButton, {
     to: RATE_US_URL,
-    page: ROUTE.RATE_US
+    page: POPUP_ROUTE.RATE_US
   })
   await chrome.tabs.create({
     url: RATE_US_URL
@@ -66,10 +66,10 @@ const openRateUs = async (): Promise<void> => {
 
 const onRemindClick = async (): Promise<void> => {
   await activity.click(ElementsUI.rateUsReminder, {
-    page: ROUTE.RATE_US,
+    page: POPUP_ROUTE.RATE_US,
     to: ClickEventToAction.closePage
   })
-  await $router.push({ name: ROUTE.HOME })
+  await $router.push({ name: POPUP_ROUTE.HOME })
 }
 
 </script>

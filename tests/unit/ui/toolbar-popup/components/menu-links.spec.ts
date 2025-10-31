@@ -18,7 +18,7 @@
 import { type VueWrapper } from '@vue/test-utils/dist/vueWrapper'
 import { shallowMount } from '@vue/test-utils'
 import MenuLinks from '@/ui/toolbar-popup/components/menu-links.vue'
-import { ROUTE } from '@/ui/toolbar-popup/router/route-names'
+import { POPUP_ROUTE } from '@/ui/toolbar-popup/router/route-names'
 import { useUserActivity } from '@/modules/user-activity/external/utils'
 import { ElementsUI } from '@/modules/user-activity/common/user-activity.types'
 
@@ -67,7 +67,7 @@ describe('MenuLinks.vue', () => {
     await wrapper.get('[data-test="link"]').trigger('click')
     expect(clickMock).toHaveBeenCalledTimes(1)
     expect(clickMock).toHaveBeenCalledWith(ElementsUI.about, {
-      page: ROUTE.MENU,
+      page: POPUP_ROUTE.MENU,
       to: url
     })
 

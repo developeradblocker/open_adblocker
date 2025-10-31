@@ -46,6 +46,10 @@ export const fileManagerPlugin = ({ distName, filters, mode }) => {
             destination: 'build/popup/index.html'
           },
           {
+            source: 'app/ui/settings/index.html',
+            destination: 'build/settings/index.html'
+          },
+          {
             source: './app/ui/shared/icons',
             destination: './build/icons'
           },

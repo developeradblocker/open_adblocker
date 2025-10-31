@@ -16,32 +16,7 @@
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { type RouteRecordRaw } from 'vue-router'
-import { POPUP_ROUTE } from '@/ui/toolbar-popup/router/route-names'
-import HomePage from '@/ui/toolbar-popup/pages/home.page.vue'
-import MenuPage from '@/ui/toolbar-popup/pages/menu.page.vue'
-import RateUsPage from '@/ui/toolbar-popup/pages/rate-us.page.vue'
-import InitPage from '@/ui/toolbar-popup/pages/init.page.vue'
-
-export const routes: RouteRecordRaw[] = [
-  {
-    name: POPUP_ROUTE.INIT,
-    path: '/',
-    component: InitPage
-  },
-  {
-    name: POPUP_ROUTE.HOME,
-    path: '/home',
-    component: HomePage
-  },
-  {
-    name: POPUP_ROUTE.MENU,
-    path: '/menu',
-    component: MenuPage
-  },
-  {
-    name: POPUP_ROUTE.RATE_US,
-    path: '/rate-us',
-    component: RateUsPage
-  }
-]
+export enum SETTINGS_ROUTE {
+  GENERAL = 'GENERAL',
+  FILTERS = 'FILTERS'
+}

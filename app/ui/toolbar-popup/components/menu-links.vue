@@ -39,7 +39,7 @@
 
 import { ElementsUI } from '@/modules/user-activity/common/user-activity.types'
 import { useUserActivity } from '@/modules/user-activity/external/utils'
-import { ROUTE } from '@/ui/toolbar-popup/router/route-names'
+import { POPUP_ROUTE } from '@/ui/toolbar-popup/router/route-names'
 
 export interface MenuLink {
   icon: string
@@ -72,7 +72,7 @@ const LINKS: MenuLink[] = [
 const activity = useUserActivity()
 const onLinkClick = async (link: MenuLink): Promise<void> => {
   await activity.click(link.element, {
-    page: ROUTE.MENU,
+    page: POPUP_ROUTE.MENU,
     to: link.url
   })
   if (link.url) {
