@@ -6,13 +6,21 @@
         DNR rulesets v{{dnrVersion}}
       </p>
       <div class="about__links">
-        <span @click="openPolicy" class="about__link">Privacy Policy</span>
-        <span @click="openTerms" class="about__link">Terms and Conditions</span>
+        <span
+          data-test="policy"
+          @click="openPolicy" class="about__link">Privacy Policy</span>
+        <span
+          data-test="terms"
+          @click="openTerms" class="about__link">Terms and Conditions</span>
       </div>
     </div>
     <div class="about__actions">
-      <BaseButton label="Github" :type="BaseButtonType.secondary" @click="openGithub" icon="link" />
-      <BaseButton label="Website" :type="BaseButtonType.secondary" @click="openWebsite" icon="link" />
+      <BaseButton
+        data-test="github"
+        label="Github" :type="BaseButtonType.secondary" @click="openGithub" icon="link" />
+      <BaseButton
+        data-test="website"
+        label="Website" :type="BaseButtonType.secondary" @click="openWebsite" icon="link" />
     </div>
   </BaseBox>
 </template>

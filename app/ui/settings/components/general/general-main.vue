@@ -4,8 +4,12 @@
     <p class="main__description">Import and export settings between browsers or accounts for a quick configuration.</p>
 
     <div class="main__actions">
-      <BaseButton label="Import settings" :type="BaseButtonType.secondary" @click="onImport"/>
-      <BaseButton label="Export settings" :type="BaseButtonType.secondary" @click="onExport"/>
+      <BaseButton
+        data-test="import"
+        label="Import settings" :type="BaseButtonType.secondary" @click="onImport"/>
+      <BaseButton
+        data-test="export"
+        label="Export settings" :type="BaseButtonType.secondary" @click="onExport"/>
     </div>
 
     <p class="main__validation-error" v-if="showError">
@@ -15,8 +19,12 @@
     <div class="main__separator" />
 
     <div class="main__cards">
-      <BaseCard label="Report a bug" icon="bug" class="main__card" @click="onReportBugClicked" />
-      <BaseCard label="Share feedback" icon="rate" class="main__card" @click="onRateUsClicked" />
+      <BaseCard
+        data-test="report"
+        label="Report a bug" icon="bug" class="main__card" @click="onReportBugClicked" />
+      <BaseCard
+        data-test="rate"
+        label="Share feedback" icon="rate" class="main__card" @click="onRateUsClicked" />
     </div>
   </BaseBox>
 </template>

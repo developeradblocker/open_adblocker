@@ -22,7 +22,6 @@ import { createApp } from 'vue'
 import { createRouter, createWebHashHistory, RouterOptions } from 'vue-router'
 import App from './app.vue'
 import './style.less'
-import { createPinia } from 'pinia'
 import { dispatcher, setupWorker } from '@/utils/setup-worker'
 import { logger } from '@/utils/logger/logger'
 import { setupExternalPortChannel } from '@/modules/port/external/port.setup'
@@ -47,7 +46,6 @@ setupExternalPortChannel({ name: 'Settings' });
   const router = createRouter(routerOpts)
   app.use(router)
 
-  app.use(createPinia())
   app.component('BaseSvg', InlineSvg)
   app.mount('#settings-app')
 })()
