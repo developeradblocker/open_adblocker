@@ -15,8 +15,24 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-export const WEB_PAGE_LINK = 'https://openadblocker.com/'
-export const GITHUB_LINK = 'https://github.com/developeradblocker/open_adblocker'
-export const PRIVACY_POLICY_LINK = `${WEB_PAGE_LINK}privacy-policy/`
-export const TERMS_LINK = `${GITHUB_LINK}?tab=readme-ov-file#open-ad-blocker`
-export const SUPPORT_EMAIL = 'openadblockerdeveloper@gmail.com'
+import { injectable } from '@/utils/di/di.types'
+import { useExternalPort } from '@/modules/port/external/port.setup'
+import { ExternalPortChannel } from '@/modules/port/external/port.types'
+import { Settings, SettingsInterface } from '@/modules/settings/common/settings.types'
+import { GetSettingsMessage, SettingsMessages } from '@/modules/settings/common/settings.messages'
+
+@injectable()
+export class SettingsService implements SettingsInterface {
+  private readonly port: ExternalPortChannel
+  constructor () {
+    this.port = useExternalPort()
+  }
+
+  async get (): Promise<Settings> {
+    const message: GetSettingsMessage = {
+      type: SettingsMessages.get
+    }
+
+    return await this.port.sendMessage<Settings>(message)
+  }
+}

@@ -55,6 +55,9 @@ import BaseButton from '@/ui/shared/components/button/base-button.vue'
 import { BaseButtonType } from '@/ui/shared/components/button/base-button.types'
 import BaseCard from '@/ui/settings/components/base/base-card.vue'
 import { RATE_US_URL } from '@/modules/rate-us/constants'
+import { exportData, ExportTypes } from '@/ui/settings/utils/export'
+import { SUPPORT_EMAIL } from '@/ui/shared/constants'
+import {getVersion} from "@/ui/settings/utils/get-version";
 
 const showError = ref(false)
 
@@ -65,15 +68,18 @@ const onRateUsClicked = async (): Promise<void> => {
 }
 
 const onExport = async (): Promise<void> => {
-
+  showError.value = false
+  await exportData(ExportTypes.Settings)
 }
 
 const onImport = async (): Promise<void> => {
-  showError.value = !showError.value
+  showError.value = false
 }
 
 const onReportBugClicked = async (): Promise<void> => {
-
+  await chrome.tabs.create({
+    url: `mailto:${SUPPORT_EMAIL}?subject=OpenADB issue report&body=Version: ${getVersion()} %0D%0A %0D%0A Please describe your problem and steps to reproduce it`
+  })
 }
 </script>
 
