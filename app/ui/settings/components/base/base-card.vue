@@ -1,7 +1,9 @@
 <template>
-  <div class="general-page">
-    <GeneralMain class="general-page__main" />
-    <GeneralAbout />
+  <div class="base-card">
+    <div class="base-card__content">
+      <BaseSvg :src="`../icons/${icon}.svg`" class="base-card__icon"/>
+      <p class="base-card__label">{{ label }}</p>
+    </div>
   </div>
 </template>
 
@@ -24,12 +26,43 @@
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import GeneralMain from '@/ui/settings/components/general/general-main.vue'
-import GeneralAbout from '@/ui/settings/components/general/general-about.vue'
+defineProps<{
+  label: string
+  icon: string
+}>()
 </script>
 
 <style scoped lang="less">
-.general-page__main {
-  margin-bottom: 24px;
+.base-card {
+  padding: 32px;
+  height: 130px;
+  text-align: center;
+  border: 1px solid #C3D5FF;
+  border-radius: 12px;
+  background: #DEE9FF80;
+  cursor: pointer;
+
+  &:hover {
+    background: #DEE9FF;
+  }
+}
+
+.base-card__content {
+  margin: auto;
+}
+
+.base-card__icon {
+  margin-bottom: 14px;
+  width: 32px;
+  height: 32px;
+  fill: var(--secondary-color);
+}
+
+.base-card__label {
+  margin: 0;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 24px;
+  color: #4A465D;
 }
 </style>

@@ -1,6 +1,11 @@
 <template>
-  <div class="filters-page">
-    filters page
+  <div class="filters-page filters">
+    <BaseBox with-header>
+      <h3 class="filters__title">Filters</h3>
+      <p class="filters__description">Adjust your preferred settings for customised protection.</p>
+
+      <div class="filters__separator" />
+    </BaseBox>
   </div>
 </template>
 
@@ -23,8 +28,30 @@
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
 
+import BaseBox from '@/ui/settings/components/base/base-box.vue'
 </script>
 
 <style scoped lang="less">
+.filters__title {
+  font-weight: 700;
+  font-size: 22px;
+  line-height: 28px;
+  color: #2D2A3C;
+  margin: 0 0 10px;
+}
+
+.filters__description {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 18px;
+  color: var(--primary-color);
+  margin-bottom: 24px;
+}
+
+.filters__separator {
+  margin: 28px 0;
+  height: 1px;
+  background: #D9D8DE;
+}
 
 </style>

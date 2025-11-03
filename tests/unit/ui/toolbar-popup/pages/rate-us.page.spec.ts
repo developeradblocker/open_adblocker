@@ -22,9 +22,9 @@ import RateUsPage from '@/ui/toolbar-popup/pages/rate-us.page.vue'
 import { POPUP_ROUTE } from '@/ui/toolbar-popup/router/route-names'
 import { useRouter } from 'vue-router'
 import { useUserActivity } from '@/modules/user-activity/external/utils'
-import BaseButton from '@/ui/toolbar-popup/components/base-button.vue'
 import { ClickEventToAction, ElementsUI } from '@/modules/user-activity/common/user-activity.types'
 import { RATE_US_URL } from '@/modules/rate-us/constants'
+import BaseButton from '@/ui/shared/components/button/base-button.vue'
 
 jest.mock('vue-router')
 jest.mock('@/modules/user-activity/external/utils')

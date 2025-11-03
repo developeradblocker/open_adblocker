@@ -17,7 +17,8 @@
  */
 import { type VueWrapper } from '@vue/test-utils/dist/vueWrapper'
 import { shallowMount } from '@vue/test-utils'
-import BaseButton from '@/ui/toolbar-popup/components/base-button.vue'
+import BaseButton from '@/ui/shared/components/button/base-button.vue'
+import { BaseButtonType } from '@/ui/shared/components/button/base-button.types'
 
 describe('BaseButton.vue', () => {
   let wrapper: VueWrapper<any>
@@ -29,6 +30,7 @@ describe('BaseButton.vue', () => {
 
     wrapper = shallowMount(BaseButton, {
       props: {
+        type: BaseButtonType.primary,
         label: 'BTN'
       }
     })

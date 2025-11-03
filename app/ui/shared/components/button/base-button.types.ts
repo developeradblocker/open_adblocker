@@ -1,11 +1,3 @@
-<template>
-  <div class="general-page">
-    <GeneralMain class="general-page__main" />
-    <GeneralAbout />
-  </div>
-</template>
-
-<script setup lang="ts">
 /**
  * @file
  * This file is part of Open Ad Blocker Browser Extension (https://github.com/developeradblocker/open_adblocker).
@@ -23,13 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-
-import GeneralMain from '@/ui/settings/components/general/general-main.vue'
-import GeneralAbout from '@/ui/settings/components/general/general-about.vue'
-</script>
-
-<style scoped lang="less">
-.general-page__main {
-  margin-bottom: 24px;
+export enum BaseButtonType {
+  primary = 'primary',
+  secondary = 'secondary'
 }
-</style>

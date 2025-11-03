@@ -1,7 +1,7 @@
 <template>
-  <div class="general-page">
-    <GeneralMain class="general-page__main" />
-    <GeneralAbout />
+  <div class="base-box" :class="{ 'base-box--with-header': withHeader }">
+    <SettingsHeader v-if="withHeader" />
+    <slot />
   </div>
 </template>
 
@@ -23,13 +23,21 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
+import SettingsHeader from '@/ui/settings/components/settings-header.vue'
 
-import GeneralMain from '@/ui/settings/components/general/general-main.vue'
-import GeneralAbout from '@/ui/settings/components/general/general-about.vue'
+defineProps<{withHeader?: boolean}>()
 </script>
 
 <style scoped lang="less">
-.general-page__main {
-  margin-bottom: 24px;
-}
+  .base-box {
+    position: relative;
+    background: #FFF;
+    padding: 24px 32px;
+    border-radius: 20px;
+    border: 1px solid #D9D8DE;
+  }
+
+  .base-box--with-header {
+    padding-top: 120px;
+  }
 </style>
