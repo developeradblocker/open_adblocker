@@ -22,7 +22,7 @@
   "dependencies": {
     "vue3-popper": "^1.5.0",
     "@adguard/agtree": "^3.2.4",
-    "@adguard/tsurlfilter": "^3.4.0",
+    "@adguard/tsurlfilter": "^3.4.7",
     "@adguard/tswebextension": "^3.2.11",
     "inversify": "^7.10.2",
     "pinia": "^3.0.3",
