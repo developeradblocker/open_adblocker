@@ -55,6 +55,7 @@ import {
   PageUI
 } from '@/modules/user-activity/common/user-activity.types'
 import { useRoute } from 'vue-router'
+import { WEB_PAGE_LINK } from '@/ui/shared/constants'
 
 const $emit = defineEmits(['menu-click'])
 const props = withDefaults(defineProps<{
@@ -71,10 +72,10 @@ const activity = useUserActivity()
 const $route = useRoute()
 const onLogoClick = async (): Promise<void> => {
   await activity.click(ElementsUI.logo, {
-    to: 'https://openadblocker.com/',
+    to: WEB_PAGE_LINK,
     page: $route.name as PageUI
   })
-  await chrome.tabs.create({ url: 'https://openadblocker.com/' })
+  await chrome.tabs.create({ url: WEB_PAGE_LINK })
 }
 
 const onMenuClick = async (): Promise<void> => {

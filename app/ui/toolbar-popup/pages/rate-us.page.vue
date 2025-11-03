@@ -17,7 +17,10 @@
         <h2 class="rate-us-page__title">Enjoy using Open AdBlocker?</h2>
         <p class="rate-us-page__description">Recommend us to others <br> by rating us on {{ browser }} store</p>
         <span data-test="reminder" class="rate-us-page__reminder" @click="onRemindClick">Remind later</span>
-        <BaseButton label="Rate us!" class="rate-us-page__action" @click="openRateUs"/>
+        <BaseButton
+          full-width
+          :type="BaseButtonType.primary"
+          label="Rate us!" class="rate-us-page__action" @click="openRateUs"/>
       </div>
     </template>
   </PrimaryLayout>
@@ -43,13 +46,14 @@
  */
 import PrimaryLayout from '@/ui/toolbar-popup/layouts/primary.layout.vue'
 import Header from '@/ui/toolbar-popup/components/header.vue'
-import { ROUTE } from '@/ui/toolbar-popup/router/route-names'
-import BaseButton from '@/ui/toolbar-popup/components/base-button.vue'
+import { POPUP_ROUTE } from '@/ui/toolbar-popup/router/route-names'
 import { RATE_US_URL } from '@/modules/rate-us/constants'
 import { browser } from '@/utils/env.constants'
 import { useUserActivity } from '@/modules/user-activity/external/utils'
 import { ClickEventToAction, ElementsUI } from '@/modules/user-activity/common/user-activity.types'
 import { useRouter } from 'vue-router'
+import BaseButton from '@/ui/shared/components/button/base-button.vue'
+import { BaseButtonType } from '@/ui/shared/components/button/base-button.types'
 
 const STAR_COLORS: string[] = ['#5A6BFA', '#5A6BFA', '#5A6BFA', '#5A6BFA', '#BBCCEE']
 const $router = useRouter()
@@ -57,7 +61,7 @@ const activity = useUserActivity()
 const openRateUs = async (): Promise<void> => {
   await activity.click(ElementsUI.rateUsButton, {
     to: RATE_US_URL,
-    page: ROUTE.RATE_US
+    page: POPUP_ROUTE.RATE_US
   })
   await chrome.tabs.create({
     url: RATE_US_URL
@@ -66,10 +70,10 @@ const openRateUs = async (): Promise<void> => {
 
 const onRemindClick = async (): Promise<void> => {
   await activity.click(ElementsUI.rateUsReminder, {
-    page: ROUTE.RATE_US,
+    page: POPUP_ROUTE.RATE_US,
     to: ClickEventToAction.closePage
   })
-  await $router.push({ name: ROUTE.HOME })
+  await $router.push({ name: POPUP_ROUTE.HOME })
 }
 
 </script>

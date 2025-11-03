@@ -19,7 +19,7 @@
 import { Box } from '@/utils/dispatcher/dispatcher.types'
 import { UserActivityMessage } from '@/modules/user-activity/common/user-activity.messages'
 import { ElementsUI, PageUI, UserActivityType } from '@/modules/user-activity/common/user-activity.types'
-import { ROUTE } from '@/ui/toolbar-popup/router/route-names'
+import { POPUP_ROUTE } from '@/ui/toolbar-popup/router/route-names'
 import { rateUsCounter, rateUsService } from '@/modules/rate-us/internal/utils'
 
 export const userActivityHandler = async ({ message }: Box<UserActivityMessage>): Promise<void> => {
@@ -56,8 +56,8 @@ const handleClicks = async (element: ElementsUI): Promise<void> => {
 
 const handlePageVisit = async (page: PageUI): Promise<void> => {
   const handlers: any = {
-    [ROUTE.HOME]: handleOnHomePageVisited,
-    [ROUTE.RATE_US]: handleOnRateUsPageVisited
+    [POPUP_ROUTE.HOME]: handleOnHomePageVisited,
+    [POPUP_ROUTE.RATE_US]: handleOnRateUsPageVisited
   }
 
   await handlers[page]?.()

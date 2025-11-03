@@ -33,6 +33,7 @@ import { helloAndGoodbyeSetup } from '@/modules/hello-and-goodbye/internal/hello
 import { setupInternalWebRTC } from '@/modules/features/web-rtc/internal/web-rtc.setup'
 import { setupInternalFilters } from '@/modules/filters/internal/filter.setup'
 import { setupInternalConfig } from '@/modules/config/internal/config.setup'
+import { setupInternalSettings } from '@/modules/settings/internal/settings.setup'
 
 logger.info('Service Worker preparing')
 /**
@@ -50,6 +51,7 @@ setupInternalAdBlocker()
 setupInternalUserActivity()
 setupInternalRateUs()
 setupInternalApp()
+setupInternalSettings()
 setupPopupIcon();
 
 (async (): Promise<void> => {
