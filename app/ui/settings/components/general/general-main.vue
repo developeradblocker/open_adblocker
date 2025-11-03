@@ -16,15 +16,15 @@
       File doesn’t seem to match our setting format. Please check it and try again.
     </p>
 
-    <div class="main__separator" />
+    <div class="main__separator"/>
 
     <div class="main__cards">
       <BaseCard
         data-test="report"
-        label="Report a bug" icon="bug" class="main__card" @click="onReportBugClicked" />
+        label="Report a bug" icon="bug" class="main__card" @click="onReportBugClicked"/>
       <BaseCard
         data-test="rate"
-        label="Share feedback" icon="rate" class="main__card" @click="onRateUsClicked" />
+        label="Share feedback" icon="rate" class="main__card" @click="onRateUsClicked"/>
     </div>
   </BaseBox>
 </template>
@@ -55,11 +55,13 @@ import BaseButton from '@/ui/shared/components/button/base-button.vue'
 import { BaseButtonType } from '@/ui/shared/components/button/base-button.types'
 import BaseCard from '@/ui/settings/components/base/base-card.vue'
 import { RATE_US_URL } from '@/modules/rate-us/constants'
-import { exportData, ExportTypes } from '@/ui/settings/utils/export'
+import { exportData, ExportFormat, ExportTypes } from '@/ui/settings/utils/export'
 import { SUPPORT_EMAIL } from '@/ui/shared/constants'
-import {getVersion} from "@/ui/settings/utils/get-version";
+import { getVersion } from '@/ui/settings/utils/get-version'
+import { useExternalSettings } from '@/modules/settings/external/settings.utils'
 
 const showError = ref(false)
+const $settings = useExternalSettings()
 
 const onRateUsClicked = async (): Promise<void> => {
   await chrome.tabs.create({
@@ -69,7 +71,7 @@ const onRateUsClicked = async (): Promise<void> => {
 
 const onExport = async (): Promise<void> => {
   showError.value = false
-  await exportData(ExportTypes.Settings)
+  await exportData(ExportTypes.settings, await $settings.export(), ExportFormat.json)
 }
 
 const onImport = async (): Promise<void> => {
@@ -81,6 +83,7 @@ const onReportBugClicked = async (): Promise<void> => {
     url: `mailto:${SUPPORT_EMAIL}?subject=OpenADB issue report&body=Version: ${getVersion()} %0D%0A %0D%0A Please describe your problem and steps to reproduce it`
   })
 }
+
 </script>
 
 <style scoped>

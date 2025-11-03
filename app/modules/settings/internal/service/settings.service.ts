@@ -15,18 +15,55 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-import { injectable } from '@/utils/di/di.types'
-import { Settings, SETTINGS_VERSION, SettingsInterface } from '@/modules/settings/common/settings.types'
+import { inject, injectable } from '@/utils/di/di.types'
+import { OpenADBSettings, SETTINGS_VERSION, SettingsInterface } from '@/modules/settings/common/settings.types'
+import { FiltersServiceInterface, InternalFiltersIdentifiers } from '@/modules/filters/internal/filters.types'
+import { COOKIE_CLEANER_ID } from '../../../../../constants'
+import { InternalWebRTCIdentifiers } from '@/modules/features/web-rtc/internal/web-rtc.types'
+import { WebRTCInterface } from '@/modules/features/web-rtc/common/web-rtc.types'
+import { WhitelistIdentifiers } from '@/modules/whitelist/internal/whitelist.types'
+import { WhitelistInterface } from '@/modules/whitelist/common/whetelist.types'
 
 @injectable()
 export class SettingsService implements SettingsInterface {
-  async get (): Promise<Settings> {
+  constructor (
+    @inject(InternalFiltersIdentifiers.service)
+    private filters: FiltersServiceInterface,
+    @inject(InternalWebRTCIdentifiers.service)
+    private webRtc: WebRTCInterface,
+    @inject(WhitelistIdentifiers.service)
+    private readonly whitelist: WhitelistInterface
+  ) {
+  }
+
+  async export (): Promise<OpenADBSettings> {
     return {
       version: SETTINGS_VERSION,
-      stealth: {},
-      extensionSpecific: {},
-      filters: {},
-      general: {}
+      general: {
+        cookieCleaner: await this.filters.isEnabled(COOKIE_CLEANER_ID),
+        webRTC: await this.webRtc.getState()
+      },
+      filters: {
+        enabledFilters: await this.filters.getEnabledFilters(),
+        enabledGroups: [],
+        manualBlocked: {
+          enabled: true,
+          rules: ''
+        },
+        whiteList: {
+          enabled: true,
+          domains: await this.whitelist.getDomains()
+        }
+      },
+      additionalSettings: {
+        showPopupAdsCount: false,
+        showContextMenu: false
+      }
     }
+  }
+
+  async import (settings: OpenADBSettings): Promise<boolean> {
+    console.log('validate settings', settings)
+    return false
   }
 }

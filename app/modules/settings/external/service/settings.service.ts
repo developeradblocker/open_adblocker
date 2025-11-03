@@ -18,8 +18,12 @@
 import { injectable } from '@/utils/di/di.types'
 import { useExternalPort } from '@/modules/port/external/port.setup'
 import { ExternalPortChannel } from '@/modules/port/external/port.types'
-import { Settings, SettingsInterface } from '@/modules/settings/common/settings.types'
-import { GetSettingsMessage, SettingsMessages } from '@/modules/settings/common/settings.messages'
+import { OpenADBSettings, SettingsInterface } from '@/modules/settings/common/settings.types'
+import {
+  ExportSettingsMessage,
+  ImportSettingsMessage,
+  SettingsMessages
+} from '@/modules/settings/common/settings.messages'
 
 @injectable()
 export class SettingsService implements SettingsInterface {
@@ -28,11 +32,20 @@ export class SettingsService implements SettingsInterface {
     this.port = useExternalPort()
   }
 
-  async get (): Promise<Settings> {
-    const message: GetSettingsMessage = {
-      type: SettingsMessages.get
+  async export (): Promise<OpenADBSettings> {
+    const message: ExportSettingsMessage = {
+      type: SettingsMessages.export
     }
 
-    return await this.port.sendMessage<Settings>(message)
+    return await this.port.sendMessage<OpenADBSettings>(message)
+  }
+
+  async import (settings: OpenADBSettings): Promise<boolean> {
+    const message: ImportSettingsMessage = {
+      type: SettingsMessages.import,
+      payload: settings
+    }
+
+    return await this.port.sendMessage<boolean>(message)
   }
 }

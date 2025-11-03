@@ -15,36 +15,25 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-import { getVersion } from '@/ui/settings/utils/get-version'
-import { useExternalSettings } from '@/modules/settings/external/settings.utils'
+import {getVersion} from '@/ui/settings/utils/get-version'
 
 export enum ExportTypes {
-    Settings = 'settings',
+  settings = 'settings',
 }
 
-export interface ExportMetadata {
-  name: string
-  data: () => Promise<string>
-  format: string
-}
-const exportMetadata: Record<ExportTypes, ExportMetadata> = {
-  [ExportTypes.Settings]: {
-    name: 'settings',
-    data: async (): Promise<string> => JSON.stringify(await useExternalSettings().get()),
-    format: 'json'
-  }
+export enum ExportFormat {
+  json = 'json',
+  txt = 'txt',
 }
 
-export const buildFileName = (type: ExportTypes): string => {
-  const { name, format } = exportMetadata[type]
-  const product = `open_adblocker_ext_${name}`
+export const buildFileName = (type: ExportTypes, format: ExportFormat): string => {
+  const product = `open_adblocker_${type}`
   return `${product}_${getVersion()}_${Date.now()}.${format}`
 }
 
-export const exportData = async (type: ExportTypes): Promise<void> => {
-  const { data } = exportMetadata[type]
-  const content = await data()
-  const filename = buildFileName(type)
+export const exportData = async <T extends object>(type: ExportTypes, data: T, format: ExportFormat): Promise<void> => {
+  const filename = buildFileName(type, format)
+  const content = JSON.stringify(data)
   const blob = new Blob([content])
   const url = URL.createObjectURL(blob)
   const link = document.createElement('a')

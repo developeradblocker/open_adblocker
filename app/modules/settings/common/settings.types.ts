@@ -17,15 +17,42 @@
  */
 
 export interface SettingsInterface {
-  get: () => Promise<Settings>
+  export: () => Promise<OpenADBSettings>
+  import: (settings: OpenADBSettings) => Promise<boolean>
 }
 
 export const SETTINGS_VERSION = '1.0'
 
-export interface Settings {
-    version: string
-    general: object
-    extensionSpecific: object
-    filters: object
-    stealth: object
+export interface GeneralSettings {
+  cookieCleaner: boolean
+  webRTC: boolean
+}
+
+export interface AdditionalSettings {
+  showPopupAdsCount: boolean
+  showContextMenu: boolean
+}
+
+export interface ManualBlockedSettings {
+  enabled: boolean
+  rules: string
+}
+
+export interface WhiteListSettings {
+  enabled: boolean
+  domains: string[]
+}
+
+export interface FiltersSettings {
+  enabledFilters: number[]
+  enabledGroups: number[]
+  manualBlocked: ManualBlockedSettings
+  whiteList: WhiteListSettings
+}
+
+export interface OpenADBSettings {
+  version: string
+  general: GeneralSettings
+  filters: FiltersSettings
+  additionalSettings: AdditionalSettings
 }
