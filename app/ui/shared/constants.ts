@@ -15,33 +15,8 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-import { type VueWrapper } from '@vue/test-utils/dist/vueWrapper'
-import { shallowMount } from '@vue/test-utils'
-import BaseButton from '@/ui/toolbar-popup/components/base-button.vue'
-
-describe('BaseButton.vue', () => {
-  let wrapper: VueWrapper<any>
-
-  const doMount = (): void => {
-    if (wrapper?.exists()) {
-      wrapper.unmount()
-    }
-
-    wrapper = shallowMount(BaseButton, {
-      props: {
-        label: 'BTN'
-      }
-    })
-  }
-
-  beforeEach(() => {
-    doMount()
-  })
-
-  it('should render', () => {
-    expect(wrapper.exists())
-      .toBeTruthy()
-    expect(wrapper.text()).toContain('BTN')
-    expect(wrapper.classes()).not.toContain('base-button--disabled')
-  })
-})
+export const WEB_PAGE_LINK = 'https://openadblocker.com/'
+export const GITHUB_LINK = 'https://github.com/developeradblocker/open_adblocker'
+export const PRIVACY_POLICY_LINK = `${WEB_PAGE_LINK}privacy-policy/`
+export const TERMS_LINK = `${GITHUB_LINK}?tab=readme-ov-file#open-ad-blocker`
+export const SUPPORT_EMAIL = 'openadblockerdeveloper@gmail.com'

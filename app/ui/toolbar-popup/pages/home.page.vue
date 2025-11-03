@@ -34,7 +34,7 @@
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
 import PrimaryLayout from '@/ui/toolbar-popup/layouts/primary.layout.vue'
-import { ROUTE } from '@/ui/toolbar-popup/router/route-names'
+import { POPUP_ROUTE } from '@/ui/toolbar-popup/router/route-names'
 import Header from '@/ui/toolbar-popup/components/header.vue'
 import Stats from '@/ui/toolbar-popup/components/adblocker/stats.vue'
 import Toggle from '@/ui/toolbar-popup/components/adblocker/toggle.vue'
@@ -46,6 +46,6 @@ import { useNotificationStore } from '@/ui/toolbar-popup/components/notification
 const $router = useRouter()
 const notification = useNotificationStore()
 const onMenuClick = async (): Promise<void> => {
-  await $router.push({ name: ROUTE.MENU })
+  await $router.push({ name: POPUP_ROUTE.MENU })
 }
 </script>
