@@ -50,11 +50,6 @@ describe('GeneralAbout.vue', () => {
   beforeEach(() => {
     createTabMock.mockClear()
     global.chrome = {
-      runtime: {
-        getManifest: () => ({
-          version: 'test'
-        })
-      },
       tabs: {
         create: createTabMock
       }

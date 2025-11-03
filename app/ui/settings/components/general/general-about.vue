@@ -2,9 +2,7 @@
   <BaseBox class="general-about about">
     <div class="about__content">
       <h4 class="about__title">About Open AdBlocker</h4>
-      <p class="about__version">Version {{ version }} <br>
-        DNR rulesets v{{dnrVersion}}
-      </p>
+      <p class="about__version">DNR rulesets v{{dnrVersion}}</p>
       <div class="about__links">
         <span
           data-test="policy"
@@ -51,7 +49,6 @@ import { GITHUB_LINK, PRIVACY_POLICY_LINK, TERMS_LINK, WEB_PAGE_LINK } from '@/u
 // @ts-expect-error
 import { getVersion } from '@adguard/dnr-rulesets/utils'
 
-const { version } = chrome.runtime.getManifest()
 const dnrVersion = getVersion()
 const openPolicy = async (): Promise<void> => {
   await chrome.tabs.create({
