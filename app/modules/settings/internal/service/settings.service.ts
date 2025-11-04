@@ -23,6 +23,7 @@ import { InternalWebRTCIdentifiers } from '@/modules/features/web-rtc/internal/w
 import { WebRTCInterface } from '@/modules/features/web-rtc/common/web-rtc.types'
 import { WhitelistIdentifiers } from '@/modules/whitelist/internal/whitelist.types'
 import { WhitelistInterface } from '@/modules/whitelist/common/whetelist.types'
+import { logger } from '@/utils/logger/logger'
 
 @injectable()
 export class SettingsService implements SettingsInterface {
@@ -62,8 +63,14 @@ export class SettingsService implements SettingsInterface {
     }
   }
 
-  async import (settings: OpenADBSettings): Promise<boolean> {
-    console.log('validate settings', settings)
-    return false
+  async import (content: string): Promise<boolean> {
+    try {
+      const settings: OpenADBSettings = JSON.parse(content)
+      console.log('validate settings', settings)
+      return true
+    } catch (error) {
+      logger.error('Import settings: ', error)
+      return false
+    }
   }
 }

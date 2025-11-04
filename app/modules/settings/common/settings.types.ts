@@ -18,7 +18,7 @@
 
 export interface SettingsInterface {
   export: () => Promise<OpenADBSettings>
-  import: (settings: OpenADBSettings) => Promise<boolean>
+  import: (content: string) => Promise<boolean>
 }
 
 export const SETTINGS_VERSION = '1.0'

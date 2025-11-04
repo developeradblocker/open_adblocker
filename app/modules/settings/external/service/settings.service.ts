@@ -40,10 +40,10 @@ export class SettingsService implements SettingsInterface {
     return await this.port.sendMessage<OpenADBSettings>(message)
   }
 
-  async import (settings: OpenADBSettings): Promise<boolean> {
+  async import (content: string): Promise<boolean> {
     const message: ImportSettingsMessage = {
       type: SettingsMessages.import,
-      payload: settings
+      payload: content
     }
 
     return await this.port.sendMessage<boolean>(message)

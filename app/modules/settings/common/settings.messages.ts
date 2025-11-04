@@ -16,7 +16,6 @@
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
 import { AppMessage } from '@/utils/dispatcher/dispatcher.types'
-import { OpenADBSettings } from '@/modules/settings/common/settings.types'
 
 export enum SettingsMessages {
   export = 'Settings.Export',
@@ -29,5 +28,5 @@ export interface ExportSettingsMessage extends AppMessage {
 
 export interface ImportSettingsMessage extends AppMessage {
   type: SettingsMessages.import
-  payload: OpenADBSettings
+  payload: string
 }
