@@ -54,18 +54,9 @@ export class SettingsService implements SettingsInterface {
       filters: {
         enabledFilters: await this.filters.getEnabledFilters(),
         enabledGroups: [],
-        manualBlocked: {
-          enabled: true,
-          rules: ''
-        },
         whiteList: {
-          enabled: true,
           domains: await this.whitelist.getDomains()
         }
-      },
-      additionalSettings: {
-        showPopupAdsCount: false,
-        showContextMenu: false
       }
     }
   }

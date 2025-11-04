@@ -29,38 +29,23 @@ const generalSchema = zod.object({
   webRTC: zod.boolean()
 })
 
-const manualBlockedSchema = zod.object({
-  enabled: zod.boolean(),
-  rules: zod.string()
-})
-
 const whiteListSchema = zod.object({
-  enabled: zod.boolean(),
   domains: zod.array(zod.string())
 })
 
 const filtersSchema = zod.object({
   enabledFilters: zod.array(zod.number().int()),
   enabledGroups: zod.array(zod.number().int()).optional(),
-  manualBlocked: manualBlockedSchema,
   whiteList: whiteListSchema
-})
-
-const additionalSettingsSchema = zod.object({
-  showPopupAdsCount: zod.boolean().optional(),
-  showContextMenu: zod.boolean().optional()
 })
 
 export const settingsSchema = zod.object({
   version: zod.literal(SETTINGS_VERSION),
   general: generalSchema,
-  filters: filtersSchema,
-  additionalSettings: additionalSettingsSchema.optional()
+  filters: filtersSchema
 })
 
 export type GeneralSettings = zod.infer<typeof generalSchema>
-export type AdditionalSettings = zod.infer<typeof additionalSettingsSchema>
-export type ManualBlockedSettings = zod.infer<typeof manualBlockedSchema>
 export type WhiteListSettings = zod.infer<typeof whiteListSchema>
 
 export type FiltersSettings = zod.infer<typeof filtersSchema>
