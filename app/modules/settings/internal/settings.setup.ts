@@ -23,6 +23,7 @@ import { InternalSettingsIdentifiers } from '@/modules/settings/internal/setting
 import { SettingsService } from '@/modules/settings/internal/service/settings.service'
 import { ExportSettingsListener } from '@/modules/settings/internal/listeners/export-settings.listener'
 import { ImportSettingsListener } from '@/modules/settings/internal/listeners/import-settings.listener'
+import { onAdGuardReady } from '@/modules/aguard/internal/expose.messages'
 
 const injections: Injection[] = [
   {
@@ -31,8 +32,12 @@ const injections: Injection[] = [
   }
 ]
 
-export const setupInternalSettings = (): void => {
+const handleOnAdGuardReady = async (): Promise<void> => {
   inject(injections)
   dispatcher().onWithClass(ExportSettingsListener)
   dispatcher().onWithClass(ImportSettingsListener)
+}
+
+export const setupInternalSettings = (): void => {
+  onAdGuardReady(handleOnAdGuardReady)
 }

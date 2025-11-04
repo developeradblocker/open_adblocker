@@ -31,4 +31,5 @@ export enum InternalFiltersIdentifiers {
 
 export interface FiltersServiceInterface extends FiltersBaseInterface {
   getEnabledFilters: () => Promise<number[]>
+  setup: (filters: number[]) => Promise<void>
 }

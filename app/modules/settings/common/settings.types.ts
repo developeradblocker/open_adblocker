@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
+import zod from 'zod'
 
 export interface SettingsInterface {
   export: () => Promise<OpenADBSettings>
@@ -23,36 +24,45 @@ export interface SettingsInterface {
 
 export const SETTINGS_VERSION = '1.0'
 
-export interface GeneralSettings {
-  cookieCleaner: boolean
-  webRTC: boolean
-}
+const generalSchema = zod.object({
+  cookieCleaner: zod.boolean(),
+  webRTC: zod.boolean()
+})
 
-export interface AdditionalSettings {
-  showPopupAdsCount: boolean
-  showContextMenu: boolean
-}
+const manualBlockedSchema = zod.object({
+  enabled: zod.boolean(),
+  rules: zod.string()
+})
 
-export interface ManualBlockedSettings {
-  enabled: boolean
-  rules: string
-}
+const whiteListSchema = zod.object({
+  enabled: zod.boolean(),
+  domains: zod.array(zod.string())
+})
 
-export interface WhiteListSettings {
-  enabled: boolean
-  domains: string[]
-}
+const filtersSchema = zod.object({
+  enabledFilters: zod.array(zod.number().int()),
+  enabledGroups: zod.array(zod.number().int()).optional(),
+  manualBlocked: manualBlockedSchema,
+  whiteList: whiteListSchema
+})
 
-export interface FiltersSettings {
-  enabledFilters: number[]
-  enabledGroups: number[]
-  manualBlocked: ManualBlockedSettings
-  whiteList: WhiteListSettings
-}
+const additionalSettingsSchema = zod.object({
+  showPopupAdsCount: zod.boolean().optional(),
+  showContextMenu: zod.boolean().optional()
+})
 
-export interface OpenADBSettings {
-  version: string
-  general: GeneralSettings
-  filters: FiltersSettings
-  additionalSettings: AdditionalSettings
-}
+export const settingsSchema = zod.object({
+  version: zod.literal(SETTINGS_VERSION),
+  general: generalSchema,
+  filters: filtersSchema,
+  additionalSettings: additionalSettingsSchema.optional()
+})
+
+export type GeneralSettings = zod.infer<typeof generalSchema>
+export type AdditionalSettings = zod.infer<typeof additionalSettingsSchema>
+export type ManualBlockedSettings = zod.infer<typeof manualBlockedSchema>
+export type WhiteListSettings = zod.infer<typeof whiteListSchema>
+
+export type FiltersSettings = zod.infer<typeof filtersSchema>
+
+export type OpenADBSettings = zod.infer<typeof settingsSchema>

@@ -29,6 +29,10 @@ export class FiltersService implements FiltersServiceInterface {
     private readonly storage: FiltersStorage
   ) {}
 
+  async setup (filters: number[]): Promise<void> {
+    await this.storage.setup(filters)
+  }
+
   async toggle (id: FilterId): Promise<void> {
     const filterId = Number(id)
     let enabledFilters = await this.storage.get()

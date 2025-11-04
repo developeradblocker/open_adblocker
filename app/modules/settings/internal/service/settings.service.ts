@@ -24,6 +24,11 @@ import { WebRTCInterface } from '@/modules/features/web-rtc/common/web-rtc.types
 import { WhitelistIdentifiers } from '@/modules/whitelist/internal/whitelist.types'
 import { WhitelistInterface } from '@/modules/whitelist/common/whetelist.types'
 import { logger } from '@/utils/logger/logger'
+import { structureValidator } from '@/modules/settings/internal/validators/structure.validator'
+import { privacyValidator } from '@/modules/settings/internal/validators/privacy.validator'
+import { AdGuardIdentifiers } from '@/modules/aguard/internal/adguaird.types'
+import { TsWebExtension } from '@adguard/tswebextension/mv3'
+import { getConfiguration } from '@/modules/aguard/internal/adguard.setup'
 
 @injectable()
 export class SettingsService implements SettingsInterface {
@@ -33,7 +38,9 @@ export class SettingsService implements SettingsInterface {
     @inject(InternalWebRTCIdentifiers.service)
     private webRtc: WebRTCInterface,
     @inject(WhitelistIdentifiers.service)
-    private readonly whitelist: WhitelistInterface
+    private readonly whitelist: WhitelistInterface,
+    @inject(AdGuardIdentifiers._tsWebExtension)
+    private readonly tsWebExtension: TsWebExtension
   ) {
   }
 
@@ -66,11 +73,26 @@ export class SettingsService implements SettingsInterface {
   async import (content: string): Promise<boolean> {
     try {
       const settings: OpenADBSettings = JSON.parse(content)
-      console.log('validate settings', settings)
+      await privacyValidator(settings)
+      await structureValidator(settings)
+
+      await this.populateLocalSettings(settings)
+      await this.tsWebExtension.configure(await getConfiguration())
+      // TODO: check limits
       return true
     } catch (error) {
       logger.error('Import settings: ', error)
       return false
     }
+  }
+
+  private async populateLocalSettings (settings: OpenADBSettings): Promise<void> {
+    const filters = settings.filters.enabledFilters
+    if (settings.general.cookieCleaner) {
+      filters.push(Number(COOKIE_CLEANER_ID))
+    }
+    await this.filters.setup(settings.filters.enabledFilters)
+    await this.webRtc.setup(settings.general.webRTC)
+    await this.whitelist.setup(settings.filters.whiteList.domains)
   }
 }

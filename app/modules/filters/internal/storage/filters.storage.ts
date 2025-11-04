@@ -28,6 +28,10 @@ export class FiltersStorage {
       default: DEFAULT_ENABLED_FILTER_IDS.map(Number)
     })
 
+  async setup (filters: number[]): Promise<void> {
+    await this.storage.write(filters)
+  }
+
   async enable (id: number): Promise<number[]> {
     const enabledFilters = await this.get()
     if (enabledFilters.includes(id)) {

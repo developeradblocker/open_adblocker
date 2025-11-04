@@ -28,6 +28,10 @@ export class InternalWhitelistService implements WhitelistInterface {
     default: []
   })
 
+  async setup (domains: Domain[]): Promise<void> {
+    await this.storage.write(domains)
+  }
+
   async addDomain (domain: Domain): Promise<Domain[]> {
     if (await this.hasDomain(domain)) {
       return
