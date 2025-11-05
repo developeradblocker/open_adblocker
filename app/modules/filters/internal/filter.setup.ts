@@ -23,19 +23,31 @@ import { FiltersStorage } from '@/modules/filters/internal/storage/filters.stora
 import { Injection } from '@/utils/inject/inject.types'
 import { inject } from '@/utils/inject/inject'
 import { FiltersToggleListener } from '@/modules/filters/internal/listeners/filters-toggle.listener'
+import { MetadataService } from '@/modules/filters/internal/service/metadata.service'
+import { MetadataStorage } from '@/modules/filters/internal/storage/metadata.storage'
+import { onInstallHandler } from '@/modules/filters/internal/handlers/on-install.handler'
 
 const injections: Injection[] = [
   {
-    key: InternalFiltersIdentifiers.service,
+    key: InternalFiltersIdentifiers.filters,
     use: FiltersService
   },
   {
-    key: InternalFiltersIdentifiers._storage,
+    key: InternalFiltersIdentifiers._filterStorage,
     use: FiltersStorage
+  },
+  {
+    key: InternalFiltersIdentifiers.metadata,
+    use: MetadataService
+  },
+  {
+    key: InternalFiltersIdentifiers._metadataStorage,
+    use: MetadataStorage
   }
 ]
 
 export const setupInternalFilters = (): void => {
   inject(injections)
   dispatcher().onWithClass(FiltersToggleListener)
+  chrome.runtime.onInstalled.addListener(onInstallHandler)
 }

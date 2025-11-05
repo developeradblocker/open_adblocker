@@ -17,20 +17,44 @@
  */
 import { FilterId } from '@/modules/filters/common/filters.types'
 import { inject, injectable } from '@/utils/di/di.types'
-import { FiltersServiceInterface, InternalFiltersIdentifiers } from '@/modules/filters/internal/filters.types'
+import {
+  FiltersServiceInterface,
+  InternalFiltersIdentifiers,
+  MetadataServiceInterface
+} from '@/modules/filters/internal/filters.types'
 import { FiltersStorage } from '@/modules/filters/internal/storage/filters.storage'
 import { FiltersMessages, FiltersUpdatedMessage } from '@/modules/filters/common/filters.messages'
 import { dispatcher } from '@/utils/setup-worker'
+import { ALLOWLIST_FILTER_ID, CUSTOM_FILTERS_START_ID, USER_FILTER_ID } from '../../../../../constants'
 
 @injectable()
 export class FiltersService implements FiltersServiceInterface {
   constructor (
-    @inject(InternalFiltersIdentifiers._storage)
-    private readonly storage: FiltersStorage
+    @inject(InternalFiltersIdentifiers._filterStorage)
+    private readonly storage: FiltersStorage,
+
+    @inject(InternalFiltersIdentifiers.metadata)
+    private readonly metadata: MetadataServiceInterface
   ) {}
 
   async setup (filters: number[]): Promise<void> {
-    await this.storage.setup(filters)
+    const filteredFilters: number[] = []
+    for (const filterId of filters) {
+      if (filteredFilters.includes(filterId)) {
+        continue
+      }
+
+      if (!this.isCommonFilter(filterId)) {
+        continue
+      }
+
+      if (!(await this.isSupported(filterId))) {
+        continue
+      }
+
+      filteredFilters.push(filterId)
+    }
+    await this.storage.setup(filteredFilters)
   }
 
   async toggle (id: FilterId): Promise<void> {
@@ -58,5 +82,21 @@ export class FiltersService implements FiltersServiceInterface {
 
   async getEnabledFilters (): Promise<number[]> {
     return await this.storage.get()
+  }
+
+  private isCommonFilter (filterId: number): boolean {
+    return !this.isCustomFilter(filterId) &&
+    filterId !== USER_FILTER_ID &&
+    filterId !== ALLOWLIST_FILTER_ID
+  }
+
+  private isCustomFilter (filterId: number): boolean {
+    return filterId >= CUSTOM_FILTERS_START_ID
+  }
+
+  private async isSupported (filterId: number): Promise<boolean> {
+    const supportedFilterIds = (await this.metadata.getFilters()).map((filter) => filter.filterId)
+
+    return supportedFilterIds.includes(filterId)
   }
 }

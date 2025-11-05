@@ -35,6 +35,6 @@ describe('utils', () => {
     jest.mocked(di.get).mockReturnValueOnce(mockFilters)
 
     expect(useInternalFilters()).toBe(mockFilters)
-    expect(di.get).toHaveBeenCalledWith(InternalFiltersIdentifiers.service)
+    expect(di.get).toHaveBeenCalledWith(InternalFiltersIdentifiers.filters)
   })
 })

@@ -15,9 +15,29 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-require('reflect-metadata')
+import { makeDataAccessor } from '@/utils/storage/make-data-accessor'
+import { Metadata } from '@/modules/filters/common/filters.types'
 
-jest.mock('uuid', () => ({ v4: () => Math.random() }))
-jest.mock('../constants.js', () => ({
-  COOKIE_CLEANER_ID: 18
-}))
+export class MetadataStorage {
+  private readonly storage = makeDataAccessor<Metadata>(
+    'local',
+    'DNR_METADATA',
+    {
+      useCache: false,
+      default: {
+        metadata: {
+          filters: [],
+          groups: [],
+          tags: []
+        }
+      }
+    })
+
+  async set (metadata: Metadata): Promise<void> {
+    await this.storage.write(metadata)
+  }
+
+  async get (): Promise<Metadata> {
+    return await this.storage.read()
+  }
+}

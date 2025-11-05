@@ -17,7 +17,10 @@
  */
 import { inject, injectable } from '@/utils/di/di.types'
 import { OpenADBSettings, SETTINGS_VERSION, SettingsInterface } from '@/modules/settings/common/settings.types'
-import { FiltersServiceInterface, InternalFiltersIdentifiers } from '@/modules/filters/internal/filters.types'
+import {
+  FiltersServiceInterface,
+  InternalFiltersIdentifiers
+} from '@/modules/filters/internal/filters.types'
 import { COOKIE_CLEANER_ID } from '../../../../../constants'
 import { InternalWebRTCIdentifiers } from '@/modules/features/web-rtc/internal/web-rtc.types'
 import { WebRTCInterface } from '@/modules/features/web-rtc/common/web-rtc.types'
@@ -33,7 +36,7 @@ import { getConfiguration } from '@/modules/aguard/internal/adguard.setup'
 @injectable()
 export class SettingsService implements SettingsInterface {
   constructor (
-    @inject(InternalFiltersIdentifiers.service)
+    @inject(InternalFiltersIdentifiers.filters)
     private filters: FiltersServiceInterface,
     @inject(InternalWebRTCIdentifiers.service)
     private webRtc: WebRTCInterface,
@@ -69,7 +72,6 @@ export class SettingsService implements SettingsInterface {
 
       await this.populateLocalSettings(settings)
       await this.tsWebExtension.configure(await getConfiguration())
-      // TODO: check limits
       return true
     } catch (error) {
       logger.error('Import settings: ', error)
@@ -80,7 +82,7 @@ export class SettingsService implements SettingsInterface {
   private async populateLocalSettings (settings: OpenADBSettings): Promise<void> {
     const filters = settings.filters.enabledFilters
     if (settings.general.cookieCleaner) {
-      filters.push(Number(COOKIE_CLEANER_ID))
+      filters.push(COOKIE_CLEANER_ID)
     }
     await this.filters.setup(settings.filters.enabledFilters)
     await this.webRtc.setup(settings.general.webRTC)

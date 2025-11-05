@@ -20,8 +20,6 @@
 </template>
 
 <script lang="ts" setup>
-import { getVersion } from '@/ui/settings/utils/get-version'
-
 /**
  * @file
  * This file is part of Open Ad Blocker Browser Extension (https://github.com/developeradblocker/open_adblocker).
@@ -39,6 +37,7 @@ import { getVersion } from '@/ui/settings/utils/get-version'
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
+import { getVersion } from '@/ui/settings/utils/get-version'
 const version = getVersion()
 </script>
 

@@ -19,5 +19,5 @@ import { di } from '@/utils/setup-worker'
 import { FiltersServiceInterface, InternalFiltersIdentifiers } from '@/modules/filters/internal/filters.types'
 
 export const useInternalFilters = (): FiltersServiceInterface => {
-  return di.get<FiltersServiceInterface>(InternalFiltersIdentifiers.service)
+  return di.get<FiltersServiceInterface>(InternalFiltersIdentifiers.filters)
 }

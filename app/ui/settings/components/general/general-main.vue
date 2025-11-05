@@ -98,7 +98,10 @@ const onImport = async (event: InputEvent): Promise<void> => {
     const success = await $settings.import(content)
     if (!success) {
       importError.value = ImportErrors[ImportErrorReason.validationError]
+      return
     }
+
+    alert('Import was successful')
   } catch (error) {
     // @ts-ignore-error
     importError.value = ImportErrors[error?.message as ImportErrorReason] ?? ImportErrors[ImportErrorReason.readingError]

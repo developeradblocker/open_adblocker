@@ -24,7 +24,7 @@ import { FiltersMessages, ToggleFilterMessage } from '@/modules/filters/common/f
 @injectable()
 export class FiltersToggleListener implements AppMessageListener<ToggleFilterMessage> {
   constructor (
-    @inject(InternalFiltersIdentifiers.service)
+    @inject(InternalFiltersIdentifiers.filters)
     private filters: FiltersServiceInterface
   ) {
   }
