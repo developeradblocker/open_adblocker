@@ -22,7 +22,7 @@ import { setupInternalFilters } from '@/modules/filters/internal/filter.setup'
 import { InternalFiltersIdentifiers } from '@/modules/filters/internal/filters.types'
 import { FiltersService } from '@/modules/filters/internal/service/filters.service'
 import { FiltersStorage } from '@/modules/filters/internal/storage/filters.storage'
-import { FiltersToggleListener } from '@/modules/filters/internal/listeners/filters-toggle.listener'
+import { FilterToggleListener } from '@/modules/filters/internal/listeners/filter-toggle.listener'
 import { MetadataService } from '@/modules/filters/internal/service/metadata.service'
 import { MetadataStorage } from '@/modules/filters/internal/storage/metadata.storage'
 
@@ -32,7 +32,7 @@ jest.mock('@/utils/setup-worker', () => ({
 }))
 jest.mock('@/modules/filters/internal/service/filters.service')
 jest.mock('@/modules/filters/internal/storage/filters.storage')
-jest.mock('@/modules/filters/internal/listeners/filters-toggle.listener')
+jest.mock('@/modules/filters/internal/listeners/filter-toggle.listener')
 jest.mock('@/modules/filters/internal/storage/metadata.storage')
 jest.mock('@/modules/filters/internal/service/metadata.service')
 
@@ -77,6 +77,6 @@ describe('setupInternalFilters', () => {
         use: MetadataStorage
       }
     ])
-    expect(mockDispatcherInstance.onWithClass).toHaveBeenCalledWith(FiltersToggleListener)
+    expect(mockDispatcherInstance.onWithClass).toHaveBeenCalledWith(FilterToggleListener)
   })
 })

@@ -22,6 +22,7 @@ import { defaultParserOptions } from '@adguard/agtree/parser'
 import { CosmeticRuleBodyGenerator } from '@adguard/agtree/generator'
 import { updateLocalScriptRulesForChromiumMv3 } from './update-local-script-rules'
 import { findDangerousRules } from './dangerous-rules'
+import { prepareMetadata } from './prepare-metadata'
 
 const FILTERS_DIR = 'app/filters'
 
@@ -36,6 +37,7 @@ export const updateResources = async (): Promise<void> => {
   console.log('Updating local script rules...')
   const folder = `${FILTERS_DIR}/declarative/`
   const metadataRuleSet = await readMetadataRuleSet(folder)
+  await prepareMetadata(metadataRuleSet)
   const ruleSetIds = metadataRuleSet.getRuleSetIds()
   const jsRules: Set<string> = new Set()
 

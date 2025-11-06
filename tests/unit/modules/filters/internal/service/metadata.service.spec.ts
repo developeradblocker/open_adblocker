@@ -134,17 +134,6 @@ describe('MetadataService', () => {
     })
   })
 
-  describe('getTags', () => {
-    it('should return tags from metadata', async () => {
-      mockStorage.get.mockResolvedValue(mockMetadata)
-
-      const result = await service.getTags()
-
-      expect(result).toEqual(mockMetadata.metadata.tags)
-      expect(mockStorage.get).toHaveBeenCalledTimes(1)
-    })
-  })
-
   describe('updateMetadata', () => {
     let mockResponse: any
     let mockRuleSet: any

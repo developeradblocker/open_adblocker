@@ -23,7 +23,12 @@ export interface FiltersBaseInterface {
   isEnabled: (id: FilterId) => Promise<boolean>
 }
 
-export type FilterId = number | string
+export interface GroupsBaseInterface {
+  toggle: (id: GroupId) => Promise<void>
+}
+
+export type FilterId = number
+export type GroupId = number
 
 export const filterMetadataValidator = zod.object({
   description: zod.string(),
@@ -56,7 +61,6 @@ export const tagMetadataValidator = zod.object({
   name: zod.string().optional()
 })
 
-export type TagMetadata = zod.infer<typeof tagMetadataValidator>
 export type GroupMetadata = zod.infer<typeof groupMetadataValidator>
 export type FilterMetadata = zod.infer<typeof filterMetadataValidator>
 

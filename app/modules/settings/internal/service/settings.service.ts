@@ -16,10 +16,15 @@
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
 import { inject, injectable } from '@/utils/di/di.types'
-import { OpenADBSettings, SETTINGS_VERSION, SettingsInterface } from '@/modules/settings/common/settings.types'
 import {
-  FiltersServiceInterface,
-  InternalFiltersIdentifiers
+  ExportedSettings,
+  OpenADBSettings,
+  SETTINGS_VERSION,
+  SettingsInterface
+} from '@/modules/settings/common/settings.types'
+import {
+  FiltersServiceInterface, GroupsServiceInterface,
+  InternalFiltersIdentifiers, MetadataServiceInterface
 } from '@/modules/filters/internal/filters.types'
 import { COOKIE_CLEANER_ID } from '../../../../../constants'
 import { InternalWebRTCIdentifiers } from '@/modules/features/web-rtc/internal/web-rtc.types'
@@ -38,6 +43,10 @@ export class SettingsService implements SettingsInterface {
   constructor (
     @inject(InternalFiltersIdentifiers.filters)
     private filters: FiltersServiceInterface,
+    @inject(InternalFiltersIdentifiers.groups)
+    private groups: GroupsServiceInterface,
+    @inject(InternalFiltersIdentifiers.metadata)
+    private metadata: MetadataServiceInterface,
     @inject(InternalWebRTCIdentifiers.service)
     private webRtc: WebRTCInterface,
     @inject(WhitelistIdentifiers.service)
@@ -47,7 +56,7 @@ export class SettingsService implements SettingsInterface {
   ) {
   }
 
-  async export (): Promise<OpenADBSettings> {
+  async export (): Promise<ExportedSettings> {
     return {
       version: SETTINGS_VERSION,
       general: {
@@ -56,7 +65,7 @@ export class SettingsService implements SettingsInterface {
       },
       filters: {
         enabledFilters: await this.filters.getEnabledFilters(),
-        enabledGroups: [],
+        enabledGroups: await this.groups.getEnabledGroups(),
         whiteList: {
           domains: await this.whitelist.getDomains()
         }
@@ -66,7 +75,7 @@ export class SettingsService implements SettingsInterface {
 
   async import (content: string): Promise<boolean> {
     try {
-      const settings: OpenADBSettings = JSON.parse(content)
+      const settings: ExportedSettings = JSON.parse(content)
       await privacyValidator(settings)
       await structureValidator(settings)
 
@@ -79,12 +88,23 @@ export class SettingsService implements SettingsInterface {
     }
   }
 
-  private async populateLocalSettings (settings: OpenADBSettings): Promise<void> {
+  async get (): Promise<OpenADBSettings> {
+    const main = await this.export()
+    const { metadata } = await this.metadata.getMetadata()
+    const { filters, groups } = metadata
+    return {
+      ...main,
+      metadata: { filters, groups }
+    }
+  }
+
+  private async populateLocalSettings (settings: ExportedSettings): Promise<void> {
     const filters = settings.filters.enabledFilters
     if (settings.general.cookieCleaner) {
       filters.push(COOKIE_CLEANER_ID)
     }
     await this.filters.setup(settings.filters.enabledFilters)
+    await this.groups.setup(settings.filters.enabledGroups)
     await this.webRtc.setup(settings.general.webRTC)
     await this.whitelist.setup(settings.filters.whiteList.domains)
   }

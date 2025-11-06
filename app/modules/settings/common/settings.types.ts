@@ -16,10 +16,12 @@
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
 import zod from 'zod'
+import { FilterMetadata, GroupMetadata } from '@/modules/filters/common/filters.types'
 
 export interface SettingsInterface {
-  export: () => Promise<OpenADBSettings>
+  export: () => Promise<ExportedSettings>
   import: (content: string) => Promise<boolean>
+  get: () => Promise<OpenADBSettings>
 }
 
 export const SETTINGS_VERSION = '1.0'
@@ -50,4 +52,10 @@ export type WhiteListSettings = zod.infer<typeof whiteListSchema>
 
 export type FiltersSettings = zod.infer<typeof filtersSchema>
 
-export type OpenADBSettings = zod.infer<typeof settingsSchema>
+export type ExportedSettings = zod.infer<typeof settingsSchema>
+export interface OpenADBSettings extends ExportedSettings {
+  metadata: {
+    filters: FilterMetadata[]
+    groups: GroupMetadata[]
+  }
+}

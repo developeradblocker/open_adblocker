@@ -20,7 +20,7 @@ import { FiltersServiceInterface } from '@/modules/filters/internal/filters.type
 import { WebRTCInterface } from '@/modules/features/web-rtc/common/web-rtc.types'
 import { WhitelistInterface } from '@/modules/whitelist/common/whetelist.types'
 import { TsWebExtension } from '@adguard/tswebextension/mv3'
-import { OpenADBSettings, SETTINGS_VERSION } from '@/modules/settings/common/settings.types'
+import { ExportedSettings, SETTINGS_VERSION } from '@/modules/settings/common/settings.types'
 import { COOKIE_CLEANER_ID } from '../../../../../constants'
 import { structureValidator } from '@/modules/settings/internal/validators/structure.validator'
 import { privacyValidator } from '@/modules/settings/internal/validators/privacy.validator'
@@ -111,7 +111,7 @@ describe('SettingsService', () => {
   })
 
   describe('import', () => {
-    const validSettings: OpenADBSettings = {
+    const validSettings: ExportedSettings = {
       version: SETTINGS_VERSION,
       general: {
         cookieCleaner: true,

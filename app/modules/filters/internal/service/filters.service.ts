@@ -37,8 +37,8 @@ export class FiltersService implements FiltersServiceInterface {
     private readonly metadata: MetadataServiceInterface
   ) {}
 
-  async setup (filters: number[]): Promise<void> {
-    const filteredFilters: number[] = []
+  async setup (filters: FilterId[]): Promise<void> {
+    const filteredFilters: FilterId[] = []
     for (const filterId of filters) {
       if (filteredFilters.includes(filterId)) {
         continue
@@ -58,8 +58,7 @@ export class FiltersService implements FiltersServiceInterface {
     await this.storage.setup(filteredFilters)
   }
 
-  async toggle (id: FilterId): Promise<void> {
-    const filterId = Number(id)
+  async toggle (filterId: FilterId): Promise<void> {
     let enabledFilters = await this.storage.get()
 
     if (enabledFilters.includes(filterId)) {
@@ -78,24 +77,24 @@ export class FiltersService implements FiltersServiceInterface {
 
   async isEnabled (id: FilterId): Promise<boolean> {
     const enabledFilters = await this.storage.get()
-    return enabledFilters.includes(Number(id))
+    return enabledFilters.includes(id)
   }
 
-  async getEnabledFilters (): Promise<number[]> {
+  async getEnabledFilters (): Promise<FilterId[]> {
     return await this.storage.get()
   }
 
-  private isCommonFilter (filterId: number): boolean {
+  private isCommonFilter (filterId: FilterId): boolean {
     return !this.isCustomFilter(filterId) &&
     filterId !== USER_FILTER_ID &&
     filterId !== ALLOWLIST_FILTER_ID
   }
 
-  private isCustomFilter (filterId: number): boolean {
+  private isCustomFilter (filterId: FilterId): boolean {
     return filterId >= CUSTOM_FILTERS_START_ID
   }
 
-  private async isSupported (filterId: number): Promise<boolean> {
+  private async isSupported (filterId: FilterId): Promise<boolean> {
     const supportedFilterIds = (await this.metadata.getFilters()).map((filter) => filter.filterId)
 
     return supportedFilterIds.includes(filterId)

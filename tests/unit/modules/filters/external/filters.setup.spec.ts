@@ -41,7 +41,7 @@ describe('setupExternalFilters', () => {
       await filters.toggle(19)
 
       expect(mockPort.sendMessage).toHaveBeenCalledWith({
-        type: FiltersMessages.toggle,
+        type: FiltersMessages.toggleFilter,
         payload: {
           id: 19
         }
@@ -60,13 +60,13 @@ describe('setupExternalFilters', () => {
 
       expect(mockPort.sendMessage).toHaveBeenCalledTimes(2)
       expect(mockPort.sendMessage).toHaveBeenNthCalledWith(1, {
-        type: FiltersMessages.toggle,
+        type: FiltersMessages.toggleFilter,
         payload: {
           id: 12
         }
       })
       expect(mockPort.sendMessage).toHaveBeenNthCalledWith(2, {
-        type: FiltersMessages.toggle,
+        type: FiltersMessages.toggleFilter,
         payload: {
           id: 13
         }

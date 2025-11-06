@@ -5,6 +5,7 @@
       <p class="filters__description">Adjust your preferred settings for customised protection.</p>
 
       <div class="filters__separator" />
+      {{ settings }}
     </BaseBox>
   </div>
 </template>
@@ -29,6 +30,15 @@
  */
 
 import BaseBox from '@/ui/settings/components/base/base-box.vue'
+import { useExternalSettings } from '@/modules/settings/external/settings.utils'
+import { onMounted, ref } from 'vue'
+import { OpenADBSettings } from '@/modules/settings/common/settings.types'
+const settings = ref<OpenADBSettings>(null)
+
+const $settings = useExternalSettings()
+onMounted(async () => {
+  settings.value = await $settings.get()
+})
 </script>
 
 <style scoped lang="less">

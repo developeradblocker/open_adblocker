@@ -16,7 +16,7 @@
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
 import { privacyValidator } from '@/modules/settings/internal/validators/privacy.validator'
-import { OpenADBSettings, SETTINGS_VERSION } from '@/modules/settings/common/settings.types'
+import { ExportedSettings, SETTINGS_VERSION } from '@/modules/settings/common/settings.types'
 import { checkWebRTCPermissions } from '@/modules/features/web-rtc/common/web-rtc.utils'
 
 jest.mock('@/modules/features/web-rtc/common/web-rtc.utils')
@@ -24,7 +24,7 @@ jest.mock('@/modules/features/web-rtc/common/web-rtc.utils')
 describe('privacyValidator', () => {
   const mockCheckWebRTCPermissions = jest.mocked(checkWebRTCPermissions)
 
-  const validSettings: OpenADBSettings = {
+  const validSettings: ExportedSettings = {
     version: SETTINGS_VERSION,
     general: {
       cookieCleaner: false,
@@ -44,7 +44,7 @@ describe('privacyValidator', () => {
   })
 
   it('should pass validation when webRTC is false', async () => {
-    const settings: OpenADBSettings = {
+    const settings: ExportedSettings = {
       ...validSettings,
       general: {
         ...validSettings.general,
@@ -58,7 +58,7 @@ describe('privacyValidator', () => {
 
   it('should pass validation when webRTC is true and permissions are granted', async () => {
     mockCheckWebRTCPermissions.mockResolvedValue(true)
-    const settings: OpenADBSettings = {
+    const settings: ExportedSettings = {
       ...validSettings,
       general: {
         ...validSettings.general,
@@ -72,7 +72,7 @@ describe('privacyValidator', () => {
 
   it('should throw error when webRTC is true but permissions are not granted', async () => {
     mockCheckWebRTCPermissions.mockResolvedValue(false)
-    const settings: OpenADBSettings = {
+    const settings: ExportedSettings = {
       ...validSettings,
       general: {
         ...validSettings.general,

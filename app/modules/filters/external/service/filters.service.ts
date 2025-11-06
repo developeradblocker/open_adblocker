@@ -30,7 +30,7 @@ export class FiltersService implements FiltersBaseInterface {
 
   async toggle (id: FilterId): Promise<void> {
     const message: ToggleFilterMessage = {
-      type: FiltersMessages.toggle,
+      type: FiltersMessages.toggleFilter,
       payload: { id }
     }
 

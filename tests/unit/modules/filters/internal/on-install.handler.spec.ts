@@ -31,8 +31,7 @@ describe('onInstallHandler', () => {
     updateMetadata: mockUpdateMetadata,
     getMetadata: jest.fn(),
     getGroups: jest.fn(),
-    getFilters: jest.fn(),
-    getTags: jest.fn()
+    getFilters: jest.fn()
   }
 
   beforeEach(() => {

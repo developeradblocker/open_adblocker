@@ -21,8 +21,7 @@ import {
   FilterMetadata,
   GroupMetadata,
   Metadata,
-  metadataValidator,
-  TagMetadata
+  metadataValidator
 } from '@/modules/filters/common/filters.types'
 import { inject } from '@/utils/di/di.types'
 import { MetadataStorage } from '@/modules/filters/internal/storage/metadata.storage'
@@ -54,11 +53,6 @@ export class MetadataService implements MetadataServiceInterface {
   async getFilters (): Promise<FilterMetadata[]> {
     const { metadata } = await this.storage.get()
     return metadata.filters
-  }
-
-  async getTags (): Promise<TagMetadata[]> {
-    const { metadata } = await this.storage.get()
-    return metadata.tags
   }
 
   async updateMetadata (): Promise<void> {

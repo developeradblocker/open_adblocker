@@ -19,11 +19,16 @@ import { inject } from '@/utils/inject/inject'
 import { ExternalFiltersIdentifiers } from '@/modules/filters/external/filters.types'
 import { FiltersService } from '@/modules/filters/external/service/filters.service'
 import { Injection } from '@/utils/inject/inject.types'
+import { GroupsService } from '@/modules/filters/external/service/groups.service'
 
 const injections: Injection[] = [
   {
-    key: ExternalFiltersIdentifiers.service,
+    key: ExternalFiltersIdentifiers.filters,
     use: FiltersService
+  },
+  {
+    key: ExternalFiltersIdentifiers.groups,
+    use: GroupsService
   }
 ]
 export const setupExternalFilters = (): void => {

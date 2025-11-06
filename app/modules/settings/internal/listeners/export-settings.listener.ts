@@ -19,11 +19,11 @@
 import { AppMessageListener } from '@/utils/dispatcher/dispatcher.types'
 import { inject, injectable } from '@/utils/di/di.types'
 import { ExportSettingsMessage, SettingsMessages } from '@/modules/settings/common/settings.messages'
-import { OpenADBSettings, SettingsInterface } from '@/modules/settings/common/settings.types'
+import { ExportedSettings, SettingsInterface } from '@/modules/settings/common/settings.types'
 import { InternalSettingsIdentifiers } from '@/modules/settings/internal/settings.types'
 
 @injectable()
-export class ExportSettingsListener implements AppMessageListener<ExportSettingsMessage, OpenADBSettings> {
+export class ExportSettingsListener implements AppMessageListener<ExportSettingsMessage, ExportedSettings> {
   constructor (
     @inject(InternalSettingsIdentifiers.service)
     private settings: SettingsInterface
@@ -38,7 +38,7 @@ export class ExportSettingsListener implements AppMessageListener<ExportSettings
     return true
   }
 
-  async handle (): Promise<OpenADBSettings> {
+  async handle (): Promise<ExportedSettings> {
     return await this.settings.export()
   }
 }

@@ -17,7 +17,7 @@
  */
 import { Box } from '@/utils/dispatcher/dispatcher.types'
 import { FiltersServiceInterface } from '@/modules/filters/internal/filters.types'
-import { FiltersToggleListener } from '@/modules/filters/internal/listeners/filters-toggle.listener'
+import { FilterToggleListener } from '@/modules/filters/internal/listeners/filter-toggle.listener'
 import { FiltersMessages, ToggleFilterMessage } from '@/modules/filters/common/filters.messages'
 
 jest.mock('@/modules/ad-blocker/internal/ad-blocker.setup', () => ({
@@ -33,7 +33,7 @@ jest.mock('@/modules/ad-blocker/internal/utils', () => ({
 }))
 
 describe('FiltersrToggleListener', () => {
-  let listener: FiltersToggleListener
+  let listener: FilterToggleListener
 
   const filterId = 12
   const toggleMock = jest.fn()
@@ -42,11 +42,11 @@ describe('FiltersrToggleListener', () => {
   } as unknown as FiltersServiceInterface
 
   beforeEach(() => {
-    listener = new FiltersToggleListener(filtersService)
+    listener = new FilterToggleListener(filtersService)
   })
 
   it('returns the correct message type on "on" method', () => {
-    expect(listener.on()).toBe(FiltersMessages.toggle)
+    expect(listener.on()).toBe(FiltersMessages.toggleFilter)
   })
 
   it('returns false on "main" method', () => {
@@ -55,7 +55,7 @@ describe('FiltersrToggleListener', () => {
 
   it('calls toggle with the correct payload when handle is invoked', async () => {
     const message: ToggleFilterMessage = {
-      type: FiltersMessages.toggle,
+      type: FiltersMessages.toggleFilter,
       payload: {
         id: filterId
       }

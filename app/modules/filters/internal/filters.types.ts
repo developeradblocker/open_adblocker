@@ -16,11 +16,11 @@
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
 import {
+  FilterId,
   FilterMetadata,
-  FiltersBaseInterface,
-  GroupMetadata,
-  Metadata,
-  TagMetadata
+  FiltersBaseInterface, GroupId,
+  GroupMetadata, GroupsBaseInterface,
+  Metadata
 } from '@/modules/filters/common/filters.types'
 
 export enum InternalFiltersIdentifiers {
@@ -42,18 +42,32 @@ export enum InternalFiltersIdentifiers {
   /**
    * @link MetadataStorage
    */
-  _metadataStorage = 'Filters.MetadataStorage'
+  _metadataStorage = 'Filters.MetadataStorage',
+
+  /**
+   * @link GroupServiceInterface
+   */
+  groups = 'Filters.Groups',
+
+  /**
+   * @link GroupsStorage
+   */
+  _groupsStorage = 'Filters.GroupsStorage',
 }
 
 export interface FiltersServiceInterface extends FiltersBaseInterface {
-  getEnabledFilters: () => Promise<number[]>
-  setup: (filters: number[]) => Promise<void>
+  getEnabledFilters: () => Promise<FilterId[]>
+  setup: (filters: FilterId[]) => Promise<void>
+}
+
+export interface GroupsServiceInterface extends GroupsBaseInterface {
+  getEnabledGroups: () => Promise<GroupId[]>
+  setup: (groups: GroupId[]) => Promise<void>
 }
 
 export interface MetadataServiceInterface {
   getMetadata: () => Promise<Metadata>
   getGroups: () => Promise<GroupMetadata[]>
   getFilters: () => Promise<FilterMetadata[]>
-  getTags: () => Promise<TagMetadata[]>
   updateMetadata: () => Promise<void>
 }

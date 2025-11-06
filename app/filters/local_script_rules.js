@@ -2925,108 +2925,6 @@ export const localScriptRules = {
             console.error('Error executing AG js rule with uniqueId "c2ffc94b6ce8e97f2c432d64690cfc9d" due to: ' + e);
         }
     },
-    '(()=>{const t={apply:(t,e,o)=>{try{0===e?.size&&"function"==typeof o[0]&&(o[0]?.toString().includes("\'DISAB\'+")||o[0]?.toString().includes(";break;case"))&&e.add(4)}catch(t){}return Reflect.apply(t,e,o)}};window.Set.prototype.forEach=new Proxy(window.Set.prototype.forEach,t)})();': () => {
-        try {
-            const e = "done";
-            if (Window.prototype.toString["39d3df67ef8420c3af9eb477482f8dad"] === e) return;
-            (() => {
-                const e = {
-                    apply: (e, t, o) => {
-                        try {
-                            0 === t?.size && "function" == typeof o[0] && (o[0]?.toString().includes("'DISAB'+") || o[0]?.toString().includes(";break;case")) && t.add(4);
-                        } catch (e) {}
-                        return Reflect.apply(e, t, o);
-                    }
-                };
-                window.Set.prototype.forEach = new Proxy(window.Set.prototype.forEach, e);
-            })();
-            Object.defineProperty(Window.prototype.toString, "39d3df67ef8420c3af9eb477482f8dad", {
-                value: e,
-                enumerable: !1,
-                writable: !1,
-                configurable: !1
-            });
-        } catch (e) {
-            console.error('Error executing AG js rule with uniqueId "39d3df67ef8420c3af9eb477482f8dad" due to: ' + e);
-        }
-    },
-    '(()=>{const t={apply:(t,e,r)=>{try{3===e.length&&e.every((t=>"function"==typeof t&&t.toString().includes("element:")))&&(r[0]=()=>!1)}catch(t){}return Reflect.apply(t,e,r)}};window.Array.prototype.map=new Proxy(window.Array.prototype.map,t)})();': () => {
-        try {
-            const e = "done";
-            if (Window.prototype.toString["545fecd7ca7408e726395a9ff0ce0d51"] === e) return;
-            (() => {
-                const e = {
-                    apply: (e, t, r) => {
-                        try {
-                            3 === t.length && t.every(e => "function" == typeof e && e.toString().includes("element:")) && (r[0] = () => !1);
-                        } catch (e) {}
-                        return Reflect.apply(e, t, r);
-                    }
-                };
-                window.Array.prototype.map = new Proxy(window.Array.prototype.map, e);
-            })();
-            Object.defineProperty(Window.prototype.toString, "545fecd7ca7408e726395a9ff0ce0d51", {
-                value: e,
-                enumerable: !1,
-                writable: !1,
-                configurable: !1
-            });
-        } catch (e) {
-            console.error('Error executing AG js rule with uniqueId "545fecd7ca7408e726395a9ff0ce0d51" due to: ' + e);
-        }
-    },
-    '(()=>{const e={apply:(e,o,t)=>{try{const e=o;e.length>0&&e.length<5&&"object"==typeof e[0]&&null!==e[0]&&Object.hasOwn(e[0],"blocked")&&(e.forEach((e=>{e&&"object"==typeof e&&Object.hasOwn(e,"blocked")&&(e.blocked=!1)})),o=e)}catch(e){}return Reflect.apply(e,o,t)}};window.Array.prototype.some=new Proxy(window.Array.prototype.some,e)})();': () => {
-        try {
-            const e = "done";
-            if (Window.prototype.toString.a2560bc95989a0cc443785391b553c8b === e) return;
-            (() => {
-                const e = {
-                    apply: (e, o, t) => {
-                        try {
-                            const e = o;
-                            e.length > 0 && e.length < 5 && "object" == typeof e[0] && null !== e[0] && Object.hasOwn(e[0], "blocked") && (e.forEach(e => {
-                                e && "object" == typeof e && Object.hasOwn(e, "blocked") && (e.blocked = !1);
-                            }), o = e);
-                        } catch (e) {}
-                        return Reflect.apply(e, o, t);
-                    }
-                };
-                window.Array.prototype.some = new Proxy(window.Array.prototype.some, e);
-            })();
-            Object.defineProperty(Window.prototype.toString, "a2560bc95989a0cc443785391b553c8b", {
-                value: e,
-                enumerable: !1,
-                writable: !1,
-                configurable: !1
-            });
-        } catch (e) {
-            console.error('Error executing AG js rule with uniqueId "a2560bc95989a0cc443785391b553c8b" due to: ' + e);
-        }
-    },
-    '(()=>{const n={construct:(n,o,t)=>{const c=o[0];return"function"==typeof c&&c.toString().includes("(){Date.now()>=")&&(o[0]=()=>{}),Reflect.construct(n,o,t)}};window.Promise=new Proxy(window.Promise,n)})();': () => {
-        try {
-            const e = "done";
-            if (Window.prototype.toString.c57e5717d58ce76bdbc1d365c949ba2e === e) return;
-            (() => {
-                const e = {
-                    construct: (e, t, o) => {
-                        const c = t[0];
-                        return "function" == typeof c && c.toString().includes("(){Date.now()>=") && (t[0] = () => {}), 
-                        Reflect.construct(e, t, o);
-                    }
-                };
-                window.Promise = new Proxy(window.Promise, e);
-            })();
-            Object.defineProperty(Window.prototype.toString, "c57e5717d58ce76bdbc1d365c949ba2e", {
-                value: e,
-                enumerable: !1,
-                writable: !1,
-                configurable: !1
-            });
-        } catch (e) {
-            console.error('Error executing AG js rule with uniqueId "c57e5717d58ce76bdbc1d365c949ba2e" due to: ' + e);
-        }
-    },
     '(()=>{const a=function(a){"function"==typeof a&&a()};window.aiptag={adplayer:"",cmd:[]},window.aiptag.cmd.player=[],window.aiptag.cmd.display=[],window.aiptag.cmd.push=a,window.aiptag.cmd.player.push=a,window.aiptag.cmd.display.push=a,window.aipDisplayTag={display:function(){}},window.aipPlayer=function(a){a&&a.AIP_COMPLETE&&(this.startPreRoll=a.AIP_COMPLETE)}})();': () => {
         try {
             const a = "done";
@@ -3053,6 +2951,82 @@ export const localScriptRules = {
             });
         } catch (a) {
             console.error('Error executing AG js rule with uniqueId "8e9df515585941ac85187baf28cedac1" due to: ' + a);
+        }
+    },
+    '((e="",t="",o="basic",s="",n)=>{const r={apply:(r,a,u)=>{try{let r="";const a=u[0],c=u[1]?.method||"";let l=!1;if("string"==typeof a&&a.includes(e)&&c.toLowerCase()===t.toLowerCase()?(r=a,l=!0):a instanceof Request&&a.url.includes(e)&&a.method.toLowerCase()===t.toLowerCase()&&(r=a.url,l=!0),l){const e=((e,t)=>{try{if(void 0===e||"cors"===e||"no-cors"===e)return new URL(t).origin===document.location.origin?"basic":"no-cors"===e?"opaque":"cors"}catch(e){}})(o,r),t=((e,t)=>{const o=e||"",n=new Response(s,{headers:{"Content-Length":`${s.length}`},status:200,statusText:"OK"});return"opaque"===t?Object.defineProperties(n,{body:{value:null},status:{value:0},ok:{value:!1},statusText:{value:""},url:{value:""},type:{value:t}}):Object.defineProperties(n,{url:{value:o},type:{value:t}}),n})(r,e);return n?new Promise((e=>{setTimeout((()=>{e(t)}),n)})):Promise.resolve(t)}}catch(e){}return Reflect.apply(r,a,u)}};window.fetch=new Proxy(window.fetch,r)})("https://googleads.g.doubleclick.net/pagead/ads?client=ca-pub-3497863494706299","HEAD","no-cors","",121);': () => {
+        try {
+            const e = "done";
+            if (Window.prototype.toString["1f0bbc3c2e54b7a0357e267459f444cd"] === e) return;
+            ((e = "", t = "", o = "basic", r = "", n) => {
+                const c = {
+                    apply: (c, s, a) => {
+                        try {
+                            let c = "";
+                            const s = a[0], u = a[1]?.method || "";
+                            let i = !1;
+                            if ("string" == typeof s && s.includes(e) && u.toLowerCase() === t.toLowerCase() ? (c = s, 
+                            i = !0) : s instanceof Request && s.url.includes(e) && s.method.toLowerCase() === t.toLowerCase() && (c = s.url, 
+                            i = !0), i) {
+                                const e = ((e, t) => {
+                                    try {
+                                        if (void 0 === e || "cors" === e || "no-cors" === e) return new URL(t).origin === document.location.origin ? "basic" : "no-cors" === e ? "opaque" : "cors";
+                                    } catch (e) {}
+                                })(o, c), t = ((e, t) => {
+                                    const o = e || "", n = new Response(r, {
+                                        headers: {
+                                            "Content-Length": `${r.length}`
+                                        },
+                                        status: 200,
+                                        statusText: "OK"
+                                    });
+                                    return "opaque" === t ? Object.defineProperties(n, {
+                                        body: {
+                                            value: null
+                                        },
+                                        status: {
+                                            value: 0
+                                        },
+                                        ok: {
+                                            value: !1
+                                        },
+                                        statusText: {
+                                            value: ""
+                                        },
+                                        url: {
+                                            value: ""
+                                        },
+                                        type: {
+                                            value: t
+                                        }
+                                    }) : Object.defineProperties(n, {
+                                        url: {
+                                            value: o
+                                        },
+                                        type: {
+                                            value: t
+                                        }
+                                    }), n;
+                                })(c, e);
+                                return n ? new Promise(e => {
+                                    setTimeout(() => {
+                                        e(t);
+                                    }, n);
+                                }) : Promise.resolve(t);
+                            }
+                        } catch (e) {}
+                        return Reflect.apply(c, s, a);
+                    }
+                };
+                window.fetch = new Proxy(window.fetch, c);
+            })("https://googleads.g.doubleclick.net/pagead/ads?client=ca-pub-3497863494706299", "HEAD", "no-cors", "", 121);
+            Object.defineProperty(Window.prototype.toString, "1f0bbc3c2e54b7a0357e267459f444cd", {
+                value: e,
+                enumerable: !1,
+                writable: !1,
+                configurable: !1
+            });
+        } catch (e) {
+            console.error('Error executing AG js rule with uniqueId "1f0bbc3c2e54b7a0357e267459f444cd" due to: ' + e);
         }
     },
     '(()=>{const e={breakStatus:"done"},o=["beforeReward","adViewed","adBreakDone"];window.adsbygoogle=window.adsbygoogle||[],window.adsbygoogle.push=function(d){var a;d&&"object"==typeof d&&(a=d,o.every((e=>e in a&&"function"==typeof a[e])))&&(d.beforeReward(),d.adViewed(),d.adBreakDone(e))}})();': () => {
@@ -7221,25 +7195,25 @@ export const localScriptRules = {
             console.error('Error executing AG js rule with uniqueId "cb487be2d2edd22f1a9ce90cd6ffe9cf" due to: ' + e);
         }
     },
-    '!function(){var b=0,d=[];new MutationObserver(function(){document.querySelectorAll("div[data-pagelet^=\\"FeedUnit\\"]:not([style*=\\"display: none\\"]), div[role=\\"feed\\"] > div:not([style*=\\"display: none\\"]), div[role=\\"feed\\"] > span:not([style*=\\"display: none\\"]), #ssrb_feed_start + div > div[class]:not([style*=\\"display: none\\"]), #ssrb_feed_start + div span > h3 ~ div[class]:not([style*=\\"display: none\\"]), #ssrb_feed_start + div h3~ div[class]:not([style*=\\"display: none\\"]), #ssrb_feed_start + div h3 ~ div > div[class]:not([style*=\\"display: none\\"]), div[role=\\"main\\"] div[class] > #ssrb_feed_start ~ div > h3 ~ div > div[class]:not([style*=\\"display: none\\"]), div[role=\\"main\\"] div > h3 ~ div > div[class]:not([style*=\\"display: none\\"]), #ssrb_feed_start + div > div > div[class]:not([style*=\\"display: none\\"]), div[role=\\"main\\"] div > h2 ~ div > div[class]:not([style*=\\"display: none\\"]), #ssrb_feed_start + div > div > div[class] > div:not([class], [id]) div:not([class], [id]):not([style*=\\"display: none\\"]), div[role=\\"main\\"] div > h3 ~ div > div[class] > div:not([class], [id]) div:not([class], [id], [dir], [data-0], [style]), div[role=\\"main\\"] div > h2 ~ div > div[class] > div > div:not([style*=\\"display: none\\"]), div[role=\\"main\\"] h3[dir=\\"auto\\"] + div > div[class]:not([style*=\\"display: none\\"]), div[role=\\"main\\"] div > h2 ~ div > div[class] > div > div:not([style*=\\"display: none\\"]) > div:not([style*=\\"display: none\\"]), div[role=\\"main\\"] div > h2 ~ div > div > div > div:not([style*=\\"display: none\\"]) > div:not([style*=\\"display: none\\"]), div[role=\\"main\\"] div > h3 ~ div > div > div > div:not([style*=\\"display: none\\"]) > div:not([style*=\\"display: none\\"]), div[role=\\"main\\"] div > :is(h2, h3) ~ div > * div[class] > div > div:not([style*=\\"display: none\\"]), div[role=\\"main\\"] div > :is(h2, h3) ~ div > * > div > div[class]:not([style*=\\"display: none\\"]), div[role=\\"main\\"] div > :is(h2, h3) ~ div > * > div > div > span > div:not([style*=\\"display: none\\"]), div[role=\\"main\\"] div > :is(h2, h3) ~ div > * > div div span > div:not([style*=\\"display: none\\"]), div[role=\\"main\\"] div > :is(h2, h3) ~ div > * > div div span > div > div:not([style*=\\"display: none\\"]), div[role=\\"main\\"] div > :is(h2, h3) ~ div > * > div span > div:not([style*=\\"display: none\\"]), div[role=\\"main\\"] div > :is(h2, h3) ~ div > * > div span div[class=\\"\\"]:not([style*=\\"display: none\\"])").forEach(function(e){Object.keys(e).forEach(function(a){if(a.includes?.("__reactEvents")||a.includes?.("__reactProps")){a=e[a];try{if(a.children?.props?.category?.includes("SPONSORED")||a.children?.props?.children?.props?.category?.includes("SPONSORED")||a.children?.props?.feedEdge?.category?.includes("SPONSORED")||a.children?.props?.children?.props?.feedEdge?.category?.includes("SPONSORED")||a.children?.props?.children?.props?.children?.props?.feedEdge?.category?.includes("SPONSORED")||a.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.category?.includes("SPONSORED")||a.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.feed_story_category?.includes("SPONSORED")||a.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.story_category?.includes("SPONSORED")||a.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.story_cat?.includes("SPONSORED")||a.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.category_sensitive?.cat?.includes("SPONSORED")||a.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.node?.sponsored_data?.brs_filter_setting||a.children?.props?.children?.props?.children?.props?.children?.props?.feedUnit?.lbl_sp_data?.ad_id||a.children?.props?.children?.props?.minGapType?.includes("SPONSORED")||a.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.node?.sponsored_data?.brs_filter_setting||a.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.node?.spons_data?.brs_filter_setting||a.children?.props?.children?.props?.feedEdge?.cat_sensitive?.cat?.includes("SPONSORED")||a.children?.props?.children?.props?.feedEdge?.node?.sponso_dat_flag?.brs_filter_setting||a.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.node?.sponso_dat_flag?.brs_filter_setting||a.children?.props?.children?.props?.children?.props?.children?.props?.minGapType?.includes("SPONSORED")||a.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.cat_sensitive?.cat?.includes("SPONSORED")||a.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.category?.includes("SPONSORED")){b++,e.style="display: none !important;";var f=e.querySelector("a[href][aria-label]:not([aria-hidden])");f&&(d.push(["Ad blocked based on property ["+b+"] -> "+f.ariaLabel]),console.table(d))}}catch(a){}}})})}).observe(document,{childList:!0,subtree:!0})}();': () => {
+    '!function(){var b=0,d=[];new MutationObserver(function(){document.querySelectorAll("div[data-pagelet^=\\"FeedUnit\\"]:not([style*=\\"display: none\\"]), div[role=\\"feed\\"] > div:not([style*=\\"display: none\\"]), div[role=\\"feed\\"] > span:not([style*=\\"display: none\\"]), #ssrb_feed_start + div > div[class]:not([style*=\\"display: none\\"]), #ssrb_feed_start + div span > h3 ~ div[class]:not([style*=\\"display: none\\"]), #ssrb_feed_start + div h3~ div[class]:not([style*=\\"display: none\\"]), #ssrb_feed_start + div h3 ~ div > div[class]:not([style*=\\"display: none\\"]), div[role=\\"main\\"] div[class] > #ssrb_feed_start ~ div > h3 ~ div > div[class]:not([style*=\\"display: none\\"]), div[role=\\"main\\"] div > h3 ~ div > div[class]:not([style*=\\"display: none\\"]), #ssrb_feed_start + div > div > div[class]:not([style*=\\"display: none\\"]), div[role=\\"main\\"] div > h2 ~ div > div[class]:not([style*=\\"display: none\\"]), #ssrb_feed_start + div > div > div[class] > div:not([class], [id]) div:not([class], [id]):not([style*=\\"display: none\\"]), div[role=\\"main\\"] div > h3 ~ div > div[class] > div:not([class], [id]) div:not([class], [id], [dir], [data-0], [style]), div[role=\\"main\\"] div > h2 ~ div > div[class] > div > div:not([style*=\\"display: none\\"]), div[role=\\"main\\"] h3[dir=\\"auto\\"] + div > div[class]:not([style*=\\"display: none\\"]), div[role=\\"main\\"] div > h2 ~ div > div[class] > div > div:not([style*=\\"display: none\\"]) > div:not([style*=\\"display: none\\"]), div[role=\\"main\\"] div > h2 ~ div > div > div > div:not([style*=\\"display: none\\"]) > div:not([style*=\\"display: none\\"]), div[role=\\"main\\"] div > h3 ~ div > div > div > div:not([style*=\\"display: none\\"]) > div:not([style*=\\"display: none\\"]), div[role=\\"main\\"] div > :is(h2, h3) ~ div > * div[class] > div > div:not([style*=\\"display: none\\"]), div[role=\\"main\\"] div > :is(h2, h3) ~ div > * > div > div[class]:not([style*=\\"display: none\\"]), div[role=\\"main\\"] div > :is(h2, h3) ~ div > * > div > div > span > div:not([style*=\\"display: none\\"]), div[role=\\"main\\"] div > :is(h2, h3) ~ div > * > div div span > div:not([style*=\\"display: none\\"]), div[role=\\"main\\"] div > :is(h2, h3) ~ div > * > div div span > div > div:not([style*=\\"display: none\\"]), div[role=\\"main\\"] div > :is(h2, h3) ~ div > * > div span > div:not([style*=\\"display: none\\"]), div[role=\\"main\\"] div > :is(h2, h3) ~ div > * > div span div[class=\\"\\"]:not([style*=\\"display: none\\"]), div:not([class],[id]) div:not([class],[id]) > [class]:not([style*=\\"display: none\\"],img,div,h3,span,a), div[role=\\"main\\"] h3 + div[aria-hidden] + div > * > *:not(div,[style*=\\"display: none\\"])").forEach(function(e){Object.keys(e).forEach(function(a){if(a.includes?.("__reactEvents")||a.includes?.("__reactProps")){a=e[a];try{if(a.children?.props?.category?.includes("SPONSORED")||a.children?.props?.children?.props?.category?.includes("SPONSORED")||a.children?.props?.feedEdge?.category?.includes("SPONSORED")||a.children?.props?.children?.props?.feedEdge?.category?.includes("SPONSORED")||a.children?.props?.children?.props?.children?.props?.feedEdge?.category?.includes("SPONSORED")||a.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.category?.includes("SPONSORED")||a.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.feed_story_category?.includes("SPONSORED")||a.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.story_category?.includes("SPONSORED")||a.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.story_cat?.includes("SPONSORED")||a.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.category_sensitive?.cat?.includes("SPONSORED")||a.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.node?.sponsored_data?.brs_filter_setting||a.children?.props?.children?.props?.children?.props?.children?.props?.feedUnit?.lbl_sp_data?.ad_id||a.children?.props?.children?.props?.minGapType?.includes("SPONSORED")||a.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.node?.sponsored_data?.brs_filter_setting||a.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.node?.spons_data?.brs_filter_setting||a.children?.props?.children?.props?.feedEdge?.cat_sensitive?.cat?.includes("SPONSORED")||a.children?.props?.children?.props?.feedEdge?.node?.sponso_dat_flag?.brs_filter_setting||a.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.node?.sponso_dat_flag?.brs_filter_setting||a.children?.props?.children?.props?.children?.props?.children?.props?.minGapType?.includes("SPONSORED")||a.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.cat_sensitive?.cat?.includes("SPONSORED")||a.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.category?.includes("SPONSORED")||a.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.__fragments?.useCometFeedUnitReordering_newsFeedEdge?.node?.daspo_sto?.brs_filter_setting||a.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.new_sponsorw_distn_aucton_of||a.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.node?.daspo_sto?.brs_filter_setting||a.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.node?.daspo_sto?.brs_filter_setting||a.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.node?.daspo_sto?.brs_filter_setting){b++,e.style="display: none !important;";var f=e.querySelector("a[href][aria-label]:not([aria-hidden])");f&&(d.push(["Ad blocked based on property ["+b+"] -> "+f.ariaLabel]),console.table(d))}}catch(a){}}})})}).observe(document,{childList:!0,subtree:!0})}();': () => {
         try {
             const e = "done";
-            if (Window.prototype.toString["1208b0a57e04f9ead4d111dcd8f80935"] === e) return;
+            if (Window.prototype.toString["337adcfea8de65da6d7213cbe5207a05"] === e) return;
             !function() {
                 var e = 0, d = [];
                 new MutationObserver(function() {
-                    document.querySelectorAll('div[data-pagelet^="FeedUnit"]:not([style*="display: none"]), div[role="feed"] > div:not([style*="display: none"]), div[role="feed"] > span:not([style*="display: none"]), #ssrb_feed_start + div > div[class]:not([style*="display: none"]), #ssrb_feed_start + div span > h3 ~ div[class]:not([style*="display: none"]), #ssrb_feed_start + div h3~ div[class]:not([style*="display: none"]), #ssrb_feed_start + div h3 ~ div > div[class]:not([style*="display: none"]), div[role="main"] div[class] > #ssrb_feed_start ~ div > h3 ~ div > div[class]:not([style*="display: none"]), div[role="main"] div > h3 ~ div > div[class]:not([style*="display: none"]), #ssrb_feed_start + div > div > div[class]:not([style*="display: none"]), div[role="main"] div > h2 ~ div > div[class]:not([style*="display: none"]), #ssrb_feed_start + div > div > div[class] > div:not([class], [id]) div:not([class], [id]):not([style*="display: none"]), div[role="main"] div > h3 ~ div > div[class] > div:not([class], [id]) div:not([class], [id], [dir], [data-0], [style]), div[role="main"] div > h2 ~ div > div[class] > div > div:not([style*="display: none"]), div[role="main"] h3[dir="auto"] + div > div[class]:not([style*="display: none"]), div[role="main"] div > h2 ~ div > div[class] > div > div:not([style*="display: none"]) > div:not([style*="display: none"]), div[role="main"] div > h2 ~ div > div > div > div:not([style*="display: none"]) > div:not([style*="display: none"]), div[role="main"] div > h3 ~ div > div > div > div:not([style*="display: none"]) > div:not([style*="display: none"]), div[role="main"] div > :is(h2, h3) ~ div > * div[class] > div > div:not([style*="display: none"]), div[role="main"] div > :is(h2, h3) ~ div > * > div > div[class]:not([style*="display: none"]), div[role="main"] div > :is(h2, h3) ~ div > * > div > div > span > div:not([style*="display: none"]), div[role="main"] div > :is(h2, h3) ~ div > * > div div span > div:not([style*="display: none"]), div[role="main"] div > :is(h2, h3) ~ div > * > div div span > div > div:not([style*="display: none"]), div[role="main"] div > :is(h2, h3) ~ div > * > div span > div:not([style*="display: none"]), div[role="main"] div > :is(h2, h3) ~ div > * > div span div[class=""]:not([style*="display: none"])').forEach(function(i) {
-                        Object.keys(i).forEach(function(s) {
-                            if (s.includes?.("__reactEvents") || s.includes?.("__reactProps")) {
-                                s = i[s];
+                    document.querySelectorAll('div[data-pagelet^="FeedUnit"]:not([style*="display: none"]), div[role="feed"] > div:not([style*="display: none"]), div[role="feed"] > span:not([style*="display: none"]), #ssrb_feed_start + div > div[class]:not([style*="display: none"]), #ssrb_feed_start + div span > h3 ~ div[class]:not([style*="display: none"]), #ssrb_feed_start + div h3~ div[class]:not([style*="display: none"]), #ssrb_feed_start + div h3 ~ div > div[class]:not([style*="display: none"]), div[role="main"] div[class] > #ssrb_feed_start ~ div > h3 ~ div > div[class]:not([style*="display: none"]), div[role="main"] div > h3 ~ div > div[class]:not([style*="display: none"]), #ssrb_feed_start + div > div > div[class]:not([style*="display: none"]), div[role="main"] div > h2 ~ div > div[class]:not([style*="display: none"]), #ssrb_feed_start + div > div > div[class] > div:not([class], [id]) div:not([class], [id]):not([style*="display: none"]), div[role="main"] div > h3 ~ div > div[class] > div:not([class], [id]) div:not([class], [id], [dir], [data-0], [style]), div[role="main"] div > h2 ~ div > div[class] > div > div:not([style*="display: none"]), div[role="main"] h3[dir="auto"] + div > div[class]:not([style*="display: none"]), div[role="main"] div > h2 ~ div > div[class] > div > div:not([style*="display: none"]) > div:not([style*="display: none"]), div[role="main"] div > h2 ~ div > div > div > div:not([style*="display: none"]) > div:not([style*="display: none"]), div[role="main"] div > h3 ~ div > div > div > div:not([style*="display: none"]) > div:not([style*="display: none"]), div[role="main"] div > :is(h2, h3) ~ div > * div[class] > div > div:not([style*="display: none"]), div[role="main"] div > :is(h2, h3) ~ div > * > div > div[class]:not([style*="display: none"]), div[role="main"] div > :is(h2, h3) ~ div > * > div > div > span > div:not([style*="display: none"]), div[role="main"] div > :is(h2, h3) ~ div > * > div div span > div:not([style*="display: none"]), div[role="main"] div > :is(h2, h3) ~ div > * > div div span > div > div:not([style*="display: none"]), div[role="main"] div > :is(h2, h3) ~ div > * > div span > div:not([style*="display: none"]), div[role="main"] div > :is(h2, h3) ~ div > * > div span div[class=""]:not([style*="display: none"]), div:not([class],[id]) div:not([class],[id]) > [class]:not([style*="display: none"],img,div,h3,span,a), div[role="main"] h3 + div[aria-hidden] + div > * > *:not(div,[style*="display: none"])').forEach(function(i) {
+                        Object.keys(i).forEach(function(r) {
+                            if (r.includes?.("__reactEvents") || r.includes?.("__reactProps")) {
+                                r = i[r];
                                 try {
-                                    if (s.children?.props?.category?.includes("SPONSORED") || s.children?.props?.children?.props?.category?.includes("SPONSORED") || s.children?.props?.feedEdge?.category?.includes("SPONSORED") || s.children?.props?.children?.props?.feedEdge?.category?.includes("SPONSORED") || s.children?.props?.children?.props?.children?.props?.feedEdge?.category?.includes("SPONSORED") || s.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.category?.includes("SPONSORED") || s.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.feed_story_category?.includes("SPONSORED") || s.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.story_category?.includes("SPONSORED") || s.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.story_cat?.includes("SPONSORED") || s.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.category_sensitive?.cat?.includes("SPONSORED") || s.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.node?.sponsored_data?.brs_filter_setting || s.children?.props?.children?.props?.children?.props?.children?.props?.feedUnit?.lbl_sp_data?.ad_id || s.children?.props?.children?.props?.minGapType?.includes("SPONSORED") || s.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.node?.sponsored_data?.brs_filter_setting || s.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.node?.spons_data?.brs_filter_setting || s.children?.props?.children?.props?.feedEdge?.cat_sensitive?.cat?.includes("SPONSORED") || s.children?.props?.children?.props?.feedEdge?.node?.sponso_dat_flag?.brs_filter_setting || s.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.node?.sponso_dat_flag?.brs_filter_setting || s.children?.props?.children?.props?.children?.props?.children?.props?.minGapType?.includes("SPONSORED") || s.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.cat_sensitive?.cat?.includes("SPONSORED") || s.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.category?.includes("SPONSORED")) {
+                                    if (r.children?.props?.category?.includes("SPONSORED") || r.children?.props?.children?.props?.category?.includes("SPONSORED") || r.children?.props?.feedEdge?.category?.includes("SPONSORED") || r.children?.props?.children?.props?.feedEdge?.category?.includes("SPONSORED") || r.children?.props?.children?.props?.children?.props?.feedEdge?.category?.includes("SPONSORED") || r.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.category?.includes("SPONSORED") || r.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.feed_story_category?.includes("SPONSORED") || r.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.story_category?.includes("SPONSORED") || r.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.story_cat?.includes("SPONSORED") || r.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.category_sensitive?.cat?.includes("SPONSORED") || r.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.node?.sponsored_data?.brs_filter_setting || r.children?.props?.children?.props?.children?.props?.children?.props?.feedUnit?.lbl_sp_data?.ad_id || r.children?.props?.children?.props?.minGapType?.includes("SPONSORED") || r.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.node?.sponsored_data?.brs_filter_setting || r.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.node?.spons_data?.brs_filter_setting || r.children?.props?.children?.props?.feedEdge?.cat_sensitive?.cat?.includes("SPONSORED") || r.children?.props?.children?.props?.feedEdge?.node?.sponso_dat_flag?.brs_filter_setting || r.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.node?.sponso_dat_flag?.brs_filter_setting || r.children?.props?.children?.props?.children?.props?.children?.props?.minGapType?.includes("SPONSORED") || r.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.cat_sensitive?.cat?.includes("SPONSORED") || r.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.category?.includes("SPONSORED") || r.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.__fragments?.useCometFeedUnitReordering_newsFeedEdge?.node?.daspo_sto?.brs_filter_setting || r.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.new_sponsorw_distn_aucton_of || r.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.node?.daspo_sto?.brs_filter_setting || r.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.node?.daspo_sto?.brs_filter_setting || r.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.children?.props?.feedEdge?.node?.daspo_sto?.brs_filter_setting) {
                                         e++, i.style = "display: none !important;";
-                                        var n = i.querySelector("a[href][aria-label]:not([aria-hidden])");
-                                        n && (d.push([ "Ad blocked based on property [" + e + "] -> " + n.ariaLabel ]), 
+                                        var s = i.querySelector("a[href][aria-label]:not([aria-hidden])");
+                                        s && (d.push([ "Ad blocked based on property [" + e + "] -> " + s.ariaLabel ]), 
                                         console.table(d));
                                     }
-                                } catch (s) {}
+                                } catch (r) {}
                             }
                         });
                     });
@@ -7248,14 +7222,14 @@ export const localScriptRules = {
                     subtree: !0
                 });
             }();
-            Object.defineProperty(Window.prototype.toString, "1208b0a57e04f9ead4d111dcd8f80935", {
+            Object.defineProperty(Window.prototype.toString, "337adcfea8de65da6d7213cbe5207a05", {
                 value: e,
                 enumerable: !1,
                 writable: !1,
                 configurable: !1
             });
         } catch (e) {
-            console.error('Error executing AG js rule with uniqueId "1208b0a57e04f9ead4d111dcd8f80935" due to: ' + e);
+            console.error('Error executing AG js rule with uniqueId "337adcfea8de65da6d7213cbe5207a05" due to: ' + e);
         }
     },
     '(()=>{const e=new MutationObserver((()=>{const n=document.querySelectorAll(\'div[role="complementary"] div[class*=" "] > div[class] > div:not([class]) > div:not([class], [style*="display: none"]), div[role="complementary"] div[class*=" "] > div[class] > div:not([class]) > span[class] > div[class]:not([style*="display: none"]), div[role="complementary"] div:has(+ div[data-visualcompletion]) > div:not([style*="display: none"])\');for(const s of n){const n=Object.keys(s).find((e=>e.includes("__reactFiber")));if(n){const t=s[n];if(t?.pendingProps?.children?.props?.match?.__fragmentPropName?.includes("adsSideFeedUnit"))return s.style.display="none",void e.disconnect()}}}));e.observe(document.documentElement,{childList:!0,subtree:!0})})();': () => {

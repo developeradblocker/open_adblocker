@@ -19,5 +19,9 @@ export enum ExternalFiltersIdentifiers {
   /**
    * @link FiltersBaseInterface
    */
-  service = 'Filters.Service'
+  filters = 'Filters.Filters',
+  /**
+   * @link GroupsBaseInterface
+   */
+  groups = 'Filters.Groups'
 }

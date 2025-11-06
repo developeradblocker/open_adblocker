@@ -22,10 +22,13 @@ import { dispatcher } from '@/utils/setup-worker'
 import { FiltersStorage } from '@/modules/filters/internal/storage/filters.storage'
 import { Injection } from '@/utils/inject/inject.types'
 import { inject } from '@/utils/inject/inject'
-import { FiltersToggleListener } from '@/modules/filters/internal/listeners/filters-toggle.listener'
+import { FilterToggleListener } from '@/modules/filters/internal/listeners/filter-toggle.listener'
 import { MetadataService } from '@/modules/filters/internal/service/metadata.service'
 import { MetadataStorage } from '@/modules/filters/internal/storage/metadata.storage'
 import { onInstallHandler } from '@/modules/filters/internal/handlers/on-install.handler'
+import { GroupsService } from '@/modules/filters/internal/service/groups.service'
+import { GroupsStorage } from '@/modules/filters/internal/storage/groups.storage'
+import { GroupToggleListener } from '@/modules/filters/internal/listeners/group-toggle.listener'
 
 const injections: Injection[] = [
   {
@@ -43,11 +46,20 @@ const injections: Injection[] = [
   {
     key: InternalFiltersIdentifiers._metadataStorage,
     use: MetadataStorage
+  },
+  {
+    key: InternalFiltersIdentifiers.groups,
+    use: GroupsService
+  },
+  {
+    key: InternalFiltersIdentifiers._groupsStorage,
+    use: GroupsStorage
   }
 ]
 
 export const setupInternalFilters = (): void => {
   inject(injections)
-  dispatcher().onWithClass(FiltersToggleListener)
+  dispatcher().onWithClass(FilterToggleListener)
+  dispatcher().onWithClass(GroupToggleListener)
   chrome.runtime.onInstalled.addListener(onInstallHandler)
 }

@@ -18,12 +18,17 @@
 import { AppMessage } from '@/utils/dispatcher/dispatcher.types'
 
 export enum SettingsMessages {
+  get = 'Settings.Get',
   export = 'Settings.Export',
   import = 'Settings.Import',
 }
 
 export interface ExportSettingsMessage extends AppMessage {
   type: SettingsMessages.export
+}
+
+export interface GetSettingsMessage extends AppMessage {
+  type: SettingsMessages.get
 }
 
 export interface ImportSettingsMessage extends AppMessage {
