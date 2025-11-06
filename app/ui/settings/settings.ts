@@ -30,6 +30,7 @@ import InlineSvg from 'vue-inline-svg'
 import { routes } from '@/ui/settings/router/routes'
 import { setupExternalSettings } from '@/modules/settings/external/settings.setup'
 import { setupExternalFilters } from '@/modules/filters/external/filters.setup'
+import { createPinia } from 'pinia'
 
 /**
  * Settings Worker (PW)
@@ -49,6 +50,7 @@ setupExternalSettings();
   const app = createApp(App)
   const router = createRouter(routerOpts)
   app.use(router)
+  app.use(createPinia())
 
   app.component('BaseSvg', InlineSvg)
   app.mount('#settings-app')

@@ -22,11 +22,6 @@ export interface Filter {
 }
 
 const FILTER_MAP: Record<number, Filter> = {
-  1: {
-    filterId: 1,
-    name: 'Russian filter',
-    description: 'Filter that enables ad blocking on websites in Russian language.'
-  },
   2: {
     filterId: 2,
     name: 'Default filter',

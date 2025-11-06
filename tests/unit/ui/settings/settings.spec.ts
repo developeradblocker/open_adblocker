@@ -33,7 +33,6 @@ jest.mock('vue', () => ({
 }))
 
 jest.mock('@/ui/settings/router/routes', () => ({
-  // @ts-expect-error
   routes: []
 }))
 jest.mock('vue-router', () => {

@@ -65,10 +65,11 @@ import { getVersion } from '@/ui/settings/utils/get-version'
 import { useExternalSettings } from '@/modules/settings/external/settings.utils'
 import BaseImport from '@/ui/settings/components/base/base-import.vue'
 import { importData, ImportErrorReason, ImportErrors } from '@/ui/settings/utils/import-data'
+import { useSettingsStore } from '@/ui/settings/store/settings.store'
 
 const importError = ref<string>(null)
 const $settings = useExternalSettings()
-
+const $store = useSettingsStore()
 const onRateUsClicked = async (): Promise<void> => {
   await chrome.tabs.create({
     url: RATE_US_URL
@@ -102,6 +103,7 @@ const onImport = async (event: InputEvent): Promise<void> => {
     }
 
     alert('Import was successful')
+    $store.setSettingsInfo(await $settings.get())
   } catch (error) {
     // @ts-ignore-error
     importError.value = ImportErrors[error?.message as ImportErrorReason] ?? ImportErrors[ImportErrorReason.readingError]

@@ -8,14 +8,14 @@
       <div class="groups__list">
         <BaseListItem
           class="groups__list-item"
-          v-for="group in settings?.metadata?.groups ?? []"
+          v-for="group in groups"
           :key="group.groupId"
           :title="group.groupName"
           icon="no-ad"
           @click="$router.push({ name: SETTINGS_ROUTE.FILTERS, params: { id: group.groupId } })"
           :description="group.groupDescription"
         >
-          <BaseToggle :is-active="settings.filters.enabledGroups.includes(group.groupId)" large
+          <BaseToggle :is-active="isActiveGroup(group.groupId)" large
                       @toggle="toggleGroup(group.groupId)"/>
         </BaseListItem>
       </div>
@@ -43,25 +43,23 @@
  */
 
 import BaseBox from '@/ui/settings/components/base/base-box.vue'
-import { useExternalSettings } from '@/modules/settings/external/settings.utils'
-import { onMounted, ref } from 'vue'
-import { OpenADBSettings } from '@/modules/settings/common/settings.types'
+import { computed } from 'vue'
 import { SETTINGS_ROUTE } from '@/ui/settings/router/route-names'
 import BaseToggle from '@/ui/shared/components/base-toggle.vue'
 import BaseListItem from '@/ui/settings/components/base/base-list-item.vue'
 import { GroupId } from '@/modules/filters/common/filters.types'
 import { useExternalGroups } from '@/modules/filters/external/filters.utils'
+import { useSettingsStore } from '@/ui/settings/store/settings.store'
 
-const settings = ref<OpenADBSettings>(null)
-
-const $settings = useExternalSettings()
 const $groups = useExternalGroups()
+const $store = useSettingsStore()
+const groups = computed(() => $store.groups)
+const isActiveGroup = (groupId: GroupId): boolean => $store.enabledGroups.includes(groupId)
 const toggleGroup = async (groupId: GroupId): Promise<void> => {
   await $groups.toggle(groupId)
+  $store.toggleGroup(groupId)
 }
-onMounted(async () => {
-  settings.value = await $settings.get()
-})
+
 </script>
 
 <style scoped lang="less">

@@ -34,9 +34,8 @@ import { WhitelistInterface } from '@/modules/whitelist/common/whetelist.types'
 import { logger } from '@/utils/logger/logger'
 import { structureValidator } from '@/modules/settings/internal/validators/structure.validator'
 import { privacyValidator } from '@/modules/settings/internal/validators/privacy.validator'
-import { AdGuardIdentifiers } from '@/modules/aguard/internal/adguaird.types'
-import { TsWebExtension } from '@adguard/tswebextension/mv3'
 import { getConfiguration } from '@/modules/aguard/internal/adguard.setup'
+import {tsWebExtension} from "@/modules/aguard/internal/utils";
 
 @injectable()
 export class SettingsService implements SettingsInterface {
@@ -50,9 +49,7 @@ export class SettingsService implements SettingsInterface {
     @inject(InternalWebRTCIdentifiers.service)
     private webRtc: WebRTCInterface,
     @inject(WhitelistIdentifiers.service)
-    private readonly whitelist: WhitelistInterface,
-    @inject(AdGuardIdentifiers._tsWebExtension)
-    private readonly tsWebExtension: TsWebExtension
+    private readonly whitelist: WhitelistInterface
   ) {
   }
 
@@ -80,8 +77,8 @@ export class SettingsService implements SettingsInterface {
       await structureValidator(settings)
 
       await this.populateLocalSettings(settings)
-      // TODO: here should be fixed groups
-      await this.tsWebExtension.configure(await getConfiguration())
+      // TODO: here should be filters, based on the groups
+      await tsWebExtension().configure(await getConfiguration())
       return true
     } catch (error) {
       logger.error('Import settings: ', error)

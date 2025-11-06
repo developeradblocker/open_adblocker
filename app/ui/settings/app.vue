@@ -40,6 +40,10 @@
  */
 import { SETTINGS_ROUTE } from '@/ui/settings/router/route-names'
 import { useRoute } from 'vue-router'
+import { useExternalPort } from '@/modules/port/external/port.setup'
+import { useExternalSettings } from '@/modules/settings/external/settings.utils'
+import { useSettingsStore } from '@/ui/settings/store/settings.store'
+import { onMounted } from 'vue'
 
 interface MenuNavLink {
   route: SETTINGS_ROUTE
@@ -61,6 +65,16 @@ const $route = useRoute()
 const isActive = (route: SETTINGS_ROUTE): boolean => {
   return $route.name === route || $route.path.includes(route.toLowerCase())
 }
+
+const $settings = useExternalSettings()
+const $port = useExternalPort()
+const $store = useSettingsStore()
+
+onMounted(async () => {
+  await $port.establish()
+  const settings = await $settings.get()
+  $store.setSettingsInfo(settings)
+})
 </script>
 <style lang="less" scoped>
 .app {
