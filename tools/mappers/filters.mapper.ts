@@ -264,8 +264,8 @@ const FILTER_MAP: Record<number, Filter> = {
   },
   259: {
     filterId: 259,
-    name: 'Dandelion Sprout\'s Anti-Malware List',
-    description: 'Blocks more malware than most other major anti-malware lists - domains and URL patterns used in malware redirection chains, IP addresses that are solely used by malware, PUP nags, and a few scammers. Already included in Dandelion Sprout\'s Annoyances List.'
+    name: 'Anti-Malware List',
+    description: 'Blocks more malware than most other major anti-malware lists - domains and URL patterns used in malware redirection chains, IP addresses that are solely used by malware, PUP nags, and a few scammers.'
   }
 }
 export const filtersMapper = (filters: Filter[]): Filter[] => {

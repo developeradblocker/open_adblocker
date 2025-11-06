@@ -38,7 +38,7 @@
 
 import Feature from '@/ui/toolbar-popup/components/adblocker/feature.vue'
 import { computed, onMounted, ref } from 'vue'
-import BaseToggle from '@/ui/toolbar-popup/components/base-toggle.vue'
+import BaseToggle from '@/ui/shared/components/base-toggle.vue'
 import { useAppStore } from '@/ui/toolbar-popup/store/app.store'
 import { checkWebRTCPermissions, requestWebRTCPermissions } from '@/modules/features/web-rtc/common/web-rtc.utils'
 import { useWebRTC } from '@/modules/features/web-rtc/external/web-rtc.utils'

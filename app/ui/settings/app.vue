@@ -7,8 +7,7 @@
             v-for="link of NAV_LINKS"
             :key="link.route"
             class="app__nav-link"
-            exact-active-class="app__nav-link--active"
-            exact-path
+            :class="{ 'app__nav-link--active': isActive(link.route) }"
             :to="{ name: link.route }"
           >
             {{ link.text }}
@@ -40,6 +39,7 @@
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
 import { SETTINGS_ROUTE } from '@/ui/settings/router/route-names'
+import { useRoute } from 'vue-router'
 
 interface MenuNavLink {
   route: SETTINGS_ROUTE
@@ -52,10 +52,15 @@ const NAV_LINKS: MenuNavLink[] = [
     text: 'General'
   },
   {
-    route: SETTINGS_ROUTE.FILTERS,
+    route: SETTINGS_ROUTE.GROUPS,
     text: 'Filters'
   }
 ]
+
+const $route = useRoute()
+const isActive = (route: SETTINGS_ROUTE): boolean => {
+  return $route.name === route || $route.path.includes(route.toLowerCase())
+}
 </script>
 <style lang="less" scoped>
 .app {

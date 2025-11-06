@@ -86,7 +86,10 @@ const setUpTsWebExtensionMessages = (tsWebExtension: TsWebExtension): void => {
 
   chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     messageHandler(message, sender)
-      .then(res => sendResponse(res))
+      .then(res => {
+        console.log('sendResponse(res)', res)
+        return sendResponse(res)
+      })
 
     return true
   })

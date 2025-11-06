@@ -29,12 +29,14 @@ import InlineSvg from 'vue-inline-svg'
 
 import { routes } from '@/ui/settings/router/routes'
 import { setupExternalSettings } from '@/modules/settings/external/settings.setup'
+import { setupExternalFilters } from '@/modules/filters/external/filters.setup'
 
 /**
  * Settings Worker (PW)
  */
 setupWorker('Settings')
 setupExternalPortChannel({ name: 'Settings' })
+setupExternalFilters()
 setupExternalSettings();
 
 (async (): Promise<void> => {

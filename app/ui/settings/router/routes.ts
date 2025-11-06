@@ -19,6 +19,7 @@
 import { type RouteRecordRaw } from 'vue-router'
 import GeneralPage from '@/ui/settings/pages/general.page.vue'
 import FiltersPage from '@/ui/settings/pages/filters.page.vue'
+import GroupsPage from '@/ui/settings/pages/groups.page.vue'
 import { SETTINGS_ROUTE } from '@/ui/settings/router/route-names'
 
 export const routes: RouteRecordRaw[] = [
@@ -28,8 +29,14 @@ export const routes: RouteRecordRaw[] = [
     component: GeneralPage
   },
   {
+    name: SETTINGS_ROUTE.GROUPS,
+    path: '/groups',
+    component: GroupsPage
+  },
+  {
     name: SETTINGS_ROUTE.FILTERS,
-    path: '/filters',
-    component: FiltersPage
+    path: '/groups/:id',
+    component: FiltersPage,
+    props: true
   }
 ]

@@ -44,7 +44,7 @@ export class GroupsService implements GroupsServiceInterface {
       if (!(await this.isSupported(groupId))) {
         continue
       }
-      // TODO: check validations
+
       filteredGroups.push(groupId)
     }
 

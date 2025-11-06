@@ -18,5 +18,6 @@
 
 export enum SETTINGS_ROUTE {
   GENERAL = 'GENERAL',
+  GROUPS = 'GROUPS',
   FILTERS = 'FILTERS'
 }

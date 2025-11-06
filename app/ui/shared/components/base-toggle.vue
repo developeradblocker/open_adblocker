@@ -5,6 +5,7 @@
       'base-toggle--active': isActive,
       'base-toggle--inactive': !isActive,
       'base-toggle--loading': loading,
+      'base-toggle--large': large,
     }"
     :aria-disabled="loading"
     @click="onToggle"
@@ -40,10 +41,12 @@ const {
 } = defineProps<{
   isActive: boolean
   loading?: boolean
+  large?: boolean
 }>()
 
-const $emit = defineEmits<{(e: 'toggle', value: boolean): void}>()
-const onToggle = () => {
+const $emit = defineEmits<{(e: 'toggle', value: boolean): void }>()
+const onToggle = (event: MouseEvent): void => {
+  event.stopPropagation()
   if (loading) {
     return
   }
@@ -59,6 +62,35 @@ const onToggle = () => {
   border-radius: 20px;
   transition: 0.2s ease;
   cursor: pointer;
+}
+
+.base-toggle--large {
+  width: 48px;
+  height: 28px;
+
+  .base-toggle__circle {
+    width: 22px;
+    height: 22px;
+    top: 3px;
+    left: 3px;
+  }
+}
+
+.base-toggle--large.base-toggle--active {
+  .base-toggle__circle {
+    left: 23px;
+  }
+}
+
+.base-toggle--large.base-toggle--loading {
+  .base-toggle__circle {
+    left: 13px;
+  }
+
+  .base-toggle__loader {
+    width: 18px;
+    height: 18px;
+  }
 }
 
 .base-toggle--inactive {

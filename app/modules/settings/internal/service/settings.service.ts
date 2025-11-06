@@ -80,6 +80,7 @@ export class SettingsService implements SettingsInterface {
       await structureValidator(settings)
 
       await this.populateLocalSettings(settings)
+      // TODO: here should be fixed groups
       await this.tsWebExtension.configure(await getConfiguration())
       return true
     } catch (error) {

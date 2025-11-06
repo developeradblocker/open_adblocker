@@ -17,7 +17,7 @@
  */
 import { type VueWrapper } from '@vue/test-utils/dist/vueWrapper'
 import { shallowMount } from '@vue/test-utils'
-import BaseToggle from '@/ui/toolbar-popup/components/base-toggle.vue'
+import BaseToggle from '@/ui/shared/components/base-toggle.vue'
 
 describe('BaseToggle.vue', () => {
   let wrapper: VueWrapper<any>

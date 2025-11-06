@@ -1,12 +1,13 @@
 <template>
-  <div class="filters-page filters">
-    <BaseBox with-header>
-      <button @click="$router.back()">Back</button>
-      <h3 class="filters__title">{{ id }}</h3>
-      <p class="filters__description">some text</p>
-
-      <div class="filters__separator" />
-    </BaseBox>
+  <div class="base-list-item list-item">
+    <BaseSvg :src="`../icons/${icon}.svg`" class="list-item__icon" v-if="icon"/>
+    <div class="list-item__content">
+      <h5 class="list-item__icon__title">{{ title }}</h5>
+      <p class="list-item__icon__description">{{ description }}</p>
+    </div>
+    <div class="list-item__action">
+      <slot/>
+    </div>
   </div>
 </template>
 
@@ -29,32 +30,56 @@
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import BaseBox from '@/ui/settings/components/base/base-box.vue'
-
-defineProps<{id: string}>()
+defineProps<{
+  icon?: string
+  title: string
+  description: string
+}>()
 </script>
 
 <style scoped lang="less">
-.filters__title {
-  font-weight: 700;
-  font-size: 22px;
-  line-height: 28px;
-  color: #2D2A3C;
-  margin: 0 0 10px;
+.list-item {
+  cursor: pointer;
+  border-radius: 15px;
+  padding: 8px 14px;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+
+  &:hover {
+    background-color: var(--secondary-bg-color);
+  }
 }
 
-.filters__description {
+.list-item__icon {
+  width: 24px;
+  height: 24px;
+}
+
+.list-item__content {
+  flex: 1;
+}
+
+.list-item__action {
+  display: flex;
+  justify-content: flex-end;
+  width: 130px;
+}
+
+.list-item__icon__title {
+  margin: 0 0 10px;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 24px;
+  color: #3C384C;
+}
+
+.list-item__icon__description {
+  margin: 0;
   font-weight: 400;
   font-size: 14px;
   line-height: 18px;
-  color: var(--primary-color);
-  margin-bottom: 24px;
-}
+  color: var(--primary-color)
 
-.filters__separator {
-  margin: 28px 0;
-  height: 1px;
-  background: #D9D8DE;
 }
-
 </style>
