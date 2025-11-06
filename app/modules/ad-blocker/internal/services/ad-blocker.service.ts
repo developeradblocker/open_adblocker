@@ -26,6 +26,8 @@ import { BlockedAdsCounter, Domain } from '@/common/types'
 import { AdGuardIdentifiers, AdGuardServiceInterface } from '@/modules/aguard/internal/adguaird.types'
 import { getActiveTabHelper } from '@/helpers/get-active-tab.helper'
 import { getDomainHelper } from '@/helpers/get-domain.helper'
+import { AdBlockerMessages, AdBlockerStateChanged } from '@/modules/ad-blocker/common/ad-blocker.messages'
+import { dispatcher } from '@/utils/setup-worker'
 
 @injectable()
 export class InternalAdBlockerService implements InternalAdBlockerInterface {
@@ -65,6 +67,12 @@ export class InternalAdBlockerService implements InternalAdBlockerInterface {
     state
       ? await this.adGuard.addToAllowlist(domain)
       : await this.adGuard.removeFromAllowlist(domain)
+
+    const message: AdBlockerStateChanged = {
+      type: AdBlockerMessages.stateChanged
+    }
+
+    await dispatcher().sendMessage(message)
   }
 
   /**

@@ -23,7 +23,7 @@ import {
   MetadataServiceInterface
 } from '@/modules/filters/internal/filters.types'
 import { FiltersStorage } from '@/modules/filters/internal/storage/filters.storage'
-import { FiltersMessages, FiltersUpdatedMessage } from '@/modules/filters/common/filters.messages'
+import { FiltersMessages, FiltersStateChangedMessage } from '@/modules/filters/common/filters.messages'
 import { dispatcher } from '@/utils/setup-worker'
 import { ALLOWLIST_FILTER_ID, CUSTOM_FILTERS_START_ID, USER_FILTER_ID } from '../../../../../constants'
 
@@ -67,8 +67,8 @@ export class FiltersService implements FiltersServiceInterface {
       enabledFilters = await this.storage.enable(filterId)
     }
 
-    const message: FiltersUpdatedMessage = {
-      type: FiltersMessages.filtersUpdated,
+    const message: FiltersStateChangedMessage = {
+      type: FiltersMessages.stateChanged,
       payload: { enabledFilters }
     }
 

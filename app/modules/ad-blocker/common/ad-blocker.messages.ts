@@ -21,7 +21,8 @@ import { AppMessage } from '@/utils/dispatcher/dispatcher.types'
 export enum AdBlockerMessages {
   toggle = 'AdBlocker.Toggle',
   ready = 'AdBlocker.Ready',
-  blockedAd = 'AdBlocker.BlockedAd'
+  blockedAd = 'AdBlocker.BlockedAd',
+  stateChanged = 'AdBlocker.StateChanged'
 }
 
 export interface AdBlockerToggleMessage extends AppMessage {
@@ -36,4 +37,8 @@ export interface AdBlockerOnReadyMessage extends AppMessage {
 
 export interface AdBlockerOnBlockedAd extends AppMessage {
   type: AdBlockerMessages.blockedAd
+}
+
+export interface AdBlockerStateChanged extends AppMessage {
+  type: AdBlockerMessages.stateChanged
 }

@@ -20,7 +20,7 @@ import { FilterId, GroupId } from '@/modules/filters/common/filters.types'
 
 export enum FiltersMessages {
   toggleFilter = 'Filters.ToggleFilter',
-  filtersUpdated = 'Filters.FiltersUpdated',
+  stateChanged = 'Filters.StateChanged',
   isEnabled = 'Filters.IsEnabled',
   toggleGroup = 'Filters.ToggleGroup',
 }
@@ -40,7 +40,7 @@ export interface IsEnabledFilterMessage extends AppMessage {
   payload: { id: FilterId }
 }
 
-export interface FiltersUpdatedMessage extends AppMessage {
-  type: FiltersMessages.filtersUpdated
+export interface FiltersStateChangedMessage extends AppMessage {
+  type: FiltersMessages.stateChanged
   payload: { enabledFilters: number[] }
 }

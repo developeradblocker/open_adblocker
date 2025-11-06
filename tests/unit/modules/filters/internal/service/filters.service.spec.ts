@@ -70,7 +70,7 @@ describe('InternalFiltersService', () => {
       expect(mockStorage.enable).toHaveBeenCalledWith(18)
       expect(mockStorage.disable).not.toHaveBeenCalled()
       expect(sendMessageMock).toHaveBeenCalledWith({
-        type: FiltersMessages.filtersUpdated,
+        type: FiltersMessages.stateChanged,
         payload: {
           enabledFilters: [12, 18]
         }
@@ -83,7 +83,7 @@ describe('InternalFiltersService', () => {
       expect(mockStorage.disable).toHaveBeenCalledWith(12)
       expect(mockStorage.enable).not.toHaveBeenCalled()
       expect(sendMessageMock).toHaveBeenCalledWith({
-        type: FiltersMessages.filtersUpdated,
+        type: FiltersMessages.stateChanged,
         payload: {
           enabledFilters: [18]
         }

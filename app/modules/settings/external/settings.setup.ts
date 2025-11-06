@@ -19,6 +19,8 @@ import { inject } from '@/utils/inject/inject'
 import { Injection } from '@/utils/inject/inject.types'
 import { SettingsService } from '@/modules/settings/external/service/settings.service'
 import { ExternalSettingsIdentifiers } from '@/modules/settings/external/settings.types'
+import { UpdateStateListener } from '@/modules/settings/external/listeners/update-state.listener'
+import { dispatcher } from '@/utils/setup-worker'
 
 const injections: Injection[] = [
   {
@@ -28,4 +30,5 @@ const injections: Injection[] = [
 ]
 export const setupExternalSettings = (): void => {
   inject(injections)
+  dispatcher().onWithClass(UpdateStateListener)
 }
