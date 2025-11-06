@@ -1,18 +1,3 @@
-<template>
-  <div class="base-import">
-    <input
-      ref="inputRef"
-      type="file"
-      data-test="file"
-      :accept="accept"
-      @change="$emit('change', $event)"
-      class="base-import__input"
-  />
-    <slot :input="inputRef" />
-  </div>
-</template>
-
-<script lang="ts" setup>
 /**
  * @file
  * This file is part of Open Ad Blocker Browser Extension (https://github.com/developeradblocker/open_adblocker).
@@ -30,14 +15,9 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-import { ref } from 'vue'
 
-defineProps<{ accept: string }>()
-defineEmits(['change'])
-const inputRef = ref<HTMLInputElement>(null)
-</script>
-<style lang="less" scoped>
-.base-import__input {
-  display: none;
+module.exports = {
+  MetadataRuleSet: {
+    deserialize: jest.fn()
+  }
 }
-</style>

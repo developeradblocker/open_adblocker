@@ -17,7 +17,7 @@
     </div>
 
     <p class="main__validation-error" v-if="importError">
-      File doesn’t seem to match our setting format. Please check it and try again.
+      {{ importError }}
     </p>
 
     <div class="main__separator"/>

@@ -20,6 +20,15 @@ import { shallowMount } from '@vue/test-utils'
 import GeneralMain from '@/ui/settings/components/general/general-main.vue'
 import TransparentStub from '../../../../helpers/TransparentStub'
 import { RATE_US_URL } from '@/modules/rate-us/constants'
+import { useExternalSettings } from '@/modules/settings/external/settings.utils'
+import { exportData, ExportFormat, ExportTypes } from '@/ui/settings/utils/export-data'
+import { importData } from '@/ui/settings/utils/import-data'
+import BaseImport from '@/ui/settings/components/base/base-import.vue'
+import { flushPromises } from '../../../../helpers/flushPromises'
+
+jest.mock('@/modules/settings/external/settings.utils')
+jest.mock('@/ui/settings/utils/import-data')
+jest.mock('@/ui/settings/utils/export-data')
 
 describe('GeneralMain.vue', () => {
   let wrapper: VueWrapper<any>
@@ -32,22 +41,33 @@ describe('GeneralMain.vue', () => {
     rate: '[data-test="rate"]'
   }
 
+  const importMock = jest.fn()
+  const exportMock = jest.fn()
+
   const doMount = (): void => {
     if (wrapper?.exists()) {
       wrapper.unmount()
     }
 
+    (useExternalSettings as jest.Mock).mockReturnValue({
+      export: exportMock,
+      import: importMock
+    })
+
     wrapper = shallowMount(GeneralMain, {
       global: {
         stubs: {
           BaseBox: TransparentStub(),
-          BaseSvg: true
+          BaseSvg: true,
+          BaseImport: false
         }
       }
     })
   }
 
   beforeEach(() => {
+    (importData as jest.Mock).mockResolvedValue('imported')
+    exportMock.mockResolvedValue('exported')
     doMount()
 
     global.chrome = {
@@ -68,5 +88,26 @@ describe('GeneralMain.vue', () => {
     expect(createTabMock).toHaveBeenCalledWith({
       url: RATE_US_URL
     })
+  })
+
+  it('should handle on export click', async () => {
+    await wrapper.get(elements.export).trigger('click')
+    expect(exportMock).toHaveBeenCalledTimes(1)
+    expect(exportData).toHaveBeenCalledTimes(1)
+    expect(exportData).toHaveBeenCalledWith(ExportTypes.settings, 'exported', ExportFormat.json)
+  })
+
+  it('should trigger file input click on import button click', async () => {
+    const event = {
+      target: {
+        files: ['imported']
+      }
+    }
+    await wrapper.findComponent(BaseImport).vm.$emit('change', event)
+    expect(importMock).toHaveBeenCalledTimes(1)
+    expect(importMock).toHaveBeenCalledWith('imported')
+
+    await flushPromises()
+    expect(wrapper.text()).toContain('Something went wrong. Please try again or use another file')
   })
 })

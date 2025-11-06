@@ -74,4 +74,12 @@ describe('FiltersStorage', () => {
       expect(await storage.get()).toEqual([12, 2])
     })
   })
+
+  describe('setup', () => {
+    it('should override filters from scratch', async () => {
+      await storage.setup([1, 2, 3])
+      expect(dataAccessorMock.write).toHaveBeenCalledTimes(1)
+      expect(dataAccessorMock.write).toHaveBeenCalledWith([1, 2, 3])
+    })
+  })
 })

@@ -21,5 +21,5 @@ export interface WebRTCBaseInterface {
 
 export interface WebRTCInterface extends WebRTCBaseInterface {
   getState: () => Promise<boolean>
-  setup: (state: boolean) => Promise<void>
+  setup: (state: boolean) => Promise<boolean>
 }

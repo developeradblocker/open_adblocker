@@ -23,6 +23,8 @@ import { InternalFiltersIdentifiers } from '@/modules/filters/internal/filters.t
 import { FiltersService } from '@/modules/filters/internal/service/filters.service'
 import { FiltersStorage } from '@/modules/filters/internal/storage/filters.storage'
 import { FiltersToggleListener } from '@/modules/filters/internal/listeners/filters-toggle.listener'
+import { MetadataService } from '@/modules/filters/internal/service/metadata.service'
+import { MetadataStorage } from '@/modules/filters/internal/storage/metadata.storage'
 
 jest.mock('@/utils/inject/inject')
 jest.mock('@/utils/setup-worker', () => ({
@@ -31,8 +33,11 @@ jest.mock('@/utils/setup-worker', () => ({
 jest.mock('@/modules/filters/internal/service/filters.service')
 jest.mock('@/modules/filters/internal/storage/filters.storage')
 jest.mock('@/modules/filters/internal/listeners/filters-toggle.listener')
+jest.mock('@/modules/filters/internal/storage/metadata.storage')
+jest.mock('@/modules/filters/internal/service/metadata.service')
 
 const mockedInject = jest.mocked(inject)
+const addListenerMock = jest.fn()
 const mockedDispatcher = jest.mocked(dispatcher)
 const mockDispatcherInstance = {
   onWithClass: jest.fn()
@@ -40,6 +45,14 @@ const mockDispatcherInstance = {
 
 beforeEach(() => {
   jest.clearAllMocks()
+  global.chrome = {
+    runtime: {
+      onInstalled: {
+        addListener: addListenerMock
+      }
+    }
+  } as any
+
   mockedDispatcher.mockReturnValue(mockDispatcherInstance as any)
 })
 
@@ -54,6 +67,14 @@ describe('setupInternalFilters', () => {
       {
         key: InternalFiltersIdentifiers._filterStorage,
         use: FiltersStorage
+      },
+      {
+        key: InternalFiltersIdentifiers.metadata,
+        use: MetadataService
+      },
+      {
+        key: InternalFiltersIdentifiers._metadataStorage,
+        use: MetadataStorage
       }
     ])
     expect(mockDispatcherInstance.onWithClass).toHaveBeenCalledWith(FiltersToggleListener)

@@ -21,6 +21,7 @@ import { logger } from '@/utils/logger/logger'
 import { setupExternalPortChannel } from '@/modules/port/external/port.setup'
 import { flushPromises } from '../../../helpers/flushPromises'
 import { DispatcherInterface } from '@/utils/dispatcher/dispatcher.types'
+import { setupExternalSettings } from '@/modules/settings/external/settings.setup'
 
 jest.mock('vue', () => ({
   defineComponent: jest.fn(),
@@ -59,6 +60,10 @@ jest.mock('@/modules/port/external/port.setup', () => ({
   setupExternalPortChannel: jest.fn()
 }))
 
+jest.mock('@/modules/settings/external/settings.setup', () => ({
+  setupExternalSettings: jest.fn()
+}))
+
 describe('Settings entry script', () => {
   const appInstance = {
     use: jest.fn(),
@@ -77,6 +82,7 @@ describe('Settings entry script', () => {
       await flushPromises()
       expect(setupWorker).toHaveBeenCalledWith('Settings')
       expect(setupExternalPortChannel).toHaveBeenCalledWith({ name: 'Settings' })
+      expect(setupExternalSettings).toHaveBeenCalledTimes(1)
       expect(dispatcher).toHaveBeenCalled()
       expect(mockWork).toHaveBeenCalled()
       expect(logger.info).toHaveBeenCalledWith('Settings started...')

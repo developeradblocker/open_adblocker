@@ -20,6 +20,7 @@ import { FiltersStorage } from '@/modules/filters/internal/storage/filters.stora
 import { dispatcher } from '@/utils/setup-worker'
 import { DispatcherInterface } from '@/utils/dispatcher/dispatcher.types'
 import { FiltersMessages } from '@/modules/filters/common/filters.messages'
+import { MetadataServiceInterface } from '@/modules/filters/internal/filters.types'
 
 jest.mock('@/utils/setup-worker', () => ({
   dispatcher: jest.fn()
@@ -29,17 +30,24 @@ describe('InternalFiltersService', () => {
   let service: FiltersService
   let sendMessageMock: jest.Mock
 
+  const getFiltersMock = jest.fn()
   const mockStorage = {
     get: jest.fn(),
     enable: jest.fn(),
-    disable: jest.fn()
+    disable: jest.fn(),
+    setup: jest.fn()
   } as unknown as FiltersStorage
+
+  const metadata = {
+    getFilters: getFiltersMock
+  } as unknown as MetadataServiceInterface
 
   beforeEach(() => {
     jest.clearAllMocks()
 
     sendMessageMock = jest.fn()
-    service = new FiltersService(mockStorage)
+    getFiltersMock.mockResolvedValue([{ filterId: 12 }, { filterId: 1 }])
+    service = new FiltersService(mockStorage, metadata)
     jest.mocked(dispatcher).mockReturnValue(
       { sendMessage: sendMessageMock } as unknown as DispatcherInterface
     )
@@ -89,6 +97,18 @@ describe('InternalFiltersService', () => {
       jest.mocked(mockStorage.get).mockResolvedValueOnce([1, 2, 3])
       expect(await service.getEnabledFilters()).toEqual([12])
       expect(await service.getEnabledFilters()).toEqual([1, 2, 3])
+    })
+  })
+
+  describe('setup', () => {
+    it('should be able to set unique filters', async () => {
+      await service.setup([1, 1, 2])
+      expect(mockStorage.setup).toHaveBeenCalledWith([1])
+    })
+
+    it('should not be able to setup unsupported filters', async () => {
+      await service.setup([1000, 0, 100])
+      expect(mockStorage.setup).toHaveBeenCalledWith([])
     })
   })
 })

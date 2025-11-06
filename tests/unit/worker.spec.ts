@@ -33,6 +33,7 @@ import { helloAndGoodbyeSetup } from '@/modules/hello-and-goodbye/internal/hello
 import { setupInternalWebRTC } from '@/modules/features/web-rtc/internal/web-rtc.setup'
 import { setupInternalFilters } from '@/modules/filters/internal/filter.setup'
 import { setupInternalConfig } from '@/modules/config/internal/config.setup'
+import { setupInternalSettings } from '@/modules/settings/internal/settings.setup'
 
 jest.mock('@/utils/setup-worker', () => ({
   setupWorker: jest.fn(),
@@ -45,6 +46,10 @@ jest.mock('@/utils/logger/logger', () => ({
 }))
 jest.mock('@/modules/port/internal/port.setup', () => ({
   setupInternalPortChannel: jest.fn()
+}))
+
+jest.mock('@/modules/settings/internal/settings.setup', () => ({
+  setupInternalSettings: jest.fn()
 }))
 
 jest.mock('@/modules/features/web-rtc/internal/web-rtc.setup', () => ({
@@ -125,6 +130,7 @@ describe('serviceWorkerSetup', () => {
       expect(setupInternalWhitelist).toHaveBeenCalled()
       expect(setupInternalFilters).toHaveBeenCalled()
       expect(setupInternalConfig).toHaveBeenCalled()
+      expect(setupInternalSettings).toHaveBeenCalled()
       await flushPromises()
       const expectedList = [...list, AppMessages.ready]
       expect(onHandledAllRequiredMessages).toHaveBeenCalledWith(expectedList, expect.any(Function))

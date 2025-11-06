@@ -54,6 +54,7 @@ export class FiltersService implements FiltersServiceInterface {
 
       filteredFilters.push(filterId)
     }
+
     await this.storage.setup(filteredFilters)
   }
 
