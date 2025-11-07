@@ -25,7 +25,7 @@ import { setupExternalUserActivity } from '@/modules/user-activity/external/user
 import { flushPromises } from '../../../helpers/flushPromises'
 import { DispatcherInterface } from '@/utils/dispatcher/dispatcher.types'
 import { createRouter } from 'vue-router'
-import { ROUTE } from '@/ui/toolbar-popup/router/route-names'
+import { POPUP_ROUTE } from '@/ui/toolbar-popup/router/route-names'
 import { useUserActivity } from '@/modules/user-activity/external/utils'
 import { setupExternalWebRTC } from '@/modules/features/web-rtc/external/web-rtc.setup'
 import { setupExternalFilters } from '@/modules/filters/external/filters.setup'
@@ -130,10 +130,10 @@ describe('Popup entry script', () => {
 
       expect(afterEachMock).toHaveBeenCalledTimes(1)
       const callback = afterEachMock.mock.calls[0][0]
-      callback({ name: ROUTE.HOME })
+      callback({ name: POPUP_ROUTE.HOME })
       expect(visitPageMock).toHaveBeenCalledTimes(2)
-      expect(visitPageMock).toHaveBeenNthCalledWith(1, ROUTE.INIT)
-      expect(visitPageMock).toHaveBeenNthCalledWith(2, ROUTE.HOME)
+      expect(visitPageMock).toHaveBeenNthCalledWith(1, POPUP_ROUTE.INIT)
+      expect(visitPageMock).toHaveBeenNthCalledWith(2, POPUP_ROUTE.HOME)
     })
   })
 })

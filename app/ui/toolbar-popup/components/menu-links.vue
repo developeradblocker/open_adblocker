@@ -39,7 +39,8 @@
 
 import { ElementsUI } from '@/modules/user-activity/common/user-activity.types'
 import { useUserActivity } from '@/modules/user-activity/external/utils'
-import { ROUTE } from '@/ui/toolbar-popup/router/route-names'
+import { POPUP_ROUTE } from '@/ui/toolbar-popup/router/route-names'
+import { PRIVACY_POLICY_LINK, TERMS_LINK, WEB_PAGE_LINK } from '@/ui/shared/constants'
 
 export interface MenuLink {
   icon: string
@@ -52,19 +53,19 @@ const LINKS: MenuLink[] = [
   {
     icon: 'info',
     text: 'About',
-    url: 'https://openadblocker.com/',
+    url: WEB_PAGE_LINK,
     element: ElementsUI.about
   },
   {
     icon: 'policy',
     text: 'Privacy Policy',
-    url: 'https://openadblocker.com/privacy-policy/',
+    url: PRIVACY_POLICY_LINK,
     element: ElementsUI.privacy
   },
   {
     icon: 'link',
     text: 'Terms and conditions',
-    url: 'https://github.com/developeradblocker/open_adblocker?tab=readme-ov-file#open-ad-blocker',
+    url: TERMS_LINK,
     element: ElementsUI.terms
   }
 ]
@@ -72,7 +73,7 @@ const LINKS: MenuLink[] = [
 const activity = useUserActivity()
 const onLinkClick = async (link: MenuLink): Promise<void> => {
   await activity.click(link.element, {
-    page: ROUTE.MENU,
+    page: POPUP_ROUTE.MENU,
     to: link.url
   })
   if (link.url) {
@@ -105,6 +106,7 @@ const onLinkClick = async (link: MenuLink): Promise<void> => {
 }
 
 .menu-links__item-icon {
+  fill: #7992FF;
   width: 20px;
   height: 20px;
 }

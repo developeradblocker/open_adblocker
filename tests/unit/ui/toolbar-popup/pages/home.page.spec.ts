@@ -20,7 +20,7 @@ import { shallowMount } from '@vue/test-utils'
 import TransparentStub from '../../../../helpers/TransparentStub'
 import HomePage from '@/ui/toolbar-popup/pages/home.page.vue'
 import Header from '@/ui/toolbar-popup/components/header.vue'
-import { ROUTE } from '@/ui/toolbar-popup/router/route-names'
+import { POPUP_ROUTE } from '@/ui/toolbar-popup/router/route-names'
 import { useRouter } from 'vue-router'
 import { useNotificationStore } from '@/ui/toolbar-popup/components/notification/notification.store'
 import { NotificationTypes } from '@/ui/toolbar-popup/components/notification/notification.types'
@@ -68,6 +68,6 @@ describe('HomePage.vue', () => {
 
   it('should navigate to menu on click', () => {
     wrapper.getComponent(Header).vm.$emit('menu-click')
-    expect(pushMock).toHaveBeenLastCalledWith({ name: ROUTE.MENU })
+    expect(pushMock).toHaveBeenLastCalledWith({ name: POPUP_ROUTE.MENU })
   })
 })

@@ -27,6 +27,7 @@ import { inject } from '@/utils/inject/inject'
 
 import OnActivatedInfo = chrome.tabs.OnActivatedInfo
 import OnUpdatedInfo = chrome.tabs.OnUpdatedInfo
+import { logger } from '@/utils/logger/logger'
 
 const injections: Injection[] = [
   {
@@ -53,12 +54,16 @@ const onActivated = async ({ tabId }: OnActivatedInfo): Promise<void> => {
     return
   }
 
-  const tabInfo = await chrome.tabs.get(tabId)
-  if (!tabInfo?.url) {
-    return
-  }
+  try {
+    const tabInfo = await chrome.tabs.get(tabId)
+    if (!tabInfo?.url) {
+      return
+    }
 
-  await draw(tabId, tabInfo.url)
+    await draw(tabId, tabInfo.url)
+  } catch (error) {
+    logger.error('Failed to draw image:', error)
+  }
 }
 const onUpdated = async (tabId: number, { status }: OnUpdatedInfo): Promise<void> => {
   if (!canHandle) {
@@ -68,13 +73,17 @@ const onUpdated = async (tabId: number, { status }: OnUpdatedInfo): Promise<void
   if (status !== 'complete') {
     return
   }
-  const tabInfo = await chrome.tabs.get(tabId)
+  try {
+    const tabInfo = await chrome.tabs.get(tabId)
 
-  if (!tabInfo?.url) {
-    return
+    if (!tabInfo?.url) {
+      return
+    }
+
+    await draw(tabId, tabInfo.url)
+  } catch (error) {
+    logger.error('Failed to draw image:', error)
   }
-
-  await draw(tabId, tabInfo.url)
 }
 
 const handleOnAdBlockerReady = async (): Promise<void> => {

@@ -17,31 +17,56 @@
  */
 import { type VueWrapper } from '@vue/test-utils/dist/vueWrapper'
 import { shallowMount } from '@vue/test-utils'
-import BaseButton from '@/ui/toolbar-popup/components/base-button.vue'
+import GeneralMain from '@/ui/settings/components/general/general-main.vue'
+import TransparentStub from '../../../../helpers/TransparentStub'
+import { RATE_US_URL } from '@/modules/rate-us/constants'
 
-describe('BaseButton.vue', () => {
+describe('GeneralMain.vue', () => {
   let wrapper: VueWrapper<any>
+
+  const createTabMock = jest.fn()
+  const elements = {
+    import: '[data-test="import"]',
+    export: '[data-test="export"]',
+    report: '[data-test="report"]',
+    rate: '[data-test="rate"]'
+  }
 
   const doMount = (): void => {
     if (wrapper?.exists()) {
       wrapper.unmount()
     }
 
-    wrapper = shallowMount(BaseButton, {
-      props: {
-        label: 'BTN'
+    wrapper = shallowMount(GeneralMain, {
+      global: {
+        stubs: {
+          BaseBox: TransparentStub(),
+          BaseSvg: true
+        }
       }
     })
   }
 
   beforeEach(() => {
     doMount()
+
+    global.chrome = {
+      tabs: {
+        create: createTabMock
+      }
+    } as any
   })
 
   it('should render', () => {
     expect(wrapper.exists())
       .toBeTruthy()
-    expect(wrapper.text()).toContain('BTN')
-    expect(wrapper.classes()).not.toContain('base-button--disabled')
+  })
+
+  it('should create new tab on rate us clicked', async () => {
+    await wrapper.get(elements.rate).trigger('click')
+    expect(createTabMock).toHaveBeenCalledTimes(1)
+    expect(createTabMock).toHaveBeenCalledWith({
+      url: RATE_US_URL
+    })
   })
 })

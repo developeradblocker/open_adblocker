@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-import { ROUTE } from '@/ui/toolbar-popup/router/route-names'
+import { POPUP_ROUTE } from '@/ui/toolbar-popup/router/route-names'
 
 export type ClickEventToLink = string
 export enum ClickEventToAction {
@@ -47,7 +47,7 @@ export enum ElementsUI {
   cookie_cleaner = 'cookie_cleaner'
 }
 
-export type PageUI = ROUTE
+export type PageUI = POPUP_ROUTE
 
 export interface BaseUserActivity {
   sessionId: string

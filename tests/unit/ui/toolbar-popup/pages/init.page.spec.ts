@@ -24,7 +24,7 @@ import { useAppService } from '@/modules/app/external/app.service'
 import { useAppStore } from '@/ui/toolbar-popup/store/app.store'
 import { useRouter } from 'vue-router'
 import Header from '@/ui/toolbar-popup/components/header.vue'
-import { ROUTE } from '@/ui/toolbar-popup/router/route-names'
+import { POPUP_ROUTE } from '@/ui/toolbar-popup/router/route-names'
 
 jest.mock('@/modules/app/external/app.service')
 jest.mock('@/ui/toolbar-popup/store/app.store')
@@ -77,7 +77,7 @@ describe('InitPage.vue', () => {
 
   it('should navigate to menu on click', () => {
     wrapper.getComponent(Header).vm.$emit('menu-click')
-    expect(pushMock).toHaveBeenLastCalledWith({ name: ROUTE.MENU })
+    expect(pushMock).toHaveBeenLastCalledWith({ name: POPUP_ROUTE.MENU })
   })
 
   it('should establish connection and set app info', async () => {
@@ -85,13 +85,13 @@ describe('InitPage.vue', () => {
     expect(establishConnectionMock).toHaveBeenCalledTimes(1)
     expect(setAppInfoMock).toHaveBeenCalledTimes(1)
     expect(setAppInfoMock).toHaveBeenCalledWith(state)
-    expect(pushMock).toHaveBeenCalledWith({ name: ROUTE.HOME })
+    expect(pushMock).toHaveBeenCalledWith({ name: POPUP_ROUTE.HOME })
   })
 
   it('should navigate on rate us when "needVisitRateUs" was set to true', async () => {
     state.needVisitRateUs = true
     doMount()
     await flushPromises()
-    expect(pushMock).toHaveBeenCalledWith({ name: ROUTE.RATE_US })
+    expect(pushMock).toHaveBeenCalledWith({ name: POPUP_ROUTE.RATE_US })
   })
 })
