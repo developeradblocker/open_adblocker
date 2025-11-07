@@ -48,11 +48,11 @@ describe('setupInternalFilters', () => {
     setupInternalFilters()
     expect(mockedInject).toHaveBeenCalledWith([
       {
-        key: InternalFiltersIdentifiers.service,
+        key: InternalFiltersIdentifiers.filters,
         use: FiltersService
       },
       {
-        key: InternalFiltersIdentifiers._storage,
+        key: InternalFiltersIdentifiers._filterStorage,
         use: FiltersStorage
       }
     ])

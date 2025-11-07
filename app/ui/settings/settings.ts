@@ -28,12 +28,14 @@ import { setupExternalPortChannel } from '@/modules/port/external/port.setup'
 import InlineSvg from 'vue-inline-svg'
 
 import { routes } from '@/ui/settings/router/routes'
+import { setupExternalSettings } from '@/modules/settings/external/settings.setup'
 
 /**
  * Settings Worker (PW)
  */
 setupWorker('Settings')
-setupExternalPortChannel({ name: 'Settings' });
+setupExternalPortChannel({ name: 'Settings' })
+setupExternalSettings();
 
 (async (): Promise<void> => {
   await dispatcher().work()

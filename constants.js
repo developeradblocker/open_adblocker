@@ -18,31 +18,27 @@
 /**
  * EasyList + AdGuard English filter. This filter is necessary for quality ad blocking.
  */
-const AD_BLOCKER_ID = '2'
+const AD_BLOCKER_ID = 2
 
-const SEARCH_ADS_ID = '10'
+const SEARCH_ADS_ID = 10
 /**
  * Cookie filter. Removes cookies notifications from websites
  */
-export const COOKIE_CLEANER_ID = '18'
+export const COOKIE_CLEANER_ID = 18
+export const CUSTOM_FILTERS_START_ID = 1000
+export const USER_FILTER_ID = 0
+export const ALLOWLIST_FILTER_ID = 100
 
+export const RULESET_NAME_PREFIX = 'ruleset_'
+export const METADATA_RULESET = `${RULESET_NAME_PREFIX}${USER_FILTER_ID}`
+export const METADATA_PATH = `filters/declarative/${METADATA_RULESET}/${METADATA_RULESET}.json`
 /**
- * a list of available filter IDs
+ * a list of default available filter IDs
  *
  * The list of available filters can be found by filters in the metadata.
  * https://filters.adtidy.org/extension/chromium-mv3/filters.json
  */
-export const AVAILABLE_FILTER_IDS = [
+export const DEFAULT_ENABLED_FILTER_IDS = [
   AD_BLOCKER_ID,
-  SEARCH_ADS_ID,
-  COOKIE_CLEANER_ID
+  SEARCH_ADS_ID
 ]
-
-export const DEFAULT_DISABLED_FILTER_IDS = [
-  COOKIE_CLEANER_ID
-]
-
-export const DEFAULT_ENABLED_FILTER_IDS = AVAILABLE_FILTER_IDS
-  .filter(id => !DEFAULT_DISABLED_FILTER_IDS.includes(id))
-
-export const RULESET_NAME_PREFIX = 'ruleset_'

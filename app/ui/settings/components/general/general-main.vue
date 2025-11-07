@@ -4,27 +4,31 @@
     <p class="main__description">Import and export settings between browsers or accounts for a quick configuration.</p>
 
     <div class="main__actions">
-      <BaseButton
-        data-test="import"
-        label="Import settings" :type="BaseButtonType.secondary" @click="onImport"/>
+      <BaseImport @change="onImport" accept="application/json">
+        <template #default="{ input }">
+          <BaseButton
+            data-test="import"
+            label="Import settings" :type="BaseButtonType.secondary" @click="initImport(input)"/>
+        </template>
+      </BaseImport>
       <BaseButton
         data-test="export"
         label="Export settings" :type="BaseButtonType.secondary" @click="onExport"/>
     </div>
 
-    <p class="main__validation-error" v-if="showError">
+    <p class="main__validation-error" v-if="importError">
       File doesn’t seem to match our setting format. Please check it and try again.
     </p>
 
-    <div class="main__separator" />
+    <div class="main__separator"/>
 
     <div class="main__cards">
       <BaseCard
         data-test="report"
-        label="Report a bug" icon="bug" class="main__card" @click="onReportBugClicked" />
+        label="Report a bug" icon="bug" class="main__card" @click="onReportBugClicked"/>
       <BaseCard
         data-test="rate"
-        label="Share feedback" icon="rate" class="main__card" @click="onRateUsClicked" />
+        label="Share feedback" icon="rate" class="main__card" @click="onRateUsClicked"/>
     </div>
   </BaseBox>
 </template>
@@ -55,8 +59,15 @@ import BaseButton from '@/ui/shared/components/button/base-button.vue'
 import { BaseButtonType } from '@/ui/shared/components/button/base-button.types'
 import BaseCard from '@/ui/settings/components/base/base-card.vue'
 import { RATE_US_URL } from '@/modules/rate-us/constants'
+import { exportData, ExportFormat, ExportTypes } from '@/ui/settings/utils/export-data'
+import { SUPPORT_EMAIL } from '@/ui/shared/constants'
+import { getVersion } from '@/ui/settings/utils/get-version'
+import { useExternalSettings } from '@/modules/settings/external/settings.utils'
+import BaseImport from '@/ui/settings/components/base/base-import.vue'
+import { importData, ImportErrorReason, ImportErrors } from '@/ui/settings/utils/import-data'
 
-const showError = ref(false)
+const importError = ref<string>(null)
+const $settings = useExternalSettings()
 
 const onRateUsClicked = async (): Promise<void> => {
   await chrome.tabs.create({
@@ -65,16 +76,46 @@ const onRateUsClicked = async (): Promise<void> => {
 }
 
 const onExport = async (): Promise<void> => {
-
+  importError.value = null
+  await exportData(ExportTypes.settings, await $settings.export(), ExportFormat.json)
 }
 
-const onImport = async (): Promise<void> => {
-  showError.value = !showError.value
+const initImport = async (input: HTMLInputElement): Promise<void> => {
+  input.click()
+  importError.value = null
+}
+
+const onImport = async (event: InputEvent): Promise<void> => {
+  const target = event.target as HTMLInputElement
+  const file = target.files?.[0]
+  if (!file) {
+    target.value = null
+    return
+  }
+
+  try {
+    const content = await importData(file, ExportFormat.json)
+    const success = await $settings.import(content)
+    if (!success) {
+      importError.value = ImportErrors[ImportErrorReason.validationError]
+      return
+    }
+
+    alert('Import was successful')
+  } catch (error) {
+    // @ts-ignore-error
+    importError.value = ImportErrors[error?.message as ImportErrorReason] ?? ImportErrors[ImportErrorReason.readingError]
+  } finally {
+    target.value = null
+  }
 }
 
 const onReportBugClicked = async (): Promise<void> => {
-
+  await chrome.tabs.create({
+    url: `mailto:${SUPPORT_EMAIL}?subject=OpenADB issue report&body=Version: ${getVersion()} %0D%0A %0D%0A Please describe your problem and steps to reproduce it`
+  })
 }
+
 </script>
 
 <style scoped>

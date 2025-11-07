@@ -26,7 +26,7 @@ export const addDeclarativeNetworkRules = (manifest, filters) => {
     manifest,
     filters,
     {
-      enable: DEFAULT_ENABLED_FILTER_IDS,
+      enable: DEFAULT_ENABLED_FILTER_IDS.map(String),
       forceUpdate: true,
       rulesetPrefix: RULESET_NAME_PREFIX
     }

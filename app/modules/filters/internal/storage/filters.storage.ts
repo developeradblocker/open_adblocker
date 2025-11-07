@@ -25,8 +25,12 @@ export class FiltersStorage {
     'ENABLED_FILTERS',
     {
       useCache: false,
-      default: DEFAULT_ENABLED_FILTER_IDS.map(Number)
+      default: DEFAULT_ENABLED_FILTER_IDS
     })
+
+  async setup (filters: number[]): Promise<void> {
+    await this.storage.write(filters)
+  }
 
   async enable (id: number): Promise<number[]> {
     const enabledFilters = await this.get()

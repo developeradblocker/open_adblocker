@@ -15,8 +15,21 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-export const WEB_PAGE_LINK = 'https://openadblocker.com/'
-export const GITHUB_LINK = 'https://github.com/developeradblocker/open_adblocker'
-export const PRIVACY_POLICY_LINK = `${WEB_PAGE_LINK}privacy-policy/`
-export const TERMS_LINK = `${GITHUB_LINK}?tab=readme-ov-file#open-ad-blocker`
-export const SUPPORT_EMAIL = 'openadblockerdeveloper@gmail.com'
+import { OpenADBSettings } from '@/modules/settings/common/settings.types'
+import { checkWebRTCPermissions } from '@/modules/features/web-rtc/common/web-rtc.utils'
+
+export const privacyValidator = async (settings: OpenADBSettings): Promise<void> => {
+  const { webRTC } = settings?.general ?? {}
+  if (typeof webRTC !== 'boolean') {
+    throw new Error('Invalid webRTC value')
+  }
+
+  if (!webRTC) {
+    return
+  }
+
+  const permissions = await checkWebRTCPermissions()
+  if (!permissions) {
+    throw new Error('Permissions for webRTC are not granted')
+  }
+}

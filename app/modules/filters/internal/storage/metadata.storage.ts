@@ -15,8 +15,29 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-export const WEB_PAGE_LINK = 'https://openadblocker.com/'
-export const GITHUB_LINK = 'https://github.com/developeradblocker/open_adblocker'
-export const PRIVACY_POLICY_LINK = `${WEB_PAGE_LINK}privacy-policy/`
-export const TERMS_LINK = `${GITHUB_LINK}?tab=readme-ov-file#open-ad-blocker`
-export const SUPPORT_EMAIL = 'openadblockerdeveloper@gmail.com'
+import { makeDataAccessor } from '@/utils/storage/make-data-accessor'
+import { Metadata } from '@/modules/filters/common/filters.types'
+
+export class MetadataStorage {
+  private readonly storage = makeDataAccessor<Metadata>(
+    'local',
+    'DNR_METADATA',
+    {
+      useCache: false,
+      default: {
+        metadata: {
+          filters: [],
+          groups: [],
+          tags: []
+        }
+      }
+    })
+
+  async set (metadata: Metadata): Promise<void> {
+    await this.storage.write(metadata)
+  }
+
+  async get (): Promise<Metadata> {
+    return await this.storage.read()
+  }
+}

@@ -15,20 +15,45 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-import { FiltersBaseInterface } from '@/modules/filters/common/filters.types'
+import {
+  FilterMetadata,
+  FiltersBaseInterface,
+  GroupMetadata,
+  Metadata,
+  TagMetadata
+} from '@/modules/filters/common/filters.types'
 
 export enum InternalFiltersIdentifiers {
   /**
    * @link FilterServiceInterface
    */
-  service = 'Filters.Service',
+  filters = 'Filters.Filters',
 
   /**
    * @link FiltersStorage
    */
-  _storage = 'Filters.Storage'
+  _filterStorage = 'Filters.FilterStorage',
+
+  /**
+   * MetadataServiceInterface
+   */
+  metadata = 'Filters.Metadata',
+
+  /**
+   * @link MetadataStorage
+   */
+  _metadataStorage = 'Filters.MetadataStorage'
 }
 
 export interface FiltersServiceInterface extends FiltersBaseInterface {
   getEnabledFilters: () => Promise<number[]>
+  setup: (filters: number[]) => Promise<void>
+}
+
+export interface MetadataServiceInterface {
+  getMetadata: () => Promise<Metadata>
+  getGroups: () => Promise<GroupMetadata[]>
+  getFilters: () => Promise<FilterMetadata[]>
+  getTags: () => Promise<TagMetadata[]>
+  updateMetadata: () => Promise<void>
 }

@@ -37,7 +37,8 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-const { version } = chrome.runtime.getManifest()
+import { getVersion } from '@/ui/settings/utils/get-version'
+const version = getVersion()
 </script>
 
 <style lang="less" scoped>

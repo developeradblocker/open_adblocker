@@ -15,8 +15,17 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-export const WEB_PAGE_LINK = 'https://openadblocker.com/'
-export const GITHUB_LINK = 'https://github.com/developeradblocker/open_adblocker'
-export const PRIVACY_POLICY_LINK = `${WEB_PAGE_LINK}privacy-policy/`
-export const TERMS_LINK = `${GITHUB_LINK}?tab=readme-ov-file#open-ad-blocker`
-export const SUPPORT_EMAIL = 'openadblockerdeveloper@gmail.com'
+import { inject } from '@/utils/inject/inject'
+import { Injection } from '@/utils/inject/inject.types'
+import { SettingsService } from '@/modules/settings/external/service/settings.service'
+import { ExternalSettingsIdentifiers } from '@/modules/settings/external/settings.types'
+
+const injections: Injection[] = [
+  {
+    key: ExternalSettingsIdentifiers.service,
+    use: SettingsService
+  }
+]
+export const setupExternalSettings = (): void => {
+  inject(injections)
+}

@@ -16,29 +16,29 @@
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { AppMessageListener, Box } from '@/utils/dispatcher/dispatcher.types'
+import { AppMessageListener } from '@/utils/dispatcher/dispatcher.types'
 import { inject, injectable } from '@/utils/di/di.types'
-import { FiltersServiceInterface, InternalFiltersIdentifiers } from '@/modules/filters/internal/filters.types'
-import { FiltersMessages, ToggleFilterMessage } from '@/modules/filters/common/filters.messages'
+import { ExportSettingsMessage, SettingsMessages } from '@/modules/settings/common/settings.messages'
+import { OpenADBSettings, SettingsInterface } from '@/modules/settings/common/settings.types'
+import { InternalSettingsIdentifiers } from '@/modules/settings/internal/settings.types'
 
 @injectable()
-export class FiltersToggleListener implements AppMessageListener<ToggleFilterMessage> {
+export class ExportSettingsListener implements AppMessageListener<ExportSettingsMessage, OpenADBSettings> {
   constructor (
-    @inject(InternalFiltersIdentifiers.filters)
-    private filters: FiltersServiceInterface
+    @inject(InternalSettingsIdentifiers.service)
+    private settings: SettingsInterface
   ) {
   }
 
-  on (): FiltersMessages.toggle {
-    return FiltersMessages.toggle
+  on (): SettingsMessages.export {
+    return SettingsMessages.export
   }
 
-  main (): false {
-    return false
+  main (): true {
+    return true
   }
 
-  async handle ({ message }: Box<ToggleFilterMessage>): Promise<void> {
-    const { id } = message.payload
-    await this.filters.toggle(id)
+  async handle (): Promise<OpenADBSettings> {
+    return await this.settings.export()
   }
 }
