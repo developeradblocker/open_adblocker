@@ -71,14 +71,12 @@ const activeGroup = computed(() => $store.groups.find((group) => group.groupId =
 const filters = computed(() => $store.filters.filter((filter) => filter.groupId === groupId))
 
 const toggleFilter = async (filterId: FilterId): Promise<void> => {
-  if (!isActiveGroup.value) {
-    await toggleGroup()
-  }
+  $store.toggleFilter(filterId)
   await $filters.toggle(filterId)
 }
 const toggleGroup = async (): Promise<void> => {
-  await $groups.toggle(groupId)
   $store.toggleGroup(groupId)
+  await $groups.toggle(groupId)
 }
 </script>
 

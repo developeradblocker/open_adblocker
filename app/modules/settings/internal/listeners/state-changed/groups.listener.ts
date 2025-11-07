@@ -16,7 +16,10 @@
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
 import { AppMessageListener } from '@/utils/dispatcher/dispatcher.types'
-import { FiltersMessages, FiltersStateChangedMessage } from '@/modules/filters/common/filters.messages'
+import {
+  FiltersMessages,
+  GroupsStateChangedMessage
+} from '@/modules/filters/common/filters.messages'
 import { inject, injectable } from '@/utils/di/di.types'
 import { useInternalPort } from '@/modules/port/internal/port.setup'
 import { InternalSettingsIdentifiers } from '@/modules/settings/internal/settings.types'
@@ -24,15 +27,15 @@ import { SettingsInterface } from '@/modules/settings/common/settings.types'
 import { SettingsMessages, SettingsUpdateStateMessage } from '@/modules/settings/common/settings.messages'
 
 @injectable()
-export class FiltersStateChangedListener implements AppMessageListener<FiltersStateChangedMessage> {
+export class GroupsStateChangedListener implements AppMessageListener<GroupsStateChangedMessage> {
   constructor (
     @inject(InternalSettingsIdentifiers.service)
     private readonly service: SettingsInterface
   ) {
   }
 
-  on (): FiltersMessages.filtersStateChanged {
-    return FiltersMessages.filtersStateChanged
+  on (): FiltersMessages.groupsStateChanged {
+    return FiltersMessages.groupsStateChanged
   }
 
   main (): false {

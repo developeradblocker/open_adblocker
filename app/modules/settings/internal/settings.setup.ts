@@ -27,6 +27,7 @@ import { GetSettingsListener } from '@/modules/settings/internal/listeners/get-s
 import { FiltersStateChangedListener } from '@/modules/settings/internal/listeners/state-changed/filters.listener'
 import { WebRTCStateChangedListener } from '@/modules/settings/internal/listeners/state-changed/web-rtc.listener'
 import { WhitelistStateChangedListener } from '@/modules/settings/internal/listeners/state-changed/whitelist.listener'
+import { GroupsStateChangedListener } from '@/modules/settings/internal/listeners/state-changed/groups.listener'
 
 const injections: Injection[] = [
   {
@@ -43,4 +44,5 @@ export const setupInternalSettings = (): void => {
   dispatcher().onWithClass(FiltersStateChangedListener)
   dispatcher().onWithClass(WebRTCStateChangedListener)
   dispatcher().onWithClass(WhitelistStateChangedListener)
+  dispatcher().onWithClass(GroupsStateChangedListener)
 }

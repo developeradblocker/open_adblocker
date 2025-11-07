@@ -32,6 +32,19 @@ export class FiltersStorage {
     await this.storage.write(filters)
   }
 
+  async toggle (id: FilterId): Promise<FilterId[]> {
+    const enabledFilters = await this.get()
+    if (!enabledFilters.includes(id)) {
+      enabledFilters.push(id)
+      await this.storage.write(enabledFilters)
+      return enabledFilters
+    }
+
+    const updatedFilters = enabledFilters.filter((filterId: FilterId) => filterId !== id)
+    await this.storage.write(updatedFilters)
+    return updatedFilters
+  }
+
   async enable (id: FilterId): Promise<FilterId[]> {
     const enabledFilters = await this.get()
     if (enabledFilters.includes(id)) {

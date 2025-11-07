@@ -33,8 +33,8 @@ export class FiltersStateChangedListener implements AppMessageListener<FiltersSt
   ) {
   }
 
-  on (): FiltersMessages.stateChanged {
-    return FiltersMessages.stateChanged
+  on (): FiltersMessages.filtersStateChanged {
+    return FiltersMessages.filtersStateChanged
   }
 
   main (): false {

@@ -23,6 +23,8 @@ import {
   MetadataServiceInterface
 } from '@/modules/filters/internal/filters.types'
 import { GroupsStorage } from '@/modules/filters/internal/storage/groups.storage'
+import { FiltersMessages, GroupsStateChangedMessage } from '@/modules/filters/common/filters.messages'
+import { dispatcher } from '@/utils/setup-worker'
 
 @injectable()
 export class GroupsService implements GroupsServiceInterface {
@@ -52,13 +54,13 @@ export class GroupsService implements GroupsServiceInterface {
   }
 
   async toggle (groupId: GroupId): Promise<void> {
-    const enabledGroups = await this.storage.get()
-
-    if (enabledGroups.includes(groupId)) {
-      await this.storage.disable(groupId)
-    } else {
-      await this.storage.enable(groupId)
+    const enabledGroups = await this.storage.toggle(groupId)
+    const message: GroupsStateChangedMessage = {
+      type: FiltersMessages.groupsStateChanged,
+      payload: { enabledGroups }
     }
+
+    await dispatcher().sendMessage(message)
   }
 
   async isEnabled (groupId: GroupId): Promise<boolean> {

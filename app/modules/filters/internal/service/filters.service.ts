@@ -59,16 +59,10 @@ export class FiltersService implements FiltersServiceInterface {
   }
 
   async toggle (filterId: FilterId): Promise<void> {
-    let enabledFilters = await this.storage.get()
-
-    if (enabledFilters.includes(filterId)) {
-      enabledFilters = await this.storage.disable(filterId)
-    } else {
-      enabledFilters = await this.storage.enable(filterId)
-    }
+    const enabledFilters = await this.storage.toggle(filterId)
 
     const message: FiltersStateChangedMessage = {
-      type: FiltersMessages.stateChanged,
+      type: FiltersMessages.filtersStateChanged,
       payload: { enabledFilters }
     }
 

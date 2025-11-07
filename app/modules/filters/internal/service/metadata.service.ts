@@ -18,7 +18,8 @@
 import { injectable } from 'inversify'
 import { InternalFiltersIdentifiers, MetadataServiceInterface } from '@/modules/filters/internal/filters.types'
 import {
-  FilterMetadata,
+  FilterId,
+  FilterMetadata, GroupId,
   GroupMetadata,
   Metadata,
   metadataValidator
@@ -48,6 +49,12 @@ export class MetadataService implements MetadataServiceInterface {
   async getGroups (): Promise<GroupMetadata[]> {
     const { metadata } = await this.storage.get()
     return metadata.groups
+  }
+
+  async getGroupByFilter (filterId: FilterId): Promise<GroupId> {
+    const filters = await this.getFilters()
+    const filter = filters.find(filter => filter.filterId === filterId)
+    return filter?.groupId
   }
 
   async getFilters (): Promise<FilterMetadata[]> {

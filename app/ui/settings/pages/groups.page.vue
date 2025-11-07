@@ -56,8 +56,8 @@ const $store = useSettingsStore()
 const groups = computed(() => $store.groups)
 const isActiveGroup = (groupId: GroupId): boolean => $store.enabledGroups.includes(groupId)
 const toggleGroup = async (groupId: GroupId): Promise<void> => {
-  await $groups.toggle(groupId)
   $store.toggleGroup(groupId)
+  await $groups.toggle(groupId)
 }
 
 </script>

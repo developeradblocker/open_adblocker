@@ -32,23 +32,17 @@ export class GroupsStorage {
     await this.storage.write(groups)
   }
 
-  async enable (id: GroupId): Promise<GroupId[]> {
+  async toggle (id: GroupId): Promise<GroupId[]> {
     const enabledGroups = await this.get()
-    if (enabledGroups.includes(id)) {
+    if (!enabledGroups.includes(id)) {
+      enabledGroups.push(id)
+      await this.storage.write(enabledGroups)
       return enabledGroups
     }
 
-    enabledGroups.push(id)
-    await this.storage.write(enabledGroups)
-    return enabledGroups
-  }
-
-  async disable (id: GroupId): Promise<GroupId[]> {
-    const enabledGroups = (await this.get())
-      .filter((groupId: GroupId) => groupId !== id)
-
-    await this.storage.write(enabledGroups)
-    return enabledGroups
+    const updatedGroups = enabledGroups.filter((groupId: GroupId) => groupId !== id)
+    await this.storage.write(updatedGroups)
+    return updatedGroups
   }
 
   async get (): Promise<GroupId[]> {

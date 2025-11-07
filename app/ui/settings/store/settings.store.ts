@@ -17,8 +17,8 @@
  */
 
 import { defineStore } from 'pinia'
-import { GeneralSettings, OpenADBSettings } from '@/modules/settings/common/settings.types'
-import {FilterId, FilterMetadata, GroupId, GroupMetadata} from '@/modules/filters/common/filters.types'
+import { OpenADBSettings } from '@/modules/settings/common/settings.types'
+import { FilterId, FilterMetadata, GroupId, GroupMetadata} from '@/modules/filters/common/filters.types'
 import { Domain } from '@/common/types'
 
 export const useSettingsStore = defineStore('SettingsStore', {
@@ -66,10 +66,6 @@ export const useSettingsStore = defineStore('SettingsStore', {
         ...this.settings,
         ...payload
       }
-    },
-
-    updateGeneral (key: keyof GeneralSettings, value: unknown): void {
-      this.settings.general[key] = value
     },
 
     toggleGroup (groupId: GroupId): void {

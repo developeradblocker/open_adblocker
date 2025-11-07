@@ -18,14 +18,24 @@
 
 import { AppMessageListener, Box } from '@/utils/dispatcher/dispatcher.types'
 import { inject, injectable } from '@/utils/di/di.types'
-import { FiltersServiceInterface, InternalFiltersIdentifiers } from '@/modules/filters/internal/filters.types'
+import {
+  FiltersServiceInterface,
+  GroupsServiceInterface,
+  InternalFiltersIdentifiers, MetadataServiceInterface
+} from '@/modules/filters/internal/filters.types'
 import { FiltersMessages, ToggleFilterMessage } from '@/modules/filters/common/filters.messages'
 
 @injectable()
 export class FilterToggleListener implements AppMessageListener<ToggleFilterMessage> {
   constructor (
     @inject(InternalFiltersIdentifiers.filters)
-    private filters: FiltersServiceInterface
+    private filters: FiltersServiceInterface,
+
+    @inject(InternalFiltersIdentifiers.groups)
+    private groups: GroupsServiceInterface,
+
+    @inject(InternalFiltersIdentifiers.metadata)
+    private metadata: MetadataServiceInterface
   ) {
   }
 
@@ -40,5 +50,18 @@ export class FilterToggleListener implements AppMessageListener<ToggleFilterMess
   async handle ({ message }: Box<ToggleFilterMessage>): Promise<void> {
     const { id } = message.payload
     await this.filters.toggle(id)
+    const isEnabled = await this.filters.isEnabled(id)
+    if (!isEnabled) {
+      return
+    }
+    const groupId = await this.metadata.getGroupByFilter(id)
+    if (!groupId) {
+      return
+    }
+    const isGroupEnabled = (await this.groups.getEnabledGroups()).includes(groupId)
+    if (isGroupEnabled) {
+      return
+    }
+    await this.groups.toggle(groupId)
   }
 }

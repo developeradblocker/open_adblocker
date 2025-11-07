@@ -69,5 +69,6 @@ export interface MetadataServiceInterface {
   getMetadata: () => Promise<Metadata>
   getGroups: () => Promise<GroupMetadata[]>
   getFilters: () => Promise<FilterMetadata[]>
+  getGroupByFilter: (filterId: FilterId) => Promise<GroupId>
   updateMetadata: () => Promise<void>
 }

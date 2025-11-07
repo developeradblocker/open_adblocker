@@ -77,7 +77,6 @@ export class SettingsService implements SettingsInterface {
       await structureValidator(settings)
 
       await this.populateLocalSettings(settings)
-      // TODO: here should be filters, based on the groups
       await tsWebExtension().configure(await getConfiguration())
       return true
     } catch (error) {
