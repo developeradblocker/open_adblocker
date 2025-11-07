@@ -15,29 +15,10 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-import { makeDataAccessor } from '@/utils/storage/make-data-accessor'
-import { Metadata } from '@/modules/filters/common/filters.types'
+import { di } from '@/utils/setup-worker'
+import { InternalSettingsIdentifiers } from '@/modules/settings/internal/settings.types'
+import { MetadataServiceInterface } from '@/modules/settings/common/settings.types'
 
-export class MetadataStorage {
-  private readonly storage = makeDataAccessor<Metadata>(
-    'local',
-    'DNR_METADATA',
-    {
-      useCache: false,
-      default: {
-        metadata: {
-          filters: [],
-          groups: [],
-          tags: []
-        }
-      }
-    })
-
-  async set (metadata: Metadata): Promise<void> {
-    await this.storage.write(metadata)
-  }
-
-  async get (): Promise<Metadata> {
-    return await this.storage.read()
-  }
+export const onInstallHandler = async (): Promise<void> => {
+  await di.get<MetadataServiceInterface>(InternalSettingsIdentifiers.metadata).updateMetadata()
 }

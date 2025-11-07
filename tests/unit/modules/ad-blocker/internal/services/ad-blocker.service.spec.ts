@@ -20,13 +20,17 @@ import { BlockedAdsCounter } from '@/common/types'
 import { getActiveTabHelper } from '@/helpers/get-active-tab.helper'
 import { getDomainHelper } from '@/helpers/get-domain.helper'
 import Tab = chrome.tabs.Tab
+import { dispatcher } from '@/utils/setup-worker'
+import { AdBlockerMessages } from '@/modules/ad-blocker/common/ad-blocker.messages'
 
 jest.mock('@/helpers/get-active-tab.helper')
 jest.mock('@/helpers/get-domain.helper')
+jest.mock('@/utils/setup-worker')
 
 describe('InternalAdBlockerService', () => {
   let service: InternalAdBlockerService
 
+  const sendMessageMock = jest.fn()
   const mockAdGuard = {
     isPaused: jest.fn(),
     addToAllowlist: jest.fn(),
@@ -42,6 +46,9 @@ describe('InternalAdBlockerService', () => {
   }
 
   beforeEach(() => {
+    (dispatcher as jest.Mock).mockReturnValue({
+      sendMessage: sendMessageMock
+    })
     jest.clearAllMocks()
     service = new InternalAdBlockerService(
       mockAdGuard as any,
@@ -87,6 +94,10 @@ describe('InternalAdBlockerService', () => {
       expect(getActiveTabHelper).toHaveBeenCalled()
       expect(getDomainHelper).toHaveBeenCalledWith(fakeTab.url)
       expect(mockAdGuard.addToAllowlist).toHaveBeenCalledWith(fakeDomain)
+      expect(sendMessageMock).toHaveBeenCalledTimes(1)
+      expect(sendMessageMock).toHaveBeenCalledWith({
+        type: AdBlockerMessages.stateChanged
+      })
     })
 
     it('should call adGuard.removeFromAllowlist when state is false', async () => {

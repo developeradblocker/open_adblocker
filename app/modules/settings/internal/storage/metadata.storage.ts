@@ -16,36 +16,29 @@
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
 import { makeDataAccessor } from '@/utils/storage/make-data-accessor'
-import { GroupId } from '@/modules/filters/common/filters.types'
-import { DEFAULT_ENABLED_GROUPS_IDS } from '../../../../../constants.js'
 
-export class GroupsStorage {
-  private readonly storage = makeDataAccessor<GroupId[]>(
+import { Metadata } from '@/modules/settings/common/settings.types'
+
+export class MetadataStorage {
+  private readonly storage = makeDataAccessor<Metadata>(
     'local',
-    'ENABLED_GROUPS',
+    'DNR_METADATA',
     {
       useCache: false,
-      default: DEFAULT_ENABLED_GROUPS_IDS
+      default: {
+        metadata: {
+          filters: [],
+          groups: [],
+          tags: []
+        }
+      }
     })
 
-  async setup (groups: GroupId[]): Promise<void> {
-    await this.storage.write(groups)
+  async set (metadata: Metadata): Promise<void> {
+    await this.storage.write(metadata)
   }
 
-  async toggle (id: GroupId): Promise<GroupId[]> {
-    const enabledGroups = await this.get()
-    if (!enabledGroups.includes(id)) {
-      enabledGroups.push(id)
-      await this.storage.write(enabledGroups)
-      return enabledGroups
-    }
-
-    const updatedGroups = enabledGroups.filter((groupId: GroupId) => groupId !== id)
-    await this.storage.write(updatedGroups)
-    return updatedGroups
-  }
-
-  async get (): Promise<GroupId[]> {
+  async get (): Promise<Metadata> {
     return await this.storage.read()
   }
 }

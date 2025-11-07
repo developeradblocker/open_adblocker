@@ -17,7 +17,7 @@
  */
 import { injectable } from '@/utils/di/di.types'
 import { FilterId, FiltersBaseInterface } from '@/modules/filters/common/filters.types'
-import { FiltersMessages, IsEnabledFilterMessage, ToggleFilterMessage } from '@/modules/filters/common/filters.messages'
+import { FiltersMessages, ToggleFilterMessage } from '@/modules/filters/common/filters.messages'
 import { useExternalPort } from '@/modules/port/external/port.setup'
 import { ExternalPortChannel } from '@/modules/port/external/port.types'
 
@@ -35,14 +35,5 @@ export class FiltersService implements FiltersBaseInterface {
     }
 
     await this.port.sendMessage(message)
-  }
-
-  async isEnabled (id: FilterId): Promise<boolean> {
-    const message: IsEnabledFilterMessage = {
-      type: FiltersMessages.isEnabled,
-      payload: { id }
-    }
-
-    return await this.port.sendMessage(message)
   }
 }

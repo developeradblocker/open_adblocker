@@ -15,7 +15,7 @@
         </div>
       </div>
       <div class="app__view">
-        <router-view/>
+        <router-view />
       </div>
     </div>
   </div>

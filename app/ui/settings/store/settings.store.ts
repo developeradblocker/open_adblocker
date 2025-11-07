@@ -17,8 +17,8 @@
  */
 
 import { defineStore } from 'pinia'
-import { OpenADBSettings } from '@/modules/settings/common/settings.types'
-import { FilterId, FilterMetadata, GroupId, GroupMetadata} from '@/modules/filters/common/filters.types'
+import { FilterMetadata, GroupMetadata, OpenADBSettings } from '@/modules/settings/common/settings.types'
+import { FilterId } from '@/modules/filters/common/filters.types'
 import { Domain } from '@/common/types'
 
 export const useSettingsStore = defineStore('SettingsStore', {
@@ -30,7 +30,6 @@ export const useSettingsStore = defineStore('SettingsStore', {
       },
       filters: {
         enabledFilters: [],
-        enabledGroups: [],
         whiteList: {
           domains: []
         }
@@ -53,9 +52,6 @@ export const useSettingsStore = defineStore('SettingsStore', {
     enabledFilters (): FilterId[] {
       return this.settings.filters?.enabledFilters
     },
-    enabledGroups (): GroupId[] {
-      return this.settings.filters?.enabledGroups
-    },
     whiteList (): Domain[] {
       return this.settings.filters?.whiteList?.domains
     }
@@ -66,15 +62,6 @@ export const useSettingsStore = defineStore('SettingsStore', {
         ...this.settings,
         ...payload
       }
-    },
-
-    toggleGroup (groupId: GroupId): void {
-      const enabled = this.settings.filters.enabledGroups.includes(groupId)
-      if (enabled) {
-        this.settings.filters.enabledGroups = this.settings.filters.enabledGroups.filter(id => id !== groupId)
-        return
-      }
-      this.settings.filters.enabledGroups.push(groupId)
     },
 
     toggleFilter (filterId: FilterId): void {

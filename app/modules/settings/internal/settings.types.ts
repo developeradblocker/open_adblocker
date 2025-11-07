@@ -19,5 +19,15 @@ export enum InternalSettingsIdentifiers {
   /**
    * @link SettingsInterface
    */
-  service = 'Settings.Service'
+  service = 'Settings.Service',
+
+  /**
+   * MetadataServiceInterface
+   */
+  metadata = 'Settings.Metadata',
+
+  /**
+   * @link MetadataStorage
+   */
+  _metadataStorage = 'Settings.MetadataStorage'
 }

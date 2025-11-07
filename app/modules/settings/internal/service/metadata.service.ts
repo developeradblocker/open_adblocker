@@ -16,24 +16,23 @@
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
 import { injectable } from 'inversify'
-import { InternalFiltersIdentifiers, MetadataServiceInterface } from '@/modules/filters/internal/filters.types'
-import {
-  FilterId,
-  FilterMetadata, GroupId,
-  GroupMetadata,
-  Metadata,
-  metadataValidator
-} from '@/modules/filters/common/filters.types'
 import { inject } from '@/utils/di/di.types'
-import { MetadataStorage } from '@/modules/filters/internal/storage/metadata.storage'
+import { MetadataStorage } from '@/modules/settings/internal/storage/metadata.storage'
 import { METADATA_PATH } from '../../../../../constants'
 import { logger } from '@/utils/logger/logger'
 import { MetadataRuleSet } from '@adguard/tsurlfilter/es/declarative-converter'
+import {
+  FilterMetadata,
+  Metadata,
+  MetadataServiceInterface,
+  metadataValidator
+} from '@/modules/settings/common/settings.types'
+import { InternalSettingsIdentifiers } from '@/modules/settings/internal/settings.types'
 
 @injectable()
 export class MetadataService implements MetadataServiceInterface {
   constructor (
-    @inject(InternalFiltersIdentifiers._metadataStorage)
+    @inject(InternalSettingsIdentifiers._metadataStorage)
     private storage: MetadataStorage
   ) {
   }
@@ -44,17 +43,6 @@ export class MetadataService implements MetadataServiceInterface {
       await this.updateMetadata()
     }
     return await this.storage.get()
-  }
-
-  async getGroups (): Promise<GroupMetadata[]> {
-    const { metadata } = await this.storage.get()
-    return metadata.groups
-  }
-
-  async getGroupByFilter (filterId: FilterId): Promise<GroupId> {
-    const filters = await this.getFilters()
-    const filter = filters.find(filter => filter.filterId === filterId)
-    return filter?.groupId
   }
 
   async getFilters (): Promise<FilterMetadata[]> {

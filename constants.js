@@ -43,13 +43,6 @@ export const DEFAULT_ENABLED_FILTER_IDS = [
   SEARCH_ADS_ID
 ]
 
-export const AD_BLOCKING_GROUP_ID = 1
-export const OTHER_GROUP_ID = 6
-export const DEFAULT_ENABLED_GROUPS_IDS = [
-  AD_BLOCKING_GROUP_ID,
-  OTHER_GROUP_ID
-]
-
 export const SKIPPED_FILTERS = [
   `${RULESET_NAME_PREFIX}1`
 ]

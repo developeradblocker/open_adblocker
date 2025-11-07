@@ -25,10 +25,12 @@ import { exportData, ExportFormat, ExportTypes } from '@/ui/settings/utils/expor
 import { importData } from '@/ui/settings/utils/import-data'
 import BaseImport from '@/ui/settings/components/base/base-import.vue'
 import { flushPromises } from '../../../../helpers/flushPromises'
+import { useSettingsStore } from '@/ui/settings/store/settings.store'
 
 jest.mock('@/modules/settings/external/settings.utils')
 jest.mock('@/ui/settings/utils/import-data')
 jest.mock('@/ui/settings/utils/export-data')
+jest.mock('@/ui/settings/store/settings.store')
 
 describe('GeneralMain.vue', () => {
   let wrapper: VueWrapper<any>
@@ -43,6 +45,8 @@ describe('GeneralMain.vue', () => {
 
   const importMock = jest.fn()
   const exportMock = jest.fn()
+  const setSettingsInfoMock = jest.fn()
+  const getMock = jest.fn()
 
   const doMount = (): void => {
     if (wrapper?.exists()) {
@@ -51,7 +55,12 @@ describe('GeneralMain.vue', () => {
 
     (useExternalSettings as jest.Mock).mockReturnValue({
       export: exportMock,
-      import: importMock
+      import: importMock,
+      get: getMock
+    })
+
+    void (useSettingsStore as unknown as jest.Mock).mockReturnValue({
+      setSettingsInfo: setSettingsInfoMock
     })
 
     wrapper = shallowMount(GeneralMain, {
@@ -75,6 +84,8 @@ describe('GeneralMain.vue', () => {
         create: createTabMock
       }
     } as any
+
+    window.alert = jest.fn()
   })
 
   it('should render', () => {
@@ -97,7 +108,7 @@ describe('GeneralMain.vue', () => {
     expect(exportData).toHaveBeenCalledWith(ExportTypes.settings, 'exported', ExportFormat.json)
   })
 
-  it('should trigger file input click on import button click', async () => {
+  it('should trigger file input click on import button click (when fail)', async () => {
     const event = {
       target: {
         files: ['imported']
@@ -109,5 +120,25 @@ describe('GeneralMain.vue', () => {
 
     await flushPromises()
     expect(wrapper.text()).toContain('Something went wrong. Please try again or use another file')
+    expect(setSettingsInfoMock).not.toHaveBeenCalled()
+  })
+
+  it('should trigger file input click on import button click (when success)', async () => {
+    const event = {
+      target: {
+        files: ['imported']
+      }
+    }
+    importMock.mockResolvedValue(true)
+    getMock.mockResolvedValue({ test: true })
+    await wrapper.findComponent(BaseImport).vm.$emit('change', event)
+    expect(importMock).toHaveBeenCalledTimes(1)
+    expect(importMock).toHaveBeenCalledWith('imported')
+
+    await flushPromises()
+    expect(setSettingsInfoMock).toHaveBeenCalledTimes(1)
+    expect(setSettingsInfoMock).toHaveBeenCalledWith({
+      test: true
+    })
   })
 })

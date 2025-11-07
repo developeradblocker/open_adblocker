@@ -15,79 +15,31 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-import { useExternalPort } from '@/modules/port/external/port.setup'
-import { ExternalPortChannel } from '@/modules/port/external/port.types'
-import { FiltersMessages } from '@/modules/filters/common/filters.messages'
+import { inject } from '@/utils/inject/inject'
+import { setupExternalFilters } from '@/modules/filters/external/filters.setup'
+import { ExternalFiltersIdentifiers } from '@/modules/filters/external/filters.types'
+import { FiltersService } from '@/modules/filters/external/service/filters.service'
 
-jest.mock('@/modules/port/external/port.setup', () => ({
-  useExternalPort: jest.fn()
-}))
+jest.mock('@/utils/inject/inject')
 
 describe('setupExternalFilters', () => {
-  let mockPort: ExternalPortChannel
+  const mockedInject = jest.mocked(inject)
 
   beforeEach(() => {
     jest.clearAllMocks()
-    mockPort = { sendMessage: jest.fn() } as unknown as ExternalPortChannel
-    jest.mocked(useExternalPort).mockImplementation(() => mockPort)
   })
 
-  it('sends a toggle message with the correct payload', async () => {
-    await jest.isolateModulesAsync(async () => {
-      const { setupExternalFilters } = require('@/modules/filters/external/filters.setup')
-      const { useExternalFilters } = require('@/modules/filters/external/filters.utils')
+  describe('setupExternalFilters', () => {
+    it('should inject dependencies', async () => {
       setupExternalFilters()
-      const filters = useExternalFilters()
-      await filters.toggle(19)
 
-      expect(mockPort.sendMessage).toHaveBeenCalledWith({
-        type: FiltersMessages.toggleFilter,
-        payload: {
-          id: 19
+      expect(mockedInject).toHaveBeenCalledTimes(1)
+      expect(mockedInject).toHaveBeenCalledWith([
+        {
+          key: ExternalFiltersIdentifiers.filters,
+          use: FiltersService
         }
-      })
-    })
-  })
-
-  it('handles multiple toggle calls with different states', async () => {
-    await jest.isolateModulesAsync(async () => {
-      const { setupExternalFilters } = require('@/modules/filters/external/filters.setup')
-      const { useExternalFilters } = require('@/modules/filters/external/filters.utils')
-      setupExternalFilters()
-      const filters = useExternalFilters()
-      await filters.toggle(12)
-      await filters.toggle(13)
-
-      expect(mockPort.sendMessage).toHaveBeenCalledTimes(2)
-      expect(mockPort.sendMessage).toHaveBeenNthCalledWith(1, {
-        type: FiltersMessages.toggleFilter,
-        payload: {
-          id: 12
-        }
-      })
-      expect(mockPort.sendMessage).toHaveBeenNthCalledWith(2, {
-        type: FiltersMessages.toggleFilter,
-        payload: {
-          id: 13
-        }
-      })
-    })
-  })
-
-  it('sends an isEnabled message with the correct payload', async () => {
-    await jest.isolateModulesAsync(async () => {
-      const { setupExternalFilters } = require('@/modules/filters/external/filters.setup')
-      const { useExternalFilters } = require('@/modules/filters/external/filters.utils')
-      setupExternalFilters()
-      const filters = useExternalFilters()
-      await filters.isEnabled(19)
-
-      expect(mockPort.sendMessage).toHaveBeenCalledWith({
-        type: FiltersMessages.isEnabled,
-        payload: {
-          id: 19
-        }
-      })
+      ])
     })
   })
 })

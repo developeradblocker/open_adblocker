@@ -17,14 +17,14 @@
  */
 import { inject, injectable } from '@/utils/di/di.types'
 import {
-  ExportedSettings,
+  ExportedSettings, MetadataServiceInterface,
   OpenADBSettings,
   SETTINGS_VERSION,
   SettingsInterface
 } from '@/modules/settings/common/settings.types'
 import {
-  FiltersServiceInterface, GroupsServiceInterface,
-  InternalFiltersIdentifiers, MetadataServiceInterface
+  FiltersServiceInterface,
+  InternalFiltersIdentifiers
 } from '@/modules/filters/internal/filters.types'
 import { COOKIE_CLEANER_ID } from '../../../../../constants'
 import { InternalWebRTCIdentifiers } from '@/modules/features/web-rtc/internal/web-rtc.types'
@@ -35,16 +35,15 @@ import { logger } from '@/utils/logger/logger'
 import { structureValidator } from '@/modules/settings/internal/validators/structure.validator'
 import { privacyValidator } from '@/modules/settings/internal/validators/privacy.validator'
 import { getConfiguration } from '@/modules/aguard/internal/adguard.setup'
-import {tsWebExtension} from "@/modules/aguard/internal/utils";
+import { tsWebExtension } from '@/modules/aguard/internal/utils'
+import { InternalSettingsIdentifiers } from '@/modules/settings/internal/settings.types'
 
 @injectable()
 export class SettingsService implements SettingsInterface {
   constructor (
     @inject(InternalFiltersIdentifiers.filters)
     private filters: FiltersServiceInterface,
-    @inject(InternalFiltersIdentifiers.groups)
-    private groups: GroupsServiceInterface,
-    @inject(InternalFiltersIdentifiers.metadata)
+    @inject(InternalSettingsIdentifiers.metadata)
     private metadata: MetadataServiceInterface,
     @inject(InternalWebRTCIdentifiers.service)
     private webRtc: WebRTCInterface,
@@ -62,7 +61,6 @@ export class SettingsService implements SettingsInterface {
       },
       filters: {
         enabledFilters: await this.filters.getEnabledFilters(),
-        enabledGroups: await this.groups.getEnabledGroups(),
         whiteList: {
           domains: await this.whitelist.getDomains()
         }
@@ -101,7 +99,6 @@ export class SettingsService implements SettingsInterface {
       filters.push(COOKIE_CLEANER_ID)
     }
     await this.filters.setup(settings.filters.enabledFilters)
-    await this.groups.setup(settings.filters.enabledGroups)
     await this.webRtc.setup(settings.general.webRTC)
     await this.whitelist.setup(settings.filters.whiteList.domains)
   }

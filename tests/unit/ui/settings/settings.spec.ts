@@ -22,6 +22,8 @@ import { setupExternalPortChannel } from '@/modules/port/external/port.setup'
 import { flushPromises } from '../../../helpers/flushPromises'
 import { DispatcherInterface } from '@/utils/dispatcher/dispatcher.types'
 import { setupExternalSettings } from '@/modules/settings/external/settings.setup'
+import { setupExternalFilters } from '@/modules/filters/external/filters.setup'
+import { createPinia } from 'pinia'
 
 jest.mock('vue', () => ({
   defineComponent: jest.fn(),
@@ -59,8 +61,17 @@ jest.mock('@/modules/port/external/port.setup', () => ({
   setupExternalPortChannel: jest.fn()
 }))
 
+jest.mock('@/modules/filters/external/filters.setup', () => ({
+  setupExternalFilters: jest.fn()
+}))
+
 jest.mock('@/modules/settings/external/settings.setup', () => ({
   setupExternalSettings: jest.fn()
+}))
+
+jest.mock('pinia', () => ({
+  createPinia: jest.fn(),
+  defineStore: jest.fn()
 }))
 
 describe('Settings entry script', () => {
@@ -82,8 +93,10 @@ describe('Settings entry script', () => {
       expect(setupWorker).toHaveBeenCalledWith('Settings')
       expect(setupExternalPortChannel).toHaveBeenCalledWith({ name: 'Settings' })
       expect(setupExternalSettings).toHaveBeenCalledTimes(1)
+      expect(setupExternalFilters).toHaveBeenCalledTimes(1)
       expect(dispatcher).toHaveBeenCalled()
       expect(mockWork).toHaveBeenCalled()
+      expect(createPinia).toHaveBeenCalledTimes(1)
       expect(logger.info).toHaveBeenCalledWith('Settings started...')
       expect(createApp).toHaveBeenCalledTimes(1)
     })

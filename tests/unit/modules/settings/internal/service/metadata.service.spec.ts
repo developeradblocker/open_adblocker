@@ -15,11 +15,11 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-import { MetadataService } from '@/modules/filters/internal/service/metadata.service'
-import { MetadataStorage } from '@/modules/filters/internal/storage/metadata.storage'
-import { Metadata, FilterMetadata, GroupMetadata, metadataValidator } from '@/modules/filters/common/filters.types'
+import { MetadataService } from '@/modules/settings/internal/service/metadata.service'
+import { MetadataStorage } from '@/modules/settings/internal/storage/metadata.storage'
 import { MetadataRuleSet } from '@adguard/tsurlfilter/es/declarative-converter'
 import { METADATA_PATH } from '../../../../../../constants'
+import { FilterMetadata, GroupMetadata, Metadata, metadataValidator } from '@/modules/settings/common/settings.types'
 
 jest.mock('@/utils/logger/logger', () => ({
   logger: {
@@ -27,8 +27,8 @@ jest.mock('@/utils/logger/logger', () => ({
   }
 }))
 
-jest.mock('@/modules/filters/common/filters.types', () => ({
-  ...jest.requireActual('@/modules/filters/common/filters.types'),
+jest.mock('@/modules/settings/common/settings.types', () => ({
+  ...jest.requireActual('@/modules/settings/common/settings.types'),
   metadataValidator: {
     parse: jest.fn()
   }
@@ -109,17 +109,6 @@ describe('MetadataService', () => {
 
       expect(result).toEqual(mockMetadata)
       expect(mockStorage.get).toHaveBeenCalledTimes(2)
-    })
-  })
-
-  describe('getGroups', () => {
-    it('should return groups from metadata', async () => {
-      mockStorage.get.mockResolvedValue(mockMetadata)
-
-      const result = await service.getGroups()
-
-      expect(result).toEqual(mockMetadata.metadata.groups)
-      expect(mockStorage.get).toHaveBeenCalledTimes(1)
     })
   })
 
