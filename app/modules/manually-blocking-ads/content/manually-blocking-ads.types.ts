@@ -15,28 +15,19 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
+export enum ContentManuallyBlockingAdsIdentifiers {
+  iframeManager = 'ManuallyBlockingAds.IframeManager',
 
-export enum Channel {
-  internal = 'internal',
-  port = 'port',
-  broadcast = 'broadcast'
+  service = 'ManuallyBlockingAds.Service',
+  /**
+   * @link UIManuallyBlockingAdsOptions
+   */
+  options = 'ManuallyBlockingAds.Options'
 }
 
-/**
- * Type representing the number of blocked ads.
- */
-export type BlockedAdsCounter = number
-
-/**
- * Type representing a domain name without the protocol.
- *
- * @example: 'example.com'
- */
-export type Domain = string
-
-/**
- * a simple listener without any parameters and does return nothing
- */
-export type SimpleListener = () => Promise<void>
-
-export type UserIdentifier = string
+export interface ContentManuallyBlockingAdsOptions {
+  iframe: {
+    url: string
+    style: Partial<CSSStyleDeclaration>
+  }
+}

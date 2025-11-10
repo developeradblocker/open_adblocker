@@ -15,28 +15,22 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
+import { AppMessage } from '@/utils/dispatcher/dispatcher.types'
 
-export enum Channel {
-  internal = 'internal',
-  port = 'port',
-  broadcast = 'broadcast'
+export enum ContentBroadcastIdentifiers {
+  service = 'service'
 }
 
-/**
- * Type representing the number of blocked ads.
- */
-export type BlockedAdsCounter = number
+export interface ContentBroadcastServiceInterface {
+  /**
+   * Sends message to service worker
+   * @param {AppMessage} message
+   */
+  sendMessage: (message: AppMessage) => void
 
-/**
- * Type representing a domain name without the protocol.
- *
- * @example: 'example.com'
- */
-export type Domain = string
-
-/**
- * a simple listener without any parameters and does return nothing
- */
-export type SimpleListener = () => Promise<void>
-
-export type UserIdentifier = string
+  /**
+   * Sends message to service worker and then broadcast it to all iframes on sender's tab
+   * @param {AppMessage} message
+   */
+  sendMessageToIframes: (message: AppMessage) => void
+}

@@ -14,6 +14,8 @@
         <BaseToggle id="web-rtc-toggle" :is-active="webRtc" />
       </template>
     </Feature>
+    <Feature icon="eraser" label="Block element" @click="onBlockElement">
+    </Feature>
   </div>
 </template>
 
@@ -48,6 +50,7 @@ import { COOKIE_CLEANER_ID } from '../../../../../constants'
 import { useNotificationStore } from '@/ui/toolbar-popup/components/notification/notification.store'
 import { useExternalFilters } from '@/modules/filters/external/filters.utils'
 import { NotificationTypes } from '@/ui/toolbar-popup/components/notification/notification.types'
+import { useExternalManuallyBlockingAds } from '@/modules/manually-blocking-ads/external/manually-blocking-ads.setup'
 
 const appStore = useAppStore()
 const webRTC = useWebRTC()
@@ -79,6 +82,9 @@ const toggleCookieCleaner = async (state: boolean): Promise<void> => {
   } finally {
     cookieCleanerToggleLoading.value = false
   }
+}
+const onBlockElement = () => {
+  useExternalManuallyBlockingAds().start()
 }
 onMounted(async () => {
   const webRTCToggle: HTMLDivElement = document.querySelector('#web-rtc-toggle')

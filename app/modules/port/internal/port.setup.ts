@@ -72,6 +72,7 @@ export const setupInternalPortChannel = (): InternalPortChannel => {
   }
 
   chrome.runtime.onConnect.addListener((port: Port) => {
+    console.log(port)
     const greetingMessage: PortGreetingMessage = {
       type: PortMessages.greeting
     }

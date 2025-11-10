@@ -15,28 +15,20 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
+import { RouteRecordRaw } from 'vue-router'
+import Main from '@/ui/manually-blocking-ads/pages/main.vue'
+import Selection from '@/ui/manually-blocking-ads/pages/selection.vue'
+import { Route } from '@/ui/manually-blocking-ads/router/route-names'
 
-export enum Channel {
-  internal = 'internal',
-  port = 'port',
-  broadcast = 'broadcast'
-}
-
-/**
- * Type representing the number of blocked ads.
- */
-export type BlockedAdsCounter = number
-
-/**
- * Type representing a domain name without the protocol.
- *
- * @example: 'example.com'
- */
-export type Domain = string
-
-/**
- * a simple listener without any parameters and does return nothing
- */
-export type SimpleListener = () => Promise<void>
-
-export type UserIdentifier = string
+export const routes: RouteRecordRaw[] = [
+  {
+    name: Route.main,
+    path: '/',
+    component: Main
+  },
+  {
+    name: Route.selection,
+    path: '/selection',
+    component: Selection
+  }
+]
