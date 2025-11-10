@@ -62,7 +62,7 @@
     "less": "^4.3.0",
     "less-loader": "^12.3.0",
     "openai": "4.26.0",
-    "ts-jest": "^29.4.4",
+    "ts-jest": "^29.4.5",
     "ts-loader": "^9.5.4",
     "tsx": "^4.20.3",
     "typescript": "^5.9.3",
