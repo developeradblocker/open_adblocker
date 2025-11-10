@@ -42,8 +42,7 @@ export const setupContentManuallyBlockingAds = (options: ContentManuallyBlocking
       value: true
     }
   ])
-  console.log(dispatcher())
-  debugger
+
   dispatcher().onWithClass(StartManualAdBlockingListener)
   dispatcher().onWithClass(StopManualAdBlockingListener)
 }

@@ -37,7 +37,6 @@ export const setupContentBroadcast = (): void => {
 
   chrome.runtime.onMessage.addListener((box) => {
     if (box.channel === Channel.broadcast) {
-      console.log(box)
       dispatcher().sendBox(box).then()
     }
   })
