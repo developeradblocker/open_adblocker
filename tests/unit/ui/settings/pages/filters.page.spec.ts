@@ -22,9 +22,15 @@ import TransparentStub from '../../../../helpers/TransparentStub'
 import { useExternalFilters } from '@/modules/filters/external/filters.utils'
 import { useSettingsStore } from '@/ui/settings/store/settings.store'
 import BaseToggle from '@/ui/shared/components/base-toggle.vue'
+import { useUserActivity } from '@/modules/user-activity/external/utils'
+import { useRouter } from 'vue-router'
+import { ClickEventToAction, ElementsUI } from '@/modules/user-activity/common/user-activity.types'
+import { SETTINGS_ROUTE } from '@/ui/settings/router/route-names'
 
 jest.mock('@/modules/filters/external/filters.utils')
 jest.mock('@/ui/settings/store/settings.store')
+jest.mock('@/modules/user-activity/external/utils')
+jest.mock('vue-router')
 
 describe('FiltersPage.vue', () => {
   let wrapper: VueWrapper<any>
@@ -35,6 +41,8 @@ describe('FiltersPage.vue', () => {
   }
 
   const toggleMock = jest.fn()
+  const toggleActivityMock = jest.fn()
+  const clickActivityMock = jest.fn()
   const toggleFilterMock = jest.fn()
   const backMock = jest.fn()
   const doMount = (): void => {
@@ -47,11 +55,6 @@ describe('FiltersPage.vue', () => {
         id: '1'
       },
       global: {
-        mocks: {
-          $router: {
-            back: backMock
-          }
-        },
         stubs: {
           BaseBox: TransparentStub(),
           BaseListItem: TransparentStub(),
@@ -64,6 +67,13 @@ describe('FiltersPage.vue', () => {
   beforeEach(() => {
     (useExternalFilters as jest.Mock).mockReturnValue({
       toggle: toggleMock
+    })
+    void (useRouter as jest.Mock).mockReturnValue({
+      back: backMock
+    })
+    void (useUserActivity as jest.Mock).mockReturnValue({
+      toggle: toggleActivityMock,
+      click: clickActivityMock
     })
     void (useSettingsStore as unknown as jest.Mock).mockReturnValue({
       toggleFilter: toggleFilterMock,
@@ -86,6 +96,11 @@ describe('FiltersPage.vue', () => {
   it('should be able to return back', async () => {
     await wrapper.get(elements.back).trigger('click')
     expect(backMock).toHaveBeenCalledTimes(1)
+    expect(clickActivityMock).toHaveBeenCalledTimes(1)
+    expect(clickActivityMock).toHaveBeenCalledWith(ElementsUI.filterBack, {
+      page: SETTINGS_ROUTE.FILTERS,
+      to: ClickEventToAction.filterBack
+    })
   })
 
   it('should render filters', async () => {
@@ -96,10 +111,12 @@ describe('FiltersPage.vue', () => {
       description: 'filter1 description'
     }))
 
-    await wrapper.findComponent(BaseToggle).vm.$emit('toggle')
+    await wrapper.findComponent(BaseToggle).vm.$emit('toggle', false)
     expect(toggleMock).toHaveBeenCalledTimes(1)
     expect(toggleMock).toHaveBeenCalledWith(1)
     expect(toggleFilterMock).toHaveBeenCalledTimes(1)
     expect(toggleFilterMock).toHaveBeenCalledWith(1)
+    expect(toggleActivityMock).toHaveBeenCalledTimes(1)
+    expect(toggleActivityMock).toHaveBeenCalledWith('filter_1', false)
   })
 })

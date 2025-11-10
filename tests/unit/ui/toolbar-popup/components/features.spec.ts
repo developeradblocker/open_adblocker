@@ -91,7 +91,7 @@ describe('Features.vue', () => {
     expect(wrapper.find('#web-rtc-toggle').exists()).toBeTruthy()
     await wrapper.get('#web-rtc-toggle').trigger('click')
     expect(activityToggleMock).toHaveBeenCalledTimes(1)
-    expect(activityToggleMock).toHaveBeenCalledWith(ElementsUI.web_rtc, true)
+    expect(activityToggleMock).toHaveBeenCalledWith(ElementsUI.webRtc, true)
     expect(webRTCToggleMock).toHaveBeenCalledTimes(1)
     expect(webRTCToggleMock).toHaveBeenCalledWith(true)
     expect(updateFieldMock).toHaveBeenCalledTimes(1)

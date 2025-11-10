@@ -24,6 +24,10 @@ import { DispatcherInterface } from '@/utils/dispatcher/dispatcher.types'
 import { setupExternalSettings } from '@/modules/settings/external/settings.setup'
 import { setupExternalFilters } from '@/modules/filters/external/filters.setup'
 import { createPinia } from 'pinia'
+import { useUserActivity } from '@/modules/user-activity/external/utils'
+import { setupExternalUserActivity } from '@/modules/user-activity/external/user-activity.setup'
+import { ClickEventToAction, ElementsUI } from '@/modules/user-activity/common/user-activity.types'
+import { SETTINGS_ROUTE } from '@/ui/settings/router/route-names'
 
 jest.mock('vue', () => ({
   defineComponent: jest.fn(),
@@ -36,6 +40,10 @@ jest.mock('vue', () => ({
 
 jest.mock('@/ui/settings/router/routes', () => ({
   routes: []
+}))
+
+jest.mock('@/modules/user-activity/external/utils', () => ({
+  useUserActivity: jest.fn()
 }))
 jest.mock('vue-router', () => {
   return {
@@ -74,6 +82,10 @@ jest.mock('pinia', () => ({
   defineStore: jest.fn()
 }))
 
+jest.mock('@/modules/user-activity/external/user-activity.setup', () => ({
+  setupExternalUserActivity: jest.fn()
+}))
+
 describe('Settings entry script', () => {
   const appInstance = {
     use: jest.fn(),
@@ -81,7 +93,12 @@ describe('Settings entry script', () => {
     mount: jest.fn()
   }
 
+  const clickActivityMock = jest.fn()
+
   beforeEach(() => {
+    (useUserActivity as jest.Mock).mockReturnValue({
+      click: clickActivityMock
+    })
     jest.mocked(createApp).mockImplementation(() => appInstance as any)
   })
   it('should initialize and mount the Vue app properly', async () => {
@@ -94,11 +111,18 @@ describe('Settings entry script', () => {
       expect(setupExternalPortChannel).toHaveBeenCalledWith({ name: 'Settings' })
       expect(setupExternalSettings).toHaveBeenCalledTimes(1)
       expect(setupExternalFilters).toHaveBeenCalledTimes(1)
+      expect(setupExternalUserActivity).toHaveBeenCalledTimes(1)
       expect(dispatcher).toHaveBeenCalled()
       expect(mockWork).toHaveBeenCalled()
       expect(createPinia).toHaveBeenCalledTimes(1)
       expect(logger.info).toHaveBeenCalledWith('Settings started...')
       expect(createApp).toHaveBeenCalledTimes(1)
+
+      expect(clickActivityMock).toHaveBeenCalledTimes(1)
+      expect(clickActivityMock).toHaveBeenCalledWith(ElementsUI.settings, {
+        page: SETTINGS_ROUTE.GENERAL,
+        to: ClickEventToAction.openSettings
+      })
     })
   })
 })

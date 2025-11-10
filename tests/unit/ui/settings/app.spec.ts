@@ -83,7 +83,7 @@ describe('App.vue', () => {
     })
 
     void (useRoute as jest.Mock).mockReturnValue({
-      name: 'groups',
+      name: 'SETTINGS_GROUPS',
       path: '/groups'
     })
     void (useExternalSettings as jest.Mock).mockReturnValue({

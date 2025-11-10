@@ -2,7 +2,7 @@
   <div class="filters-page filters">
     <BaseBox with-header>
       <div class="filters__header">
-        <div class="filters__header-back" data-test="back" @click="$router.back()">
+        <div class="filters__header-back" data-test="back" @click="onBack">
           <BaseSvg src="../icons/back.svg" class="filters__header-back-icon"/>
         </div>
         <div class="filters__header-content">
@@ -21,7 +21,7 @@
           :description="filter.description"
         >
           <BaseToggle :is-active="isActiveFilter(filter.filterId)" large
-                      @toggle="toggleFilter(filter.filterId)"/>
+                      @toggle="toggleFilter(filter.filterId, $event)"/>
         </BaseListItem>
       </div>
     </BaseBox>
@@ -54,11 +54,17 @@ import { useExternalFilters } from '@/modules/filters/external/filters.utils'
 import { FilterId } from '@/modules/filters/common/filters.types'
 import { useSettingsStore } from '@/ui/settings/store/settings.store'
 import { computed } from 'vue'
+import { useUserActivity } from '@/modules/user-activity/external/utils'
+import { useRouter } from 'vue-router'
+import { SETTINGS_ROUTE } from '@/ui/settings/router/route-names'
+import { ClickEventToAction, ElementsUI } from '@/modules/user-activity/common/user-activity.types'
 
 const { id } = defineProps<{ id: string }>()
 
 const $filters = useExternalFilters()
 const $store = useSettingsStore()
+const $activity = useUserActivity()
+const $router = useRouter()
 
 const groupId = Number(id)
 const isActiveFilter = (filterId: FilterId): boolean => $store.enabledFilters.includes(filterId)
@@ -66,9 +72,18 @@ const isActiveFilter = (filterId: FilterId): boolean => $store.enabledFilters.in
 const activeGroup = computed(() => $store.groups.find((group) => group.groupId === groupId))
 const filters = computed(() => $store.filters.filter((filter) => filter.groupId === groupId))
 
-const toggleFilter = async (filterId: FilterId): Promise<void> => {
+const toggleFilter = async (filterId: FilterId, state: boolean): Promise<void> => {
+  $activity.toggle(`filter_${filterId}`, state)
   $store.toggleFilter(filterId)
   await $filters.toggle(filterId)
+}
+
+const onBack = async (): Promise<void> => {
+  $activity.click(ElementsUI.filterBack, {
+    page: SETTINGS_ROUTE.FILTERS,
+    to: ClickEventToAction.filterBack
+  })
+  $router.back()
 }
 </script>
 

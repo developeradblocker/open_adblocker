@@ -66,22 +66,38 @@ import { useExternalSettings } from '@/modules/settings/external/settings.utils'
 import BaseImport from '@/ui/settings/components/base/base-import.vue'
 import { importData, ImportErrorReason, ImportErrors } from '@/ui/settings/utils/import-data'
 import { useSettingsStore } from '@/ui/settings/store/settings.store'
+import { useUserActivity } from '@/modules/user-activity/external/utils'
+import { SETTINGS_ROUTE } from '@/ui/settings/router/route-names'
+import { ClickEventToAction, ElementsUI } from '@/modules/user-activity/common/user-activity.types'
 
+const $activity = useUserActivity()
 const importError = ref<string>(null)
 const $settings = useExternalSettings()
 const $store = useSettingsStore()
 const onRateUsClicked = async (): Promise<void> => {
+  $activity.click(ElementsUI.rateUsButton, {
+    page: SETTINGS_ROUTE.GENERAL,
+    to: RATE_US_URL
+  })
   await chrome.tabs.create({
     url: RATE_US_URL
   })
 }
 
 const onExport = async (): Promise<void> => {
+  $activity.click(ElementsUI.exportSettings, {
+    page: SETTINGS_ROUTE.GENERAL,
+    to: ClickEventToAction.exportSettings
+  })
   importError.value = null
   await exportData(ExportTypes.settings, await $settings.export(), ExportFormat.json)
 }
 
 const initImport = async (input: HTMLInputElement): Promise<void> => {
+  $activity.click(ElementsUI.importSettings, {
+    page: SETTINGS_ROUTE.GENERAL,
+    to: ClickEventToAction.importSettings
+  })
   input.click()
   importError.value = null
 }
@@ -98,6 +114,7 @@ const onImport = async (event: InputEvent): Promise<void> => {
     const content = await importData(file, ExportFormat.json)
     const success = await $settings.import(content)
     if (!success) {
+      $activity.settingsImportError(ImportErrorReason.validationError)
       importError.value = ImportErrors[ImportErrorReason.validationError]
       return
     }
@@ -106,7 +123,10 @@ const onImport = async (event: InputEvent): Promise<void> => {
     $store.setSettingsInfo(await $settings.get())
   } catch (error) {
     // @ts-ignore-error
-    importError.value = ImportErrors[error?.message as ImportErrorReason] ?? ImportErrors[ImportErrorReason.readingError]
+    const reason = error?.message as ImportErrorReason
+    const existingError = ImportErrors[reason]
+    $activity.settingsImportError(existingError ? reason : ImportErrorReason.readingError)
+    importError.value = existingError ?? ImportErrors[ImportErrorReason.readingError]
   } finally {
     target.value = null
   }

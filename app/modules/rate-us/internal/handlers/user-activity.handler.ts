@@ -18,7 +18,7 @@
 
 import { Box } from '@/utils/dispatcher/dispatcher.types'
 import { UserActivityMessage } from '@/modules/user-activity/common/user-activity.messages'
-import { ElementsUI, PageUI, UserActivityType } from '@/modules/user-activity/common/user-activity.types'
+import { ElementID, ElementsUI, PageUI, UserActivityType } from '@/modules/user-activity/common/user-activity.types'
 import { POPUP_ROUTE } from '@/ui/toolbar-popup/router/route-names'
 import { rateUsCounter, rateUsService } from '@/modules/rate-us/internal/utils'
 
@@ -46,7 +46,7 @@ export const handleOnRatingClickedVisited = async (): Promise<void> => {
   await rateUsService().rate()
 }
 
-const handleClicks = async (element: ElementsUI): Promise<void> => {
+const handleClicks = async (element: ElementID): Promise<void> => {
   const clickHandlers: any = {
     [ElementsUI.rateUsButton]: handleOnRatingClickedVisited
   }

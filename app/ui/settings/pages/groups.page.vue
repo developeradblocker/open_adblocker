@@ -12,7 +12,7 @@
           :key="group.groupId"
           :title="group.groupName"
           icon="no-ad"
-          @click="$router.push({ name: SETTINGS_ROUTE.FILTERS, params: { id: group.groupId } })"
+          @click="onGroupClick(group.groupId)"
           :description="group.groupDescription"
         />
       </div>
@@ -43,8 +43,24 @@ import BaseBox from '@/ui/settings/components/base/base-box.vue'
 import { SETTINGS_ROUTE } from '@/ui/settings/router/route-names'
 import BaseListItem from '@/ui/settings/components/base/base-list-item.vue'
 import { useSettingsStore } from '@/ui/settings/store/settings.store'
+import { useUserActivity } from '@/modules/user-activity/external/utils'
+import { onMounted } from 'vue'
+import { ClickEventToAction } from '@/modules/user-activity/common/user-activity.types'
+import { useRouter } from 'vue-router'
 
+const $activity = useUserActivity()
 const $store = useSettingsStore()
+const $router = useRouter()
+const onGroupClick = (groupId: number): void => {
+  $activity.click(`group_${groupId}`, {
+    page: SETTINGS_ROUTE.GROUPS,
+    to: ClickEventToAction.openGroup
+  })
+  $router.push({ name: SETTINGS_ROUTE.FILTERS, params: { id: groupId } })
+}
+onMounted(() => {
+  $activity.visitPage(SETTINGS_ROUTE.GROUPS)
+})
 
 </script>
 
