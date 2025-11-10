@@ -100,7 +100,6 @@ export class SelectorService {
 
     const ruleText = adguardRulesConstructor.constructRuleText(this.currentEl, options);
     const traversedTree = this.getTraversedElements()
-    console.log(ruleText, this.getTraversedElements())
     const message: ManuallyBlockingAdsElementSelectedMessage = {
       type: ManuallyBlockingAdsMessages.elementSelected,
       payload: {
