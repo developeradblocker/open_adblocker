@@ -15,28 +15,22 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
+import { inject } from '@/utils/inject/inject'
+import {
+  ManuallyBlockingAdsService
+} from '@/modules/manually-blocking-ads/external/services/manually-blocking-ads.service'
+import {
+  ExternalManuallyBlockingAdsIdentifiers, ExternalManuallyBlockingAdsServiceInterface
+} from '@/modules/manually-blocking-ads/external/manually-blocking-ads.types'
+import { di } from '@/utils/setup-worker'
 
-export enum Channel {
-  internal = 'internal',
-  port = 'port',
-  broadcast = 'broadcast'
+export const setupExternalManuallyBlockingAds = (): void => {
+  inject([
+    {
+      key: ExternalManuallyBlockingAdsIdentifiers.service,
+      use: ManuallyBlockingAdsService
+    }
+  ])
 }
 
-/**
- * Type representing the number of blocked ads.
- */
-export type BlockedAdsCounter = number
-
-/**
- * Type representing a domain name without the protocol.
- *
- * @example: 'example.com'
- */
-export type Domain = string
-
-/**
- * a simple listener without any parameters and does return nothing
- */
-export type SimpleListener = () => Promise<void>
-
-export type UserIdentifier = string
+export const useExternalManuallyBlockingAds = (): ExternalManuallyBlockingAdsServiceInterface => di.get(ExternalManuallyBlockingAdsIdentifiers.service)

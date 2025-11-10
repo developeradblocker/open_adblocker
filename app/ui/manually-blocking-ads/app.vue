@@ -1,3 +1,10 @@
+<template>
+  <div class="app">
+    <router-view />
+  </div>
+</template>
+
+<script setup lang="ts">
 /**
  * @file
  * This file is part of Open Ad Blocker Browser Extension (https://github.com/developeradblocker/open_adblocker).
@@ -16,27 +23,12 @@
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
 
-export enum Channel {
-  internal = 'internal',
-  port = 'port',
-  broadcast = 'broadcast'
+</script>
+
+<style lang="less">
+html, body, #manually-blocking-ads, .app {
+  margin: 0;
+  padding: 0;
+  height: 100%;
 }
-
-/**
- * Type representing the number of blocked ads.
- */
-export type BlockedAdsCounter = number
-
-/**
- * Type representing a domain name without the protocol.
- *
- * @example: 'example.com'
- */
-export type Domain = string
-
-/**
- * a simple listener without any parameters and does return nothing
- */
-export type SimpleListener = () => Promise<void>
-
-export type UserIdentifier = string
+</style>

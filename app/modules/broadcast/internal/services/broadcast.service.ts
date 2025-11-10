@@ -15,28 +15,20 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
+import { type InternalBroadcastServiceInterface } from '@/modules/broadcast/internal/broadcast.types'
+import { injectable } from '@/utils/di/di.types'
+import { BroadcastBox } from '@/modules/broadcast/common/broadcast.types'
+import { AppMessage } from '@/utils/dispatcher/dispatcher.types'
+import { Channel } from '@/common/types'
 
-export enum Channel {
-  internal = 'internal',
-  port = 'port',
-  broadcast = 'broadcast'
+@injectable()
+export class BroadcastService implements InternalBroadcastServiceInterface {
+  sendMessage<Message extends AppMessage> (tabId: number, message: Message): void {
+    const box: BroadcastBox<Message> = {
+      broadcast: true,
+      channel: Channel.broadcast,
+      message
+    }
+    chrome.tabs.sendMessage(tabId, box).then()
+  }
 }
-
-/**
- * Type representing the number of blocked ads.
- */
-export type BlockedAdsCounter = number
-
-/**
- * Type representing a domain name without the protocol.
- *
- * @example: 'example.com'
- */
-export type Domain = string
-
-/**
- * a simple listener without any parameters and does return nothing
- */
-export type SimpleListener = () => Promise<void>
-
-export type UserIdentifier = string
