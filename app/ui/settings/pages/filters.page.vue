@@ -73,9 +73,14 @@ const activeGroup = computed(() => $store.groups.find((group) => group.groupId =
 const filters = computed(() => $store.filters.filter((filter) => filter.groupId === groupId))
 
 const toggleFilter = async (filterId: FilterId, state: boolean): Promise<void> => {
-  $activity.toggle(`filter_${filterId}`, state)
-  $store.toggleFilter(filterId)
-  await $filters.toggle(filterId)
+  try {
+    $store.setShowLoader(true)
+    $activity.toggle(`filter_${filterId}`, state)
+    $store.toggleFilter(filterId)
+    await $filters.toggle(filterId)
+  } finally {
+    $store.setShowLoader(false)
+  }
 }
 
 const onBack = async (): Promise<void> => {

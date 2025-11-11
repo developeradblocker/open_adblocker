@@ -24,8 +24,9 @@
 
     <div class="main__cards">
       <BaseCard
+        disabled
         data-test="report"
-        label="Report a bug" icon="bug" class="main__card" @click="onReportBugClicked"/>
+        label="Report a bug (coming soon)" icon="bug" class="main__card" />
       <BaseCard
         data-test="rate"
         label="Share feedback" icon="rate" class="main__card" @click="onRateUsClicked"/>
@@ -60,8 +61,6 @@ import { BaseButtonType } from '@/ui/shared/components/button/base-button.types'
 import BaseCard from '@/ui/settings/components/base/base-card.vue'
 import { RATE_US_URL } from '@/modules/rate-us/constants'
 import { exportData, ExportFormat, ExportTypes } from '@/ui/settings/utils/export-data'
-import { SUPPORT_EMAIL } from '@/ui/shared/constants'
-import { getVersion } from '@/ui/settings/utils/get-version'
 import { useExternalSettings } from '@/modules/settings/external/settings.utils'
 import BaseImport from '@/ui/settings/components/base/base-import.vue'
 import { importData, ImportErrorReason, ImportErrors } from '@/ui/settings/utils/import-data'
@@ -111,6 +110,7 @@ const onImport = async (event: InputEvent): Promise<void> => {
   }
 
   try {
+    $store.setShowLoader(true)
     const content = await importData(file, ExportFormat.json)
     const success = await $settings.import(content)
     if (!success) {
@@ -119,8 +119,11 @@ const onImport = async (event: InputEvent): Promise<void> => {
       return
     }
 
-    alert('Import was successful')
     $store.setSettingsInfo(await $settings.get())
+    $store.setSnackbar({
+      message: 'Successfully imported settings',
+      type: 'info'
+    })
   } catch (error) {
     // @ts-ignore-error
     const reason = error?.message as ImportErrorReason
@@ -128,14 +131,9 @@ const onImport = async (event: InputEvent): Promise<void> => {
     $activity.settingsImportError(existingError ? reason : ImportErrorReason.readingError)
     importError.value = existingError ?? ImportErrors[ImportErrorReason.readingError]
   } finally {
+    $store.setShowLoader(false)
     target.value = null
   }
-}
-
-const onReportBugClicked = async (): Promise<void> => {
-  await chrome.tabs.create({
-    url: `mailto:${SUPPORT_EMAIL}?subject=OpenADB issue report&body=Version: ${getVersion()} %0D%0A %0D%0A Please describe your problem and steps to reproduce it`
-  })
 }
 
 </script>

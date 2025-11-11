@@ -11,7 +11,7 @@
           v-for="group in $store.groups"
           :key="group.groupId"
           :title="group.groupName"
-          icon="no-ad"
+          :icon="groupIcon(group.groupId)"
           @click="onGroupClick(group.groupId)"
           :description="group.groupDescription"
         />
@@ -57,6 +57,19 @@ const onGroupClick = (groupId: number): void => {
     to: ClickEventToAction.openGroup
   })
   $router.push({ name: SETTINGS_ROUTE.FILTERS, params: { id: groupId } })
+}
+
+const GROUP_ICON_MAP = {
+  1: 'no-ad',
+  2: 'eye',
+  3: 'connection',
+  4: 'popup',
+  5: 'shield',
+  6: 'language',
+  7: 'more'
+}
+const groupIcon = (groupId: number): string => {
+  return GROUP_ICON_MAP[groupId] || GROUP_ICON_MAP[1]
 }
 onMounted(() => {
   $activity.visitPage(SETTINGS_ROUTE.GROUPS)

@@ -45,6 +45,7 @@ describe('FiltersPage.vue', () => {
   const clickActivityMock = jest.fn()
   const toggleFilterMock = jest.fn()
   const backMock = jest.fn()
+  const setShowLoaderMock = jest.fn()
   const doMount = (): void => {
     if (wrapper?.exists()) {
       wrapper.unmount()
@@ -78,6 +79,7 @@ describe('FiltersPage.vue', () => {
     void (useSettingsStore as unknown as jest.Mock).mockReturnValue({
       toggleFilter: toggleFilterMock,
       enabledFilters: [1, 2],
+      setShowLoader: setShowLoaderMock,
       groups: [{ groupId: 1, groupName: 'group1', groupDescription: 'group1 description' }],
       filters: [{ groupId: 1, name: 'filter1', filterId: 1, description: 'filter1 description' }]
     })
@@ -118,5 +120,7 @@ describe('FiltersPage.vue', () => {
     expect(toggleFilterMock).toHaveBeenCalledWith(1)
     expect(toggleActivityMock).toHaveBeenCalledTimes(1)
     expect(toggleActivityMock).toHaveBeenCalledWith('filter_1', false)
+
+    expect(setShowLoaderMock).toHaveBeenCalledTimes(2)
   })
 })

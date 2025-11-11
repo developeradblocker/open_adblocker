@@ -1,7 +1,7 @@
 <template>
   <PrimaryLayout class="home-page">
     <template #header>
-      <Header @menu-click="onMenuClick" />
+      <Header @menu-click="onMenuClick" with-settings />
     </template>
     <template #content>
       <Toggle />

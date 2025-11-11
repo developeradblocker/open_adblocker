@@ -23,6 +23,8 @@ import { useExternalSettings } from '@/modules/settings/external/settings.utils'
 import { useSettingsStore } from '@/ui/settings/store/settings.store'
 import { flushPromises } from '../../../helpers/flushPromises'
 import { useRoute } from 'vue-router'
+import Loader from '@/ui/settings/components/loader.vue'
+import BaseSnackbar from '@/ui/shared/components/snackbar/base-snackbar.vue'
 
 jest.mock('@/modules/port/external/port.setup')
 jest.mock('@/modules/settings/external/settings.utils')
@@ -35,6 +37,7 @@ describe('App.vue', () => {
   const establishMock = jest.fn()
   const getMock = jest.fn()
   const setSettingsInfoMock = jest.fn()
+  const setSnackbarMock = jest.fn()
 
   const mockSettings = {
     version: '1.0.0',
@@ -90,7 +93,12 @@ describe('App.vue', () => {
       get: getMock
     })
     void (useSettingsStore as unknown as jest.Mock).mockReturnValue({
-      setSettingsInfo: setSettingsInfoMock
+      setSettingsInfo: setSettingsInfoMock,
+      setSnackbar: setSnackbarMock,
+      showLoader: true,
+      snackbar: {
+        test: true
+      }
     })
 
     doMount()
@@ -133,5 +141,18 @@ describe('App.vue', () => {
     const links = wrapper.findAll('.app__nav-link')
     expect(links[0].classes()).not.toContain('app__nav-link--active')
     expect(links[1].classes()).toContain('app__nav-link--active')
+  })
+
+  it('should render loader and snackbar', () => {
+    expect(wrapper.findComponent(Loader).exists()).toBeTruthy()
+    expect(wrapper.findComponent(BaseSnackbar).props('value')).toEqual({
+      test: true
+    })
+  })
+
+  it('should set null to snackbar when closed', async () => {
+    await wrapper.findComponent(BaseSnackbar).vm.$emit('close')
+    expect(setSnackbarMock).toHaveBeenCalledTimes(1)
+    expect(setSnackbarMock).toHaveBeenCalledWith(null)
   })
 })

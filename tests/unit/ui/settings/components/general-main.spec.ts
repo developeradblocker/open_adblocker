@@ -53,6 +53,8 @@ describe('GeneralMain.vue', () => {
   const exportMock = jest.fn()
   const setSettingsInfoMock = jest.fn()
   const getMock = jest.fn()
+  const setShowLoaderMock = jest.fn()
+  const setSnackbarMock = jest.fn()
 
   const doMount = (): void => {
     if (wrapper?.exists()) {
@@ -71,7 +73,9 @@ describe('GeneralMain.vue', () => {
     })
 
     void (useSettingsStore as unknown as jest.Mock).mockReturnValue({
-      setSettingsInfo: setSettingsInfoMock
+      setSettingsInfo: setSettingsInfoMock,
+      setShowLoader: setShowLoaderMock,
+      setSnackbar: setSnackbarMock
     })
 
     wrapper = shallowMount(GeneralMain, {
@@ -140,12 +144,18 @@ describe('GeneralMain.vue', () => {
     expect(importMock).toHaveBeenCalledTimes(1)
     expect(importMock).toHaveBeenCalledWith('imported')
 
+    expect(setShowLoaderMock).toHaveBeenCalledTimes(1)
+    expect(setShowLoaderMock).toHaveBeenCalledWith(true)
+
     await flushPromises()
     expect(wrapper.text()).toContain('Something went wrong. Please try again or use another file')
     expect(setSettingsInfoMock).not.toHaveBeenCalled()
 
     expect(settingsImportErrorMock).toHaveBeenCalledTimes(1)
     expect(settingsImportErrorMock).toHaveBeenCalledWith(ImportErrorReason.validationError)
+
+    expect(setShowLoaderMock).toHaveBeenCalledTimes(2)
+    expect(setShowLoaderMock).toHaveBeenLastCalledWith(false)
   })
 
   it('should trigger file input click on import button click (when success)', async () => {
@@ -171,6 +181,12 @@ describe('GeneralMain.vue', () => {
     expect(setSettingsInfoMock).toHaveBeenCalledTimes(1)
     expect(setSettingsInfoMock).toHaveBeenCalledWith({
       test: true
+    })
+
+    expect(setSnackbarMock).toHaveBeenCalledTimes(1)
+    expect(setSnackbarMock).toHaveBeenCalledWith({
+      message: 'Successfully imported settings',
+      type: 'info'
     })
   })
 })

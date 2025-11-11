@@ -20,6 +20,7 @@ import { defineStore } from 'pinia'
 import { FilterMetadata, GroupMetadata, OpenADBSettings } from '@/modules/settings/common/settings.types'
 import { FilterId } from '@/modules/filters/common/filters.types'
 import { Domain } from '@/common/types'
+import { SnackbarProps } from '@/ui/shared/components/snackbar/base-snackbar.types'
 
 export const useSettingsStore = defineStore('SettingsStore', {
   state: () => ({
@@ -38,7 +39,9 @@ export const useSettingsStore = defineStore('SettingsStore', {
         filters: [],
         groups: []
       }
-    } satisfies OpenADBSettings
+    } satisfies OpenADBSettings,
+    showLoader: false,
+    snackbar: null as SnackbarProps
   }),
 
   getters: {
@@ -62,6 +65,15 @@ export const useSettingsStore = defineStore('SettingsStore', {
         ...this.settings,
         ...payload
       }
+    },
+
+    setShowLoader (visible: boolean): void {
+      this.showLoader = visible
+      visible ? document.body.classList.add('no-scroll') : document.body.classList.remove('no-scroll')
+    },
+
+    setSnackbar (snackbar: SnackbarProps | null): void {
+      this.snackbar = snackbar
     },
 
     toggleFilter (filterId: FilterId): void {

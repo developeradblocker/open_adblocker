@@ -1,8 +1,10 @@
 <template>
-  <div class="base-card" :class="{'base-card--disabled': disabled }">
-    <div class="base-card__content">
-      <BaseSvg :src="`../icons/${icon}.svg`" class="base-card__icon"/>
-      <p class="base-card__label">{{ label }}</p>
+  <div class="loader">
+    <div class="loader__overlay">
+      <div class="loader__container">
+          <BaseSvg src="../icons/loader.svg" class="loader__icon"/>
+          <p class="loader__text">{{text}}</p>
+      </div>
     </div>
   </div>
 </template>
@@ -26,62 +28,51 @@
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
 
-defineProps<{
-  label: string
-  icon: string
-  disabled?: boolean
-}>()
+defineProps<{text: string}>()
 </script>
 
 <style scoped lang="less">
-.base-card {
-  padding: 32px;
-  height: 130px;
-  text-align: center;
-  border: 1px solid #C3D5FF;
-  border-radius: 12px;
-  background: #DEE9FF80;
-  cursor: pointer;
-
-  &:hover {
-    background: #DEE9FF;
-  }
-}
-
-.base-card--disabled {
-  background: white;
+.loader {
   cursor: not-allowed;
-  border-color: #D9D8DE;
-
-  &:hover {
-    background: white;
-  }
-
-  .base-card__icon {
-    fill: #9693A5;
-  }
-
-  .base-card__label {
-    color: #9693A5;
-  }
 }
 
-.base-card__content {
-  margin: auto;
+.loader__overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.base-card__icon {
-  margin-bottom: 14px;
-  width: 32px;
-  height: 32px;
+.loader__container {
+  border: 1px solid #D9D8DE;
+  border-radius: 12px;
+  padding: 20px 24px;
+  min-width: 210px;
+  background: white;
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  align-items: center;
+}
+
+.loader__icon {
+  width: 20px;
+  height: 20px;
   fill: var(--secondary-color);
+  animation: rotate 1.5s linear infinite;
 }
 
-.base-card__label {
+.loader__text {
   margin: 0;
-  font-weight: 600;
-  font-size: 18px;
+  font-weight: 400;
+  font-size: 16px;
   line-height: 24px;
   color: #4A465D;
 }
+
 </style>
