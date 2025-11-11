@@ -20,5 +20,5 @@ import { di } from '@/utils/setup-worker'
 import { ExternalFiltersIdentifiers } from '@/modules/filters/external/filters.types'
 
 export const useExternalFilters = (): FiltersBaseInterface => {
-  return di.get<FiltersBaseInterface>(ExternalFiltersIdentifiers.service)
+  return di.get<FiltersBaseInterface>(ExternalFiltersIdentifiers.filters)
 }

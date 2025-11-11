@@ -19,6 +19,7 @@
 import { Domain } from '@/common/types'
 
 export interface WhitelistInterface {
+  setup: (domains: Domain[]) => Promise<void>
   addDomain: (domain: Domain) => Promise<Domain[]>
   removeDomain: (domain: Domain) => Promise<Domain[]>
   hasDomain: (domain: Domain) => Promise<boolean>

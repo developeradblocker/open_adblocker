@@ -15,20 +15,25 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-import { FiltersBaseInterface } from '@/modules/filters/common/filters.types'
+import {
+  FilterId,
+  FiltersBaseInterface
+} from '@/modules/filters/common/filters.types'
 
 export enum InternalFiltersIdentifiers {
   /**
    * @link FilterServiceInterface
    */
-  service = 'Filters.Service',
+  filters = 'Filters.Filters',
 
   /**
    * @link FiltersStorage
    */
-  _storage = 'Filters.Storage'
+  _filterStorage = 'Filters.FilterStorage'
 }
 
 export interface FiltersServiceInterface extends FiltersBaseInterface {
-  getEnabledFilters: () => Promise<number[]>
+  isEnabled: (id: FilterId) => Promise<boolean>
+  getEnabledFilters: () => Promise<FilterId[]>
+  setup: (filters: FilterId[]) => Promise<void>
 }

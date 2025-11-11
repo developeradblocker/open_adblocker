@@ -32,7 +32,6 @@ import path from 'path'
 import { getPackageVersion } from '../utils/get-package-version.js'
 import { fileURLToPath } from 'node:url'
 import { getDnrFilters } from '../utils/get-dnr-filters.js'
-import { AVAILABLE_FILTER_IDS } from '../../constants.js'
 import { prepareEnv } from '../utils/prepare-env.js'
 import { archiveName } from '../utils/archive-name.js'
 import { modifyManifest } from '../utils/modify-manifest.js'
@@ -49,8 +48,7 @@ export const commonMode = (env, mode) => {
 
   /* Populate manifest */
   const filters = getDnrFilters(
-    `${__dirname}/../../app/filters/declarative`,
-    AVAILABLE_FILTER_IDS
+    `${__dirname}/../../app/filters/declarative`
   )
   fs.writeFileSync('manifest.temp.json', modifyManifest(version, filters))
 
@@ -67,6 +65,7 @@ export const commonMode = (env, mode) => {
     entry: {
       [`${buildPath}/service_worker`]: './app/service_worker/worker.ts',
       [`${buildPath}/popup/popup`]: './app/ui/toolbar-popup/popup.ts',
+      [`${buildPath}/settings/settings`]: './app/ui/settings/settings.ts',
       [`${buildPath}/content/content-script`]: './node_modules/@adguard/tswebextension/dist/content-script.mv3.js'
     },
     module: {

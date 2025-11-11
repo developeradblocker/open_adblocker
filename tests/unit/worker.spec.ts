@@ -31,8 +31,9 @@ import { onHandledAllRequiredMessages } from '@/utils/on-handled-all-required-me
 import { AppMessages } from '@/modules/app/common/app.messages'
 import { helloAndGoodbyeSetup } from '@/modules/hello-and-goodbye/internal/hello-and-goodbye.setup'
 import { setupInternalWebRTC } from '@/modules/features/web-rtc/internal/web-rtc.setup'
-import { setupInternalFilters } from '@/modules/filters/internal/filter.setup'
+import { setupInternalFilters } from '@/modules/filters/internal/filters.setup'
 import { setupInternalConfig } from '@/modules/config/internal/config.setup'
+import { setupInternalSettings } from '@/modules/settings/internal/settings.setup'
 
 jest.mock('@/utils/setup-worker', () => ({
   setupWorker: jest.fn(),
@@ -45,6 +46,10 @@ jest.mock('@/utils/logger/logger', () => ({
 }))
 jest.mock('@/modules/port/internal/port.setup', () => ({
   setupInternalPortChannel: jest.fn()
+}))
+
+jest.mock('@/modules/settings/internal/settings.setup', () => ({
+  setupInternalSettings: jest.fn()
 }))
 
 jest.mock('@/modules/features/web-rtc/internal/web-rtc.setup', () => ({
@@ -72,7 +77,7 @@ jest.mock('@/modules/aguard/internal/adguard.setup', () => ({
 jest.mock('@/modules/user-activity/internal/user-activity.setup', () => ({
   setupInternalUserActivity: jest.fn()
 }))
-jest.mock('@/modules/filters/internal/filter.setup', () => ({
+jest.mock('@/modules/filters/internal/filters.setup', () => ({
   setupInternalFilters: jest.fn()
 }))
 
@@ -125,6 +130,7 @@ describe('serviceWorkerSetup', () => {
       expect(setupInternalWhitelist).toHaveBeenCalled()
       expect(setupInternalFilters).toHaveBeenCalled()
       expect(setupInternalConfig).toHaveBeenCalled()
+      expect(setupInternalSettings).toHaveBeenCalled()
       await flushPromises()
       const expectedList = [...list, AppMessages.ready]
       expect(onHandledAllRequiredMessages).toHaveBeenCalledWith(expectedList, expect.any(Function))

@@ -16,9 +16,10 @@
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
 export interface WebRTCBaseInterface {
-  toggle(state: boolean): Promise<void>
+  toggle: (state: boolean) => Promise<void>
 }
 
 export interface WebRTCInterface extends WebRTCBaseInterface {
-  getState(): Promise<boolean>
+  getState: () => Promise<boolean>
+  setup: (state: boolean) => Promise<boolean>
 }

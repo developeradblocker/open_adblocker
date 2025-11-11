@@ -20,7 +20,7 @@ import { shallowMount } from '@vue/test-utils'
 import Header from '@/ui/toolbar-popup/components/header.vue'
 import { useUserActivity } from '@/modules/user-activity/external/utils'
 import { useRoute } from 'vue-router'
-import { ROUTE } from '@/ui/toolbar-popup/router/route-names'
+import { POPUP_ROUTE } from '@/ui/toolbar-popup/router/route-names'
 import { ClickEventToAction, ElementsUI } from '@/modules/user-activity/common/user-activity.types'
 
 jest.mock('vue-router')
@@ -33,6 +33,9 @@ describe('Header.vue', () => {
 
   const clickMock = jest.fn()
   const createMock = jest.fn()
+  const queryMock = jest.fn()
+  const updateMock = jest.fn()
+  const getURLMock = jest.fn().mockImplementation((key: string) => `MOCKED__${key}`)
 
   const doMount = (): void => {
     if (wrapper?.exists()) {
@@ -47,19 +50,26 @@ describe('Header.vue', () => {
       },
       props: {
         withBorder: true,
-        title
+        title,
+        withSettings: true
       }
     })
   }
 
   beforeEach(() => {
     global.chrome = {
+      runtime: {
+        getURL: getURLMock
+      },
       tabs: {
-        create: createMock
+        create: createMock,
+        query: queryMock,
+        update: updateMock
       }
     } as any
     jest.mocked(useUserActivity).mockImplementation(() => ({ click: clickMock }) as any)
-    jest.mocked(useRoute).mockImplementation(() => ({ name: ROUTE.RATE_US }) as any)
+    jest.mocked(useRoute).mockImplementation(() => ({ name: POPUP_ROUTE.RATE_US }) as any)
+    jest.mocked(queryMock).mockResolvedValue([{ id: 1 }])
     doMount()
   })
 
@@ -70,12 +80,18 @@ describe('Header.vue', () => {
     expect(wrapper.classes()).toContain('header--with-border')
   })
 
+  it('should handle settings click', async () => {
+    await wrapper.get('[data-test="settings"]').trigger('click')
+    expect(updateMock).toHaveBeenCalledTimes(1)
+    expect(updateMock).toHaveBeenCalledWith(1, { active: true })
+  })
+
   it('should handle logo click', async () => {
     await wrapper.get('[data-test="logo"]').trigger('click')
     expect(clickMock).toHaveBeenCalledTimes(1)
     expect(clickMock).toHaveBeenCalledWith(ElementsUI.logo, {
       to: 'https://openadblocker.com/',
-      page: ROUTE.RATE_US
+      page: POPUP_ROUTE.RATE_US
     })
     expect(createMock).toHaveBeenCalledWith({ url: 'https://openadblocker.com/' })
   })
@@ -84,7 +100,7 @@ describe('Header.vue', () => {
     await wrapper.get('[data-test="menu"]').trigger('click')
     expect(clickMock).toHaveBeenCalledTimes(1)
     expect(clickMock).toHaveBeenCalledWith(ElementsUI.menu, {
-      page: ROUTE.RATE_US,
+      page: POPUP_ROUTE.RATE_US,
       to: ClickEventToAction.openMenu
     })
 

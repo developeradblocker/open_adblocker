@@ -17,7 +17,7 @@
  */
 import { ElementsUI, UserActivityType } from '@/modules/user-activity/common/user-activity.types'
 import { handleUserActivity } from '@/modules/user-activity/internal/user-activity.setup'
-import { ROUTE } from '@/ui/toolbar-popup/router/route-names'
+import { POPUP_ROUTE } from '@/ui/toolbar-popup/router/route-names'
 import { rateUsCounter, rateUsService } from '@/modules/rate-us/internal/utils'
 import { UserActivityMessages } from '@/modules/user-activity/common/user-activity.messages'
 import {
@@ -72,7 +72,7 @@ describe('handleUserActivity', () => {
       type: UserActivityMessages.activity,
       payload: {
         type: 'other',
-        page: ROUTE.HOME
+        page: POPUP_ROUTE.HOME
       }
     }
     const result = await handleUserActivity({ message: msg } as any)
@@ -87,7 +87,7 @@ describe('handleUserActivity', () => {
     const msg = {
       payload: {
         type: UserActivityType.visitPage,
-        page: ROUTE.HOME
+        page: POPUP_ROUTE.HOME
       }
     }
     await userActivityHandler({ message: msg } as any)
@@ -103,7 +103,7 @@ describe('handleUserActivity', () => {
     const msg = {
       payload: {
         type: UserActivityType.visitPage,
-        page: ROUTE.RATE_US
+        page: POPUP_ROUTE.RATE_US
       }
     }
     await userActivityHandler({ message: msg } as any)

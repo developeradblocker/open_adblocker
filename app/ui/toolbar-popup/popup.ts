@@ -19,7 +19,7 @@
 import 'reflect-metadata'
 import { createApp } from 'vue'
 
-import { ROUTE } from '@/ui/toolbar-popup/router/route-names'
+import { POPUP_ROUTE } from '@/ui/toolbar-popup/router/route-names'
 import { createRouter, createWebHashHistory, RouteLocationNormalized, RouterOptions } from 'vue-router'
 import App from './app.vue'
 import { createPinia } from 'pinia'
@@ -70,6 +70,6 @@ setupExternalApp();
   app.use(createPinia())
   app.component('BaseSvg', InlineSvg)
   app.component('Popper', Popper)
-  app.mount('#app')
-  activity.visitPage(ROUTE.INIT)
+  app.mount('#toolbar-popup-app')
+  activity.visitPage(POPUP_ROUTE.INIT)
 })()

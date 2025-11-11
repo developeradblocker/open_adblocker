@@ -28,7 +28,7 @@ import { useAppService } from '@/modules/app/external/app.service'
 import { useAppStore } from '@/ui/toolbar-popup/store/app.store'
 import { onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { ROUTE } from '@/ui/toolbar-popup/router/route-names'
+import { POPUP_ROUTE } from '@/ui/toolbar-popup/router/route-names'
 import PrimaryLayout from '@/ui/toolbar-popup/layouts/primary.layout.vue'
 import Header from '@/ui/toolbar-popup/components/header.vue'
 
@@ -40,13 +40,13 @@ onMounted(async () => {
   const state = await $app.getState()
   $appStore.setAppInfo(state)
   if (state.needVisitRateUs) {
-    await $router.push({ name: ROUTE.RATE_US })
+    await $router.push({ name: POPUP_ROUTE.RATE_US })
   } else {
-    await $router.push({ name: ROUTE.HOME })
+    await $router.push({ name: POPUP_ROUTE.HOME })
   }
 })
 
 const onMenuClick = async (): Promise<void> => {
-  await $router.push({ name: ROUTE.MENU })
+  await $router.push({ name: POPUP_ROUTE.MENU })
 }
 </script>

@@ -37,12 +37,14 @@
     "storage",
     "management",
     "declarativeNetRequest",
-    "alarms"
+    "alarms",
+    "tabs"
   ],
   "optional_permissions": [
     "privacy"
   ],
   "host_permissions": [
     "<all_urls>"
-  ]
+  ],
+  "options_page": "settings/index.html"
 }

@@ -38,7 +38,7 @@
 
 import Feature from '@/ui/toolbar-popup/components/adblocker/feature.vue'
 import { computed, onMounted, ref } from 'vue'
-import BaseToggle from '@/ui/toolbar-popup/components/base-toggle.vue'
+import BaseToggle from '@/ui/shared/components/base-toggle.vue'
 import { useAppStore } from '@/ui/toolbar-popup/store/app.store'
 import { checkWebRTCPermissions, requestWebRTCPermissions } from '@/modules/features/web-rtc/common/web-rtc.utils'
 import { useWebRTC } from '@/modules/features/web-rtc/external/web-rtc.utils'
@@ -64,7 +64,7 @@ const toggleCookieCleaner = async (state: boolean): Promise<void> => {
   try {
     await filters.toggle(COOKIE_CLEANER_ID)
     appStore.updateField('isCookieCleanerEnabled', state)
-    activity.toggle(ElementsUI.cookie_cleaner, state)
+    activity.toggle(ElementsUI.cookieCleaner, state)
   } catch (e) {
     console.error(e)
     notification.showNotification(
@@ -84,7 +84,7 @@ onMounted(async () => {
   const webRTCToggle: HTMLDivElement = document.querySelector('#web-rtc-toggle')
   webRTCToggle.addEventListener('click', async () => {
     const state = !webRtc.value
-    activity.toggle(ElementsUI.web_rtc, state)
+    activity.toggle(ElementsUI.webRtc, state)
     if (await checkWebRTCPermissions()) {
       await webRTC.toggle(state)
       appStore.updateField('isWebRTCEnabled', state)

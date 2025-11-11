@@ -21,7 +21,11 @@ const moduleNameMapper = Object.entries(aliases).reduce((map, [key, value]) =>
   ({
     ...map,
     [`^${key}/(.*)$`]: `${process.platform === 'win32' ? '' : '/'}${value}/$1`
-  }), {})
+  }), {
+  '^@adguard/dnr-rulesets/utils$': '<rootDir>/tests/helpers/__mocks__/dnr-rulesets-utils.js',
+  '^@adguard/tsurlfilter/es/declarative-converter$': '<rootDir>/tests/helpers/__mocks__/declarative-converter.js',
+  '^@adguard/tswebextension/mv3$': '<rootDir>/tests/helpers/__mocks__/tswebextension.js'
+})
 
 export default {
   bail: false,
