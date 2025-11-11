@@ -22,18 +22,23 @@ import {
 } from '@/modules/manually-blocking-ads/common/manually-blocking-ads.messages'
 import { logger } from '@/utils/logger/logger'
 import {
+  InternalManuallyBlockingAdsIdentifiers,
   InternalManuallyBlockingAdsServiceInterface
 } from '@/modules/manually-blocking-ads/internal/manually-blocking-ads.types'
 import {
   InternalBroadcastIdentifiers,
   InternalBroadcastServiceInterface
 } from '@/modules/broadcast/internal/broadcast.types'
+import { UserRulesStorage } from '@/modules/manually-blocking-ads/internal/storage/user-rules.storage'
 
 @injectable()
 export class ManuallyBlockingAdsService implements InternalManuallyBlockingAdsServiceInterface {
   constructor (
     @inject(InternalBroadcastIdentifiers.service)
-    private readonly broadcast: InternalBroadcastServiceInterface
+    private readonly broadcast: InternalBroadcastServiceInterface,
+
+    @inject(InternalManuallyBlockingAdsIdentifiers._storage)
+    private readonly storage: UserRulesStorage
   ) {
   }
 
@@ -58,5 +63,9 @@ export class ManuallyBlockingAdsService implements InternalManuallyBlockingAdsSe
       type: ManuallyBlockingAdsMessages.stop
     }
     this.broadcast.sendMessage(tabs[0].id, message)
+  }
+
+  async getUserRules (): Promise<string> {
+    return this.storage.get()
   }
 }

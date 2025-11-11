@@ -44,5 +44,6 @@ export class ManuallyBlockingAdsService implements ExternalManuallyBlockingAdsSe
       payload: { tabId: tabs[0].id }
     }
     await this.port.sendMessage(message)
+    window.close()
   }
 }

@@ -18,6 +18,7 @@
 import adguardRulesConstructor from '@/assistant/adguard-rules-constructor'
 import { inject, injectable } from '@/utils/di/di.types'
 import {
+  ManuallyBlockingAdsAddRuleMessage,
   ManuallyBlockingAdsElementSelectedMessage,
   ManuallyBlockingAdsMessages
 } from '@/modules/manually-blocking-ads/common/manually-blocking-ads.messages'
@@ -32,23 +33,68 @@ const HIGHLIGHT_COLOR ='#3A40EF'
 export class SelectorService {
   private isStarted = false
   private currentEl: HTMLElement
-  // private selectedElementsByRules: Record<string, HTMLElement> = {}
+  private traversedElements: HTMLElement[]
   constructor(
     @inject(ContentBroadcastIdentifiers.service)
     private readonly broadcast: ContentBroadcastServiceInterface
   ) {
-    // TODO: Get elements by rule that exists and map them to
     document.body.addEventListener('mousemove', this.onMouseMove.bind(this))
   }
 
   start (): void {
     this.currentEl = null
+    this.traversedElements = null
     this.isStarted = true
   }
 
   stop (): void {
     this.isStarted = false
+  }
+
+  onClose (): void {
+    this.exitPreview()
+    this.stop()
+    this.removeHighlight(this.currentEl)
     this.currentEl = null
+    this.traversedElements = []
+  }
+
+  changeElement (newIndex: number): void {
+    if (!this.traversedElements[newIndex]) {
+      return
+    }
+
+    this.removeHighlight(this.currentEl)
+    this.currentEl = this.traversedElements[newIndex]
+    this.highlight(this.currentEl)
+  }
+
+  enterPreview (): void {
+    this.currentEl.style.cssText += 'display: none !important;'
+  }
+
+  exitPreview (): void {
+    this.currentEl.style.cssText = this.currentEl.style.cssText.replace('display: none !important;', '')
+  }
+
+  blockElement (allWebsites: boolean, blockSimilar: boolean): void {
+    const options = {
+      urlMask: this.getUrlBlockAttribute(this.currentEl),
+      cssSelectorType: blockSimilar ? 'SIMILAR' : 'STRICT_FULL',
+      isBlockOneDomain: allWebsites,
+      url: document.location,
+      ruleType: 'CSS',
+    }
+
+    const ruleText = adguardRulesConstructor.constructRuleText(this.currentEl, options)
+    const message: ManuallyBlockingAdsAddRuleMessage = {
+      type: ManuallyBlockingAdsMessages.addRule,
+      payload: {
+        ruleText
+      }
+    }
+    this.currentEl.style.cssText += 'display: none !important;'
+    this.broadcast.sendMessage(message)
   }
 
   private onMouseMove (event: MouseEvent): void {
@@ -90,16 +136,8 @@ export class SelectorService {
     event.preventDefault()
     event.stopImmediatePropagation()
 
-    const options = {
-      urlMask: this.getUrlBlockAttribute(this.currentEl),
-      cssSelectorType: 'SIMILAR',
-      isBlockOneDomain: true,
-      url: document.location,
-      ruleType: 'CSS',
-    };
-
-    const ruleText = adguardRulesConstructor.constructRuleText(this.currentEl, options);
     const traversedTree = this.getTraversedElements()
+    this.traversedElements = traversedTree.elements
     const message: ManuallyBlockingAdsElementSelectedMessage = {
       type: ManuallyBlockingAdsMessages.elementSelected,
       payload: {
@@ -124,28 +162,44 @@ export class SelectorService {
     return null
   }
 
-  getTraversedElements (): {
+  private getTraversedElements (): {
     elements: HTMLElement[],
     selectedElementIndex: number
   } {
     const elements: HTMLElement[] = [this.currentEl]
-    let currentEl = this.currentEl.parentElement
+    let currentEl = this.currentEl.firstElementChild as HTMLElement
+
+    while(currentEl && this.checkVisibility(currentEl)) {
+      elements.unshift(currentEl)
+      currentEl = currentEl.firstElementChild as HTMLElement
+    }
+
+    const selectedElementIndex = elements.length - 1
+    currentEl = this.currentEl.parentElement
 
     while (currentEl && currentEl.tagName !== 'BODY') {
-      elements.unshift(currentEl)
-      currentEl = currentEl.parentElement
-    }
-    const selectedElementIndex = elements.length
-    currentEl = this.currentEl.firstElementChild as HTMLElement
-
-    while(currentEl) {
       elements.push(currentEl)
-      currentEl = currentEl.firstElementChild as HTMLElement
+      currentEl = currentEl.parentElement
     }
 
     return {
       elements,
       selectedElementIndex
     }
+  }
+
+  private checkVisibility (el: HTMLElement): boolean {
+    const isVisible = el.checkVisibility({
+      contentVisibilityAuto: true,
+      opacityProperty: true,
+      visibilityProperty: true
+    })
+
+    if (isVisible) {
+      const { width, height } = el.getBoundingClientRect()
+      return width > 1 && height > 1
+    }
+
+    return false
   }
 }

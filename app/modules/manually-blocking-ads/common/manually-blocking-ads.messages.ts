@@ -21,8 +21,13 @@ export enum ManuallyBlockingAdsMessages {
   start = 'ManuallyBlockingAds.Start',
   selectElement = 'ManuallyBlockingAds.SelectElement',
   elementSelected = 'ManuallyBlockingAds.ElementSelected',
+  changeElement = 'ManuallyBlockingAds.ChangeElement',
+  enterPreview = 'ManuallyBlockingAds.EnterPreview',
+  exitPreview = 'ManuallyBlockingAds.ExitPreview',
   stop = 'ManuallyBlockingAds.Stop',
-  ruleAdded = 'assistantCreateRule'
+  close = 'ManuallyBlockingAds.Close',
+  blockElement = 'ManuallyBlockingAds.BlockElement',
+  addRule = 'ManualBlockingAds.AddRule'
 }
 
 export interface ManuallyBlockingAdsStartMessage extends AppMessage {
@@ -34,8 +39,28 @@ export interface ManuallyBlockingAdsSelectElementMessage extends AppMessage {
   type: ManuallyBlockingAdsMessages.selectElement
 }
 
+export interface ManuallyBlockingAdsChangeElementMessage extends AppMessage {
+  type: ManuallyBlockingAdsMessages.changeElement,
+  payload: {
+    newIndex: number
+  }
+}
+
+export interface ManuallyBlockingAdsEnterPreviewMessage extends AppMessage {
+  type: ManuallyBlockingAdsMessages.enterPreview
+}
+
+
+export interface ManuallyBlockingAdsExitPreviewMessage extends AppMessage {
+  type: ManuallyBlockingAdsMessages.exitPreview
+}
+
 export interface ManuallyBlockingAdsStopMessage extends AppMessage {
   type: ManuallyBlockingAdsMessages.stop
+}
+
+export interface ManuallyBlockingAdsCloseMessage extends AppMessage {
+  type: ManuallyBlockingAdsMessages.close
 }
 
 export interface ManuallyBlockingAdsElementSelectedMessage extends AppMessage {
@@ -46,8 +71,15 @@ export interface ManuallyBlockingAdsElementSelectedMessage extends AppMessage {
   }
 }
 
-export interface ManuallyBlockingAdsRuleAddedMessage {
-  type: ManuallyBlockingAdsMessages.ruleAdded
+export interface ManuallyBlockingAdsBlockElementMessage extends AppMessage {
+  type: ManuallyBlockingAdsMessages.blockElement,
+  payload: {
+    allWebsites: boolean
+    blockSimilar: boolean
+  }
+}
+
+export interface ManuallyBlockingAdsAddRuleMessage {
+  type: ManuallyBlockingAdsMessages.addRule
   payload: { ruleText: string }
-  handlerName: 'tsWebExtension'
 }

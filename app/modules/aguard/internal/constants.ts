@@ -29,6 +29,9 @@ export const DEFAULT_EXTENSION_CONFIG = (): Configuration => ({
    * DO NOT MODIFY THIS LIST DUE IT'S CONTROLLED VIA WHITE LIST MODULE
    */
   allowlist: [],
+  /**
+   * DO NOT MODIFY THIS LIST DUE IT'S CONTROLLED VIA MANUALLY BLOCKING ADS MODULE
+   */
   userrules: Object.assign(
     FilterListPreprocessor.createEmptyPreprocessedFilterList(),
     { trusted: true }

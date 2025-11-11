@@ -19,10 +19,12 @@ export enum InternalManuallyBlockingAdsIdentifiers {
   /**
    * @link ManuallyBlockingAdsServiceInterface
    */
-  service = 'ManuallyBlockingAds.Service'
+  service = 'ManuallyBlockingAds.Service',
+  _storage = 'ManuallyBlockingAds.Storage'
 }
 
 export interface InternalManuallyBlockingAdsServiceInterface {
   start(): Promise<void>
   stop(): Promise<void>
+  getUserRules(): Promise<string>
 }

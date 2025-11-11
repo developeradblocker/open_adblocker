@@ -21,6 +21,10 @@ import {
   ContentBroadcastServiceInterface
 } from '@/modules/broadcast/content/broadcast.types'
 import {
+  ManuallyBlockingAdsBlockElementMessage,
+  ManuallyBlockingAdsChangeElementMessage, ManuallyBlockingAdsCloseMessage,
+  ManuallyBlockingAdsEnterPreviewMessage,
+  ManuallyBlockingAdsExitPreviewMessage,
   ManuallyBlockingAdsMessages,
   ManuallyBlockingAdsSelectElementMessage,
   ManuallyBlockingAdsStopMessage
@@ -34,16 +38,56 @@ export class UiAdsBlockerService {
   ) {
   }
 
-  async stop (): Promise<void> {
+  stop (): void {
     const message: ManuallyBlockingAdsStopMessage = {
       type: ManuallyBlockingAdsMessages.stop
     }
     this.broadcast.sendMessageToIframes(message)
   }
 
-  async startSelecting (): Promise<void> {
+  startSelecting (): void {
     const message: ManuallyBlockingAdsSelectElementMessage = {
       type: ManuallyBlockingAdsMessages.selectElement
+    }
+    this.broadcast.sendMessageToIframes(message)
+  }
+
+  changeElement (newIndex: number): void {
+    const message: ManuallyBlockingAdsChangeElementMessage = {
+      type: ManuallyBlockingAdsMessages.changeElement,
+      payload: { newIndex }
+    }
+    this.broadcast.sendMessageToIframes(message)
+  }
+
+  enterPreview (): void {
+    const message: ManuallyBlockingAdsEnterPreviewMessage = {
+      type: ManuallyBlockingAdsMessages.enterPreview
+    }
+    this.broadcast.sendMessageToIframes(message)
+  }
+
+  exitPreview (): void {
+    const message: ManuallyBlockingAdsExitPreviewMessage = {
+      type: ManuallyBlockingAdsMessages.exitPreview
+    }
+    this.broadcast.sendMessageToIframes(message)
+  }
+
+  close (): void {
+    const message: ManuallyBlockingAdsCloseMessage = {
+      type: ManuallyBlockingAdsMessages.close
+    }
+    this.broadcast.sendMessageToIframes(message)
+  }
+
+  blockElement (allWebsites: boolean, blockSimilar: boolean): void {
+    const message: ManuallyBlockingAdsBlockElementMessage = {
+      type: ManuallyBlockingAdsMessages.blockElement,
+      payload: {
+        allWebsites,
+        blockSimilar
+      }
     }
     this.broadcast.sendMessageToIframes(message)
   }

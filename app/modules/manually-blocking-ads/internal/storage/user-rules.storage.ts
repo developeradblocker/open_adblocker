@@ -15,25 +15,36 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-import { createApp } from 'vue'
-import App from './app.vue'
-import router from './router'
-import InlineSvg from 'vue-inline-svg'
-import './style.less'
-import { dispatcher, setupWorker } from '@/utils/setup-worker'
-import { setupContentBroadcast } from '@/modules/broadcast/content/broadcast.setup'
-import { setupUIManuallyBlockingAds } from '@/modules/manually-blocking-ads/ui/manually-blocking-ads.setup'
+import { makeDataAccessor } from '@/utils/storage/make-data-accessor'
 
-setupWorker('ManuallyBlockingAds')
-setupContentBroadcast()
-setupUIManuallyBlockingAds()
+export class UserRulesStorage {
+  private readonly storage = makeDataAccessor<string>(
+    'local',
+    'USERRULES',
+    {
+      useCache: false,
+      default: ''
+    })
 
-void (async (): Promise<void> => {
-  const app = createApp(App)
+  async set (userrules: string): Promise<string> {
+    await this.storage.write(userrules)
+    return userrules
+  }
 
-  app.use(router)
-  app.component('BaseSvg', InlineSvg)
+  async addRule (ruleText: string): Promise<string> {
+    let existing = await this.get()
+    if (existing.includes(ruleText)) {
+      return existing
+    }
 
-  await dispatcher().work()
-  app.mount('#manually-blocking-ads')
-})()
+    if (existing.length > 0 && !existing.endsWith('\n')) {
+      existing += '\n'
+    }
+    existing += ruleText
+    return await this.set(existing)
+  }
+
+  async get (): Promise<string> {
+    return await this.storage.read()
+  }
+}

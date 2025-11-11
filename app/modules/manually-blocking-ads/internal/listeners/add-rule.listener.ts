@@ -15,33 +15,34 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-import { injectable } from '@/utils/di/di.types'
 import { AppMessageListener, Box } from '@/utils/dispatcher/dispatcher.types'
 import {
-  ManuallyBlockingAdsElementSelectedMessage,
+  ManuallyBlockingAdsAddRuleMessage,
   ManuallyBlockingAdsMessages
 } from '@/modules/manually-blocking-ads/common/manually-blocking-ads.messages'
-import router from '@/ui/manually-blocking-ads/router'
-import { Route } from '@/ui/manually-blocking-ads/router/route-names'
+import { inject, injectable } from '@/utils/di/di.types'
+import {
+  InternalManuallyBlockingAdsIdentifiers
+} from '@/modules/manually-blocking-ads/internal/manually-blocking-ads.types'
+import { UserRulesStorage } from '@/modules/manually-blocking-ads/internal/storage/user-rules.storage'
 
 @injectable()
-export class ElementSelectedListener implements AppMessageListener<ManuallyBlockingAdsElementSelectedMessage> {
-
-  on(): ManuallyBlockingAdsMessages.elementSelected {
-    return ManuallyBlockingAdsMessages.elementSelected
+export class AddRuleListener implements AppMessageListener<ManuallyBlockingAdsAddRuleMessage> {
+  constructor(
+    @inject(InternalManuallyBlockingAdsIdentifiers._storage)
+    private readonly storage: UserRulesStorage,
+  ) {
   }
 
-  main (): false {
+  on(): ManuallyBlockingAdsMessages.addRule {
+    return ManuallyBlockingAdsMessages.addRule
+  }
+
+  main(): false {
     return false
   }
 
-  async handle ({ message }: Box<ManuallyBlockingAdsElementSelectedMessage>): Promise<void> {
-    await router.push({
-      name: Route.selection,
-      query: {
-        elementIndex: message.payload.elementIndex,
-        elementsInTraversedTree: message.payload.elementsInTraversedTree
-      }
-    })
+  async handle({ message }: Box<ManuallyBlockingAdsAddRuleMessage>): Promise<void> {
+    await this.storage.addRule(message.payload.ruleText)
   }
 }
