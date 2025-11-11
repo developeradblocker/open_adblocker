@@ -35,7 +35,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-import { SnackbarProps } from '@/ui/shared/components/snackbar/base-snackbar.types'
+import { type SnackbarProps } from '@/ui/shared/components/snackbar/base-snackbar.types'
 import { watch } from 'vue'
 
 const DEFAULT_SNACKBAR_TIMEOUT = 4000
@@ -47,7 +47,7 @@ const icons = {
 const props = defineProps<{ value: SnackbarProps }>()
 let timeoutId: ReturnType<typeof setTimeout>
 const emit = defineEmits(['close'])
-watch(props.value, (current) => {
+watch(props.value, (current: SnackbarProps) => {
   if (current) {
     clearTimeout(timeoutId)
     timeoutId = setTimeout(() => emit('close'), current.timeout ?? DEFAULT_SNACKBAR_TIMEOUT)
