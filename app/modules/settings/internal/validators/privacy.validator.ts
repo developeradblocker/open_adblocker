@@ -15,10 +15,10 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-import { OpenADBSettings } from '@/modules/settings/common/settings.types'
+import { ExportedSettings } from '@/modules/settings/common/settings.types'
 import { checkWebRTCPermissions } from '@/modules/features/web-rtc/common/web-rtc.utils'
 
-export const privacyValidator = async (settings: OpenADBSettings): Promise<void> => {
+export const privacyValidator = async (settings: ExportedSettings): Promise<void> => {
   const { webRTC } = settings?.general ?? {}
   if (typeof webRTC !== 'boolean') {
     throw new Error('Invalid webRTC value')

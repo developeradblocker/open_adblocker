@@ -20,7 +20,7 @@ import { FilterId } from '@/modules/filters/common/filters.types'
 import { DEFAULT_ENABLED_FILTER_IDS } from '../../../../../constants.js'
 
 export class FiltersStorage {
-  private readonly storage = makeDataAccessor<number[]>(
+  private readonly storage = makeDataAccessor<FilterId[]>(
     'local',
     'ENABLED_FILTERS',
     {
@@ -28,11 +28,24 @@ export class FiltersStorage {
       default: DEFAULT_ENABLED_FILTER_IDS
     })
 
-  async setup (filters: number[]): Promise<void> {
+  async setup (filters: FilterId[]): Promise<void> {
     await this.storage.write(filters)
   }
 
-  async enable (id: number): Promise<number[]> {
+  async toggle (id: FilterId): Promise<FilterId[]> {
+    const enabledFilters = await this.get()
+    if (!enabledFilters.includes(id)) {
+      enabledFilters.push(id)
+      await this.storage.write(enabledFilters)
+      return enabledFilters
+    }
+
+    const updatedFilters = enabledFilters.filter((filterId: FilterId) => filterId !== id)
+    await this.storage.write(updatedFilters)
+    return updatedFilters
+  }
+
+  async enable (id: FilterId): Promise<FilterId[]> {
     const enabledFilters = await this.get()
     if (enabledFilters.includes(id)) {
       return enabledFilters
@@ -43,7 +56,7 @@ export class FiltersStorage {
     return enabledFilters
   }
 
-  async disable (id: number): Promise<number[]> {
+  async disable (id: FilterId): Promise<FilterId[]> {
     const enabledFilters = (await this.get())
       .filter((filterId: FilterId) => filterId !== id)
 
@@ -51,7 +64,7 @@ export class FiltersStorage {
     return enabledFilters
   }
 
-  async get (): Promise<number[]> {
+  async get (): Promise<FilterId[]> {
     return await this.storage.read()
   }
 }

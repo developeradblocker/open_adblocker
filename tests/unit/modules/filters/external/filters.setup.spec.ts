@@ -1,0 +1,45 @@
+/**
+ * @file
+ * This file is part of Open Ad Blocker Browser Extension (https://github.com/developeradblocker/open_adblocker).
+ *
+ * Open Ad Blocker Browser Extension is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Open Ad Blocker Browser Extension is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
+ */
+import { inject } from '@/utils/inject/inject'
+import { setupExternalFilters } from '@/modules/filters/external/filters.setup'
+import { ExternalFiltersIdentifiers } from '@/modules/filters/external/filters.types'
+import { FiltersService } from '@/modules/filters/external/service/filters.service'
+
+jest.mock('@/utils/inject/inject')
+
+describe('setupExternalFilters', () => {
+  const mockedInject = jest.mocked(inject)
+
+  beforeEach(() => {
+    jest.clearAllMocks()
+  })
+
+  describe('setupExternalFilters', () => {
+    it('should inject dependencies', async () => {
+      setupExternalFilters()
+
+      expect(mockedInject).toHaveBeenCalledTimes(1)
+      expect(mockedInject).toHaveBeenCalledWith([
+        {
+          key: ExternalFiltersIdentifiers.filters,
+          use: FiltersService
+        }
+      ])
+    })
+  })
+})

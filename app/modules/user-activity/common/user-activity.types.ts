@@ -16,19 +16,27 @@
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
 import { POPUP_ROUTE } from '@/ui/toolbar-popup/router/route-names'
+import { SETTINGS_ROUTE } from '@/ui/settings/router/route-names'
+import { ImportErrorReason } from '@/ui/settings/utils/import-data'
 
 export type ClickEventToLink = string
 export enum ClickEventToAction {
   openMenu = 'open_menu_action',
   closePage = 'close_page_action',
   pause = 'pause_action',
-  play = 'play_action'
+  play = 'play_action',
+  filterBack = 'filter_back',
+  openGroup = 'open_group',
+  openSettings = 'open_settings',
+  importSettings = 'import_settings',
+  exportSettings = 'export_settings'
 }
 
 export enum UserActivityType {
   click = 'click',
   visitPage = 'visitPage',
-  toggle = 'toggle'
+  toggle = 'toggle',
+  settingsImportError = 'settings_import_error'
 }
 
 export enum ElementsUI {
@@ -43,21 +51,30 @@ export enum ElementsUI {
   about = 'about',
   privacy = 'privacy',
   terms = 'terms',
-  web_rtc = 'web_rtc',
-  cookie_cleaner = 'cookie_cleaner'
+  webRtc = 'web_rtc',
+  cookieCleaner = 'cookie_cleaner',
+  filterBack = 'filter_back',
+  settings = 'settings',
+  importSettings = 'import_settings',
+  exportSettings = 'export_settings',
+  githubButton = 'github_button',
+  websiteButton = 'website_button'
 }
 
-export type PageUI = POPUP_ROUTE
+export type PageUI = POPUP_ROUTE | SETTINGS_ROUTE
 
 export interface BaseUserActivity {
   sessionId: string
   type: UserActivityType
 }
 
+export type ElementID = ElementsUI | string
+
 export type UserActivity =
  | UserClickActivity<BaseUserClickPayload>
  | UserPageVisited
  | UserToggleActivity
+ | SettingsImportErrorActivity
 
 export interface BaseUserClickPayload {
   page: PageUI
@@ -66,7 +83,7 @@ export interface BaseUserClickPayload {
 
 export interface UserClickActivity<T extends BaseUserClickPayload> extends BaseUserActivity {
   type: UserActivityType.click
-  element: ElementsUI
+  element: ElementID
   payload?: T
 }
 
@@ -75,14 +92,20 @@ export interface UserPageVisited extends BaseUserActivity {
   page: PageUI
 }
 
+export interface SettingsImportErrorActivity extends BaseUserActivity {
+  type: UserActivityType.settingsImportError
+  reason: ImportErrorReason
+}
+
 export interface UserToggleActivity extends BaseUserActivity {
   type: UserActivityType.toggle
-  element: ElementsUI
+  element: ElementID
   action: boolean
 }
 
 export interface UserActivityInterface {
   visitPage: (page: PageUI) => Promise<void>
-  toggle: (toggleId: ElementsUI, state: boolean) => Promise<void>
-  click: <T extends BaseUserClickPayload>(element: ElementsUI, payload?: T) => Promise<void>
+  toggle: (toggleId: ElementID, state: boolean) => Promise<void>
+  click: <T extends BaseUserClickPayload>(element: ElementID, payload?: T) => Promise<void>
+  settingsImportError: (reason: ImportErrorReason) => Promise<void>
 }

@@ -1,5 +1,5 @@
 <template>
-  <div class="base-card">
+  <div class="base-card" :class="{'base-card--disabled': disabled }">
     <div class="base-card__content">
       <BaseSvg :src="`../icons/${icon}.svg`" class="base-card__icon"/>
       <p class="base-card__label">{{ label }}</p>
@@ -29,6 +29,7 @@
 defineProps<{
   label: string
   icon: string
+  disabled?: boolean
 }>()
 </script>
 
@@ -44,6 +45,24 @@ defineProps<{
 
   &:hover {
     background: #DEE9FF;
+  }
+}
+
+.base-card--disabled {
+  background: white;
+  cursor: not-allowed;
+  border-color: #D9D8DE;
+
+  &:hover {
+    background: white;
+  }
+
+  .base-card__icon {
+    fill: #9693A5;
+  }
+
+  .base-card__label {
+    color: #9693A5;
   }
 }
 

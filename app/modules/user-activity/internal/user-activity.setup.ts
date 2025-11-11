@@ -18,7 +18,7 @@
 import { dispatcher } from '@/utils/setup-worker'
 import { UserActivityMessage, UserActivityMessages } from '@/modules/user-activity/common/user-activity.messages'
 import {
-  BaseUserClickPayload,
+  BaseUserClickPayload, SettingsImportErrorActivity,
   UserActivityType,
   UserClickActivity,
   UserPageVisited,
@@ -52,6 +52,11 @@ export const handleOnToggle = (activity: UserToggleActivity): void => {
   logger.info(message)
 }
 
+export const handleOnSettingsImportError = (activity: SettingsImportErrorActivity): void => {
+  const message = `settings error: "${activity.reason}"`
+  logger.info(message)
+}
+
 export const handleOnVisitPage = (activity: UserPageVisited): void => {
   logger.info(`user visits a page "${activity.page}"`)
 }
@@ -70,10 +75,15 @@ export const handleUserActivity = async (
   const onToggle = async () : Promise<void> => {
     handleOnToggle(message.payload as UserToggleActivity)
   }
+
+  const onSettingsImportError = async () : Promise<void> => {
+    handleOnSettingsImportError(message.payload as SettingsImportErrorActivity)
+  }
   const handlers: UserActivityHandlers = {
     [UserActivityType.click]: onClick,
     [UserActivityType.visitPage]: onPageVisit,
-    [UserActivityType.toggle]: onToggle
+    [UserActivityType.toggle]: onToggle,
+    [UserActivityType.settingsImportError]: onSettingsImportError
   }
 
   const { type } = message.payload

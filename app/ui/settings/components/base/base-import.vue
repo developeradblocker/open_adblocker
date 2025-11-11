@@ -3,6 +3,7 @@
     <input
       ref="inputRef"
       type="file"
+      data-test="file"
       :accept="accept"
       @change="$emit('change', $event)"
       class="base-import__input"

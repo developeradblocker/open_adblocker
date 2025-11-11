@@ -22,7 +22,7 @@ import { Injection } from '@/utils/inject/inject.types'
 
 const injections: Injection[] = [
   {
-    key: ExternalFiltersIdentifiers.service,
+    key: ExternalFiltersIdentifiers.filters,
     use: FiltersService
   }
 ]

@@ -15,8 +15,8 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-import { OpenADBSettings, settingsSchema } from '@/modules/settings/common/settings.types'
+import { ExportedSettings, settingsSchema } from '@/modules/settings/common/settings.types'
 
-export const structureValidator = async (settings: OpenADBSettings): Promise<void> => {
+export const structureValidator = async (settings: ExportedSettings): Promise<void> => {
   settingsSchema.parse(settings)
 }

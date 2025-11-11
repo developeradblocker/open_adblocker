@@ -1,1 +1,1547 @@
-[{"id":1,"action":{"type":"block"},"condition":{"urlFilter":"dummy.rule.adguard.com","resourceTypes":["xmlhttprequest"]},"metadata":{"byteRangeMapsCollection":{},"checksums":{"ruleset_1":"79885f95af509a41e59aca85a852b8d9","ruleset_10":"45fa716dbf8343edec1471920efbb03e","ruleset_103":"fe80d51836bb8d454c92b584561fd490","ruleset_105":"0e3379f272d7feaea87e0712e8879b92","ruleset_108":"932e2fa05255e66e8a4f527c10a1b7a1","ruleset_109":"1b674be2b2d77c5ec099dfdaec997ce4","ruleset_11":"3cbd30f90a3510acf430d743c726f922","ruleset_110":"1238b61b040c9ef648f66b8b50209516","ruleset_111":"8b7dcfcc33a0ce963c37ee0b5d8bafc4","ruleset_112":"eff99de44e5bec2c6e0989463356468b","ruleset_120":"9650e5df08c8bb4cdbb5ea57e09ac805","ruleset_13":"7de3b55225582d8ac0a2abdcf73b9b2b","ruleset_16":"96e606ccbe224b2dc8b5879d27656862","ruleset_17":"07821e2815618f7208e5fd3cd325fc8c","ruleset_18":"7e367151d6967ceaa8bf1b08387438b8","ruleset_19":"86a2b81cb33d96f304598d2dbf0d1761","ruleset_2":"dc7cf79ac2c37ea3208d012a914def92","ruleset_20":"1e74448a11fee53defd9391c9854b2b6","ruleset_202":"b6163be0f689250384120fe883d7e452","ruleset_203":"e257ee079e2e1e76520c90c53cfaa032","ruleset_208":"60d404ee306a6fcb0fa1d467cf3631c0","ruleset_21":"81570525807596913f30097fecdb7c78","ruleset_214":"a28f0b1ac1f43dd1d4a4bb74a6b5100f","ruleset_216":"322e0a6cb3f874cf88c57820d2a6661a","ruleset_217":"5b0f0b216231f80d521c4ccd45573340","ruleset_218":"49a600f9074caee7dbb2c17fe456b0d0","ruleset_22":"e78500070c2ed0b41869cefa94e0fd32","ruleset_224":"26e51ed54829389195399f0c3172638e","ruleset_227":"a0374f3f56d0042f8e4477bb9869f9c5","ruleset_23":"89fdca3c5f7ffb01faebb36aefd08fcf","ruleset_233":"fbb08c9756f5611af6e32ad71c0e24b7","ruleset_235":"57babf939461dcbe163feacd02b5dc0a","ruleset_238":"b25f27a4877c7fa0149af4b845e2b13b","ruleset_243":"42ef9188e4bf2fe15e8297508cf77581","ruleset_249":"ea640be08f248d86a7561c21bace4d92","ruleset_252":"4e9ec7503022e88da2c504619d2a6eee","ruleset_253":"65acb7f39bfcd17867be386b1de2ba9f","ruleset_254":"575a89b866036d8bcfc07bc1fdc083a3","ruleset_255":"03734e34aa630b80a0cf7782d8a9187a","ruleset_256":"cbf61d91102f09ab8c28ce04087fbb8a","ruleset_257":"8ef8284658e494d7fb969b89555bb6f5","ruleset_3":"d017b2b16c2f64cdc8e0d3f0c4649880","ruleset_4":"a82d401f87e587cd4b6cef820853dbcf","ruleset_5":"d3e51e284ebc017b07b7c1d0d9487493","ruleset_6":"8c537ffd82324378d4f10a5d3b240cbb","ruleset_7":"dcc18fe8dfa3dc31d4da4391691e7f67","ruleset_8":"021eccbc51b8a178b9b7a5e039bc6436","ruleset_9":"a71e07c204ff5145863e749be3aa99b8"},"additionalProperties":{"metadata":{"groups":[{"groupId":1,"groupName":"Ad blocking","groupDescription":"Blocks ads","displayNumber":1},{"groupId":2,"groupName":"Privacy","groupDescription":"Blocks trackers","displayNumber":2},{"groupId":3,"groupName":"Social widgets","groupDescription":"Blocks social media elements, such as Like and Share buttons","displayNumber":3},{"groupId":4,"groupName":"Annoyances","groupDescription":"Blocks annoying web elements, such as cookie notices or in-page popups","displayNumber":4},{"groupId":5,"groupName":"Security","groupDescription":"Blocks requests to phishing and malicious websites","displayNumber":5},{"groupId":6,"groupName":"Other","groupDescription":"This group contains various filters that don't fit into other categories","displayNumber":6},{"groupId":7,"groupName":"Language-specific","groupDescription":"Blocks ads on websites in specified languages","displayNumber":7}],"tags":[{"tagId":1,"keyword":"purpose:ads"},{"tagId":2,"keyword":"purpose:privacy"},{"tagId":3,"keyword":"purpose:social"},{"tagId":4,"keyword":"purpose:security"},{"tagId":5,"keyword":"purpose:annoyances"},{"tagId":6,"keyword":"purpose:cookies"},{"tagId":7,"keyword":"lang:en"},{"tagId":8,"keyword":"lang:ru"},{"tagId":9,"keyword":"reference:101"},{"tagId":10,"keyword":"recommended"},{"tagId":11,"keyword":"reference:2"},{"tagId":12,"keyword":"lang:de"},{"tagId":13,"keyword":"reference:107"},{"tagId":14,"keyword":"lang:ja"},{"tagId":15,"keyword":"lang:nl"},{"tagId":16,"keyword":"reference:106"},{"tagId":17,"keyword":"lang:es"},{"tagId":18,"keyword":"lang:pt"},{"tagId":19,"keyword":"platform:mobile"},{"tagId":20,"keyword":"purpose:unbreak"},{"tagId":21,"keyword":"platform:ios"},{"tagId":22,"keyword":"platform:ext_safari"},{"tagId":23,"keyword":"platform:ext_android_cb"},{"tagId":24,"keyword":"lang:tr"},{"tagId":25,"keyword":"reference:3"},{"tagId":26,"keyword":"reference:11"},{"tagId":27,"keyword":"lang:fr"},{"tagId":28,"keyword":"reference:113"},{"tagId":29,"keyword":"lang:id"},{"tagId":30,"keyword":"lang:bg"},{"tagId":31,"keyword":"lang:zh"},{"tagId":32,"keyword":"lang:cs"},{"tagId":33,"keyword":"lang:sk"},{"tagId":34,"keyword":"lang:he"},{"tagId":35,"keyword":"lang:it"},{"tagId":36,"keyword":"lang:lv"},{"tagId":37,"keyword":"lang:lt"},{"tagId":38,"keyword":"lang:ar"},{"tagId":39,"keyword":"lang:ro"},{"tagId":40,"keyword":"lang:fi"},{"tagId":41,"keyword":"lang:pl"},{"tagId":42,"keyword":"lang:is"},{"tagId":43,"keyword":"lang:no"},{"tagId":44,"keyword":"lang:el"},{"tagId":45,"keyword":"problematic"},{"tagId":46,"keyword":"obsolete"},{"tagId":47,"keyword":"lang:cz"},{"tagId":48,"keyword":"lang:hu"},{"tagId":49,"keyword":"lang:da"},{"tagId":50,"keyword":"purpose:antiadblock"},{"tagId":51,"keyword":"purpose:cookienotices"},{"tagId":52,"keyword":"lang:vi"},{"tagId":53,"keyword":"lang:et"},{"tagId":54,"keyword":"lang:fa"},{"tagId":55,"keyword":"lang:sv"},{"tagId":56,"keyword":"lang:ko"},{"tagId":57,"keyword":"reference:114"},{"tagId":58,"keyword":"reference:118"},{"tagId":59,"keyword":"reference:102"},{"tagId":60,"keyword":"reference:13"},{"tagId":61,"keyword":"reference:16"},{"tagId":62,"keyword":"reference:237"},{"tagId":63,"keyword":"lang:fo"},{"tagId":64,"keyword":"lang:th"},{"tagId":65,"keyword":"lang:sr"},{"tagId":66,"keyword":"lang:hr"},{"tagId":67,"keyword":"lang:hi"},{"tagId":68,"keyword":"lang:uk"},{"tagId":69,"keyword":"lang:tg"},{"tagId":70,"keyword":"lang:ps"},{"tagId":71,"keyword":"lang:mk"}],"filters":[{"filterId":1,"name":"AdGuard Russian filter","description":"Filter that enables ad blocking on websites in Russian language.","timeAdded":"2014-06-30T07:56:55+0000","homepage":"https://adguard.com/kb/general/ad-filtering/adguard-filters/","expires":864000,"displayNumber":1,"groupId":7,"subscriptionUrl":"https://filters.adtidy.org/extension/chromium-mv3/filters/1.txt","trustLevel":"full","version":"2.1.2.37","timeUpdated":"2025-10-16T08:09:06+0000","deprecated":false,"languages":["ru"],"tags":[1,8,10,11],"downloadUrl":"https://filters.adtidy.org/extension/chromium-mv3/filters/1.txt"},{"filterId":2,"name":"AdGuard Base filter","description":"EasyList + AdGuard English filter. This filter is necessary for quality ad blocking.","timeAdded":"2014-06-30T07:56:55+0000","homepage":"https://adguard.com/kb/general/ad-filtering/adguard-filters/","expires":864000,"displayNumber":1,"groupId":1,"subscriptionUrl":"https://filters.adtidy.org/extension/chromium-mv3/filters/2.txt","trustLevel":"full","version":"2.4.18.45","timeUpdated":"2025-10-17T04:08:02+0000","deprecated":false,"languages":[],"tags":[10,1,9,11],"downloadUrl":"https://filters.adtidy.org/extension/chromium-mv3/filters/2.txt"},{"filterId":3,"name":"AdGuard Tracking Protection filter","description":"The most comprehensive list of various online counters and web analytics tools. Use this filter if you do not want your actions on the Internet to be tracked.","timeAdded":"2014-06-30T07:56:55+0000","homepage":"https://adguard.com/kb/general/ad-filtering/adguard-filters/","expires":864000,"displayNumber":1,"groupId":2,"subscriptionUrl":"https://filters.adtidy.org/extension/chromium-mv3/filters/3.txt","trustLevel":"full","version":"2.0.93.2","timeUpdated":"2025-10-16T23:06:52+0000","deprecated":false,"languages":[],"tags":[2,10],"downloadUrl":"https://filters.adtidy.org/extension/chromium-mv3/filters/3.txt"},{"filterId":4,"name":"AdGuard Social Media filter","description":"Filter for social media widgets such as 'Like' and 'Share' buttons and more.","timeAdded":"2014-06-30T07:56:55+0000","homepage":"https://adguard.com/kb/general/ad-filtering/adguard-filters/","expires":864000,"displayNumber":1,"groupId":3,"subscriptionUrl":"https://filters.adtidy.org/extension/chromium-mv3/filters/4.txt","trustLevel":"full","version":"2.1.20.61","timeUpdated":"2025-10-16T15:07:14+0000","deprecated":false,"languages":[],"tags":[3,10],"downloadUrl":"https://filters.adtidy.org/extension/chromium-mv3/filters/4.txt"},{"filterId":5,"name":"AdGuard Experimental filter","description":"Filter designed to test certain hazardous filtering rules before they are added to the basic filters.","timeAdded":"2014-06-30T07:56:55+0000","homepage":"https://adguard.com/kb/general/ad-filtering/adguard-filters/","expires":864000,"displayNumber":4,"groupId":6,"subscriptionUrl":"https://filters.adtidy.org/extension/chromium-mv3/filters/5.txt","trustLevel":"full","version":"2.0.1.85","timeUpdated":"2025-10-14T12:11:45+0000","deprecated":false,"languages":[],"tags":[45],"downloadUrl":"https://filters.adtidy.org/extension/chromium-mv3/filters/5.txt"},{"filterId":6,"name":"AdGuard German filter","description":"EasyList Germany + AdGuard German filter. Filter list that specifically removes ads on websites in German language.","timeAdded":"2014-06-30T07:56:55+0000","homepage":"https://adguard.com/kb/general/ad-filtering/adguard-filters/","expires":864000,"displayNumber":1,"groupId":7,"subscriptionUrl":"https://filters.adtidy.org/extension/chromium-mv3/filters/6.txt","trustLevel":"full","version":"2.0.49.91","timeUpdated":"2025-10-16T15:07:18+0000","deprecated":false,"languages":["de"],"tags":[1,10,12,13],"downloadUrl":"https://filters.adtidy.org/extension/chromium-mv3/filters/6.txt"},{"filterId":7,"name":"AdGuard Japanese filter","description":"Filter that enables ad blocking on websites in Japanese language.","timeAdded":"2014-06-30T07:56:55+0000","homepage":"https://adguard.com/kb/general/ad-filtering/adguard-filters/","expires":864000,"displayNumber":1,"groupId":7,"subscriptionUrl":"https://filters.adtidy.org/extension/chromium-mv3/filters/7.txt","trustLevel":"full","version":"2.0.69.31","timeUpdated":"2025-10-16T22:06:18+0000","deprecated":false,"languages":["ja"],"tags":[1,10,14],"downloadUrl":"https://filters.adtidy.org/extension/chromium-mv3/filters/7.txt"},{"filterId":8,"name":"AdGuard Dutch filter","description":"EasyList Dutch + AdGuard Dutch filter. Filter list that specifically removes ads on websites in Dutch language.","timeAdded":"2014-06-30T07:56:55+0000","homepage":"https://adguard.com/kb/general/ad-filtering/adguard-filters/","expires":864000,"displayNumber":1,"groupId":7,"subscriptionUrl":"https://filters.adtidy.org/extension/chromium-mv3/filters/8.txt","trustLevel":"full","version":"2.0.8.68","timeUpdated":"2025-09-22T15:08:00+0000","deprecated":false,"languages":["nl"],"tags":[1,10,11,15,16],"downloadUrl":"https://filters.adtidy.org/extension/chromium-mv3/filters/8.txt"},{"filterId":9,"name":"AdGuard Spanish/Portuguese filter","description":"Filter list that specifically removes ads on websites in Spanish, Portuguese, and Brazilian Portuguese languages.","timeAdded":"2014-06-30T07:56:55+0000","homepage":"https://adguard.com/kb/general/ad-filtering/adguard-filters/","expires":864000,"displayNumber":1,"groupId":7,"subscriptionUrl":"https://filters.adtidy.org/extension/chromium-mv3/filters/9.txt","trustLevel":"full","version":"2.0.32.11","timeUpdated":"2025-10-16T03:22:38+0000","deprecated":false,"languages":["es","pt"],"tags":[1,10,17,18],"downloadUrl":"https://filters.adtidy.org/extension/chromium-mv3/filters/9.txt"},{"filterId":10,"name":"Filter unblocking search ads and self-promotion","description":"Filter that unblocks search ads in Google, DuckDuckGo, Bing, or Yahoo and self-promotion on websites.","timeAdded":"2014-06-30T07:56:55+0000","homepage":"https://adguard.com/kb/general/ad-filtering/adguard-filters/","expires":864000,"displayNumber":1,"groupId":6,"subscriptionUrl":"https://filters.adtidy.org/extension/chromium-mv3/filters/10.txt","trustLevel":"full","version":"2.0.3.76","timeUpdated":"2025-10-15T12:11:48+0000","deprecated":false,"languages":[],"tags":[],"downloadUrl":"https://filters.adtidy.org/extension/chromium-mv3/filters/10.txt"},{"filterId":11,"name":"AdGuard Mobile Ads filter","description":"Filter for all known mobile ad networks. Useful for mobile devices.","timeAdded":"2014-06-30T07:56:55+0000","homepage":"https://adguard.com/kb/general/ad-filtering/adguard-filters/","expires":864000,"displayNumber":2,"groupId":1,"subscriptionUrl":"https://filters.adtidy.org/extension/chromium-mv3/filters/11.txt","trustLevel":"full","version":"2.0.65.5","timeUpdated":"2025-10-16T22:06:21+0000","deprecated":false,"languages":[],"tags":[1,2,10,11,19],"downloadUrl":"https://filters.adtidy.org/extension/chromium-mv3/filters/11.txt"},{"filterId":13,"name":"AdGuard Turkish filter","description":"Filter list that specifically removes ads on websites in Turkish language.","timeAdded":"2014-06-30T07:56:55+0000","homepage":"https://adguard.com/kb/general/ad-filtering/adguard-filters/","expires":864000,"displayNumber":1,"groupId":7,"subscriptionUrl":"https://filters.adtidy.org/extension/chromium-mv3/filters/13.txt","trustLevel":"full","version":"2.0.59.95","timeUpdated":"2025-10-16T15:07:24+0000","deprecated":false,"languages":["tr"],"tags":[1,10,11,24],"downloadUrl":"https://filters.adtidy.org/extension/chromium-mv3/filters/13.txt"},{"filterId":16,"name":"AdGuard French filter","description":"Liste FR + AdGuard French filter. Filter list that specifically removes ads on websites in French language.","timeAdded":"2014-06-30T07:56:55+0000","homepage":"https://adguard.com/kb/general/ad-filtering/adguard-filters/","expires":864000,"displayNumber":1,"groupId":7,"subscriptionUrl":"https://filters.adtidy.org/extension/chromium-mv3/filters/16.txt","trustLevel":"full","version":"2.0.54.59","timeUpdated":"2025-10-14T05:07:44+0000","deprecated":false,"languages":["fr"],"tags":[1,10,11,27,28],"downloadUrl":"https://filters.adtidy.org/extension/chromium-mv3/filters/16.txt"},{"filterId":17,"name":"AdGuard URL Tracking filter","description":"Filter that enhances privacy by removing tracking parameters from URLs.","timeAdded":"2021-04-15T09:34:08+0000","homepage":"https://adguard.com/kb/general/ad-filtering/adguard-filters/","expires":864000,"displayNumber":1,"groupId":2,"subscriptionUrl":"https://filters.adtidy.org/extension/chromium-mv3/filters/17.txt","platformsExcluded":["ios","ext_safari","ext_android_cb"],"trustLevel":"full","version":"2.0.11.96","timeUpdated":"2025-10-15T09:08:19+0000","deprecated":false,"languages":[],"tags":[2],"downloadUrl":"https://filters.adtidy.org/extension/chromium-mv3/filters/17.txt"},{"filterId":18,"name":"AdGuard Cookie Notices filter","description":"Blocks cookie notices on web pages.","timeAdded":"2022-07-07T07:53:39+0000","homepage":"https://adguard.com/kb/general/ad-filtering/adguard-filters/","expires":864000,"displayNumber":2,"groupId":4,"subscriptionUrl":"https://filters.adtidy.org/extension/chromium-mv3/filters/18.txt","trustLevel":"full","version":"2.0.72.50","timeUpdated":"2025-10-17T00:25:22+0000","deprecated":false,"languages":[],"tags":[5,10,11],"downloadUrl":"https://filters.adtidy.org/extension/chromium-mv3/filters/18.txt"},{"filterId":19,"name":"AdGuard Popups filter","description":"Blocks all kinds of pop-ups that are not necessary for websites' operation according to our Filter policy.","timeAdded":"2022-07-07T07:53:39+0000","homepage":"https://adguard.com/kb/general/ad-filtering/adguard-filters/","expires":864000,"displayNumber":2,"groupId":4,"subscriptionUrl":"https://filters.adtidy.org/extension/chromium-mv3/filters/19.txt","trustLevel":"full","version":"2.0.63.67","timeUpdated":"2025-10-16T15:07:34+0000","deprecated":false,"languages":[],"tags":[5,10,11],"downloadUrl":"https://filters.adtidy.org/extension/chromium-mv3/filters/19.txt"},{"filterId":20,"name":"AdGuard Mobile App Banners filter","description":"Blocks irritating banners that promote mobile apps of websites.","timeAdded":"2022-07-07T07:53:39+0000","homepage":"https://adguard.com/kb/general/ad-filtering/adguard-filters/","expires":864000,"displayNumber":2,"groupId":4,"subscriptionUrl":"https://filters.adtidy.org/extension/chromium-mv3/filters/20.txt","trustLevel":"full","version":"2.0.24.14","timeUpdated":"2025-10-16T13:16:14+0000","deprecated":false,"languages":[],"tags":[5,10,11],"downloadUrl":"https://filters.adtidy.org/extension/chromium-mv3/filters/20.txt"},{"filterId":21,"name":"AdGuard Other Annoyances filter","description":"Blocks irritating elements on web pages that do not fall under the popular categories of annoyances.","timeAdded":"2022-07-07T07:53:39+0000","homepage":"https://adguard.com/kb/general/ad-filtering/adguard-filters/","expires":864000,"displayNumber":2,"groupId":4,"subscriptionUrl":"https://filters.adtidy.org/extension/chromium-mv3/filters/21.txt","trustLevel":"full","version":"2.0.38.19","timeUpdated":"2025-10-16T13:16:15+0000","deprecated":false,"languages":[],"tags":[5,10,11],"downloadUrl":"https://filters.adtidy.org/extension/chromium-mv3/filters/21.txt"},{"filterId":22,"name":"AdGuard Widgets filter","description":"Blocks annoying third-party widgets: online assistants, live support chats, etc.","timeAdded":"2022-07-07T07:53:39+0000","homepage":"https://adguard.com/kb/general/ad-filtering/adguard-filters/","expires":864000,"displayNumber":2,"groupId":4,"subscriptionUrl":"https://filters.adtidy.org/extension/chromium-mv3/filters/22.txt","trustLevel":"full","version":"2.0.12.81","timeUpdated":"2025-10-16T13:16:15+0000","deprecated":false,"languages":[],"tags":[5,10,11],"downloadUrl":"https://filters.adtidy.org/extension/chromium-mv3/filters/22.txt"},{"filterId":23,"name":"AdGuard Ukrainian filter","description":"Filter that enables ad blocking on websites in Ukrainian language.","timeAdded":"2023-02-27T13:28:12+0000","homepage":"https://adguard.com/kb/general/ad-filtering/adguard-filters/","expires":864000,"displayNumber":1,"groupId":7,"subscriptionUrl":"https://filters.adtidy.org/extension/chromium-mv3/filters/23.txt","trustLevel":"full","version":"2.0.7.28","timeUpdated":"2025-10-14T06:10:37+0000","deprecated":false,"languages":["uk"],"tags":[1,68,10,11],"downloadUrl":"https://filters.adtidy.org/extension/chromium-mv3/filters/23.txt"},{"filterId":103,"name":"Bulgarian list","description":"Additional filter list for websites in Bulgarian.","timeAdded":"2014-06-30T07:56:55+0000","homepage":"https://github.com/RealEnder/adblockbg/","expires":864000,"displayNumber":2,"groupId":7,"subscriptionUrl":"https://stanev.org/abp/adblock_bg.txt","trustLevel":"high","version":"2.0.0.42","timeUpdated":"2025-08-07T08:42:07+0000","deprecated":false,"languages":["bg"],"tags":[1,9,10,30],"downloadUrl":"https://filters.adtidy.org/extension/chromium-mv3/filters/103.txt"},{"filterId":105,"name":"EasyList Czech and Slovak","description":"Additional filter list for websites in Czech and Slovak.","timeAdded":"2014-06-30T07:56:55+0000","homepage":"https://github.com/tomasko126/easylistczechandslovak","expires":864000,"displayNumber":2,"groupId":7,"subscriptionUrl":"https://raw.githubusercontent.com/tomasko126/easylistczechandslovak/master/filters.txt","trustLevel":"high","version":"2.0.3.11","timeUpdated":"2025-07-31T12:45:18+0000","deprecated":false,"languages":["cs","sk"],"tags":[1,9,10,32,33],"downloadUrl":"https://filters.adtidy.org/extension/chromium-mv3/filters/105.txt"},{"filterId":108,"name":"EasyList Hebrew","description":"Additional filter list for websites in Hebrew.","timeAdded":"2014-06-30T07:56:55+0000","homepage":"https://github.com/easylist/EasyListHebrew","expires":864000,"displayNumber":2,"groupId":7,"subscriptionUrl":"https://raw.githubusercontent.com/easylist/EasyListHebrew/master/EasyListHebrew.txt","trustLevel":"high","version":"2.0.5.86","timeUpdated":"2025-10-13T00:47:43+0000","deprecated":false,"languages":["he"],"tags":[1,9,10,34],"downloadUrl":"https://filters.adtidy.org/extension/chromium-mv3/filters/108.txt"},{"filterId":109,"name":"EasyList Italy","description":"Additional filter list for websites in Italian.","timeAdded":"2014-06-30T07:56:55+0000","homepage":"https://github.com/easylist/easylistitaly/","expires":864000,"displayNumber":2,"groupId":7,"subscriptionUrl":"https://easylist-downloads.adblockplus.org/easylistitaly.txt","trustLevel":"high","version":"2.1.78.47","timeUpdated":"2025-10-16T16:39:00+0000","deprecated":false,"languages":["it"],"tags":[1,9,10,35],"downloadUrl":"https://filters.adtidy.org/extension/chromium-mv3/filters/109.txt"},{"filterId":110,"name":"EasyList Lithuania","description":"Additional filter list for websites in Lithuanian.","timeAdded":"2014-06-30T07:56:55+0000","homepage":"https://github.com/EasyList-Lithuania/easylist_lithuania","expires":864000,"displayNumber":2,"groupId":7,"subscriptionUrl":"https://raw.githubusercontent.com/EasyList-Lithuania/easylist_lithuania/master/easylistlithuania.txt","trustLevel":"high","version":"2.0.2.92","timeUpdated":"2025-09-20T00:47:25+0000","deprecated":false,"languages":["lt"],"tags":[1,9,10,37],"downloadUrl":"https://filters.adtidy.org/extension/chromium-mv3/filters/110.txt"},{"filterId":111,"name":"Latvian List","description":"Additional filter list for websites in Latvian.","timeAdded":"2014-06-30T07:56:55+0000","homepage":"https://github.com/Latvian-List/adblock-latvian","expires":864000,"displayNumber":2,"groupId":7,"subscriptionUrl":"https://raw.githubusercontent.com/Latvian-List/adblock-latvian/master/lists/latvian-list.txt","trustLevel":"high","version":"2.0.0.66","timeUpdated":"2025-08-25T16:39:29+0000","deprecated":false,"languages":["lv"],"tags":[1,9,10,36],"downloadUrl":"https://filters.adtidy.org/extension/chromium-mv3/filters/111.txt"},{"filterId":112,"name":"Liste AR","description":"Additional filter list for websites in Arabic.","timeAdded":"2014-06-30T07:56:55+0000","homepage":"https://github.com/easylist/listear","expires":864000,"displayNumber":2,"groupId":7,"subscriptionUrl":"https://easylist-downloads.adblockplus.org/Liste_AR.txt","trustLevel":"high","version":"2.1.78.46","timeUpdated":"2025-10-16T16:39:00+0000","deprecated":false,"languages":["ar"],"tags":[1,9,10,38],"downloadUrl":"https://filters.adtidy.org/extension/chromium-mv3/filters/112.txt"},{"filterId":120,"name":"AdBlockID","description":"Additional filter list for websites in Indonesian.","timeAdded":"2019-10-18T07:59:54+0000","homepage":"https://github.com/realodix/AdBlockID","expires":864000,"displayNumber":2,"groupId":7,"subscriptionUrl":"https://raw.githubusercontent.com/realodix/AdBlockID/main/dist/adblockid.adfl.txt","trustLevel":"high","version":"2.0.26.25","timeUpdated":"2025-10-15T16:37:14+0000","deprecated":false,"languages":["id"],"tags":[1,10,29],"downloadUrl":"https://filters.adtidy.org/extension/chromium-mv3/filters/120.txt"},{"filterId":202,"name":"EasyList Thailand","description":"Filter that blocks ads on Thai sites.","timeAdded":"2022-03-07T19:32:01+0000","homepage":"https://github.com/easylist-thailand/","expires":864000,"displayNumber":2,"groupId":7,"subscriptionUrl":"https://raw.githubusercontent.com/easylist-thailand/easylist-thailand/master/subscription/easylist-thailand.txt","trustLevel":"high","version":"2.0.0.26","timeUpdated":"2025-08-30T12:44:33+0000","deprecated":false,"languages":["th"],"tags":[1,10,64],"downloadUrl":"https://filters.adtidy.org/extension/chromium-mv3/filters/202.txt"},{"filterId":203,"name":"Hungarian filter","description":"Hufilter. Filter list that specifically removes ads on websites in the Hungarian language.","timeAdded":"2014-06-30T07:56:55+0000","homepage":"https://github.com/hufilter/hufilter/wiki","expires":864000,"displayNumber":2,"groupId":7,"subscriptionUrl":"https://cdn.jsdelivr.net/gh/hufilter/hufilter@gh-pages/hufilter-adguard.txt","trustLevel":"high","version":"2.0.4.32","timeUpdated":"2025-10-14T04:36:50+0000","deprecated":false,"languages":["hu"],"tags":[1,2,48,10],"downloadUrl":"https://filters.adtidy.org/extension/chromium-mv3/filters/203.txt"},{"filterId":208,"name":"Online Malicious URL Blocklist","description":"Blocks domains that are known to be used to propagate malware and spyware.","timeAdded":"2020-08-10T18:34:22+0000","homepage":"https://gitlab.com/malware-filter/urlhaus-filter#malicious-url-blocklist","expires":864000,"displayNumber":1,"groupId":5,"subscriptionUrl":"https://urlhaus-filter.pages.dev/urlhaus-filter-ag-online.txt","trustLevel":"low","version":"2.1.4.26","timeUpdated":"2025-10-16T12:45:47+0000","deprecated":false,"languages":[],"tags":[10,4],"downloadUrl":"https://filters.adtidy.org/extension/chromium-mv3/filters/208.txt"},{"filterId":214,"name":"ABPVN List","description":"Vietnamese adblock filter list.","timeAdded":"2014-06-30T07:56:55+0000","homepage":"https://abpvn.com/","expires":864000,"displayNumber":2,"groupId":7,"subscriptionUrl":"https://raw.githubusercontent.com/abpvn/abpvn/master/filter/abpvn_adguard.txt","trustLevel":"high","version":"2.0.39.50","timeUpdated":"2025-10-16T08:40:25+0000","deprecated":false,"languages":["vi"],"tags":[1,52,10],"downloadUrl":"https://filters.adtidy.org/extension/chromium-mv3/filters/214.txt"},{"filterId":216,"name":"Official Polish filters for AdBlock, uBlock Origin & AdGuard","description":"Additional filter list for websites in Polish.","timeAdded":"2014-06-30T07:56:55+0000","homepage":"https://github.com/MajkiIT/polish-ads-filter#polish-filters-for-adblock-ublock-origin--adguard","expires":864000,"displayNumber":2,"groupId":7,"subscriptionUrl":"https://raw.githubusercontent.com/MajkiIT/polish-ads-filter/master/polish-adblock-filters/adblock.txt","trustLevel":"high","version":"2.0.15.98","timeUpdated":"2025-10-08T16:38:27+0000","deprecated":false,"languages":["pl"],"tags":[1,10,41],"downloadUrl":"https://filters.adtidy.org/extension/chromium-mv3/filters/216.txt"},{"filterId":217,"name":"Polish GDPR-Cookies Filters","description":"Polish filter list for cookies blocking.","timeAdded":"2014-06-30T07:56:55+0000","homepage":"https://github.com/MajkiIT/polish-ads-filter#polish-filters-for-adblock-ublock-origin--adguard","expires":864000,"displayNumber":2,"groupId":7,"subscriptionUrl":"https://raw.githubusercontent.com/MajkiIT/polish-ads-filter/master/cookies_filters/adblock_cookies.txt","trustLevel":"high","version":"2.0.5.36","timeUpdated":"2025-10-15T12:45:41+0000","deprecated":false,"languages":[],"tags":[6,41],"downloadUrl":"https://filters.adtidy.org/extension/chromium-mv3/filters/217.txt"},{"filterId":218,"name":"Estonian List","description":"Filter for ad blocking on Estonian sites.","timeAdded":"2014-06-30T07:56:55+0000","homepage":"https://adblock.ee/","expires":864000,"displayNumber":2,"groupId":7,"subscriptionUrl":"https://adblock.ee/list.txt","trustLevel":"low","version":"2.0.3.68","timeUpdated":"2025-10-05T00:48:06+0000","deprecated":false,"languages":["et"],"tags":[10,1,53],"downloadUrl":"https://filters.adtidy.org/extension/chromium-mv3/filters/218.txt"},{"filterId":224,"name":"AdGuard Chinese filter","description":"EasyList China + AdGuard Chinese filter. Filter list that specifically removes ads on websites in Chinese language.","timeAdded":"2020-05-06T09:57:26+0000","homepage":"https://adguard.com/kb/general/ad-filtering/adguard-filters/","expires":864000,"displayNumber":1,"groupId":7,"subscriptionUrl":"https://filters.adtidy.org/extension/chromium-mv3/filters/224.txt","trustLevel":"full","version":"2.1.45.94","timeUpdated":"2025-10-17T03:21:55+0000","deprecated":false,"languages":["zh"],"tags":[1,10,11,31],"downloadUrl":"https://filters.adtidy.org/extension/chromium-mv3/filters/224.txt"},{"filterId":227,"name":"List-KR","description":"Filter that removes ads and various scripts from websites with Korean content. Combined and augmented with AdGuard-specific rules for enhanced filtering. This filter is expected to be used alongside with AdGuard Base filter.","timeAdded":"2014-06-30T07:56:55+0000","homepage":"https://list-kr.github.io/","expires":864000,"displayNumber":2,"groupId":7,"subscriptionUrl":"https://raw.githubusercontent.com/List-KR/List-KR/refs/heads/master/filter-AdGuard-forward.txt","trustLevel":"high","version":"2.0.23.11","timeUpdated":"2025-10-16T04:37:25+0000","deprecated":false,"languages":["ko"],"tags":[1,11,56,10],"downloadUrl":"https://filters.adtidy.org/extension/chromium-mv3/filters/227.txt"},{"filterId":233,"name":"Adblock List for Finland","description":"Finnish ad blocking filter list.","timeAdded":"2014-06-30T07:56:55+0000","homepage":"https://github.com/finnish-easylist-addition/finnish-easylist-addition","expires":864000,"displayNumber":2,"groupId":7,"subscriptionUrl":"https://raw.githubusercontent.com/finnish-easylist-addition/finnish-easylist-addition/gh-pages/Finland_adb.txt","trustLevel":"high","version":"2.0.12.12","timeUpdated":"2025-10-15T16:37:32+0000","deprecated":false,"languages":["fi"],"tags":[1,10,40],"downloadUrl":"https://filters.adtidy.org/extension/chromium-mv3/filters/233.txt"},{"filterId":235,"name":"Persian Blocker","description":"Filter list for blocking ads and trackers on websites in Persian.","timeAdded":"2022-06-14T16:28:16+0000","homepage":"https://github.com/MasterKia/PersianBlocker/","expires":864000,"displayNumber":2,"groupId":7,"subscriptionUrl":"https://raw.githubusercontent.com/MasterKia/PersianBlocker/main/PersianBlocker.txt","trustLevel":"high","version":"2.0.6.1","timeUpdated":"2025-10-05T20:33:50+0000","deprecated":false,"languages":["fa","tg","ps"],"tags":[10,1,54,69,70],"downloadUrl":"https://filters.adtidy.org/extension/chromium-mv3/filters/235.txt"},{"filterId":238,"name":"Polish Anti Adblock Filters","description":"Official Polish filters against Adblock alerts.","timeAdded":"2014-06-30T07:56:55+0000","homepage":"https://github.com/olegwukr/polish-privacy-filters","expires":864000,"displayNumber":2,"groupId":7,"subscriptionUrl":"https://raw.githubusercontent.com/olegwukr/polish-privacy-filters/master/anti-adblock.txt","trustLevel":"high","version":"2.0.3.54","timeUpdated":"2023-12-06T17:02:32+0000","deprecated":false,"languages":["pl"],"tags":[10,50,41],"downloadUrl":"https://filters.adtidy.org/extension/chromium-mv3/filters/238.txt"},{"filterId":243,"name":"Frellwit's Swedish Filter","description":"Filter that aims to remove regional Swedish ads, tracking, social media, annoyances, sponsored articles etc.","timeAdded":"2018-02-15T18:41:31+0000","homepage":"https://github.com/lassekongo83/Frellwit-s-filter-lists","expires":864000,"displayNumber":2,"groupId":7,"subscriptionUrl":"https://raw.githubusercontent.com/lassekongo83/Frellwits-filter-lists/master/Frellwits-Swedish-Filter.txt","trustLevel":"high","version":"2.0.23.4","timeUpdated":"2025-10-15T04:37:18+0000","deprecated":false,"languages":["sv"],"tags":[10,1,5,2,3,55],"downloadUrl":"https://filters.adtidy.org/extension/chromium-mv3/filters/243.txt"},{"filterId":249,"name":"Dandelion Sprout's Nordic Filters","description":"This list covers websites for Norway, Denmark, Iceland, Danish territories, and the Sami indigenous population.","timeAdded":"2018-03-30T12:15:13+0000","homepage":"https://github.com/DandelionSprout/adfilt","expires":864000,"displayNumber":249,"groupId":7,"subscriptionUrl":"https://raw.githubusercontent.com/DandelionSprout/adfilt/master/NorwegianExperimentalList%20alternate%20versions/NordicFiltersAdGuard.txt","trustLevel":"high","version":"2.0.8.29","timeUpdated":"2025-10-16T04:37:42+0000","deprecated":false,"languages":["no","da","is","fo"],"tags":[10,1,4,43,49,42,63],"downloadUrl":"https://filters.adtidy.org/extension/chromium-mv3/filters/249.txt"},{"filterId":252,"name":"Dandelion Sprout's Serbo-Croatian List","description":"A filter list for websites in Serbian, Montenegrin, Croatian, and Bosnian.","timeAdded":"2022-03-21T08:42:14+0000","homepage":"https://github.com/DandelionSprout/adfilt","expires":864000,"displayNumber":2,"groupId":7,"subscriptionUrl":"https://raw.githubusercontent.com/DandelionSprout/adfilt/master/SerboCroatianList.txt","trustLevel":"high","version":"2.0.0.65","timeUpdated":"2025-10-07T00:48:32+0000","deprecated":false,"languages":["sr","hr"],"tags":[1,65,66,10],"downloadUrl":"https://filters.adtidy.org/extension/chromium-mv3/filters/252.txt"},{"filterId":253,"name":"IndianList","description":"Additional filter list for websites in Hindi, Tamil and other Dravidian and Indic languages.","timeAdded":"2022-04-25T07:45:01+0000","homepage":"https://github.com/mediumkreation/IndianList","expires":864000,"displayNumber":2,"groupId":7,"subscriptionUrl":"https://easylist-downloads.adblockplus.org/indianlist.txt","trustLevel":"low","version":"2.0.71.78","timeUpdated":"2025-10-16T16:39:53+0000","deprecated":false,"languages":["hi"],"tags":[1,67,10],"downloadUrl":"https://filters.adtidy.org/extension/chromium-mv3/filters/253.txt"},{"filterId":254,"name":"Macedonian adBlock Filters","description":"Blocks ads and trackers on various Macedonian websites.","timeAdded":"2023-03-09T09:43:54+0000","homepage":"https://github.com/DeepSpaceHarbor/Macedonian-adBlock-Filters","expires":864000,"displayNumber":2,"groupId":7,"subscriptionUrl":"https://raw.githubusercontent.com/RandomAdversary/Macedonian-adBlock-Filters/master/Filters","trustLevel":"low","version":"2.0.0.12","timeUpdated":"2025-10-03T20:35:39+0000","deprecated":false,"languages":["mk"],"tags":[1,10,71],"downloadUrl":"https://filters.adtidy.org/extension/chromium-mv3/filters/254.txt"},{"filterId":255,"name":"Phishing URL Blocklist","description":"Phishing URL blocklist for uBlock Origin (uBO), AdGuard, Vivaldi, Pi-hole, Hosts file, Dnsmasq, BIND, Unbound, Snort and Suricata.","timeAdded":"2024-04-03T14:10:40+0000","homepage":"https://gitlab.com/malware-filter/phishing-filter","expires":864000,"displayNumber":1,"groupId":5,"subscriptionUrl":"https://malware-filter.gitlab.io/malware-filter/phishing-filter-ag.txt","trustLevel":"low","version":"2.0.10.81","timeUpdated":"2025-10-16T12:46:26+0000","deprecated":false,"languages":[],"tags":[4],"downloadUrl":"https://filters.adtidy.org/extension/chromium-mv3/filters/255.txt"},{"filterId":256,"name":"Scam Blocklist by DurableNapkin","description":"List for blocking untrustworthy websites.","timeAdded":"2024-04-03T14:10:40+0000","homepage":"https://github.com/durablenapkin/scamblocklist","expires":864000,"displayNumber":1,"groupId":5,"subscriptionUrl":"https://raw.githubusercontent.com/durablenapkin/scamblocklist/master/adguard.txt","trustLevel":"low","version":"2.0.5.58","timeUpdated":"2025-10-16T08:41:12+0000","deprecated":false,"languages":[],"tags":[4],"downloadUrl":"https://filters.adtidy.org/extension/chromium-mv3/filters/256.txt"},{"filterId":257,"name":"uBlock Origin – Badware risks","description":"Filter for risky sites, warning users of potential threats.","timeAdded":"2024-04-03T14:10:40+0000","homepage":"https://github.com/uBlockOrigin/uAssets/","expires":864000,"displayNumber":1,"groupId":5,"subscriptionUrl":"https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/badware.txt","trustLevel":"low","version":"2.0.9.42","timeUpdated":"2025-10-16T08:41:12+0000","deprecated":false,"languages":[],"tags":[4],"downloadUrl":"https://filters.adtidy.org/extension/chromium-mv3/filters/257.txt"}]},"version":"3.2.20251017060040","versionTimestampMs":1760680840000}}}]
+[
+	{
+		"id": 1,
+		"action": {
+			"type": "block"
+		},
+		"condition": {
+			"urlFilter": "dummy.rule.adguard.com",
+			"resourceTypes": [
+				"xmlhttprequest"
+			]
+		},
+		"metadata": {
+			"byteRangeMapsCollection": {},
+			"checksums": {
+				"ruleset_1": "7b7bd138013adf13c67864b5a0e2ba97",
+				"ruleset_10": "45fa716dbf8343edec1471920efbb03e",
+				"ruleset_103": "fe80d51836bb8d454c92b584561fd490",
+				"ruleset_105": "0e3379f272d7feaea87e0712e8879b92",
+				"ruleset_108": "fa058787ba6db076fa1d780cf2297ce4",
+				"ruleset_109": "eb53f1b84b541e76d21b01d3583da082",
+				"ruleset_11": "9e2dfdf51606cb4a10f70a4fc212f45a",
+				"ruleset_110": "1238b61b040c9ef648f66b8b50209516",
+				"ruleset_111": "8b7dcfcc33a0ce963c37ee0b5d8bafc4",
+				"ruleset_112": "6c487913d2581154302b0210d4b2cebe",
+				"ruleset_120": "67df8c6a445255d3e61a9b85f353ca4c",
+				"ruleset_13": "3e9a89e75e57bffbf586338945adb487",
+				"ruleset_16": "f5e99827e37748e1ff136fc1d6597462",
+				"ruleset_17": "8c7ed66275642e4d49f1053f4cb16b70",
+				"ruleset_18": "1419b5fd0527280c3152caedf48d1653",
+				"ruleset_19": "2a6d8a3d696579210af5aafe8c0cf91c",
+				"ruleset_2": "120a9a24b08de1e0903202f04d88ea98",
+				"ruleset_20": "f59d3f600c3cd7feed916989f51966fa",
+				"ruleset_202": "b6163be0f689250384120fe883d7e452",
+				"ruleset_203": "78df3fa0135b6b1648edc9379a3121f6",
+				"ruleset_208": "894ada0aeb657bda268033f8322a5af5",
+				"ruleset_21": "f91e54160a7c75e4abb867a131480995",
+				"ruleset_214": "de4a198359aaa40ee69ce9bbfa28aca0",
+				"ruleset_216": "fc98942a43cc401d8c32bf9faad44abd",
+				"ruleset_217": "1d1086a1460cadc3eb6af9310d09e1fb",
+				"ruleset_218": "447ae28f444c2c765f63c6df18b3f689",
+				"ruleset_22": "8ec61fe1ff7b4cce7d65704cc021e5b2",
+				"ruleset_224": "ffa6d9bafcf3fc7649ae7bf693c4d267",
+				"ruleset_227": "5eba08a037d74a4debdad958a60d8dae",
+				"ruleset_23": "ef743c9e5865247bc93f6205758b99ba",
+				"ruleset_233": "c4d95b08f47e0804fc0391e353560830",
+				"ruleset_235": "daf0ccbec21f0900b534be973230c44f",
+				"ruleset_238": "b25f27a4877c7fa0149af4b845e2b13b",
+				"ruleset_243": "fa5b41cabba20881e66039d0eb55aa46",
+				"ruleset_249": "fef1db337ec0ffc648dfc58d28565666",
+				"ruleset_252": "d376995107eb1c0b48a5877d94ae6465",
+				"ruleset_253": "7203196020ce2360a13f4983ff11040d",
+				"ruleset_254": "575a89b866036d8bcfc07bc1fdc083a3",
+				"ruleset_255": "8772ab680fd260039fe03a9f73f00a14",
+				"ruleset_256": "215fb0b3ee44fff84aeddffd2d69300e",
+				"ruleset_257": "a546a69801e9c5f7b43aa7c8c03e22d9",
+				"ruleset_259": "455bdf9019cb00fc4dbc02c371bff1de",
+				"ruleset_3": "a9c2c3efe10426aecfcc6c4e15374494",
+				"ruleset_4": "f6fd7e302c45400bbf7182c68381568b",
+				"ruleset_5": "d3e51e284ebc017b07b7c1d0d9487493",
+				"ruleset_6": "00f7e279a7f74c1429964f0ab2e47ab6",
+				"ruleset_7": "469d0fa5a83e7e1161c60a65189fdabb",
+				"ruleset_8": "f37ec31fdf5f8636a8e8e675548baeb1",
+				"ruleset_9": "36520da8eff954848f7f084d72c1f007"
+			},
+			"additionalProperties": {
+				"metadata": {
+					"groups": [
+						{
+							"groupName": "Ad blocking",
+							"groupDescription": "Blocks ads",
+							"displayNumber": 1,
+							"groupId": 1
+						},
+						{
+							"groupName": "Privacy",
+							"groupDescription": "Blocks trackers",
+							"displayNumber": 2,
+							"groupId": 2
+						},
+						{
+							"groupName": "Social widgets",
+							"groupDescription": "Blocks social media elements, such as Like and Share buttons",
+							"displayNumber": 3,
+							"groupId": 3
+						},
+						{
+							"groupName": "Pop-ups",
+							"groupDescription": "Blocks annoying web elements, such as cookie notices or in-page popups",
+							"displayNumber": 4,
+							"groupId": 4
+						},
+						{
+							"groupName": "Security",
+							"groupDescription": "Blocks requests to phishing and malicious websites",
+							"displayNumber": 5,
+							"groupId": 5
+						},
+						{
+							"groupName": "Other",
+							"groupDescription": "This group contains various filters that don't fit into other categories",
+							"displayNumber": 6,
+							"groupId": 6
+						},
+						{
+							"groupName": "Language-specific",
+							"groupDescription": "Blocks ads on websites in specified languages",
+							"displayNumber": 7,
+							"groupId": 7
+						}
+					],
+					"tags": [
+						{
+							"tagId": 1,
+							"keyword": "purpose:ads"
+						},
+						{
+							"tagId": 2,
+							"keyword": "purpose:privacy"
+						},
+						{
+							"tagId": 3,
+							"keyword": "purpose:social"
+						},
+						{
+							"tagId": 4,
+							"keyword": "purpose:security"
+						},
+						{
+							"tagId": 5,
+							"keyword": "purpose:annoyances"
+						},
+						{
+							"tagId": 6,
+							"keyword": "purpose:cookies"
+						},
+						{
+							"tagId": 7,
+							"keyword": "lang:en"
+						},
+						{
+							"tagId": 8,
+							"keyword": "lang:ru"
+						},
+						{
+							"tagId": 9,
+							"keyword": "reference:101"
+						},
+						{
+							"tagId": 10,
+							"keyword": "recommended"
+						},
+						{
+							"tagId": 11,
+							"keyword": "reference:2"
+						},
+						{
+							"tagId": 12,
+							"keyword": "lang:de"
+						},
+						{
+							"tagId": 13,
+							"keyword": "reference:107"
+						},
+						{
+							"tagId": 14,
+							"keyword": "lang:ja"
+						},
+						{
+							"tagId": 15,
+							"keyword": "lang:nl"
+						},
+						{
+							"tagId": 16,
+							"keyword": "reference:106"
+						},
+						{
+							"tagId": 17,
+							"keyword": "lang:es"
+						},
+						{
+							"tagId": 18,
+							"keyword": "lang:pt"
+						},
+						{
+							"tagId": 19,
+							"keyword": "platform:mobile"
+						},
+						{
+							"tagId": 20,
+							"keyword": "purpose:unbreak"
+						},
+						{
+							"tagId": 21,
+							"keyword": "platform:ios"
+						},
+						{
+							"tagId": 22,
+							"keyword": "platform:ext_safari"
+						},
+						{
+							"tagId": 23,
+							"keyword": "platform:ext_android_cb"
+						},
+						{
+							"tagId": 24,
+							"keyword": "lang:tr"
+						},
+						{
+							"tagId": 25,
+							"keyword": "reference:3"
+						},
+						{
+							"tagId": 26,
+							"keyword": "reference:11"
+						},
+						{
+							"tagId": 27,
+							"keyword": "lang:fr"
+						},
+						{
+							"tagId": 28,
+							"keyword": "reference:113"
+						},
+						{
+							"tagId": 29,
+							"keyword": "lang:id"
+						},
+						{
+							"tagId": 30,
+							"keyword": "lang:bg"
+						},
+						{
+							"tagId": 31,
+							"keyword": "lang:zh"
+						},
+						{
+							"tagId": 32,
+							"keyword": "lang:cs"
+						},
+						{
+							"tagId": 33,
+							"keyword": "lang:sk"
+						},
+						{
+							"tagId": 34,
+							"keyword": "lang:he"
+						},
+						{
+							"tagId": 35,
+							"keyword": "lang:it"
+						},
+						{
+							"tagId": 36,
+							"keyword": "lang:lv"
+						},
+						{
+							"tagId": 37,
+							"keyword": "lang:lt"
+						},
+						{
+							"tagId": 38,
+							"keyword": "lang:ar"
+						},
+						{
+							"tagId": 39,
+							"keyword": "lang:ro"
+						},
+						{
+							"tagId": 40,
+							"keyword": "lang:fi"
+						},
+						{
+							"tagId": 41,
+							"keyword": "lang:pl"
+						},
+						{
+							"tagId": 42,
+							"keyword": "lang:is"
+						},
+						{
+							"tagId": 43,
+							"keyword": "lang:no"
+						},
+						{
+							"tagId": 44,
+							"keyword": "lang:el"
+						},
+						{
+							"tagId": 45,
+							"keyword": "problematic"
+						},
+						{
+							"tagId": 46,
+							"keyword": "obsolete"
+						},
+						{
+							"tagId": 47,
+							"keyword": "lang:cz"
+						},
+						{
+							"tagId": 48,
+							"keyword": "lang:hu"
+						},
+						{
+							"tagId": 49,
+							"keyword": "lang:da"
+						},
+						{
+							"tagId": 50,
+							"keyword": "purpose:antiadblock"
+						},
+						{
+							"tagId": 51,
+							"keyword": "purpose:cookienotices"
+						},
+						{
+							"tagId": 52,
+							"keyword": "lang:vi"
+						},
+						{
+							"tagId": 53,
+							"keyword": "lang:et"
+						},
+						{
+							"tagId": 54,
+							"keyword": "lang:fa"
+						},
+						{
+							"tagId": 55,
+							"keyword": "lang:sv"
+						},
+						{
+							"tagId": 56,
+							"keyword": "lang:ko"
+						},
+						{
+							"tagId": 57,
+							"keyword": "reference:114"
+						},
+						{
+							"tagId": 58,
+							"keyword": "reference:118"
+						},
+						{
+							"tagId": 59,
+							"keyword": "reference:102"
+						},
+						{
+							"tagId": 60,
+							"keyword": "reference:13"
+						},
+						{
+							"tagId": 61,
+							"keyword": "reference:16"
+						},
+						{
+							"tagId": 62,
+							"keyword": "reference:237"
+						},
+						{
+							"tagId": 63,
+							"keyword": "lang:fo"
+						},
+						{
+							"tagId": 64,
+							"keyword": "lang:th"
+						},
+						{
+							"tagId": 65,
+							"keyword": "lang:sr"
+						},
+						{
+							"tagId": 66,
+							"keyword": "lang:hr"
+						},
+						{
+							"tagId": 67,
+							"keyword": "lang:hi"
+						},
+						{
+							"tagId": 68,
+							"keyword": "lang:uk"
+						},
+						{
+							"tagId": 69,
+							"keyword": "lang:tg"
+						},
+						{
+							"tagId": 70,
+							"keyword": "lang:ps"
+						},
+						{
+							"tagId": 71,
+							"keyword": "lang:mk"
+						}
+					],
+					"filters": [
+						{
+							"name": "Default filter",
+							"description": "This filter is required for effective ad blocking.",
+							"timeAdded": "2014-06-30T07:56:55+0000",
+							"homepage": "https://adguard.com/kb/general/ad-filtering/adguard-filters/",
+							"expires": 864000,
+							"displayNumber": 1,
+							"groupId": 1,
+							"subscriptionUrl": "https://filters.adtidy.org/extension/chromium-mv3/filters/2.txt",
+							"trustLevel": "full",
+							"version": "2.4.23.29",
+							"timeUpdated": "2025-11-06T13:15:57+0000",
+							"deprecated": false,
+							"languages": [],
+							"tags": [
+								10,
+								1,
+								9,
+								11
+							],
+							"downloadUrl": "https://filters.adtidy.org/extension/chromium-mv3/filters/2.txt",
+							"filterId": 2
+						},
+						{
+							"name": "Tracking Protection filter",
+							"description": "The most comprehensive list of various online counters and web analytics tools. Use this filter if you do not want your actions on the Internet to be tracked.",
+							"timeAdded": "2014-06-30T07:56:55+0000",
+							"homepage": "https://adguard.com/kb/general/ad-filtering/adguard-filters/",
+							"expires": 864000,
+							"displayNumber": 1,
+							"groupId": 2,
+							"subscriptionUrl": "https://filters.adtidy.org/extension/chromium-mv3/filters/3.txt",
+							"trustLevel": "full",
+							"version": "2.0.94.25",
+							"timeUpdated": "2025-11-06T13:16:05+0000",
+							"deprecated": false,
+							"languages": [],
+							"tags": [
+								2,
+								10
+							],
+							"downloadUrl": "https://filters.adtidy.org/extension/chromium-mv3/filters/3.txt",
+							"filterId": 3
+						},
+						{
+							"name": "Social Media filter",
+							"description": "Filter for social media widgets such as 'Like' and 'Share' buttons and more.",
+							"timeAdded": "2014-06-30T07:56:55+0000",
+							"homepage": "https://adguard.com/kb/general/ad-filtering/adguard-filters/",
+							"expires": 864000,
+							"displayNumber": 1,
+							"groupId": 3,
+							"subscriptionUrl": "https://filters.adtidy.org/extension/chromium-mv3/filters/4.txt",
+							"trustLevel": "full",
+							"version": "2.1.21.36",
+							"timeUpdated": "2025-11-06T13:16:07+0000",
+							"deprecated": false,
+							"languages": [],
+							"tags": [
+								3,
+								10
+							],
+							"downloadUrl": "https://filters.adtidy.org/extension/chromium-mv3/filters/4.txt",
+							"filterId": 4
+						},
+						{
+							"name": "Experimental filter",
+							"description": "Filter designed to test certain hazardous filtering rules before they are added to the basic filters.",
+							"timeAdded": "2014-06-30T07:56:55+0000",
+							"homepage": "https://adguard.com/kb/general/ad-filtering/adguard-filters/",
+							"expires": 864000,
+							"displayNumber": 4,
+							"groupId": 6,
+							"subscriptionUrl": "https://filters.adtidy.org/extension/chromium-mv3/filters/5.txt",
+							"trustLevel": "full",
+							"version": "2.0.1.85",
+							"timeUpdated": "2025-10-14T12:11:45+0000",
+							"deprecated": false,
+							"languages": [],
+							"tags": [
+								45
+							],
+							"downloadUrl": "https://filters.adtidy.org/extension/chromium-mv3/filters/5.txt",
+							"filterId": 5
+						},
+						{
+							"name": "German filter",
+							"description": "Filter list that specifically removes ads on websites in German language.",
+							"timeAdded": "2014-06-30T07:56:55+0000",
+							"homepage": "https://adguard.com/kb/general/ad-filtering/adguard-filters/",
+							"expires": 864000,
+							"displayNumber": 1,
+							"groupId": 7,
+							"subscriptionUrl": "https://filters.adtidy.org/extension/chromium-mv3/filters/6.txt",
+							"trustLevel": "full",
+							"version": "2.0.50.20",
+							"timeUpdated": "2025-11-06T05:08:01+0000",
+							"deprecated": false,
+							"languages": [
+								"de"
+							],
+							"tags": [
+								1,
+								10,
+								12,
+								13
+							],
+							"downloadUrl": "https://filters.adtidy.org/extension/chromium-mv3/filters/6.txt",
+							"filterId": 6
+						},
+						{
+							"name": "Japanese filter",
+							"description": "Filter that enables ad blocking on websites in Japanese language.",
+							"timeAdded": "2014-06-30T07:56:55+0000",
+							"homepage": "https://adguard.com/kb/general/ad-filtering/adguard-filters/",
+							"expires": 864000,
+							"displayNumber": 1,
+							"groupId": 7,
+							"subscriptionUrl": "https://filters.adtidy.org/extension/chromium-mv3/filters/7.txt",
+							"trustLevel": "full",
+							"version": "2.0.69.63",
+							"timeUpdated": "2025-11-06T13:16:12+0000",
+							"deprecated": false,
+							"languages": [
+								"ja"
+							],
+							"tags": [
+								1,
+								10,
+								14
+							],
+							"downloadUrl": "https://filters.adtidy.org/extension/chromium-mv3/filters/7.txt",
+							"filterId": 7
+						},
+						{
+							"name": "Dutch filter",
+							"description": "Filter list that specifically removes ads on websites in Dutch language.",
+							"timeAdded": "2014-06-30T07:56:55+0000",
+							"homepage": "https://adguard.com/kb/general/ad-filtering/adguard-filters/",
+							"expires": 864000,
+							"displayNumber": 1,
+							"groupId": 7,
+							"subscriptionUrl": "https://filters.adtidy.org/extension/chromium-mv3/filters/8.txt",
+							"trustLevel": "full",
+							"version": "2.0.8.76",
+							"timeUpdated": "2025-11-02T19:06:09+0000",
+							"deprecated": false,
+							"languages": [
+								"nl"
+							],
+							"tags": [
+								1,
+								10,
+								11,
+								15,
+								16
+							],
+							"downloadUrl": "https://filters.adtidy.org/extension/chromium-mv3/filters/8.txt",
+							"filterId": 8
+						},
+						{
+							"name": "Spanish/Portuguese filter",
+							"description": "Filter list that specifically removes ads on websites in Spanish, Portuguese, and Brazilian Portuguese languages.",
+							"timeAdded": "2014-06-30T07:56:55+0000",
+							"homepage": "https://adguard.com/kb/general/ad-filtering/adguard-filters/",
+							"expires": 864000,
+							"displayNumber": 1,
+							"groupId": 7,
+							"subscriptionUrl": "https://filters.adtidy.org/extension/chromium-mv3/filters/9.txt",
+							"trustLevel": "full",
+							"version": "2.0.32.28",
+							"timeUpdated": "2025-11-04T15:08:09+0000",
+							"deprecated": false,
+							"languages": [
+								"es",
+								"pt"
+							],
+							"tags": [
+								1,
+								10,
+								17,
+								18
+							],
+							"downloadUrl": "https://filters.adtidy.org/extension/chromium-mv3/filters/9.txt",
+							"filterId": 9
+						},
+						{
+							"name": "Filter unblocking search ads and self-promotion",
+							"description": "Filter that unblocks search ads in Google, DuckDuckGo, Bing, or Yahoo and self-promotion on websites.",
+							"timeAdded": "2014-06-30T07:56:55+0000",
+							"homepage": "https://adguard.com/kb/general/ad-filtering/adguard-filters/",
+							"expires": 864000,
+							"displayNumber": 1,
+							"groupId": 6,
+							"subscriptionUrl": "https://filters.adtidy.org/extension/chromium-mv3/filters/10.txt",
+							"trustLevel": "full",
+							"version": "2.0.3.76",
+							"timeUpdated": "2025-10-15T12:11:48+0000",
+							"deprecated": false,
+							"languages": [],
+							"tags": [],
+							"downloadUrl": "https://filters.adtidy.org/extension/chromium-mv3/filters/10.txt",
+							"filterId": 10
+						},
+						{
+							"name": "Mobile Ads filter",
+							"description": "Filter for all known mobile ad networks. Useful for mobile devices.",
+							"timeAdded": "2014-06-30T07:56:55+0000",
+							"homepage": "https://adguard.com/kb/general/ad-filtering/adguard-filters/",
+							"expires": 864000,
+							"displayNumber": 2,
+							"groupId": 1,
+							"subscriptionUrl": "https://filters.adtidy.org/extension/chromium-mv3/filters/11.txt",
+							"trustLevel": "full",
+							"version": "2.0.65.37",
+							"timeUpdated": "2025-11-06T08:09:20+0000",
+							"deprecated": false,
+							"languages": [],
+							"tags": [
+								1,
+								2,
+								10,
+								11,
+								19
+							],
+							"downloadUrl": "https://filters.adtidy.org/extension/chromium-mv3/filters/11.txt",
+							"filterId": 11
+						},
+						{
+							"name": "Turkish filter",
+							"description": "Filter list that specifically removes ads on websites in Turkish language.",
+							"timeAdded": "2014-06-30T07:56:55+0000",
+							"homepage": "https://adguard.com/kb/general/ad-filtering/adguard-filters/",
+							"expires": 864000,
+							"displayNumber": 1,
+							"groupId": 7,
+							"subscriptionUrl": "https://filters.adtidy.org/extension/chromium-mv3/filters/13.txt",
+							"trustLevel": "full",
+							"version": "2.0.60.29",
+							"timeUpdated": "2025-11-06T13:16:17+0000",
+							"deprecated": false,
+							"languages": [
+								"tr"
+							],
+							"tags": [
+								1,
+								10,
+								11,
+								24
+							],
+							"downloadUrl": "https://filters.adtidy.org/extension/chromium-mv3/filters/13.txt",
+							"filterId": 13
+						},
+						{
+							"name": "French filter",
+							"description": "Filter list that specifically removes ads on websites in French language.",
+							"timeAdded": "2014-06-30T07:56:55+0000",
+							"homepage": "https://adguard.com/kb/general/ad-filtering/adguard-filters/",
+							"expires": 864000,
+							"displayNumber": 1,
+							"groupId": 7,
+							"subscriptionUrl": "https://filters.adtidy.org/extension/chromium-mv3/filters/16.txt",
+							"trustLevel": "full",
+							"version": "2.0.54.85",
+							"timeUpdated": "2025-11-06T06:10:33+0000",
+							"deprecated": false,
+							"languages": [
+								"fr"
+							],
+							"tags": [
+								1,
+								10,
+								11,
+								27,
+								28
+							],
+							"downloadUrl": "https://filters.adtidy.org/extension/chromium-mv3/filters/16.txt",
+							"filterId": 16
+						},
+						{
+							"name": "URL Tracking filter",
+							"description": "Filter that enhances privacy by removing tracking parameters from URLs.",
+							"timeAdded": "2021-04-15T09:34:08+0000",
+							"homepage": "https://adguard.com/kb/general/ad-filtering/adguard-filters/",
+							"expires": 864000,
+							"displayNumber": 1,
+							"groupId": 2,
+							"subscriptionUrl": "https://filters.adtidy.org/extension/chromium-mv3/filters/17.txt",
+							"platformsExcluded": [
+								"ios",
+								"ext_safari",
+								"ext_android_cb"
+							],
+							"trustLevel": "full",
+							"version": "2.0.12.11",
+							"timeUpdated": "2025-11-04T16:08:48+0000",
+							"deprecated": false,
+							"languages": [],
+							"tags": [
+								2
+							],
+							"downloadUrl": "https://filters.adtidy.org/extension/chromium-mv3/filters/17.txt",
+							"filterId": 17
+						},
+						{
+							"name": "Hide cookie alerts",
+							"description": "Hide cookie consent dialogs on websites",
+							"timeAdded": "2022-07-07T07:53:39+0000",
+							"homepage": "https://adguard.com/kb/general/ad-filtering/adguard-filters/",
+							"expires": 864000,
+							"displayNumber": 2,
+							"groupId": 4,
+							"subscriptionUrl": "https://filters.adtidy.org/extension/chromium-mv3/filters/18.txt",
+							"trustLevel": "full",
+							"version": "2.0.73.92",
+							"timeUpdated": "2025-11-06T13:16:27+0000",
+							"deprecated": false,
+							"languages": [],
+							"tags": [
+								5,
+								10,
+								11
+							],
+							"downloadUrl": "https://filters.adtidy.org/extension/chromium-mv3/filters/18.txt",
+							"filterId": 18
+						},
+						{
+							"name": "Popups filter",
+							"description": "Blocks all kinds of pop-ups that are not necessary for websites' operation according to our Filter policy.",
+							"timeAdded": "2022-07-07T07:53:39+0000",
+							"homepage": "https://adguard.com/kb/general/ad-filtering/adguard-filters/",
+							"expires": 864000,
+							"displayNumber": 2,
+							"groupId": 4,
+							"subscriptionUrl": "https://filters.adtidy.org/extension/chromium-mv3/filters/19.txt",
+							"trustLevel": "full",
+							"version": "2.0.64.71",
+							"timeUpdated": "2025-11-06T13:16:28+0000",
+							"deprecated": false,
+							"languages": [],
+							"tags": [
+								5,
+								10,
+								11
+							],
+							"downloadUrl": "https://filters.adtidy.org/extension/chromium-mv3/filters/19.txt",
+							"filterId": 19
+						},
+						{
+							"name": "Mobile App Banners filter",
+							"description": "Blocks irritating banners that promote mobile apps of websites.",
+							"timeAdded": "2022-07-07T07:53:39+0000",
+							"homepage": "https://adguard.com/kb/general/ad-filtering/adguard-filters/",
+							"expires": 864000,
+							"displayNumber": 2,
+							"groupId": 4,
+							"subscriptionUrl": "https://filters.adtidy.org/extension/chromium-mv3/filters/20.txt",
+							"trustLevel": "full",
+							"version": "2.0.24.42",
+							"timeUpdated": "2025-11-06T10:09:03+0000",
+							"deprecated": false,
+							"languages": [],
+							"tags": [
+								5,
+								10,
+								11
+							],
+							"downloadUrl": "https://filters.adtidy.org/extension/chromium-mv3/filters/20.txt",
+							"filterId": 20
+						},
+						{
+							"name": "Other pop-ups filter",
+							"description": "Blocks irritating elements on web pages that do not fall under the popular categories of annoyances.",
+							"timeAdded": "2022-07-07T07:53:39+0000",
+							"homepage": "https://adguard.com/kb/general/ad-filtering/adguard-filters/",
+							"expires": 864000,
+							"displayNumber": 2,
+							"groupId": 4,
+							"subscriptionUrl": "https://filters.adtidy.org/extension/chromium-mv3/filters/21.txt",
+							"trustLevel": "full",
+							"version": "2.0.38.80",
+							"timeUpdated": "2025-11-06T13:16:29+0000",
+							"deprecated": false,
+							"languages": [],
+							"tags": [
+								5,
+								10,
+								11
+							],
+							"downloadUrl": "https://filters.adtidy.org/extension/chromium-mv3/filters/21.txt",
+							"filterId": 21
+						},
+						{
+							"name": "Widgets filter",
+							"description": "Blocks annoying third-party widgets: online assistants, live support chats, etc.",
+							"timeAdded": "2022-07-07T07:53:39+0000",
+							"homepage": "https://adguard.com/kb/general/ad-filtering/adguard-filters/",
+							"expires": 864000,
+							"displayNumber": 2,
+							"groupId": 4,
+							"subscriptionUrl": "https://filters.adtidy.org/extension/chromium-mv3/filters/22.txt",
+							"trustLevel": "full",
+							"version": "2.0.12.94",
+							"timeUpdated": "2025-11-05T14:07:56+0000",
+							"deprecated": false,
+							"languages": [],
+							"tags": [
+								5,
+								10,
+								11
+							],
+							"downloadUrl": "https://filters.adtidy.org/extension/chromium-mv3/filters/22.txt",
+							"filterId": 22
+						},
+						{
+							"name": "Ukrainian filter",
+							"description": "Filter that enables ad blocking on websites in Ukrainian language.",
+							"timeAdded": "2023-02-27T13:28:12+0000",
+							"homepage": "https://adguard.com/kb/general/ad-filtering/adguard-filters/",
+							"expires": 864000,
+							"displayNumber": 1,
+							"groupId": 7,
+							"subscriptionUrl": "https://filters.adtidy.org/extension/chromium-mv3/filters/23.txt",
+							"trustLevel": "full",
+							"version": "2.0.7.34",
+							"timeUpdated": "2025-11-03T15:08:24+0000",
+							"deprecated": false,
+							"languages": [
+								"uk"
+							],
+							"tags": [
+								1,
+								68,
+								10,
+								11
+							],
+							"downloadUrl": "https://filters.adtidy.org/extension/chromium-mv3/filters/23.txt",
+							"filterId": 23
+						},
+						{
+							"name": "Bulgarian filter",
+							"description": "Additional filter list for websites in Bulgarian.",
+							"timeAdded": "2014-06-30T07:56:55+0000",
+							"homepage": "https://github.com/RealEnder/adblockbg/",
+							"expires": 864000,
+							"displayNumber": 2,
+							"groupId": 7,
+							"subscriptionUrl": "https://stanev.org/abp/adblock_bg.txt",
+							"trustLevel": "high",
+							"version": "2.0.0.42",
+							"timeUpdated": "2025-08-07T08:42:07+0000",
+							"deprecated": false,
+							"languages": [
+								"bg"
+							],
+							"tags": [
+								1,
+								9,
+								10,
+								30
+							],
+							"downloadUrl": "https://filters.adtidy.org/extension/chromium-mv3/filters/103.txt",
+							"filterId": 103
+						},
+						{
+							"name": "Czech and Slovak filter",
+							"description": "Filter list for websites in Czech and Slovak.",
+							"timeAdded": "2014-06-30T07:56:55+0000",
+							"homepage": "https://github.com/tomasko126/easylistczechandslovak",
+							"expires": 864000,
+							"displayNumber": 2,
+							"groupId": 7,
+							"subscriptionUrl": "https://raw.githubusercontent.com/tomasko126/easylistczechandslovak/master/filters.txt",
+							"trustLevel": "high",
+							"version": "2.0.3.11",
+							"timeUpdated": "2025-07-31T12:45:18+0000",
+							"deprecated": false,
+							"languages": [
+								"cs",
+								"sk"
+							],
+							"tags": [
+								1,
+								9,
+								10,
+								32,
+								33
+							],
+							"downloadUrl": "https://filters.adtidy.org/extension/chromium-mv3/filters/105.txt",
+							"filterId": 105
+						},
+						{
+							"name": "Hebrew filter",
+							"description": "Filter list for websites in Hebrew.",
+							"timeAdded": "2014-06-30T07:56:55+0000",
+							"homepage": "https://github.com/easylist/EasyListHebrew",
+							"expires": 864000,
+							"displayNumber": 2,
+							"groupId": 7,
+							"subscriptionUrl": "https://raw.githubusercontent.com/easylist/EasyListHebrew/master/EasyListHebrew.txt",
+							"trustLevel": "high",
+							"version": "2.0.5.91",
+							"timeUpdated": "2025-11-05T20:36:39+0000",
+							"deprecated": false,
+							"languages": [
+								"he"
+							],
+							"tags": [
+								1,
+								9,
+								10,
+								34
+							],
+							"downloadUrl": "https://filters.adtidy.org/extension/chromium-mv3/filters/108.txt",
+							"filterId": 108
+						},
+						{
+							"name": "Italian filter",
+							"description": "Filter list for websites in Italian.",
+							"timeAdded": "2014-06-30T07:56:55+0000",
+							"homepage": "https://github.com/easylist/easylistitaly/",
+							"expires": 864000,
+							"displayNumber": 2,
+							"groupId": 7,
+							"subscriptionUrl": "https://easylist-downloads.adblockplus.org/easylistitaly.txt",
+							"trustLevel": "high",
+							"version": "2.1.79.62",
+							"timeUpdated": "2025-11-06T12:45:09+0000",
+							"deprecated": false,
+							"languages": [
+								"it"
+							],
+							"tags": [
+								1,
+								9,
+								10,
+								35
+							],
+							"downloadUrl": "https://filters.adtidy.org/extension/chromium-mv3/filters/109.txt",
+							"filterId": 109
+						},
+						{
+							"name": "Lithuanian filter",
+							"description": "Filter list for websites in Lithuanian.",
+							"timeAdded": "2014-06-30T07:56:55+0000",
+							"homepage": "https://github.com/EasyList-Lithuania/easylist_lithuania",
+							"expires": 864000,
+							"displayNumber": 2,
+							"groupId": 7,
+							"subscriptionUrl": "https://raw.githubusercontent.com/EasyList-Lithuania/easylist_lithuania/master/easylistlithuania.txt",
+							"trustLevel": "high",
+							"version": "2.0.2.92",
+							"timeUpdated": "2025-09-20T00:47:25+0000",
+							"deprecated": false,
+							"languages": [
+								"lt"
+							],
+							"tags": [
+								1,
+								9,
+								10,
+								37
+							],
+							"downloadUrl": "https://filters.adtidy.org/extension/chromium-mv3/filters/110.txt",
+							"filterId": 110
+						},
+						{
+							"name": "Latvian filter",
+							"description": "Filter list for websites in Latvian.",
+							"timeAdded": "2014-06-30T07:56:55+0000",
+							"homepage": "https://github.com/Latvian-List/adblock-latvian",
+							"expires": 864000,
+							"displayNumber": 2,
+							"groupId": 7,
+							"subscriptionUrl": "https://raw.githubusercontent.com/Latvian-List/adblock-latvian/master/lists/latvian-list.txt",
+							"trustLevel": "high",
+							"version": "2.0.0.66",
+							"timeUpdated": "2025-08-25T16:39:29+0000",
+							"deprecated": false,
+							"languages": [
+								"lv"
+							],
+							"tags": [
+								1,
+								9,
+								10,
+								36
+							],
+							"downloadUrl": "https://filters.adtidy.org/extension/chromium-mv3/filters/111.txt",
+							"filterId": 111
+						},
+						{
+							"name": "Arabic filter",
+							"description": "Filter list for websites in Arabic.",
+							"timeAdded": "2014-06-30T07:56:55+0000",
+							"homepage": "https://github.com/easylist/listear",
+							"expires": 864000,
+							"displayNumber": 2,
+							"groupId": 7,
+							"subscriptionUrl": "https://easylist-downloads.adblockplus.org/Liste_AR.txt",
+							"trustLevel": "high",
+							"version": "2.1.79.61",
+							"timeUpdated": "2025-11-06T12:45:09+0000",
+							"deprecated": false,
+							"languages": [
+								"ar"
+							],
+							"tags": [
+								1,
+								9,
+								10,
+								38
+							],
+							"downloadUrl": "https://filters.adtidy.org/extension/chromium-mv3/filters/112.txt",
+							"filterId": 112
+						},
+						{
+							"name": "Indonesian filter",
+							"description": "Filter list for websites in Indonesian.",
+							"timeAdded": "2019-10-18T07:59:54+0000",
+							"homepage": "https://github.com/realodix/AdBlockID",
+							"expires": 864000,
+							"displayNumber": 2,
+							"groupId": 7,
+							"subscriptionUrl": "https://raw.githubusercontent.com/realodix/AdBlockID/main/dist/adblockid.adfl.txt",
+							"trustLevel": "high",
+							"version": "2.0.26.40",
+							"timeUpdated": "2025-11-06T08:40:08+0000",
+							"deprecated": false,
+							"languages": [
+								"id"
+							],
+							"tags": [
+								1,
+								10,
+								29
+							],
+							"downloadUrl": "https://filters.adtidy.org/extension/chromium-mv3/filters/120.txt",
+							"filterId": 120
+						},
+						{
+							"name": "Thai filter",
+							"description": "Filter that blocks ads on Thai sites.",
+							"timeAdded": "2022-03-07T19:32:01+0000",
+							"homepage": "https://github.com/easylist-thailand/",
+							"expires": 864000,
+							"displayNumber": 2,
+							"groupId": 7,
+							"subscriptionUrl": "https://raw.githubusercontent.com/easylist-thailand/easylist-thailand/master/subscription/easylist-thailand.txt",
+							"trustLevel": "high",
+							"version": "2.0.0.26",
+							"timeUpdated": "2025-08-30T12:44:33+0000",
+							"deprecated": false,
+							"languages": [
+								"th"
+							],
+							"tags": [
+								1,
+								10,
+								64
+							],
+							"downloadUrl": "https://filters.adtidy.org/extension/chromium-mv3/filters/202.txt",
+							"filterId": 202
+						},
+						{
+							"name": "Hungarian filter",
+							"description": "Filter list that specifically removes ads on websites in the Hungarian language.",
+							"timeAdded": "2014-06-30T07:56:55+0000",
+							"homepage": "https://github.com/hufilter/hufilter/wiki",
+							"expires": 864000,
+							"displayNumber": 2,
+							"groupId": 7,
+							"subscriptionUrl": "https://cdn.jsdelivr.net/gh/hufilter/hufilter@gh-pages/hufilter-adguard.txt",
+							"trustLevel": "high",
+							"version": "2.0.4.34",
+							"timeUpdated": "2025-10-24T16:39:06+0000",
+							"deprecated": false,
+							"languages": [
+								"hu"
+							],
+							"tags": [
+								1,
+								2,
+								48,
+								10
+							],
+							"downloadUrl": "https://filters.adtidy.org/extension/chromium-mv3/filters/203.txt",
+							"filterId": 203
+						},
+						{
+							"name": "Malicious URL Blocklist",
+							"description": "Blocks domains that are known to be used to propagate malware and spyware.",
+							"timeAdded": "2020-08-10T18:34:22+0000",
+							"homepage": "https://gitlab.com/malware-filter/urlhaus-filter#malicious-url-blocklist",
+							"expires": 864000,
+							"displayNumber": 1,
+							"groupId": 5,
+							"subscriptionUrl": "https://urlhaus-filter.pages.dev/urlhaus-filter-ag-online.txt",
+							"trustLevel": "low",
+							"version": "2.1.4.61",
+							"timeUpdated": "2025-11-06T12:45:27+0000",
+							"deprecated": false,
+							"languages": [],
+							"tags": [
+								10,
+								4
+							],
+							"downloadUrl": "https://filters.adtidy.org/extension/chromium-mv3/filters/208.txt",
+							"filterId": 208
+						},
+						{
+							"name": "Vietnamese filter",
+							"description": "Vietnamese adblock filter list.",
+							"timeAdded": "2014-06-30T07:56:55+0000",
+							"homepage": "https://abpvn.com/",
+							"expires": 864000,
+							"displayNumber": 2,
+							"groupId": 7,
+							"subscriptionUrl": "https://raw.githubusercontent.com/abpvn/abpvn/master/filter/abpvn_adguard.txt",
+							"trustLevel": "high",
+							"version": "2.0.39.89",
+							"timeUpdated": "2025-11-06T12:45:28+0000",
+							"deprecated": false,
+							"languages": [
+								"vi"
+							],
+							"tags": [
+								1,
+								52,
+								10
+							],
+							"downloadUrl": "https://filters.adtidy.org/extension/chromium-mv3/filters/214.txt",
+							"filterId": 214
+						},
+						{
+							"name": "Polish filter",
+							"description": "Additional filter list for websites in Polish.",
+							"timeAdded": "2014-06-30T07:56:55+0000",
+							"homepage": "https://github.com/MajkiIT/polish-ads-filter#polish-filters-for-adblock-ublock-origin--adguard",
+							"expires": 864000,
+							"displayNumber": 2,
+							"groupId": 7,
+							"subscriptionUrl": "https://raw.githubusercontent.com/MajkiIT/polish-ads-filter/master/polish-adblock-filters/adblock.txt",
+							"trustLevel": "high",
+							"version": "2.0.16.2",
+							"timeUpdated": "2025-11-02T12:44:59+0000",
+							"deprecated": false,
+							"languages": [
+								"pl"
+							],
+							"tags": [
+								1,
+								10,
+								41
+							],
+							"downloadUrl": "https://filters.adtidy.org/extension/chromium-mv3/filters/216.txt",
+							"filterId": 216
+						},
+						{
+							"name": "Polish GDPR-Cookies Filters",
+							"description": "Polish filter list for cookies blocking.",
+							"timeAdded": "2014-06-30T07:56:55+0000",
+							"homepage": "https://github.com/MajkiIT/polish-ads-filter#polish-filters-for-adblock-ublock-origin--adguard",
+							"expires": 864000,
+							"displayNumber": 2,
+							"groupId": 7,
+							"subscriptionUrl": "https://raw.githubusercontent.com/MajkiIT/polish-ads-filter/master/cookies_filters/adblock_cookies.txt",
+							"trustLevel": "high",
+							"version": "2.0.5.37",
+							"timeUpdated": "2025-11-04T12:45:52+0000",
+							"deprecated": false,
+							"languages": [],
+							"tags": [
+								6,
+								41
+							],
+							"downloadUrl": "https://filters.adtidy.org/extension/chromium-mv3/filters/217.txt",
+							"filterId": 217
+						},
+						{
+							"name": "Estonian filter",
+							"description": "Filter for ad blocking on Estonian sites.",
+							"timeAdded": "2014-06-30T07:56:55+0000",
+							"homepage": "https://github.com/sander85/uBO-et",
+							"expires": 864000,
+							"displayNumber": 2,
+							"groupId": 7,
+							"subscriptionUrl": "https://ubo-et.lepik.io/list.txt",
+							"trustLevel": "low",
+							"version": "2.0.3.69",
+							"timeUpdated": "2025-10-22T20:36:13+0000",
+							"deprecated": false,
+							"languages": [
+								"et"
+							],
+							"tags": [
+								10,
+								1,
+								53
+							],
+							"downloadUrl": "https://filters.adtidy.org/extension/chromium-mv3/filters/218.txt",
+							"filterId": 218
+						},
+						{
+							"name": "Chinese filter",
+							"description": "Filter list that specifically removes ads on websites in Chinese language.",
+							"timeAdded": "2020-05-06T09:57:26+0000",
+							"homepage": "https://adguard.com/kb/general/ad-filtering/adguard-filters/",
+							"expires": 864000,
+							"displayNumber": 1,
+							"groupId": 7,
+							"subscriptionUrl": "https://filters.adtidy.org/extension/chromium-mv3/filters/224.txt",
+							"trustLevel": "full",
+							"version": "2.1.47.43",
+							"timeUpdated": "2025-11-06T13:16:32+0000",
+							"deprecated": false,
+							"languages": [
+								"zh"
+							],
+							"tags": [
+								1,
+								10,
+								11,
+								31
+							],
+							"downloadUrl": "https://filters.adtidy.org/extension/chromium-mv3/filters/224.txt",
+							"filterId": 224
+						},
+						{
+							"name": "Korean filter",
+							"description": "Filter list that specifically removes ads on websites in Korean language.",
+							"timeAdded": "2014-06-30T07:56:55+0000",
+							"homepage": "https://list-kr.github.io/",
+							"expires": 864000,
+							"displayNumber": 2,
+							"groupId": 7,
+							"subscriptionUrl": "https://raw.githubusercontent.com/List-KR/List-KR/refs/heads/master/filter-AdGuard-forward.txt",
+							"trustLevel": "high",
+							"version": "2.0.23.29",
+							"timeUpdated": "2025-11-06T12:45:33+0000",
+							"deprecated": false,
+							"languages": [
+								"ko"
+							],
+							"tags": [
+								1,
+								11,
+								56,
+								10
+							],
+							"downloadUrl": "https://filters.adtidy.org/extension/chromium-mv3/filters/227.txt",
+							"filterId": 227
+						},
+						{
+							"name": "Finnish filter",
+							"description": "Finnish ad blocking filter list.",
+							"timeAdded": "2014-06-30T07:56:55+0000",
+							"homepage": "https://github.com/finnish-easylist-addition/finnish-easylist-addition",
+							"expires": 864000,
+							"displayNumber": 2,
+							"groupId": 7,
+							"subscriptionUrl": "https://raw.githubusercontent.com/finnish-easylist-addition/finnish-easylist-addition/gh-pages/Finland_adb.txt",
+							"trustLevel": "high",
+							"version": "2.0.12.21",
+							"timeUpdated": "2025-11-05T20:37:12+0000",
+							"deprecated": false,
+							"languages": [
+								"fi"
+							],
+							"tags": [
+								1,
+								10,
+								40
+							],
+							"downloadUrl": "https://filters.adtidy.org/extension/chromium-mv3/filters/233.txt",
+							"filterId": 233
+						},
+						{
+							"name": "Persian filter",
+							"description": "Filter list for blocking ads and trackers on websites in Persian.",
+							"timeAdded": "2022-06-14T16:28:16+0000",
+							"homepage": "https://github.com/MasterKia/PersianBlocker/",
+							"expires": 864000,
+							"displayNumber": 2,
+							"groupId": 7,
+							"subscriptionUrl": "https://raw.githubusercontent.com/MasterKia/PersianBlocker/main/PersianBlocker.txt",
+							"trustLevel": "high",
+							"version": "2.0.6.2",
+							"timeUpdated": "2025-11-06T12:45:37+0000",
+							"deprecated": false,
+							"languages": [
+								"fa",
+								"tg",
+								"ps"
+							],
+							"tags": [
+								10,
+								1,
+								54,
+								69,
+								70
+							],
+							"downloadUrl": "https://filters.adtidy.org/extension/chromium-mv3/filters/235.txt",
+							"filterId": 235
+						},
+						{
+							"name": "Polish Anti Adblock Filters",
+							"description": "Official Polish filters against Adblock alerts.",
+							"timeAdded": "2014-06-30T07:56:55+0000",
+							"homepage": "https://github.com/olegwukr/polish-privacy-filters",
+							"expires": 864000,
+							"displayNumber": 2,
+							"groupId": 7,
+							"subscriptionUrl": "https://raw.githubusercontent.com/olegwukr/polish-privacy-filters/master/anti-adblock.txt",
+							"trustLevel": "high",
+							"version": "2.0.3.54",
+							"timeUpdated": "2023-12-06T17:02:32+0000",
+							"deprecated": false,
+							"languages": [
+								"pl"
+							],
+							"tags": [
+								10,
+								50,
+								41
+							],
+							"downloadUrl": "https://filters.adtidy.org/extension/chromium-mv3/filters/238.txt",
+							"filterId": 238
+						},
+						{
+							"name": "Swedish filter",
+							"description": "Filter that aims to remove regional Swedish ads, tracking, social media, annoyances, sponsored articles etc.",
+							"timeAdded": "2018-02-15T18:41:31+0000",
+							"homepage": "https://github.com/lassekongo83/Frellwit-s-filter-lists",
+							"expires": 864000,
+							"displayNumber": 2,
+							"groupId": 7,
+							"subscriptionUrl": "https://raw.githubusercontent.com/lassekongo83/Frellwits-filter-lists/master/Frellwits-Swedish-Filter.txt",
+							"trustLevel": "high",
+							"version": "2.0.23.20",
+							"timeUpdated": "2025-11-05T04:38:22+0000",
+							"deprecated": false,
+							"languages": [
+								"sv"
+							],
+							"tags": [
+								10,
+								1,
+								5,
+								2,
+								3,
+								55
+							],
+							"downloadUrl": "https://filters.adtidy.org/extension/chromium-mv3/filters/243.txt",
+							"filterId": 243
+						},
+						{
+							"name": "Nordic filters",
+							"description": "This list covers websites for Norway, Denmark, Iceland, Danish territories, and the Sami indigenous population.",
+							"timeAdded": "2018-03-30T12:15:13+0000",
+							"homepage": "https://github.com/DandelionSprout/adfilt",
+							"expires": 864000,
+							"displayNumber": 249,
+							"groupId": 7,
+							"subscriptionUrl": "https://raw.githubusercontent.com/DandelionSprout/adfilt/master/NorwegianExperimentalList%20alternate%20versions/NordicFiltersAdGuard.txt",
+							"trustLevel": "high",
+							"version": "2.0.8.35",
+							"timeUpdated": "2025-11-03T20:36:48+0000",
+							"deprecated": false,
+							"languages": [
+								"no",
+								"da",
+								"is",
+								"fo"
+							],
+							"tags": [
+								10,
+								1,
+								4,
+								43,
+								49,
+								42,
+								63
+							],
+							"downloadUrl": "https://filters.adtidy.org/extension/chromium-mv3/filters/249.txt",
+							"filterId": 249
+						},
+						{
+							"name": "Serbo-Croatian List",
+							"description": "A filter list for websites in Serbian, Montenegrin, Croatian, and Bosnian.",
+							"timeAdded": "2022-03-21T08:42:14+0000",
+							"homepage": "https://github.com/DandelionSprout/adfilt",
+							"expires": 864000,
+							"displayNumber": 2,
+							"groupId": 7,
+							"subscriptionUrl": "https://raw.githubusercontent.com/DandelionSprout/adfilt/master/SerboCroatianList.txt",
+							"trustLevel": "high",
+							"version": "2.0.0.68",
+							"timeUpdated": "2025-11-03T12:46:01+0000",
+							"deprecated": false,
+							"languages": [
+								"sr",
+								"hr"
+							],
+							"tags": [
+								1,
+								65,
+								66,
+								10
+							],
+							"downloadUrl": "https://filters.adtidy.org/extension/chromium-mv3/filters/252.txt",
+							"filterId": 252
+						},
+						{
+							"name": "Indian filter",
+							"description": "Additional filter list for websites in Hindi, Tamil and other Dravidian and Indic languages.",
+							"timeAdded": "2022-04-25T07:45:01+0000",
+							"homepage": "https://github.com/mediumkreation/IndianList",
+							"expires": 864000,
+							"displayNumber": 2,
+							"groupId": 7,
+							"subscriptionUrl": "https://easylist-downloads.adblockplus.org/indianlist.txt",
+							"trustLevel": "low",
+							"version": "2.0.72.93",
+							"timeUpdated": "2025-11-06T12:45:48+0000",
+							"deprecated": false,
+							"languages": [
+								"hi"
+							],
+							"tags": [
+								1,
+								67,
+								10
+							],
+							"downloadUrl": "https://filters.adtidy.org/extension/chromium-mv3/filters/253.txt",
+							"filterId": 253
+						},
+						{
+							"name": "Macedonian filters",
+							"description": "Blocks ads and trackers on various Macedonian websites.",
+							"timeAdded": "2023-03-09T09:43:54+0000",
+							"homepage": "https://github.com/DeepSpaceHarbor/Macedonian-adBlock-Filters",
+							"expires": 864000,
+							"displayNumber": 2,
+							"groupId": 7,
+							"subscriptionUrl": "https://raw.githubusercontent.com/RandomAdversary/Macedonian-adBlock-Filters/master/Filters",
+							"trustLevel": "low",
+							"version": "2.0.0.12",
+							"timeUpdated": "2025-10-03T20:35:39+0000",
+							"deprecated": false,
+							"languages": [
+								"mk"
+							],
+							"tags": [
+								1,
+								10,
+								71
+							],
+							"downloadUrl": "https://filters.adtidy.org/extension/chromium-mv3/filters/254.txt",
+							"filterId": 254
+						},
+						{
+							"name": "Phishing URL Blocklist",
+							"description": "Phishing URL blocklist for uBlock Origin (uBO), AdGuard, Vivaldi, Pi-hole, Hosts file, Dnsmasq, BIND, Unbound, Snort and Suricata.",
+							"timeAdded": "2024-04-03T14:10:40+0000",
+							"homepage": "https://gitlab.com/malware-filter/phishing-filter",
+							"expires": 864000,
+							"displayNumber": 1,
+							"groupId": 5,
+							"subscriptionUrl": "https://malware-filter.gitlab.io/malware-filter/phishing-filter-ag.txt",
+							"trustLevel": "low",
+							"version": "2.0.11.22",
+							"timeUpdated": "2025-11-06T12:45:51+0000",
+							"deprecated": false,
+							"languages": [],
+							"tags": [
+								4
+							],
+							"downloadUrl": "https://filters.adtidy.org/extension/chromium-mv3/filters/255.txt",
+							"filterId": 255
+						},
+						{
+							"name": "Scam Blocklist",
+							"description": "List for blocking untrustworthy websites.",
+							"timeAdded": "2024-04-03T14:10:40+0000",
+							"homepage": "https://github.com/durablenapkin/scamblocklist",
+							"expires": 864000,
+							"displayNumber": 1,
+							"groupId": 5,
+							"subscriptionUrl": "https://raw.githubusercontent.com/durablenapkin/scamblocklist/master/adguard.txt",
+							"trustLevel": "low",
+							"version": "2.0.5.78",
+							"timeUpdated": "2025-11-06T08:40:51+0000",
+							"deprecated": false,
+							"languages": [],
+							"tags": [
+								4
+							],
+							"downloadUrl": "https://filters.adtidy.org/extension/chromium-mv3/filters/256.txt",
+							"filterId": 256
+						},
+						{
+							"name": "Badware risks",
+							"description": "Filter for risky sites, warning users of potential threats.",
+							"timeAdded": "2024-04-03T14:10:40+0000",
+							"homepage": "https://github.com/uBlockOrigin/uAssets/",
+							"expires": 864000,
+							"displayNumber": 1,
+							"groupId": 5,
+							"subscriptionUrl": "https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/badware.txt",
+							"trustLevel": "low",
+							"version": "2.0.9.66",
+							"timeUpdated": "2025-11-02T04:37:39+0000",
+							"deprecated": false,
+							"languages": [],
+							"tags": [
+								4
+							],
+							"downloadUrl": "https://filters.adtidy.org/extension/chromium-mv3/filters/257.txt",
+							"filterId": 257
+						},
+						{
+							"name": "Anti-Malware List",
+							"description": "Blocks more malware than most other major anti-malware lists - domains and URL patterns used in malware redirection chains, IP addresses that are solely used by malware, PUP nags, and a few scammers.",
+							"timeAdded": "2025-10-22T09:44:25+0000",
+							"homepage": "https://github.com/DandelionSprout/adfilt",
+							"expires": 864000,
+							"displayNumber": 1,
+							"groupId": 5,
+							"subscriptionUrl": "https://raw.githubusercontent.com/DandelionSprout/adfilt/master/Alternate%20versions%20Anti-Malware%20List/AntiMalwareAdGuard.txt",
+							"trustLevel": "low",
+							"version": "2.0.0.3",
+							"timeUpdated": "2025-11-06T04:40:22+0000",
+							"deprecated": false,
+							"languages": [],
+							"tags": [
+								4
+							],
+							"downloadUrl": "https://filters.adtidy.org/extension/chromium-mv3/filters/259.txt",
+							"filterId": 259
+						}
+					]
+				},
+				"version": "3.2.20251106150044",
+				"versionTimestampMs": 1762441244000
+			}
+		}
+	}
+]

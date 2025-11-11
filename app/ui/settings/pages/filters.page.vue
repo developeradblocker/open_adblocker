@@ -1,10 +1,29 @@
 <template>
   <div class="filters-page filters">
     <BaseBox with-header>
-      <h3 class="filters__title">Filters</h3>
-      <p class="filters__description">Adjust your preferred settings for customised protection.</p>
-
-      <div class="filters__separator" />
+      <div class="filters__header">
+        <div class="filters__header-back" data-test="back" @click="onBack">
+          <BaseSvg src="../icons/back.svg" class="filters__header-back-icon"/>
+        </div>
+        <div class="filters__header-content">
+          <h3 class="filters__title">{{ activeGroup?.groupName }}</h3>
+          <p class="filters__description">{{ activeGroup?.groupDescription }}</p>
+        </div>
+      </div>
+      <div class="filters__separator"/>
+      <div class="filters__list">
+        <BaseListItem
+          data-test="filter"
+          class="filters__list-item"
+          v-for="filter of filters"
+          :key="filter.filterId"
+          :title="filter.name"
+          :description="filter.description"
+        >
+          <BaseToggle :is-active="isActiveFilter(filter.filterId)" large
+                      @toggle="toggleFilter(filter.filterId, $event)"/>
+        </BaseListItem>
+      </div>
     </BaseBox>
   </div>
 </template>
@@ -29,9 +48,90 @@
  */
 
 import BaseBox from '@/ui/settings/components/base/base-box.vue'
+import BaseToggle from '@/ui/shared/components/base-toggle.vue'
+import BaseListItem from '@/ui/settings/components/base/base-list-item.vue'
+import { useExternalFilters } from '@/modules/filters/external/filters.utils'
+import { FilterId } from '@/modules/filters/common/filters.types'
+import { useSettingsStore } from '@/ui/settings/store/settings.store'
+import { computed } from 'vue'
+import { useUserActivity } from '@/modules/user-activity/external/utils'
+import { useRouter } from 'vue-router'
+import { SETTINGS_ROUTE } from '@/ui/settings/router/route-names'
+import { ClickEventToAction, ElementsUI } from '@/modules/user-activity/common/user-activity.types'
+
+const { id } = defineProps<{ id: string }>()
+
+const $filters = useExternalFilters()
+const $store = useSettingsStore()
+const $activity = useUserActivity()
+const $router = useRouter()
+
+const groupId = Number(id)
+const isActiveFilter = (filterId: FilterId): boolean => $store.enabledFilters.includes(filterId)
+
+const activeGroup = computed(() => $store.groups.find((group) => group.groupId === groupId))
+const filters = computed(() => $store.filters.filter((filter) => filter.groupId === groupId))
+
+const toggleFilter = async (filterId: FilterId, state: boolean): Promise<void> => {
+  try {
+    $store.setShowLoader(true)
+    $activity.toggle(`filter_${filterId}`, state)
+    $store.toggleFilter(filterId)
+    await $filters.toggle(filterId)
+  } finally {
+    $store.setShowLoader(false)
+  }
+}
+
+const onBack = async (): Promise<void> => {
+  $activity.click(ElementsUI.filterBack, {
+    page: SETTINGS_ROUTE.FILTERS,
+    to: ClickEventToAction.filterBack
+  })
+  $router.back()
+}
 </script>
 
 <style scoped lang="less">
+.filters__header {
+  padding-right: 14px;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.filters__header-back {
+  width: 40px;
+  height: 40px;
+  background: var(--secondary-bg-color);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  &:hover {
+    background: #D9D8DE;
+  }
+}
+
+.filters__header-content {
+  flex: 1;
+}
+
+.filters__list-item {
+  margin-bottom: 28px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.filters__header-back-icon {
+  width: 16px;
+  height: 16px;
+}
+
 .filters__title {
   font-weight: 700;
   font-size: 22px;
@@ -45,7 +145,7 @@ import BaseBox from '@/ui/settings/components/base/base-box.vue'
   font-size: 14px;
   line-height: 18px;
   color: var(--primary-color);
-  margin-bottom: 24px;
+  margin: 0;
 }
 
 .filters__separator {

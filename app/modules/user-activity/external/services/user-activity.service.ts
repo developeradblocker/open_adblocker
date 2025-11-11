@@ -18,8 +18,8 @@
 import { inject, injectable } from 'inversify'
 import {
   BaseUserClickPayload,
-  ElementsUI,
-  PageUI,
+  ElementID,
+  PageUI, SettingsImportErrorActivity,
   UserActivityInterface,
   UserActivityType,
   UserClickActivity,
@@ -29,6 +29,7 @@ import { useExternalPort } from '@/modules/port/external/port.setup'
 import { ExternalPortChannel } from '@/modules/port/external/port.types'
 import { UserActivityMessage, UserActivityMessages } from '@/modules/user-activity/common/user-activity.messages'
 import { UserActivityIdentifiers } from '@/modules/user-activity/external/user-activity.types'
+import { ImportErrorReason } from '@/ui/settings/utils/import-data'
 
 @injectable()
 export class UserActivityService implements UserActivityInterface {
@@ -54,7 +55,7 @@ export class UserActivityService implements UserActivityInterface {
     await this.port.sendMessage(message)
   }
 
-  async click<T extends BaseUserClickPayload> (element: ElementsUI, payload?: T): Promise<void> {
+  async click<T extends BaseUserClickPayload> (element: ElementID, payload?: T): Promise<void> {
     const activity: UserClickActivity<T> = {
       sessionId: this.sessionId,
       type: UserActivityType.click,
@@ -69,12 +70,25 @@ export class UserActivityService implements UserActivityInterface {
     await this.port.sendMessage(message)
   }
 
-  async toggle (toggleId: ElementsUI, state: boolean): Promise<void> {
+  async toggle (toggleId: ElementID, state: boolean): Promise<void> {
     const activity: UserToggleActivity = {
       sessionId: this.sessionId,
       type: UserActivityType.toggle,
       element: toggleId,
       action: state
+    }
+    const message: UserActivityMessage = {
+      type: UserActivityMessages.activity,
+      payload: activity
+    }
+    await this.port.sendMessage(message)
+  }
+
+  async settingsImportError (reason: ImportErrorReason): Promise<void> {
+    const activity: SettingsImportErrorActivity = {
+      sessionId: this.sessionId,
+      type: UserActivityType.settingsImportError,
+      reason
     }
     const message: UserActivityMessage = {
       type: UserActivityMessages.activity,
