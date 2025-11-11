@@ -18,10 +18,9 @@
 import { ElementsUI, UserActivityType } from '@/modules/user-activity/common/user-activity.types'
 import { handleUserActivity } from '@/modules/user-activity/internal/user-activity.setup'
 import { POPUP_ROUTE } from '@/ui/toolbar-popup/router/route-names'
-import { rateUsCounter, rateUsService } from '@/modules/rate-us/internal/utils'
+import { rateUsService } from '@/modules/rate-us/internal/utils'
 import { UserActivityMessages } from '@/modules/user-activity/common/user-activity.messages'
 import {
-  handleOnHomePageVisited,
   handleOnRateUsPageVisited, userActivityHandler
 } from '@/modules/rate-us/internal/handlers/user-activity.handler'
 
@@ -29,22 +28,6 @@ jest.mock('@/modules/rate-us/internal/utils', () => ({
   rateUsCounter: jest.fn(),
   rateUsService: jest.fn()
 }))
-
-describe('handleOnHomePageVisited', () => {
-  beforeEach(() => {
-    jest.clearAllMocks()
-  })
-
-  it('should call rateUsCounter().increase', async () => {
-    const increaseMock = jest.fn().mockResolvedValue(undefined as never)
-    jest.mocked(rateUsCounter).mockReturnValue({ increase: increaseMock } as any)
-
-    await handleOnHomePageVisited()
-
-    expect(rateUsCounter).toHaveBeenCalledTimes(1)
-    expect(increaseMock).toHaveBeenCalledTimes(1)
-  })
-})
 
 describe('handleOnRateUsPageVisited', () => {
   beforeEach(() => {
@@ -77,22 +60,6 @@ describe('handleUserActivity', () => {
     }
     const result = await handleUserActivity({ message: msg } as any)
     expect(result).toBeUndefined()
-  })
-
-  it('should call handleOnHomePageVisited for HOME route', async () => {
-    const increaseMock = jest.fn().mockResolvedValue(undefined as never)
-    jest.mocked(rateUsCounter).mockReturnValue({ increase: increaseMock } as any)
-
-    // Create a message with visitPage type and HOME route
-    const msg = {
-      payload: {
-        type: UserActivityType.visitPage,
-        page: POPUP_ROUTE.HOME
-      }
-    }
-    await userActivityHandler({ message: msg } as any)
-
-    expect(increaseMock).toHaveBeenCalledTimes(1)
   })
 
   it('should call handleOnRateUsPageVisited for RATE_US route', async () => {

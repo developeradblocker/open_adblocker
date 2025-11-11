@@ -20,6 +20,7 @@ import { FiltersStorage } from '@/modules/filters/internal/storage/filters.stora
 import { dispatcher } from '@/utils/setup-worker'
 import { DispatcherInterface } from '@/utils/dispatcher/dispatcher.types'
 import { FiltersMessages } from '@/modules/filters/common/filters.messages'
+import { MetadataServiceInterface } from '@/modules/filters/internal/filters.types'
 
 jest.mock('@/utils/setup-worker', () => ({
   dispatcher: jest.fn()
@@ -34,12 +35,15 @@ describe('InternalFiltersService', () => {
     enable: jest.fn(),
     disable: jest.fn()
   } as unknown as FiltersStorage
+  const mockMetadata = {
+    getFilters: jest.fn(),
+  } as unknown as MetadataServiceInterface
 
   beforeEach(() => {
     jest.clearAllMocks()
 
     sendMessageMock = jest.fn()
-    service = new FiltersService(mockStorage)
+    service = new FiltersService(mockStorage, mockMetadata)
     jest.mocked(dispatcher).mockReturnValue(
       { sendMessage: sendMessageMock } as unknown as DispatcherInterface
     )

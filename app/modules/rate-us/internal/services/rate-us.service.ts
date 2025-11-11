@@ -16,21 +16,17 @@
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { type InternalRateUsServiceInterface, RateUsIdentifiers, RateUsDataInterface } from '../rate-us.types'
+import { type InternalRateUsServiceInterface, RateUsDataInterface } from '../rate-us.types'
 import { makeDataAccessor } from '@/utils/storage/make-data-accessor'
 import { inject } from '@/utils/di/di.types'
-import { CounterInterface } from '@/utils/counter/counter.types'
-import { RATE_US_HOME_PAGE_VISITED_THRESHOLD } from '@/modules/rate-us/constants'
 import { injectable } from 'inversify'
 import { ConfigServiceInterface, InternalConfigIdentifiers } from '@/modules/config/internal/config.types'
 import { dayToMs } from '@/helpers/time/day-to-ms'
+import { RATE_US_DAYS_AFTER_FIRST_USAGE_THRESHOLD } from '@/modules/rate-us/constants'
 
 @injectable()
 export class InternalRateUsService implements InternalRateUsServiceInterface {
   constructor (
-    @inject(RateUsIdentifiers._counter)
-    private readonly counter: CounterInterface,
-
     @inject(InternalConfigIdentifiers.service)
     private readonly config: ConfigServiceInterface
   ) {
@@ -44,7 +40,7 @@ export class InternalRateUsService implements InternalRateUsServiceInterface {
     const lastVisited = Date.now()
     if (await this.storage.exists()) {
       const data = await this.storage.read()
-      await this.storage.write({ lastVisited, rated: data.rated })
+      await this.storage.write({ lastVisited, rated: data?.rated ?? false })
       return
     }
 
@@ -53,11 +49,16 @@ export class InternalRateUsService implements InternalRateUsServiceInterface {
 
   async needVisit (): Promise<boolean> {
     if (!(await this.storage.exists())) {
-      const homePageVisitedTimes = await this.counter.get()
-      return homePageVisitedTimes >= RATE_US_HOME_PAGE_VISITED_THRESHOLD
+      await this.storage.write({ firstShowAfter: Date.now() + dayToMs(RATE_US_DAYS_AFTER_FIRST_USAGE_THRESHOLD) })
+      return false
     }
 
-    const { rated, lastVisited } = await this.storage.read()
+    const { rated, lastVisited, firstShowAfter } = await this.storage.read()
+
+    if (!lastVisited) {
+      return firstShowAfter < Date.now()
+    }
+
     if (rated) {
       return false
     }

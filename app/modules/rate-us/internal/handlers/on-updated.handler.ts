@@ -25,4 +25,8 @@ export const onUpdatedHandler = async (details: InstalledDetails): Promise<void>
     await rateUsService().visit()
     await rateUsService().rate()
   }
+
+  if (details.reason === 'update' && details.previousVersion < '1.4.0') {
+    await chrome.storage.local.remove('homePageVisitedCounter')
+  }
 }

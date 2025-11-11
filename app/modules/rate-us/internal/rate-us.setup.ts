@@ -18,8 +18,6 @@
 
 import { RateUsIdentifiers } from '@/modules/rate-us/internal/rate-us.types'
 import { InternalRateUsService } from '@/modules/rate-us/internal/services/rate-us.service'
-import { makeCounter } from '@/utils/counter/counter'
-import { HOME_PAGE_VISITED_COUNTER } from '@/modules/rate-us/constants'
 import { onUserActivity } from '@/modules/user-activity/internal/expose.messages'
 import { Injection } from '@/utils/inject/inject.types'
 import { inject } from '@/utils/inject/inject'
@@ -28,15 +26,6 @@ import { onUpdatedHandler } from '@/modules/rate-us/internal/handlers/on-updated
 import { onConfigReady } from '@/modules/config/internal/expose.messages'
 
 const injections: Injection[] = [
-  {
-    key: RateUsIdentifiers._counter,
-    use: makeCounter(
-      HOME_PAGE_VISITED_COUNTER,
-      'local',
-      0
-    ),
-    value: true
-  },
   {
     key: RateUsIdentifiers.rateUsService,
     use: InternalRateUsService
