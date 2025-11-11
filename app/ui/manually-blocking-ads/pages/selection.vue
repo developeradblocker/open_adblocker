@@ -14,7 +14,12 @@
             <p class="slider__title">
               Adjust the slider so the selection matches your expectations
             </p>
-            <slider class="slider__control" :max-value="sliderParams.max" :min-value="sliderParams.min" v-model="sliderValue"/>
+            <slider class="slider__control"
+                    :max-value="sliderParams.max"
+                    :min-value="sliderParams.min"
+                    v-model="sliderValue"
+                    @update:model-value="onSliderChange"
+            />
           </div>
           <div class="control__options">
             <base-checkbox label="Apply to all websites" v-model="applyToAll"/>
@@ -61,6 +66,7 @@ import { useUIManuallyBlockingAds } from '@/modules/manually-blocking-ads/ui/man
 
 const $router = useRouter()
 const $route = useRoute()
+const $manuallyBlockingAds = useUIManuallyBlockingAds()
 
 const isPreviewMode = ref(false)
 const applyToAll = ref(false)
@@ -70,6 +76,7 @@ const sliderParams = ref({
   min: 0,
   max: 0
 })
+
 const pageTitle = computed<string>(() => {
   return isPreviewMode.value ? 'Preview removal' : 'Remove element'
 })
@@ -79,16 +86,27 @@ const previewBtnTitle = computed<string>(() => {
 
 const togglePreview = () => {
   isPreviewMode.value = !isPreviewMode.value
+  if (isPreviewMode.value) {
+    $manuallyBlockingAds.enterPreview()
+  } else {
+    $manuallyBlockingAds.exitPreview()
+  }
 }
 const onReselect = () => {
+  $manuallyBlockingAds.startSelecting()
   $router.push({ name: Route.main })
 }
 const onBlock = () => {
+  $manuallyBlockingAds.blockElement(applyToAll.value, blockSimilar.value)
   $router.push({ name: Route.main })
 }
 const onClose = () => {
-  useUIManuallyBlockingAds().stop()
+  $manuallyBlockingAds.close()
 }
+const onSliderChange = () => {
+  $manuallyBlockingAds.changeElement(sliderValue.value)
+}
+
 onMounted(() => {
   sliderValue.value = parseInt($route.query.elementIndex as string)
   sliderParams.value = {

@@ -15,25 +15,13 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-import { createApp } from 'vue'
-import App from './app.vue'
-import router from './router'
-import InlineSvg from 'vue-inline-svg'
-import './style.less'
-import { dispatcher, setupWorker } from '@/utils/setup-worker'
-import { setupContentBroadcast } from '@/modules/broadcast/content/broadcast.setup'
-import { setupUIManuallyBlockingAds } from '@/modules/manually-blocking-ads/ui/manually-blocking-ads.setup'
+import { createRouter, createWebHashHistory, RouterOptions } from 'vue-router'
+import { routes } from './routes'
 
-setupWorker('ManuallyBlockingAds')
-setupContentBroadcast()
-setupUIManuallyBlockingAds()
+const routerOpts: RouterOptions = {
+  history: createWebHashHistory(),
+  routes
+}
+const router = createRouter(routerOpts)
 
-void (async (): Promise<void> => {
-  const app = createApp(App)
-
-  app.use(router)
-  app.component('BaseSvg', InlineSvg)
-
-  await dispatcher().work()
-  app.mount('#manually-blocking-ads')
-})()
+export default router

@@ -15,33 +15,34 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-import { injectable } from '@/utils/di/di.types'
 import { AppMessageListener, Box } from '@/utils/dispatcher/dispatcher.types'
 import {
-  ManuallyBlockingAdsElementSelectedMessage,
+  ManuallyBlockingAdsBlockElementMessage,
   ManuallyBlockingAdsMessages
 } from '@/modules/manually-blocking-ads/common/manually-blocking-ads.messages'
-import router from '@/ui/manually-blocking-ads/router'
-import { Route } from '@/ui/manually-blocking-ads/router/route-names'
+import { inject, injectable } from '@/utils/di/di.types'
+import {
+  ContentManuallyBlockingAdsIdentifiers
+} from '@/modules/manually-blocking-ads/content/manually-blocking-ads.types'
+import { SelectorService } from '@/modules/manually-blocking-ads/content/services/selector.service'
 
 @injectable()
-export class ElementSelectedListener implements AppMessageListener<ManuallyBlockingAdsElementSelectedMessage> {
+export class BlockElementListener implements AppMessageListener<ManuallyBlockingAdsBlockElementMessage> {
+  constructor (
+    @inject(ContentManuallyBlockingAdsIdentifiers.service)
+    private readonly selector: SelectorService
+  ) {}
 
-  on(): ManuallyBlockingAdsMessages.elementSelected {
-    return ManuallyBlockingAdsMessages.elementSelected
+  on (): ManuallyBlockingAdsMessages.blockElement {
+    return ManuallyBlockingAdsMessages.blockElement
   }
 
   main (): false {
     return false
   }
 
-  async handle ({ message }: Box<ManuallyBlockingAdsElementSelectedMessage>): Promise<void> {
-    await router.push({
-      name: Route.selection,
-      query: {
-        elementIndex: message.payload.elementIndex,
-        elementsInTraversedTree: message.payload.elementsInTraversedTree
-      }
-    })
+  async handle ({ message }: Box<ManuallyBlockingAdsBlockElementMessage>): Promise<void> {
+    const { allWebsites, blockSimilar } = message.payload
+    this.selector.blockElement(allWebsites, blockSimilar)
   }
 }

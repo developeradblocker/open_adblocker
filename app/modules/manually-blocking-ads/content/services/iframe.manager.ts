@@ -61,11 +61,4 @@ export class IframeManager {
     this.iframe.remove()
     this.iframe = undefined
   }
-
-  async addRule (ruleText: string): Promise<void> {
-  }
-
-  async getAppliedRules (): Promise<unknown> {
-    return false
-  }
 }

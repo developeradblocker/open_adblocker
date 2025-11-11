@@ -72,16 +72,7 @@ import BaseButton from '@/ui/shared/components/button/base-button.vue'
 import { BaseButtonType } from '@/ui/shared/components/button/base-button.types'
 import { useUIManuallyBlockingAds } from '@/modules/manually-blocking-ads/ui/manually-blocking-ads.setup'
 
-const blockedElements: unknown[] = [
-  {
-    rule: 'rule1',
-    visible: true
-  },
-  {
-    rule: 'rule2',
-    visible: false
-  }
-]
+const blockedElements: unknown[] = []
 const isHidden = (element: any): boolean => !element.visible
 const onClose = () => {
   useUIManuallyBlockingAds().stop()

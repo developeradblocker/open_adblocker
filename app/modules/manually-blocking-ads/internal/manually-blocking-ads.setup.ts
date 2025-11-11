@@ -20,18 +20,27 @@ import {
   ManuallyBlockingAdsService
 } from '@/modules/manually-blocking-ads/internal/services/manually-blocking-ads.service'
 import {
-  InternalManuallyBlockingAdsIdentifiers
+  InternalManuallyBlockingAdsIdentifiers, InternalManuallyBlockingAdsServiceInterface
 } from '@/modules/manually-blocking-ads/internal/manually-blocking-ads.types'
-import { dispatcher } from '@/utils/setup-worker'
+import { di, dispatcher } from '@/utils/setup-worker'
 import { StartManualAdBlockingListener } from '@/modules/manually-blocking-ads/internal/listeners/start.listener'
+import { UserRulesStorage } from '@/modules/manually-blocking-ads/internal/storage/user-rules.storage'
+import { AddRuleListener } from '@/modules/manually-blocking-ads/internal/listeners/add-rule.listener'
 
 export const setupInternalManuallyBlockingAds = (): void => {
   inject([
     {
       key: InternalManuallyBlockingAdsIdentifiers.service,
       use: ManuallyBlockingAdsService
+    },
+    {
+      key: InternalManuallyBlockingAdsIdentifiers._storage,
+      use: UserRulesStorage
     }
   ])
 
   dispatcher().onWithClass(StartManualAdBlockingListener)
+  dispatcher().onWithClass(AddRuleListener)
 }
+
+export const useInternalManuallyBlockingAds = (): InternalManuallyBlockingAdsServiceInterface => di.get(InternalManuallyBlockingAdsIdentifiers.service)
