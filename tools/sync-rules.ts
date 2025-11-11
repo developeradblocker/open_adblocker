@@ -16,12 +16,15 @@
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
 import { AssetsLoader } from '@adguard/dnr-rulesets'
+import fs from 'fs/promises'
 import { extractPreprocessedRawFilterList, readMetadataRuleSet } from './filter-extractor'
 import { CosmeticRuleType, FilterListParser, RuleCategory } from '@adguard/agtree'
 import { defaultParserOptions } from '@adguard/agtree/parser'
 import { CosmeticRuleBodyGenerator } from '@adguard/agtree/generator'
 import { updateLocalScriptRulesForChromiumMv3 } from './update-local-script-rules'
 import { findDangerousRules } from './dangerous-rules'
+import { prepareMetadata } from './prepare-metadata'
+import { SKIPPED_FILTERS } from '../constants'
 
 const FILTERS_DIR = 'app/filters'
 
@@ -32,14 +35,31 @@ const downloadAssets = async (): Promise<void> => {
   console.log('Assets are downloaded')
 }
 
-export const updateResources = async (): Promise<void> => {
+const modifyAssets = async (): Promise<void> => {
+  console.log('Modifying assets...')
+  const skippedFolders = SKIPPED_FILTERS.map((id) => `${FILTERS_DIR}/declarative/${id}`)
+  skippedFolders.push(`${FILTERS_DIR}/filters_i18n.json`)
+  for (const folder of skippedFolders) {
+    try {
+      await fs.rm(folder, { force: true, recursive: true })
+      console.log(`✅ Removed: ${folder}`)
+    } catch (err) {
+      console.error(`❌ Error removing ${folder}:`, err)
+    }
+  }
+}
+const updateResources = async (): Promise<void> => {
   console.log('Updating local script rules...')
   const folder = `${FILTERS_DIR}/declarative/`
   const metadataRuleSet = await readMetadataRuleSet(folder)
+  await prepareMetadata(metadataRuleSet)
   const ruleSetIds = metadataRuleSet.getRuleSetIds()
   const jsRules: Set<string> = new Set()
 
   for (const ruleSetId of ruleSetIds) {
+    if (SKIPPED_FILTERS.includes(ruleSetId)) {
+      continue
+    }
     const rawFilterList = await extractPreprocessedRawFilterList(ruleSetId, folder)
     const filterListNode = FilterListParser.parse(rawFilterList, {
       ...defaultParserOptions,
@@ -65,6 +85,7 @@ export const updateResources = async (): Promise<void> => {
 
 const syncRules = async (): Promise<void> => {
   await downloadAssets()
+  await modifyAssets()
   await updateResources()
 
   if (process.env.OPENAI_API_KEY) {

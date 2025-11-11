@@ -16,7 +16,10 @@
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
 import { di } from '@/utils/setup-worker'
-import { FiltersServiceInterface, InternalFiltersIdentifiers } from '@/modules/filters/internal/filters.types'
+import {
+  FiltersServiceInterface,
+  InternalFiltersIdentifiers
+} from '@/modules/filters/internal/filters.types'
 
 export const useInternalFilters = (): FiltersServiceInterface => {
   return di.get<FiltersServiceInterface>(InternalFiltersIdentifiers.filters)

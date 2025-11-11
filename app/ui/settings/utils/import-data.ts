@@ -32,6 +32,7 @@ export const importData = async (file: File, ext: ExportFormat): Promise<string>
   return new Promise((resolve, reject) => {
     if (!file.name.endsWith(ext)) {
       reject(ImportErrorReason.invalidFormat)
+      return
     }
     const reader = new FileReader()
     reader.readAsText(file, 'UTF-8')

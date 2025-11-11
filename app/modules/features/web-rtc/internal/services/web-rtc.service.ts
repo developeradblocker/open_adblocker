@@ -24,27 +24,32 @@ import { dispatcher } from '@/utils/setup-worker'
 
 @injectable()
 export class WebRTCService implements WebRTCInterface {
-  async setup (state: boolean): Promise<void> {
+  async setup (state: boolean): Promise<boolean> {
     try {
       if (state) {
         await chrome.privacy.network.webRTCIPHandlingPolicy.set({ value: chrome.privacy.IPHandlingPolicy.DISABLE_NON_PROXIED_UDP })
       } else {
         await chrome.privacy.network.webRTCIPHandlingPolicy.set({ value: chrome.privacy.IPHandlingPolicy.DEFAULT })
       }
+
+      return true
     } catch (error) {
       logger.warn('WebRTCLeakPrevention: An error has occurred during setting the policy', error)
+      return false
     }
   }
 
   async toggle (state: boolean): Promise<void> {
-    await this.setup(state)
-    const message: WebRTCStateChangedMessage = {
-      type: WebRTCMessages.stateChanged,
-      payload: {
-        state
+    const wasSetup = await this.setup(state)
+    if (wasSetup) {
+      const message: WebRTCStateChangedMessage = {
+        type: WebRTCMessages.stateChanged,
+        payload: {
+          state
+        }
       }
+      await dispatcher().sendMessage(message)
     }
-    await dispatcher().sendMessage(message)
   }
 
   async getState (): Promise<boolean> {

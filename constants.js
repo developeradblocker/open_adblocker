@@ -29,6 +29,7 @@ export const CUSTOM_FILTERS_START_ID = 1000
 export const USER_FILTER_ID = 0
 export const ALLOWLIST_FILTER_ID = 100
 
+export const SETTINGS_PATH = '/settings/index.html'
 export const RULESET_NAME_PREFIX = 'ruleset_'
 export const METADATA_RULESET = `${RULESET_NAME_PREFIX}${USER_FILTER_ID}`
 export const METADATA_PATH = `filters/declarative/${METADATA_RULESET}/${METADATA_RULESET}.json`
@@ -41,4 +42,8 @@ export const METADATA_PATH = `filters/declarative/${METADATA_RULESET}/${METADATA
 export const DEFAULT_ENABLED_FILTER_IDS = [
   AD_BLOCKER_ID,
   SEARCH_ADS_ID
+]
+
+export const SKIPPED_FILTERS = [
+  `${RULESET_NAME_PREFIX}1`
 ]

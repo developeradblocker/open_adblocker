@@ -7,8 +7,7 @@
             v-for="link of NAV_LINKS"
             :key="link.route"
             class="app__nav-link"
-            exact-active-class="app__nav-link--active"
-            exact-path
+            :class="{ 'app__nav-link--active': isActive(link.route) }"
             :to="{ name: link.route }"
           >
             {{ link.text }}
@@ -16,9 +15,11 @@
         </div>
       </div>
       <div class="app__view">
-        <router-view/>
+        <router-view />
       </div>
     </div>
+    <Loader v-if="$store.showLoader" text="Applying changes" />
+    <BaseSnackbar :value="$store.snackbar" @close="$store.setSnackbar(null)"/>
   </div>
 </template>
 <script lang="ts" setup>
@@ -40,6 +41,13 @@
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
 import { SETTINGS_ROUTE } from '@/ui/settings/router/route-names'
+import { useRoute } from 'vue-router'
+import { useExternalPort } from '@/modules/port/external/port.setup'
+import { useExternalSettings } from '@/modules/settings/external/settings.utils'
+import { useSettingsStore } from '@/ui/settings/store/settings.store'
+import { onMounted } from 'vue'
+import Loader from '@/ui/settings/components/loader.vue'
+import BaseSnackbar from '@/ui/shared/components/snackbar/base-snackbar.vue'
 
 interface MenuNavLink {
   route: SETTINGS_ROUTE
@@ -52,10 +60,25 @@ const NAV_LINKS: MenuNavLink[] = [
     text: 'General'
   },
   {
-    route: SETTINGS_ROUTE.FILTERS,
+    route: SETTINGS_ROUTE.GROUPS,
     text: 'Filters'
   }
 ]
+
+const $route = useRoute()
+const isActive = (route: SETTINGS_ROUTE): boolean => {
+  return $route.name === route || $route.path.includes(route.toLowerCase())
+}
+
+const $settings = useExternalSettings()
+const $port = useExternalPort()
+const $store = useSettingsStore()
+
+onMounted(async () => {
+  await $port.establish()
+  const settings = await $settings.get()
+  $store.setSettingsInfo(settings)
+})
 </script>
 <style lang="less" scoped>
 .app {

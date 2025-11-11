@@ -33,6 +33,9 @@ describe('Header.vue', () => {
 
   const clickMock = jest.fn()
   const createMock = jest.fn()
+  const queryMock = jest.fn()
+  const updateMock = jest.fn()
+  const getURLMock = jest.fn().mockImplementation((key: string) => `MOCKED__${key}`)
 
   const doMount = (): void => {
     if (wrapper?.exists()) {
@@ -47,19 +50,26 @@ describe('Header.vue', () => {
       },
       props: {
         withBorder: true,
-        title
+        title,
+        withSettings: true
       }
     })
   }
 
   beforeEach(() => {
     global.chrome = {
+      runtime: {
+        getURL: getURLMock
+      },
       tabs: {
-        create: createMock
+        create: createMock,
+        query: queryMock,
+        update: updateMock
       }
     } as any
     jest.mocked(useUserActivity).mockImplementation(() => ({ click: clickMock }) as any)
     jest.mocked(useRoute).mockImplementation(() => ({ name: POPUP_ROUTE.RATE_US }) as any)
+    jest.mocked(queryMock).mockResolvedValue([{ id: 1 }])
     doMount()
   })
 
@@ -68,6 +78,12 @@ describe('Header.vue', () => {
       .toBeTruthy()
     expect(wrapper.text()).toContain(title)
     expect(wrapper.classes()).toContain('header--with-border')
+  })
+
+  it('should handle settings click', async () => {
+    await wrapper.get('[data-test="settings"]').trigger('click')
+    expect(updateMock).toHaveBeenCalledTimes(1)
+    expect(updateMock).toHaveBeenCalledWith(1, { active: true })
   })
 
   it('should handle logo click', async () => {
