@@ -18,26 +18,28 @@
 import { setupInternalSettings } from '@/modules/settings/internal/settings.setup'
 import { inject } from '@/utils/inject/inject'
 import { dispatcher } from '@/utils/setup-worker'
-import { onAdGuardReady } from '@/modules/aguard/internal/expose.messages'
 import { ExportSettingsListener } from '@/modules/settings/internal/listeners/export-settings.listener'
 import { ImportSettingsListener } from '@/modules/settings/internal/listeners/import-settings.listener'
 import { InternalSettingsIdentifiers } from '@/modules/settings/internal/settings.types'
 import { SettingsService } from '@/modules/settings/internal/service/settings.service'
-import { Box } from '@/utils/dispatcher/dispatcher.types'
-import { AdGuardOnReadyMessage } from '@/modules/aguard/common/adguard.messages'
+import { MetadataService } from '@/modules/settings/internal/service/metadata.service'
+import { MetadataStorage } from '@/modules/settings/internal/storage/metadata.storage'
+import { GetSettingsListener } from '@/modules/settings/internal/listeners/get-settings.listener'
+import { FiltersStateChangedListener } from '@/modules/settings/internal/listeners/state-changed/filters.listener'
+import { WebRTCStateChangedListener } from '@/modules/settings/internal/listeners/state-changed/web-rtc.listener'
+import { WhitelistStateChangedListener } from '@/modules/settings/internal/listeners/state-changed/whitelist.listener'
 
 jest.mock('@/utils/inject/inject')
 jest.mock('@/utils/setup-worker', () => ({
   dispatcher: jest.fn()
 }))
-jest.mock('@/modules/aguard/internal/expose.messages')
 jest.mock('@/modules/aguard/internal/adguard.setup', () => ({}))
 jest.mock('@/modules/settings/internal/listeners/export-settings.listener')
 jest.mock('@/modules/settings/internal/listeners/import-settings.listener')
 
 const mockedInject = jest.mocked(inject)
 const mockedDispatcher = jest.mocked(dispatcher)
-const mockedOnAdGuardReady = jest.mocked(onAdGuardReady)
+const addListenerMock = jest.fn()
 
 describe('settings.setup', () => {
   let mockDispatcherInstance: {
@@ -46,6 +48,13 @@ describe('settings.setup', () => {
 
   beforeEach(() => {
     jest.clearAllMocks()
+    global.chrome = {
+      runtime: {
+        onInstalled: {
+          addListener: addListenerMock
+        }
+      }
+    } as any
     mockDispatcherInstance = {
       onWithClass: jest.fn()
     }
@@ -53,35 +62,34 @@ describe('settings.setup', () => {
   })
 
   describe('setupInternalSettings', () => {
-    it('should register onAdGuardReady callback', () => {
-      setupInternalSettings()
-
-      expect(mockedOnAdGuardReady).toHaveBeenCalledTimes(1)
-      expect(mockedOnAdGuardReady).toHaveBeenCalledWith(expect.any(Function))
-    })
-  })
-
-  describe('handleOnAdGuardReady', () => {
     it('should inject dependencies and register listeners', async () => {
       setupInternalSettings()
-
-      const handleOnAdGuardReady = mockedOnAdGuardReady.mock.calls[0][0]
-
-      await handleOnAdGuardReady({} as unknown as Box<AdGuardOnReadyMessage>)
 
       expect(mockedInject).toHaveBeenCalledTimes(1)
       expect(mockedInject).toHaveBeenCalledWith([
         {
           key: InternalSettingsIdentifiers.service,
           use: SettingsService
+        },
+        {
+          key: InternalSettingsIdentifiers.metadata,
+          use: MetadataService
+        },
+        {
+          key: InternalSettingsIdentifiers._metadataStorage,
+          use: MetadataStorage
         }
       ])
 
       expect(mockedDispatcher).toHaveBeenCalled()
 
-      expect(mockDispatcherInstance.onWithClass).toHaveBeenCalledTimes(2)
+      expect(mockDispatcherInstance.onWithClass).toHaveBeenCalledTimes(6)
       expect(mockDispatcherInstance.onWithClass).toHaveBeenCalledWith(ExportSettingsListener)
       expect(mockDispatcherInstance.onWithClass).toHaveBeenCalledWith(ImportSettingsListener)
+      expect(mockDispatcherInstance.onWithClass).toHaveBeenCalledWith(GetSettingsListener)
+      expect(mockDispatcherInstance.onWithClass).toHaveBeenCalledWith(FiltersStateChangedListener)
+      expect(mockDispatcherInstance.onWithClass).toHaveBeenCalledWith(WebRTCStateChangedListener)
+      expect(mockDispatcherInstance.onWithClass).toHaveBeenCalledWith(WhitelistStateChangedListener)
     })
   })
 })

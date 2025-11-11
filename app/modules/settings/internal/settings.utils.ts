@@ -15,28 +15,10 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-import { injectable } from '@/utils/di/di.types'
-import { GroupId, GroupsBaseInterface } from '@/modules/filters/common/filters.types'
-import {
-  FiltersMessages,
-  ToggleGroupMessage
-} from '@/modules/filters/common/filters.messages'
-import { useExternalPort } from '@/modules/port/external/port.setup'
-import { ExternalPortChannel } from '@/modules/port/external/port.types'
+import { di } from '@/utils/setup-worker'
+import { InternalSettingsIdentifiers } from '@/modules/settings/internal/settings.types'
+import { MetadataServiceInterface } from '@/modules/settings/common/settings.types'
 
-@injectable()
-export class GroupsService implements GroupsBaseInterface {
-  private readonly port: ExternalPortChannel
-  constructor () {
-    this.port = useExternalPort()
-  }
-
-  async toggle (id: GroupId): Promise<void> {
-    const message: ToggleGroupMessage = {
-      type: FiltersMessages.toggleGroup,
-      payload: { id }
-    }
-
-    await this.port.sendMessage(message)
-  }
+export const useInternalMetadata = (): MetadataServiceInterface => {
+  return di.get<MetadataServiceInterface>(InternalSettingsIdentifiers.metadata)
 }

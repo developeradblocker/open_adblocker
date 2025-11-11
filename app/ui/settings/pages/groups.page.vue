@@ -8,16 +8,13 @@
       <div class="groups__list">
         <BaseListItem
           class="groups__list-item"
-          v-for="group in groups"
+          v-for="group in $store.groups"
           :key="group.groupId"
           :title="group.groupName"
-          icon="no-ad"
-          @click="$router.push({ name: SETTINGS_ROUTE.FILTERS, params: { id: group.groupId } })"
+          :icon="groupIcon(group.groupId)"
+          @click="onGroupClick(group.groupId)"
           :description="group.groupDescription"
-        >
-          <BaseToggle :is-active="isActiveGroup(group.groupId)" large
-                      @toggle="toggleGroup(group.groupId)"/>
-        </BaseListItem>
+        />
       </div>
     </BaseBox>
   </div>
@@ -43,22 +40,40 @@
  */
 
 import BaseBox from '@/ui/settings/components/base/base-box.vue'
-import { computed } from 'vue'
 import { SETTINGS_ROUTE } from '@/ui/settings/router/route-names'
-import BaseToggle from '@/ui/shared/components/base-toggle.vue'
 import BaseListItem from '@/ui/settings/components/base/base-list-item.vue'
-import { GroupId } from '@/modules/filters/common/filters.types'
-import { useExternalGroups } from '@/modules/filters/external/filters.utils'
 import { useSettingsStore } from '@/ui/settings/store/settings.store'
+import { useUserActivity } from '@/modules/user-activity/external/utils'
+import { onMounted } from 'vue'
+import { ClickEventToAction } from '@/modules/user-activity/common/user-activity.types'
+import { useRouter } from 'vue-router'
 
-const $groups = useExternalGroups()
+const $activity = useUserActivity()
 const $store = useSettingsStore()
-const groups = computed(() => $store.groups)
-const isActiveGroup = (groupId: GroupId): boolean => $store.enabledGroups.includes(groupId)
-const toggleGroup = async (groupId: GroupId): Promise<void> => {
-  $store.toggleGroup(groupId)
-  await $groups.toggle(groupId)
+const $router = useRouter()
+const onGroupClick = (groupId: number): void => {
+  $activity.click(`group_${groupId}`, {
+    page: SETTINGS_ROUTE.GROUPS,
+    to: ClickEventToAction.openGroup
+  })
+  $router.push({ name: SETTINGS_ROUTE.FILTERS, params: { id: groupId } })
 }
+
+const GROUP_ICON_MAP = {
+  1: 'no-ad',
+  2: 'eye',
+  3: 'connection',
+  4: 'popup',
+  5: 'shield',
+  6: 'language',
+  7: 'more'
+}
+const groupIcon = (groupId: number): string => {
+  return GROUP_ICON_MAP[groupId] || GROUP_ICON_MAP[1]
+}
+onMounted(() => {
+  $activity.visitPage(SETTINGS_ROUTE.GROUPS)
+})
 
 </script>
 

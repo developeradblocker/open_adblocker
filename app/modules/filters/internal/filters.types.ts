@@ -17,10 +17,7 @@
  */
 import {
   FilterId,
-  FilterMetadata,
-  FiltersBaseInterface, GroupId,
-  GroupMetadata, GroupsBaseInterface,
-  Metadata
+  FiltersBaseInterface
 } from '@/modules/filters/common/filters.types'
 
 export enum InternalFiltersIdentifiers {
@@ -32,43 +29,11 @@ export enum InternalFiltersIdentifiers {
   /**
    * @link FiltersStorage
    */
-  _filterStorage = 'Filters.FilterStorage',
-
-  /**
-   * MetadataServiceInterface
-   */
-  metadata = 'Filters.Metadata',
-
-  /**
-   * @link MetadataStorage
-   */
-  _metadataStorage = 'Filters.MetadataStorage',
-
-  /**
-   * @link GroupServiceInterface
-   */
-  groups = 'Filters.Groups',
-
-  /**
-   * @link GroupsStorage
-   */
-  _groupsStorage = 'Filters.GroupsStorage',
+  _filterStorage = 'Filters.FilterStorage'
 }
 
 export interface FiltersServiceInterface extends FiltersBaseInterface {
+  isEnabled: (id: FilterId) => Promise<boolean>
   getEnabledFilters: () => Promise<FilterId[]>
   setup: (filters: FilterId[]) => Promise<void>
-}
-
-export interface GroupsServiceInterface extends GroupsBaseInterface {
-  getEnabledGroups: () => Promise<GroupId[]>
-  setup: (groups: GroupId[]) => Promise<void>
-}
-
-export interface MetadataServiceInterface {
-  getMetadata: () => Promise<Metadata>
-  getGroups: () => Promise<GroupMetadata[]>
-  getFilters: () => Promise<FilterMetadata[]>
-  getGroupByFilter: (filterId: FilterId) => Promise<GroupId>
-  updateMetadata: () => Promise<void>
 }

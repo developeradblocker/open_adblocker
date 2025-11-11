@@ -19,22 +19,19 @@ import { FilterId } from '@/modules/filters/common/filters.types'
 import { inject, injectable } from '@/utils/di/di.types'
 import {
   FiltersServiceInterface,
-  InternalFiltersIdentifiers,
-  MetadataServiceInterface
+  InternalFiltersIdentifiers
 } from '@/modules/filters/internal/filters.types'
 import { FiltersStorage } from '@/modules/filters/internal/storage/filters.storage'
 import { FiltersMessages, FiltersStateChangedMessage } from '@/modules/filters/common/filters.messages'
 import { dispatcher } from '@/utils/setup-worker'
 import { ALLOWLIST_FILTER_ID, CUSTOM_FILTERS_START_ID, USER_FILTER_ID } from '../../../../../constants'
+import { useInternalMetadata } from '@/modules/settings/internal/settings.utils'
 
 @injectable()
 export class FiltersService implements FiltersServiceInterface {
   constructor (
     @inject(InternalFiltersIdentifiers._filterStorage)
-    private readonly storage: FiltersStorage,
-
-    @inject(InternalFiltersIdentifiers.metadata)
-    private readonly metadata: MetadataServiceInterface
+    private readonly storage: FiltersStorage
   ) {}
 
   async setup (filters: FilterId[]): Promise<void> {
@@ -89,7 +86,7 @@ export class FiltersService implements FiltersServiceInterface {
   }
 
   private async isSupported (filterId: FilterId): Promise<boolean> {
-    const supportedFilterIds = (await this.metadata.getFilters()).map((filter) => filter.filterId)
+    const supportedFilterIds = (await useInternalMetadata().getFilters()).map((filter) => filter.filterId)
 
     return supportedFilterIds.includes(filterId)
   }

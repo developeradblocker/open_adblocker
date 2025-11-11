@@ -15,14 +15,10 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-import { FiltersBaseInterface, GroupsBaseInterface } from '@/modules/filters/common/filters.types'
+import { FiltersBaseInterface } from '@/modules/filters/common/filters.types'
 import { di } from '@/utils/setup-worker'
 import { ExternalFiltersIdentifiers } from '@/modules/filters/external/filters.types'
 
 export const useExternalFilters = (): FiltersBaseInterface => {
   return di.get<FiltersBaseInterface>(ExternalFiltersIdentifiers.filters)
-}
-
-export const useExternalGroups = (): GroupsBaseInterface => {
-  return di.get<GroupsBaseInterface>(ExternalFiltersIdentifiers.groups)
 }

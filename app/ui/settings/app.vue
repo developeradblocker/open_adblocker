@@ -15,9 +15,11 @@
         </div>
       </div>
       <div class="app__view">
-        <router-view/>
+        <router-view />
       </div>
     </div>
+    <Loader v-if="$store.showLoader" text="Applying changes" />
+    <BaseSnackbar :value="$store.snackbar" @close="$store.setSnackbar(null)"/>
   </div>
 </template>
 <script lang="ts" setup>
@@ -44,6 +46,8 @@ import { useExternalPort } from '@/modules/port/external/port.setup'
 import { useExternalSettings } from '@/modules/settings/external/settings.utils'
 import { useSettingsStore } from '@/ui/settings/store/settings.store'
 import { onMounted } from 'vue'
+import Loader from '@/ui/settings/components/loader.vue'
+import BaseSnackbar from '@/ui/shared/components/snackbar/base-snackbar.vue'
 
 interface MenuNavLink {
   route: SETTINGS_ROUTE

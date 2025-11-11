@@ -15,8 +15,9 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-import { MetadataStorage } from '@/modules/filters/internal/storage/metadata.storage'
-import { Metadata } from '@/modules/filters/common/filters.types'
+import { MetadataStorage } from '@/modules/settings/internal/storage/metadata.storage'
+
+import { Metadata } from '@/modules/settings/common/settings.types'
 
 describe('MetadataStorage', () => {
   let storage: MetadataStorage

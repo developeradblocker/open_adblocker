@@ -64,7 +64,7 @@ const toggleCookieCleaner = async (state: boolean): Promise<void> => {
   try {
     await filters.toggle(COOKIE_CLEANER_ID)
     appStore.updateField('isCookieCleanerEnabled', state)
-    activity.toggle(ElementsUI.cookie_cleaner, state)
+    activity.toggle(ElementsUI.cookieCleaner, state)
   } catch (e) {
     console.error(e)
     notification.showNotification(
@@ -84,7 +84,7 @@ onMounted(async () => {
   const webRTCToggle: HTMLDivElement = document.querySelector('#web-rtc-toggle')
   webRTCToggle.addEventListener('click', async () => {
     const state = !webRtc.value
-    activity.toggle(ElementsUI.web_rtc, state)
+    activity.toggle(ElementsUI.webRtc, state)
     if (await checkWebRTCPermissions()) {
       await webRTC.toggle(state)
       appStore.updateField('isWebRTCEnabled', state)

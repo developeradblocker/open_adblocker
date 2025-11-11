@@ -18,14 +18,9 @@
 import { di } from '@/utils/setup-worker'
 import {
   FiltersServiceInterface,
-  GroupsServiceInterface,
   InternalFiltersIdentifiers
 } from '@/modules/filters/internal/filters.types'
 
 export const useInternalFilters = (): FiltersServiceInterface => {
   return di.get<FiltersServiceInterface>(InternalFiltersIdentifiers.filters)
-}
-
-export const useInternalGroups = (): GroupsServiceInterface => {
-  return di.get<GroupsServiceInterface>(InternalFiltersIdentifiers.groups)
 }

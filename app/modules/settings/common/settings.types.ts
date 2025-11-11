@@ -16,10 +16,6 @@
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
 import zod from 'zod'
-import {
-  filterMetadataValidator,
-  groupMetadataValidator
-} from '@/modules/filters/common/filters.types'
 
 export interface SettingsInterface {
   export: () => Promise<ExportedSettings>
@@ -40,7 +36,6 @@ const whiteListSchema = zod.object({
 
 const filtersSchema = zod.object({
   enabledFilters: zod.array(zod.number().int()),
-  enabledGroups: zod.array(zod.number().int()).optional(),
   whiteList: whiteListSchema
 })
 
@@ -57,6 +52,47 @@ export type WhiteListSettings = zod.infer<typeof whiteListSchema>
 export type FiltersSettings = zod.infer<typeof filtersSchema>
 export type ExportedSettings = zod.infer<typeof settingsSchema>
 
+export const filterMetadataValidator = zod.object({
+  description: zod.string(),
+  displayNumber: zod.number(),
+  expires: zod.number(),
+  filterId: zod.number(),
+  groupId: zod.number(),
+  homepage: zod.string(),
+  name: zod.string(),
+  tags: zod.number().array(),
+  version: zod.string(),
+  diffPath: zod.string().optional(),
+  languages: zod.string().array(),
+  timeAdded: zod.string(),
+  timeUpdated: zod.string(),
+  subscriptionUrl: zod.string(),
+  deprecated: zod.boolean().optional()
+})
+export const groupMetadataValidator = zod.object({
+  displayNumber: zod.number(),
+  groupId: zod.number(),
+  groupName: zod.string(),
+  groupDescription: zod.string()
+})
+export const tagMetadataValidator = zod.object({
+  tagId: zod.number(),
+  keyword: zod.string(),
+  description: zod.string().optional(),
+  name: zod.string().optional()
+})
+export type GroupMetadata = zod.infer<typeof groupMetadataValidator>
+export type FilterMetadata = zod.infer<typeof filterMetadataValidator>
+export const metadataValidator = zod.object({
+  version: zod.string().optional(),
+  versionTimestampMs: zod.number().optional(),
+  metadata: zod.object({
+    filters: filterMetadataValidator.array(),
+    groups: groupMetadataValidator.array(),
+    tags: tagMetadataValidator.array()
+  })
+})
+export type Metadata = zod.infer<typeof metadataValidator>
 export const openADBSettingsSchema = baseSettingsSchema.extend({
   metadata: zod.object({
     filters: filterMetadataValidator.array(),
@@ -64,3 +100,9 @@ export const openADBSettingsSchema = baseSettingsSchema.extend({
   })
 })
 export type OpenADBSettings = zod.infer<typeof openADBSettingsSchema>
+
+export interface MetadataServiceInterface {
+  getMetadata: () => Promise<Metadata>
+  getFilters: () => Promise<FilterMetadata[]>
+  updateMetadata: () => Promise<void>
+}

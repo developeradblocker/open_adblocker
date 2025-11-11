@@ -15,9 +15,27 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-import { di } from '@/utils/setup-worker'
-import { InternalFiltersIdentifiers, MetadataServiceInterface } from '@/modules/filters/internal/filters.types'
 
-export const onInstallHandler = async (): Promise<void> => {
-  await di.get<MetadataServiceInterface>(InternalFiltersIdentifiers.metadata).updateMetadata()
+import { InternalFiltersIdentifiers } from '@/modules/filters/internal/filters.types'
+import { FiltersService } from '@/modules/filters/internal/service/filters.service'
+import { dispatcher } from '@/utils/setup-worker'
+import { FiltersStorage } from '@/modules/filters/internal/storage/filters.storage'
+import { Injection } from '@/utils/inject/inject.types'
+import { inject } from '@/utils/inject/inject'
+import { FilterToggleListener } from '@/modules/filters/internal/listeners/filter-toggle.listener'
+
+const injections: Injection[] = [
+  {
+    key: InternalFiltersIdentifiers.filters,
+    use: FiltersService
+  },
+  {
+    key: InternalFiltersIdentifiers._filterStorage,
+    use: FiltersStorage
+  }
+]
+
+export const setupInternalFilters = (): void => {
+  inject(injections)
+  dispatcher().onWithClass(FilterToggleListener)
 }

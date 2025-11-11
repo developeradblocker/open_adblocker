@@ -20,10 +20,14 @@ import { FiltersStorage } from '@/modules/filters/internal/storage/filters.stora
 import { dispatcher } from '@/utils/setup-worker'
 import { DispatcherInterface } from '@/utils/dispatcher/dispatcher.types'
 import { FiltersMessages } from '@/modules/filters/common/filters.messages'
-import { MetadataServiceInterface } from '@/modules/filters/internal/filters.types'
+import { useInternalMetadata } from '@/modules/settings/internal/settings.utils'
 
 jest.mock('@/utils/setup-worker', () => ({
   dispatcher: jest.fn()
+}))
+
+jest.mock('@/modules/settings/internal/settings.utils', () => ({
+  useInternalMetadata: jest.fn()
 }))
 
 describe('InternalFiltersService', () => {
@@ -33,21 +37,21 @@ describe('InternalFiltersService', () => {
   const getFiltersMock = jest.fn()
   const mockStorage = {
     get: jest.fn(),
-    enable: jest.fn(),
-    disable: jest.fn(),
+    toggle: jest.fn(),
     setup: jest.fn()
   } as unknown as FiltersStorage
 
   const metadata = {
     getFilters: getFiltersMock
-  } as unknown as MetadataServiceInterface
+  }
 
   beforeEach(() => {
+    (useInternalMetadata as jest.Mock).mockReturnValue(metadata)
     jest.clearAllMocks()
 
     sendMessageMock = jest.fn()
     getFiltersMock.mockResolvedValue([{ filterId: 12 }, { filterId: 1 }])
-    service = new FiltersService(mockStorage, metadata)
+    service = new FiltersService(mockStorage)
     jest.mocked(dispatcher).mockReturnValue(
       { sendMessage: sendMessageMock } as unknown as DispatcherInterface
     )
@@ -65,27 +69,13 @@ describe('InternalFiltersService', () => {
   describe('toggle', () => {
     it('should enable filter and send message that filters updated', async () => {
       jest.mocked(mockStorage.get).mockResolvedValueOnce([12])
-      jest.mocked(mockStorage.enable).mockResolvedValueOnce([12, 18])
+      jest.mocked(mockStorage.toggle).mockResolvedValueOnce([12, 18])
       await service.toggle(18)
-      expect(mockStorage.enable).toHaveBeenCalledWith(18)
-      expect(mockStorage.disable).not.toHaveBeenCalled()
+      expect(mockStorage.toggle).toHaveBeenCalledWith(18)
       expect(sendMessageMock).toHaveBeenCalledWith({
         type: FiltersMessages.filtersStateChanged,
         payload: {
           enabledFilters: [12, 18]
-        }
-      })
-    })
-    it('should disable filter and send message that filters updated', async () => {
-      jest.mocked(mockStorage.get).mockResolvedValueOnce([12, 18])
-      jest.mocked(mockStorage.disable).mockResolvedValueOnce([18])
-      await service.toggle(12)
-      expect(mockStorage.disable).toHaveBeenCalledWith(12)
-      expect(mockStorage.enable).not.toHaveBeenCalled()
-      expect(sendMessageMock).toHaveBeenCalledWith({
-        type: FiltersMessages.filtersStateChanged,
-        payload: {
-          enabledFilters: [18]
         }
       })
     })

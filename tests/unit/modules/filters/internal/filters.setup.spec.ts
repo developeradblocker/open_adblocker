@@ -18,13 +18,11 @@
 
 import { inject } from '@/utils/inject/inject'
 import { dispatcher } from '@/utils/setup-worker'
-import { setupInternalFilters } from '@/modules/filters/internal/filter.setup'
+import { setupInternalFilters } from '@/modules/filters/internal/filters.setup'
 import { InternalFiltersIdentifiers } from '@/modules/filters/internal/filters.types'
 import { FiltersService } from '@/modules/filters/internal/service/filters.service'
 import { FiltersStorage } from '@/modules/filters/internal/storage/filters.storage'
 import { FilterToggleListener } from '@/modules/filters/internal/listeners/filter-toggle.listener'
-import { MetadataService } from '@/modules/filters/internal/service/metadata.service'
-import { MetadataStorage } from '@/modules/filters/internal/storage/metadata.storage'
 
 jest.mock('@/utils/inject/inject')
 jest.mock('@/utils/setup-worker', () => ({
@@ -33,11 +31,10 @@ jest.mock('@/utils/setup-worker', () => ({
 jest.mock('@/modules/filters/internal/service/filters.service')
 jest.mock('@/modules/filters/internal/storage/filters.storage')
 jest.mock('@/modules/filters/internal/listeners/filter-toggle.listener')
-jest.mock('@/modules/filters/internal/storage/metadata.storage')
-jest.mock('@/modules/filters/internal/service/metadata.service')
+jest.mock('@/modules/settings/internal/storage/metadata.storage')
+jest.mock('@/modules/settings/internal/service/metadata.service')
 
 const mockedInject = jest.mocked(inject)
-const addListenerMock = jest.fn()
 const mockedDispatcher = jest.mocked(dispatcher)
 const mockDispatcherInstance = {
   onWithClass: jest.fn()
@@ -45,14 +42,6 @@ const mockDispatcherInstance = {
 
 beforeEach(() => {
   jest.clearAllMocks()
-  global.chrome = {
-    runtime: {
-      onInstalled: {
-        addListener: addListenerMock
-      }
-    }
-  } as any
-
   mockedDispatcher.mockReturnValue(mockDispatcherInstance as any)
 })
 
@@ -67,14 +56,6 @@ describe('setupInternalFilters', () => {
       {
         key: InternalFiltersIdentifiers._filterStorage,
         use: FiltersStorage
-      },
-      {
-        key: InternalFiltersIdentifiers.metadata,
-        use: MetadataService
-      },
-      {
-        key: InternalFiltersIdentifiers._metadataStorage,
-        use: MetadataStorage
       }
     ])
     expect(mockDispatcherInstance.onWithClass).toHaveBeenCalledWith(FilterToggleListener)

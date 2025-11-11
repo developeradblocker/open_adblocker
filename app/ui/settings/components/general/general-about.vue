@@ -48,26 +48,47 @@ import { BaseButtonType } from '@/ui/shared/components/button/base-button.types'
 import { GITHUB_LINK, PRIVACY_POLICY_LINK, TERMS_LINK, WEB_PAGE_LINK } from '@/ui/shared/constants'
 // @ts-expect-error
 import { getVersion } from '@adguard/dnr-rulesets/utils'
+import { ElementsUI } from '@/modules/user-activity/common/user-activity.types'
+import { SETTINGS_ROUTE } from '@/ui/settings/router/route-names'
+import { useUserActivity } from '@/modules/user-activity/external/utils'
 
+const $activity = useUserActivity()
 const dnrVersion = getVersion()
+
 const openPolicy = async (): Promise<void> => {
+  $activity.click(ElementsUI.privacy, {
+    page: SETTINGS_ROUTE.GENERAL,
+    to: PRIVACY_POLICY_LINK
+  })
   await chrome.tabs.create({
     url: PRIVACY_POLICY_LINK
   })
 }
 
 const openTerms = async (): Promise<void> => {
+  $activity.click(ElementsUI.terms, {
+    page: SETTINGS_ROUTE.GENERAL,
+    to: TERMS_LINK
+  })
   await chrome.tabs.create({
     url: TERMS_LINK
   })
 }
 
 const openGithub = async (): Promise<void> => {
+  $activity.click(ElementsUI.githubButton, {
+    page: SETTINGS_ROUTE.GENERAL,
+    to: GITHUB_LINK
+  })
   await chrome.tabs.create({
     url: GITHUB_LINK
   })
 }
 const openWebsite = async (): Promise<void> => {
+  $activity.click(ElementsUI.websiteButton, {
+    page: SETTINGS_ROUTE.GENERAL,
+    to: WEB_PAGE_LINK
+  })
   await chrome.tabs.create({
     url: WEB_PAGE_LINK
   })

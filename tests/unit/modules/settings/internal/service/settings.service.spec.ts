@@ -19,12 +19,12 @@ import { SettingsService } from '@/modules/settings/internal/service/settings.se
 import { FiltersServiceInterface } from '@/modules/filters/internal/filters.types'
 import { WebRTCInterface } from '@/modules/features/web-rtc/common/web-rtc.types'
 import { WhitelistInterface } from '@/modules/whitelist/common/whetelist.types'
-import { TsWebExtension } from '@adguard/tswebextension/mv3'
-import { ExportedSettings, SETTINGS_VERSION } from '@/modules/settings/common/settings.types'
-import { COOKIE_CLEANER_ID } from '../../../../../constants'
+import { ExportedSettings, MetadataServiceInterface, SETTINGS_VERSION } from '@/modules/settings/common/settings.types'
+import { COOKIE_CLEANER_ID } from '../../../../../../constants'
 import { structureValidator } from '@/modules/settings/internal/validators/structure.validator'
 import { privacyValidator } from '@/modules/settings/internal/validators/privacy.validator'
 import { getConfiguration } from '@/modules/aguard/internal/adguard.setup'
+import { tsWebExtension } from '@/modules/aguard/internal/utils'
 
 jest.mock('@/modules/settings/internal/validators/structure.validator')
 jest.mock('@/modules/settings/internal/validators/privacy.validator')
@@ -36,15 +36,31 @@ jest.mock('@/utils/logger/logger', () => ({
     error: jest.fn()
   }
 }))
+jest.mock('@/modules/aguard/internal/utils', () => ({
+  tsWebExtension: jest.fn().mockReturnValue({
+    configure: jest.fn()
+  })
+}))
 
 describe('SettingsService', () => {
   let service: SettingsService
   let mockFilters: jest.Mocked<FiltersServiceInterface>
   let mockWebRtc: jest.Mocked<WebRTCInterface>
   let mockWhitelist: jest.Mocked<WhitelistInterface>
-  let mockTsWebExtension: jest.Mocked<TsWebExtension>
+  let mockMetadata: jest.Mocked<MetadataServiceInterface>
 
+  const metadata = {
+    filters: [],
+    groups: []
+  }
+  const enabledFilters = [1, 2, 3]
+  const domains = ['example.com', 'test.com']
+
+  const configureMock = jest.fn()
   beforeEach(() => {
+    (tsWebExtension as jest.Mock).mockReturnValue({
+      configure: configureMock
+    })
     mockFilters = {
       isEnabled: jest.fn(),
       getEnabledFilters: jest.fn(),
@@ -61,19 +77,24 @@ describe('SettingsService', () => {
       setup: jest.fn()
     } as any
 
-    mockTsWebExtension = {
-      configure: jest.fn()
+    mockMetadata = {
+      getMetadata: jest.fn()
     } as any
 
     jest.mocked(structureValidator).mockResolvedValue(undefined)
     jest.mocked(privacyValidator).mockResolvedValue(undefined)
     jest.mocked(getConfiguration).mockResolvedValue({} as any)
+    jest.mocked(mockMetadata.getMetadata).mockResolvedValue({ metadata })
 
+    mockFilters.isEnabled.mockResolvedValue(true)
+    mockFilters.getEnabledFilters.mockResolvedValue(enabledFilters)
+    mockWebRtc.getState.mockResolvedValue(false)
+    mockWhitelist.getDomains.mockResolvedValue(domains)
     service = new SettingsService(
       mockFilters,
+      mockMetadata,
       mockWebRtc,
-      mockWhitelist,
-      mockTsWebExtension
+      mockWhitelist
     )
   })
 
@@ -83,14 +104,6 @@ describe('SettingsService', () => {
 
   describe('export', () => {
     it('should export settings with all required fields', async () => {
-      const enabledFilters = [1, 2, 3]
-      const domains = ['example.com', 'test.com']
-
-      mockFilters.isEnabled.mockResolvedValue(true)
-      mockFilters.getEnabledFilters.mockResolvedValue(enabledFilters)
-      mockWebRtc.getState.mockResolvedValue(false)
-      mockWhitelist.getDomains.mockResolvedValue(domains)
-
       const result = await service.export()
 
       expect(result).toEqual({
@@ -101,7 +114,6 @@ describe('SettingsService', () => {
         },
         filters: {
           enabledFilters,
-          enabledGroups: [],
           whiteList: {
             domains
           }
@@ -119,7 +131,6 @@ describe('SettingsService', () => {
       },
       filters: {
         enabledFilters: [1, 2, 3],
-        enabledGroups: [],
         whiteList: {
           domains: ['example.com']
         }
@@ -130,7 +141,7 @@ describe('SettingsService', () => {
       mockFilters.setup.mockResolvedValue(undefined)
       mockWebRtc.setup.mockResolvedValue(undefined)
       mockWhitelist.setup.mockResolvedValue(undefined)
-      mockTsWebExtension.configure.mockResolvedValue(undefined)
+      configureMock.mockResolvedValue(undefined)
     })
 
     it('should import valid settings successfully', async () => {
@@ -144,7 +155,7 @@ describe('SettingsService', () => {
       expect(mockFilters.setup).toHaveBeenCalledWith([1, 2, 3, COOKIE_CLEANER_ID])
       expect(mockWebRtc.setup).toHaveBeenCalledWith(false)
       expect(mockWhitelist.setup).toHaveBeenCalledWith(['example.com'])
-      expect(mockTsWebExtension.configure).toHaveBeenCalled()
+      expect(configureMock).toHaveBeenCalled()
     })
 
     it('should return false on invalid JSON', async () => {
@@ -193,7 +204,27 @@ describe('SettingsService', () => {
       await service.import(content)
 
       expect(getConfiguration).toHaveBeenCalled()
-      expect(mockTsWebExtension.configure).toHaveBeenCalledWith(mockConfig)
+      expect(configureMock).toHaveBeenCalledWith(mockConfig)
+    })
+  })
+
+  describe('get', () => {
+    it('should be able to retrieve metadata', async () => {
+      const result = await service.get()
+      expect(result).toEqual({
+        version: SETTINGS_VERSION,
+        general: {
+          cookieCleaner: true,
+          webRTC: false
+        },
+        filters: {
+          enabledFilters,
+          whiteList: {
+            domains
+          }
+        },
+        metadata
+      })
     })
   })
 })

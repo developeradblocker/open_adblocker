@@ -16,14 +16,11 @@
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
 import { AppMessage } from '@/utils/dispatcher/dispatcher.types'
-import { FilterId, GroupId } from '@/modules/filters/common/filters.types'
+import { FilterId } from '@/modules/filters/common/filters.types'
 
 export enum FiltersMessages {
   toggleFilter = 'Filters.ToggleFilter',
-  filtersStateChanged = 'Filters.FiltersStateChanged',
-  groupsStateChanged = 'Filters.GroupsStateChanged',
-  isEnabled = 'Filters.IsEnabled',
-  toggleGroup = 'Filters.ToggleGroup',
+  filtersStateChanged = 'Filters.FiltersStateChanged'
 }
 
 export interface ToggleFilterMessage extends AppMessage {
@@ -31,22 +28,7 @@ export interface ToggleFilterMessage extends AppMessage {
   payload: { id: FilterId }
 }
 
-export interface ToggleGroupMessage extends AppMessage {
-  type: FiltersMessages.toggleGroup
-  payload: { id: GroupId }
-}
-
-export interface IsEnabledFilterMessage extends AppMessage {
-  type: FiltersMessages.isEnabled
-  payload: { id: FilterId }
-}
-
 export interface FiltersStateChangedMessage extends AppMessage {
   type: FiltersMessages.filtersStateChanged
   payload: { enabledFilters: FilterId[] }
-}
-
-export interface GroupsStateChangedMessage extends AppMessage {
-  type: FiltersMessages.groupsStateChanged
-  payload: { enabledGroups: GroupId[] }
 }

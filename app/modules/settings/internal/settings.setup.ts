@@ -27,16 +27,27 @@ import { GetSettingsListener } from '@/modules/settings/internal/listeners/get-s
 import { FiltersStateChangedListener } from '@/modules/settings/internal/listeners/state-changed/filters.listener'
 import { WebRTCStateChangedListener } from '@/modules/settings/internal/listeners/state-changed/web-rtc.listener'
 import { WhitelistStateChangedListener } from '@/modules/settings/internal/listeners/state-changed/whitelist.listener'
-import { GroupsStateChangedListener } from '@/modules/settings/internal/listeners/state-changed/groups.listener'
+import { MetadataService } from '@/modules/settings/internal/service/metadata.service'
+import { MetadataStorage } from '@/modules/settings/internal/storage/metadata.storage'
+import { onInstallHandler } from '@/modules/settings/internal/handlers/on-install.handler'
 
 const injections: Injection[] = [
   {
     key: InternalSettingsIdentifiers.service,
     use: SettingsService
+  },
+  {
+    key: InternalSettingsIdentifiers.metadata,
+    use: MetadataService
+  },
+  {
+    key: InternalSettingsIdentifiers._metadataStorage,
+    use: MetadataStorage
   }
 ]
 
 export const setupInternalSettings = (): void => {
+  chrome.runtime.onInstalled.addListener(onInstallHandler)
   inject(injections)
   dispatcher().onWithClass(ExportSettingsListener)
   dispatcher().onWithClass(ImportSettingsListener)
@@ -44,5 +55,4 @@ export const setupInternalSettings = (): void => {
   dispatcher().onWithClass(FiltersStateChangedListener)
   dispatcher().onWithClass(WebRTCStateChangedListener)
   dispatcher().onWithClass(WhitelistStateChangedListener)
-  dispatcher().onWithClass(GroupsStateChangedListener)
 }

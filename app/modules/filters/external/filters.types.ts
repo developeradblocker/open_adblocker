@@ -19,9 +19,5 @@ export enum ExternalFiltersIdentifiers {
   /**
    * @link FiltersBaseInterface
    */
-  filters = 'Filters.Filters',
-  /**
-   * @link GroupsBaseInterface
-   */
-  groups = 'Filters.Groups'
+  filters = 'Filters.Filters'
 }

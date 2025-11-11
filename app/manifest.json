@@ -37,7 +37,8 @@
     "storage",
     "management",
     "declarativeNetRequest",
-    "alarms"
+    "alarms",
+    "tabs"
   ],
   "optional_permissions": [
     "privacy"

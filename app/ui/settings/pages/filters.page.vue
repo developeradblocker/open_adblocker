@@ -2,20 +2,18 @@
   <div class="filters-page filters">
     <BaseBox with-header>
       <div class="filters__header">
-        <div class="filters__header-back" @click="$router.back()">
+        <div class="filters__header-back" data-test="back" @click="onBack">
           <BaseSvg src="../icons/back.svg" class="filters__header-back-icon"/>
         </div>
         <div class="filters__header-content">
           <h3 class="filters__title">{{ activeGroup?.groupName }}</h3>
           <p class="filters__description">{{ activeGroup?.groupDescription }}</p>
         </div>
-        <BaseToggle :is-active="isActiveGroup"
-                    @toggle="toggleGroup"
-                    large class="filters__header-action"/>
       </div>
       <div class="filters__separator"/>
       <div class="filters__list">
         <BaseListItem
+          data-test="filter"
           class="filters__list-item"
           v-for="filter of filters"
           :key="filter.filterId"
@@ -23,7 +21,7 @@
           :description="filter.description"
         >
           <BaseToggle :is-active="isActiveFilter(filter.filterId)" large
-                      @toggle="toggleFilter(filter.filterId)"/>
+                      @toggle="toggleFilter(filter.filterId, $event)"/>
         </BaseListItem>
       </div>
     </BaseBox>
@@ -52,31 +50,45 @@
 import BaseBox from '@/ui/settings/components/base/base-box.vue'
 import BaseToggle from '@/ui/shared/components/base-toggle.vue'
 import BaseListItem from '@/ui/settings/components/base/base-list-item.vue'
-import { useExternalFilters, useExternalGroups } from '@/modules/filters/external/filters.utils'
+import { useExternalFilters } from '@/modules/filters/external/filters.utils'
 import { FilterId } from '@/modules/filters/common/filters.types'
 import { useSettingsStore } from '@/ui/settings/store/settings.store'
 import { computed } from 'vue'
+import { useUserActivity } from '@/modules/user-activity/external/utils'
+import { useRouter } from 'vue-router'
+import { SETTINGS_ROUTE } from '@/ui/settings/router/route-names'
+import { ClickEventToAction, ElementsUI } from '@/modules/user-activity/common/user-activity.types'
 
 const { id } = defineProps<{ id: string }>()
 
 const $filters = useExternalFilters()
-const $groups = useExternalGroups()
 const $store = useSettingsStore()
+const $activity = useUserActivity()
+const $router = useRouter()
 
 const groupId = Number(id)
 const isActiveFilter = (filterId: FilterId): boolean => $store.enabledFilters.includes(filterId)
 
-const isActiveGroup = computed(() => $store.enabledGroups.includes(groupId))
 const activeGroup = computed(() => $store.groups.find((group) => group.groupId === groupId))
 const filters = computed(() => $store.filters.filter((filter) => filter.groupId === groupId))
 
-const toggleFilter = async (filterId: FilterId): Promise<void> => {
-  $store.toggleFilter(filterId)
-  await $filters.toggle(filterId)
+const toggleFilter = async (filterId: FilterId, state: boolean): Promise<void> => {
+  try {
+    $store.setShowLoader(true)
+    $activity.toggle(`filter_${filterId}`, state)
+    $store.toggleFilter(filterId)
+    await $filters.toggle(filterId)
+  } finally {
+    $store.setShowLoader(false)
+  }
 }
-const toggleGroup = async (): Promise<void> => {
-  $store.toggleGroup(groupId)
-  await $groups.toggle(groupId)
+
+const onBack = async (): Promise<void> => {
+  $activity.click(ElementsUI.filterBack, {
+    page: SETTINGS_ROUTE.FILTERS,
+    to: ClickEventToAction.filterBack
+  })
+  $router.back()
 }
 </script>
 

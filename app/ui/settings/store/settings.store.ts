@@ -17,9 +17,10 @@
  */
 
 import { defineStore } from 'pinia'
-import { OpenADBSettings } from '@/modules/settings/common/settings.types'
-import { FilterId, FilterMetadata, GroupId, GroupMetadata} from '@/modules/filters/common/filters.types'
+import { FilterMetadata, GroupMetadata, OpenADBSettings } from '@/modules/settings/common/settings.types'
+import { FilterId } from '@/modules/filters/common/filters.types'
 import { Domain } from '@/common/types'
+import { SnackbarProps } from '@/ui/shared/components/snackbar/base-snackbar.types'
 
 export const useSettingsStore = defineStore('SettingsStore', {
   state: () => ({
@@ -30,7 +31,6 @@ export const useSettingsStore = defineStore('SettingsStore', {
       },
       filters: {
         enabledFilters: [],
-        enabledGroups: [],
         whiteList: {
           domains: []
         }
@@ -39,7 +39,9 @@ export const useSettingsStore = defineStore('SettingsStore', {
         filters: [],
         groups: []
       }
-    } satisfies OpenADBSettings
+    } satisfies OpenADBSettings,
+    showLoader: false,
+    snackbar: null as SnackbarProps
   }),
 
   getters: {
@@ -53,9 +55,6 @@ export const useSettingsStore = defineStore('SettingsStore', {
     enabledFilters (): FilterId[] {
       return this.settings.filters?.enabledFilters
     },
-    enabledGroups (): GroupId[] {
-      return this.settings.filters?.enabledGroups
-    },
     whiteList (): Domain[] {
       return this.settings.filters?.whiteList?.domains
     }
@@ -68,13 +67,13 @@ export const useSettingsStore = defineStore('SettingsStore', {
       }
     },
 
-    toggleGroup (groupId: GroupId): void {
-      const enabled = this.settings.filters.enabledGroups.includes(groupId)
-      if (enabled) {
-        this.settings.filters.enabledGroups = this.settings.filters.enabledGroups.filter(id => id !== groupId)
-        return
-      }
-      this.settings.filters.enabledGroups.push(groupId)
+    setShowLoader (visible: boolean): void {
+      this.showLoader = visible
+      visible ? document.body.classList.add('no-scroll') : document.body.classList.remove('no-scroll')
+    },
+
+    setSnackbar (snackbar: SnackbarProps | null): void {
+      this.snackbar = snackbar
     },
 
     toggleFilter (filterId: FilterId): void {

@@ -15,9 +15,10 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-import { onInstallHandler } from '@/modules/filters/internal/handlers/on-install.handler'
+import { onInstallHandler } from '@/modules/settings/internal/handlers/on-install.handler'
 import { di } from '@/utils/setup-worker'
-import { InternalFiltersIdentifiers, MetadataServiceInterface } from '@/modules/filters/internal/filters.types'
+import { InternalSettingsIdentifiers } from '@/modules/settings/internal/settings.types'
+import { MetadataServiceInterface } from '@/modules/settings/common/settings.types'
 
 jest.mock('@/utils/setup-worker', () => ({
   di: {
@@ -30,7 +31,6 @@ describe('onInstallHandler', () => {
   const mockMetadataService: MetadataServiceInterface = {
     updateMetadata: mockUpdateMetadata,
     getMetadata: jest.fn(),
-    getGroups: jest.fn(),
     getFilters: jest.fn()
   }
 
@@ -44,7 +44,7 @@ describe('onInstallHandler', () => {
 
     await onInstallHandler()
 
-    expect(di.get).toHaveBeenCalledWith(InternalFiltersIdentifiers.metadata)
+    expect(di.get).toHaveBeenCalledWith(InternalSettingsIdentifiers.metadata)
     expect(mockUpdateMetadata).toHaveBeenCalledTimes(1)
   })
 
@@ -61,6 +61,6 @@ describe('onInstallHandler', () => {
 
     await onInstallHandler()
 
-    expect(di.get).toHaveBeenCalledWith(InternalFiltersIdentifiers.metadata)
+    expect(di.get).toHaveBeenCalledWith(InternalSettingsIdentifiers.metadata)
   })
 })

@@ -15,33 +15,8 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-
-import { AppMessageListener, Box } from '@/utils/dispatcher/dispatcher.types'
-import { inject, injectable } from '@/utils/di/di.types'
-import {
-  GroupsServiceInterface,
-  InternalFiltersIdentifiers
-} from '@/modules/filters/internal/filters.types'
-import { FiltersMessages, ToggleGroupMessage } from '@/modules/filters/common/filters.messages'
-
-@injectable()
-export class GroupToggleListener implements AppMessageListener<ToggleGroupMessage> {
-  constructor (
-    @inject(InternalFiltersIdentifiers.groups)
-    private groups: GroupsServiceInterface
-  ) {
-  }
-
-  on (): FiltersMessages.toggleGroup {
-    return FiltersMessages.toggleGroup
-  }
-
-  main (): false {
-    return false
-  }
-
-  async handle ({ message }: Box<ToggleGroupMessage>): Promise<void> {
-    const { id } = message.payload
-    await this.groups.toggle(id)
-  }
+export interface SnackbarProps {
+  type: 'info' | 'error'
+  message: string
+  timeout?: number
 }

@@ -26,6 +26,15 @@
 
 import GeneralMain from '@/ui/settings/components/general/general-main.vue'
 import GeneralAbout from '@/ui/settings/components/general/general-about.vue'
+import { useUserActivity } from '@/modules/user-activity/external/utils'
+import { onMounted } from 'vue'
+import { SETTINGS_ROUTE } from '@/ui/settings/router/route-names'
+
+const $activity = useUserActivity()
+
+onMounted(() => {
+  $activity.visitPage(SETTINGS_ROUTE.GENERAL)
+})
 </script>
 
 <style scoped lang="less">

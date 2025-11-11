@@ -31,12 +31,18 @@ import { routes } from '@/ui/settings/router/routes'
 import { setupExternalSettings } from '@/modules/settings/external/settings.setup'
 import { setupExternalFilters } from '@/modules/filters/external/filters.setup'
 import { createPinia } from 'pinia'
+import { v4 as uuidv4 } from 'uuid'
+import { setupExternalUserActivity } from '@/modules/user-activity/external/user-activity.setup'
+import { SETTINGS_ROUTE } from '@/ui/settings/router/route-names'
+import { ClickEventToAction, ElementsUI } from '@/modules/user-activity/common/user-activity.types'
+import { useUserActivity } from '@/modules/user-activity/external/utils'
 
 /**
  * Settings Worker (PW)
  */
 setupWorker('Settings')
 setupExternalPortChannel({ name: 'Settings' })
+setupExternalUserActivity(uuidv4())
 setupExternalFilters()
 setupExternalSettings();
 
@@ -54,4 +60,9 @@ setupExternalSettings();
 
   app.component('BaseSvg', InlineSvg)
   app.mount('#settings-app')
+
+  useUserActivity().click(ElementsUI.settings, {
+    page: SETTINGS_ROUTE.GENERAL,
+    to: ClickEventToAction.openSettings
+  })
 })()
