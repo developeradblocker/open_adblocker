@@ -19,8 +19,8 @@
 export const RATE_US_URL = 'https://chromewebstore.google.com/detail/jncabfnemmiofhiimdgelgeobggelpci'
 
 /**
- * How many times the user has to visit the home page before we show the rate us popup
+ * How much time user should use an extension until he sees the rate us page
  */
-export const RATE_US_HOME_PAGE_VISITED_THRESHOLD = 5
+export const RATE_US_DAYS_AFTER_FIRST_USAGE_THRESHOLD = 5
 
 export const HOME_PAGE_VISITED_COUNTER = 'homePageVisited'

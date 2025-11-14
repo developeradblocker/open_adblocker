@@ -18,7 +18,6 @@
 
 export enum RateUsIdentifiers {
   rateUsService = 'RateUs.Service',
-  _counter = 'RateUs.Counter'
 }
 
 export interface InternalRateUsServiceInterface {
@@ -30,4 +29,5 @@ export interface InternalRateUsServiceInterface {
 export interface RateUsDataInterface {
   rated?: boolean
   lastVisited?: number
+  firstShowAfter?: number
 }

@@ -16,7 +16,6 @@
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
 import { InternalRateUsServiceInterface, RateUsIdentifiers } from '@/modules/rate-us/internal/rate-us.types'
-import { CounterInterface } from '@/utils/counter/counter.types'
 import { di } from '@/utils/setup-worker'
 
 /**
@@ -27,14 +26,4 @@ import { di } from '@/utils/setup-worker'
  */
 export const rateUsService = (): InternalRateUsServiceInterface => {
   return di.get<InternalRateUsServiceInterface>(RateUsIdentifiers.rateUsService)
-}
-
-/**
- * Get the instance of CounterInterface
- *
- * @throws {DiException} if the rateUsCounter is called before the worker is set up
- * @returns {CounterInterface}
- */
-export const rateUsCounter = (): CounterInterface => {
-  return di.get<CounterInterface>(RateUsIdentifiers._counter)
 }
