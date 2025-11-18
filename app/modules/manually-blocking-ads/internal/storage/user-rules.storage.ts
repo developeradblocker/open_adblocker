@@ -18,33 +18,29 @@
 import { makeDataAccessor } from '@/utils/storage/make-data-accessor'
 
 export class UserRulesStorage {
-  private readonly storage = makeDataAccessor<string>(
+  private readonly storage = makeDataAccessor<string[]>(
     'local',
-    'USERRULES',
+    'USER_RULES',
     {
       useCache: false,
-      default: ''
+      default: []
     })
 
-  async set (userrules: string): Promise<string> {
+  async set (userrules: string[]): Promise<string[]> {
     await this.storage.write(userrules)
     return userrules
   }
 
-  async addRule (ruleText: string): Promise<string> {
-    let existing = await this.get()
+  async addRule (ruleText: string): Promise<string[]> {
+    const existing = await this.get()
     if (existing.includes(ruleText)) {
       return existing
     }
-
-    if (existing.length > 0 && !existing.endsWith('\n')) {
-      existing += '\n'
-    }
-    existing += ruleText
+    existing.push(ruleText)
     return await this.set(existing)
   }
 
-  async get (): Promise<string> {
+  async get (): Promise<string[]> {
     return await this.storage.read()
   }
 }

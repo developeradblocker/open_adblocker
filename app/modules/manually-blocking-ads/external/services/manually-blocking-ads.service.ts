@@ -18,7 +18,7 @@
 import { injectable } from '@/utils/di/di.types'
 import {
   ManuallyBlockingAdsMessages,
-  ManuallyBlockingAdsStartMessage
+  ManuallyBlockingAdsTriggerStartMessage
 } from '@/modules/manually-blocking-ads/common/manually-blocking-ads.messages'
 import { logger } from '@/utils/logger/logger'
 import {
@@ -34,14 +34,14 @@ export class ManuallyBlockingAdsService implements ExternalManuallyBlockingAdsSe
     this.port = useExternalPort()
   }
 
-  async start (): Promise<void> {
+  async triggerStart (): Promise<void> {
     const tabs = await chrome.tabs.query({ active: true, currentWindow: true })
     if (!tabs.length) {
       logger.warn('No active tab found')
     }
-    const message: ManuallyBlockingAdsStartMessage = {
-      type: ManuallyBlockingAdsMessages.start,
-      payload: { tabId: tabs[0].id }
+    const message: ManuallyBlockingAdsTriggerStartMessage = {
+      type: ManuallyBlockingAdsMessages.triggerStart,
+      payload: { tabId: tabs[0].id, url: tabs[0].url }
     }
     await this.port.sendMessage(message)
     window.close()

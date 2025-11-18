@@ -15,13 +15,4 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-export enum ExternalManuallyBlockingAdsIdentifiers {
-  /**
-   * @link ManuallyBlockingAdsServiceInterface
-   */
-  service = 'ManuallyBlockingAds.Service'
-}
-
-export interface ExternalManuallyBlockingAdsServiceInterface {
-  triggerStart(): Promise<void>
-}
+export const MANUALLY_BLOCKING_ADS_IFRAME_ID = 'manually_blocking_ads'

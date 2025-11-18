@@ -15,38 +15,34 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
+import { inject, injectable } from '@/utils/di/di.types'
 import { AppMessageListener, Box } from '@/utils/dispatcher/dispatcher.types'
 import {
   ManuallyBlockingAdsMessages,
-  ManuallyBlockingAdsStartMessage
+  ManuallyBlockingAdsResetRulesMessage
 } from '@/modules/manually-blocking-ads/common/manually-blocking-ads.messages'
-import { inject, injectable } from '@/utils/di/di.types'
-import { IframeManager } from '@/modules/manually-blocking-ads/content/services/iframe.manager'
 import {
-  ContentManuallyBlockingAdsIdentifiers
-} from '@/modules/manually-blocking-ads/content/manually-blocking-ads.types'
-import { SelectorService } from '@/modules/manually-blocking-ads/content/services/selector.service'
+  InternalManuallyBlockingAdsIdentifiers,
+  InternalManuallyBlockingAdsServiceInterface
+} from '@/modules/manually-blocking-ads/internal/manually-blocking-ads.types'
 
 @injectable()
-export class StartManualAdBlockingListener implements AppMessageListener<ManuallyBlockingAdsStartMessage> {
+export class ResetRulesListener implements AppMessageListener<ManuallyBlockingAdsResetRulesMessage> {
   constructor (
-    @inject(ContentManuallyBlockingAdsIdentifiers.iframeManager)
-    private readonly iframeManager: IframeManager,
+    @inject(InternalManuallyBlockingAdsIdentifiers.service)
+    private readonly service: InternalManuallyBlockingAdsServiceInterface
+  ) {
+  }
 
-    @inject(ContentManuallyBlockingAdsIdentifiers.service)
-    private readonly selector: SelectorService
-  ) {}
-
-  on (): ManuallyBlockingAdsMessages.start {
-    return ManuallyBlockingAdsMessages.start
+  on (): ManuallyBlockingAdsMessages.resetRules {
+    return ManuallyBlockingAdsMessages.resetRules
   }
 
   main (): false {
     return false
   }
 
-  async handle ({ message }: Box<ManuallyBlockingAdsStartMessage>): Promise<void> {
-    await this.iframeManager.start(message.payload.appliedRules)
-    this.selector.start()
+  async handle (box: Box<ManuallyBlockingAdsResetRulesMessage>): Promise<void> {
+    await this.service.resetRules(box.message.payload.rules)
   }
 }

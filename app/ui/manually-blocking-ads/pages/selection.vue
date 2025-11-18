@@ -1,11 +1,7 @@
 <template>
   <primary-layout class="selection-page">
     <template #header>
-      <div class="selection-page__heading">
-        <base-svg class="heading__logo" src="../../icons/logo.svg"/>
-        <h1 class="heading__title">{{ pageTitle }}</h1>
-        <base-svg class="heading__close" src="../../icons/close.svg" @click="onClose"/>
-      </div>
+      <draggable-heading :title="pageTitle" />
     </template>
     <template #content>
       <div class="selection-page__content">
@@ -63,6 +59,7 @@ import BaseCheckbox from '@/ui/shared/components/checkbox/base-checkbox.vue'
 import { useRoute, useRouter } from 'vue-router'
 import { Route } from '@/ui/manually-blocking-ads/router/route-names'
 import { useUIManuallyBlockingAds } from '@/modules/manually-blocking-ads/ui/manually-blocking-ads.setup'
+import DraggableHeading from '@/ui/manually-blocking-ads/components/draggable-heading.vue'
 
 const $router = useRouter()
 const $route = useRoute()
@@ -99,9 +96,6 @@ const onReselect = () => {
 const onBlock = () => {
   $manuallyBlockingAds.blockElement(applyToAll.value, blockSimilar.value)
   $router.push({ name: Route.main })
-}
-const onClose = () => {
-  $manuallyBlockingAds.close()
 }
 const onSliderChange = () => {
   $manuallyBlockingAds.changeElement(sliderValue.value)

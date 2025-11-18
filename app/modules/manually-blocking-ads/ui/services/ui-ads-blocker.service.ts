@@ -22,10 +22,12 @@ import {
 } from '@/modules/broadcast/content/broadcast.types'
 import {
   ManuallyBlockingAdsBlockElementMessage,
-  ManuallyBlockingAdsChangeElementMessage, ManuallyBlockingAdsCloseMessage,
+  ManuallyBlockingAdsChangeElementMessage,
+  ManuallyBlockingAdsCloseMessage,
   ManuallyBlockingAdsEnterPreviewMessage,
   ManuallyBlockingAdsExitPreviewMessage,
   ManuallyBlockingAdsMessages,
+  ManuallyBlockingAdsResetRulesMessage,
   ManuallyBlockingAdsSelectElementMessage,
   ManuallyBlockingAdsStopMessage
 } from '@/modules/manually-blocking-ads/common/manually-blocking-ads.messages'
@@ -90,5 +92,13 @@ export class UiAdsBlockerService {
       }
     }
     this.broadcast.sendMessageToIframes(message)
+  }
+
+  resetRules (rules: string[]): void {
+    const message: ManuallyBlockingAdsResetRulesMessage = {
+      type: ManuallyBlockingAdsMessages.resetRules,
+      payload: { rules }
+    }
+    this.broadcast.sendMessage(message)
   }
 }

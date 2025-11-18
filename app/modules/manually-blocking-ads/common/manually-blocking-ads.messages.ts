@@ -18,6 +18,7 @@
 import { AppMessage } from '@/utils/dispatcher/dispatcher.types'
 
 export enum ManuallyBlockingAdsMessages {
+  triggerStart = 'ManuallyBlockingAds.TriggerStart',
   start = 'ManuallyBlockingAds.Start',
   selectElement = 'ManuallyBlockingAds.SelectElement',
   elementSelected = 'ManuallyBlockingAds.ElementSelected',
@@ -27,12 +28,20 @@ export enum ManuallyBlockingAdsMessages {
   stop = 'ManuallyBlockingAds.Stop',
   close = 'ManuallyBlockingAds.Close',
   blockElement = 'ManuallyBlockingAds.BlockElement',
-  addRule = 'ManualBlockingAds.AddRule'
+  addRule = 'ManualBlockingAds.AddRule',
+  removeRule = 'ManualBlockingAds.RemoveRule',
+  resetRules = 'ManualBlockingAds.ResetAll',
+  rulesUpdated = 'ManualBlockingAds.RulesUpdated'
 }
 
 export interface ManuallyBlockingAdsStartMessage extends AppMessage {
   type: ManuallyBlockingAdsMessages.start
-  payload: { tabId: number }
+  payload: { tabId: number, appliedRules: string[] }
+}
+
+export interface ManuallyBlockingAdsTriggerStartMessage extends AppMessage {
+  type: ManuallyBlockingAdsMessages.triggerStart
+  payload: { tabId: number, url: string }
 }
 
 export interface ManuallyBlockingAdsSelectElementMessage extends AppMessage {
@@ -49,7 +58,6 @@ export interface ManuallyBlockingAdsChangeElementMessage extends AppMessage {
 export interface ManuallyBlockingAdsEnterPreviewMessage extends AppMessage {
   type: ManuallyBlockingAdsMessages.enterPreview
 }
-
 
 export interface ManuallyBlockingAdsExitPreviewMessage extends AppMessage {
   type: ManuallyBlockingAdsMessages.exitPreview
@@ -79,7 +87,24 @@ export interface ManuallyBlockingAdsBlockElementMessage extends AppMessage {
   }
 }
 
-export interface ManuallyBlockingAdsAddRuleMessage {
+export interface ManuallyBlockingAdsAddRuleMessage extends AppMessage {
   type: ManuallyBlockingAdsMessages.addRule
   payload: { ruleText: string }
+}
+
+export interface ManuallyBlockingAdsRemoveRuleMessage extends AppMessage {
+  type: ManuallyBlockingAdsMessages.removeRule
+  payload: { ruleText: string }
+}
+
+export interface ManuallyBlockingAdsResetRulesMessage extends AppMessage {
+  type: ManuallyBlockingAdsMessages.resetRules,
+  payload: { rules: string[] }
+}
+
+export interface ManuallyBlockingAdsRulesUpdatedMessage extends AppMessage {
+  type: ManuallyBlockingAdsMessages.rulesUpdated,
+  payload: {
+    needReload?: boolean
+  }
 }

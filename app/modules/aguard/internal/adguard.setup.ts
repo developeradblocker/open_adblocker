@@ -30,7 +30,7 @@ import { useInternalFilters } from '@/modules/filters/internal/filters.utils'
 import { FiltersStateChangedListener } from '@/modules/aguard/internal/listeners/filters/filters-state-changed.listener'
 import { useInternalWebRTC } from '@/modules/features/web-rtc/internal/web-rtc.utils'
 import { WebRTCStateChangedListener } from '@/modules/aguard/internal/listeners/web-rtc/web-rtc-state-changed.listener'
-import { AddRuleListener } from '@/modules/aguard/internal/listeners/user-rules/add-rule.listener'
+import { RulesUpdatedListener } from '@/modules/aguard/internal/listeners/user-rules/rules-updated.listener'
 import { FilterListPreprocessor } from '@adguard/tsurlfilter'
 import { useInternalManuallyBlockingAds } from '@/modules/manually-blocking-ads/internal/manually-blocking-ads.setup'
 
@@ -65,7 +65,7 @@ const adGuardSetupAsync = async (): Promise<void> => {
   inject(injections)
   dispatcher().onWithClass(FiltersStateChangedListener)
   dispatcher().onWithClass(WebRTCStateChangedListener)
-  dispatcher().onWithClass(AddRuleListener)
+  dispatcher().onWithClass(RulesUpdatedListener)
   const message: AdGuardOnReadyMessage = {
     type: AdGuardMessages.ready,
     force: true
@@ -80,7 +80,7 @@ export const getConfiguration = async (): Promise<ConfigurationMV3> => {
   config.settings.stealth.blockWebRTC = await useInternalWebRTC().getState()
   config.userrules = Object.assign(
     FilterListPreprocessor.preprocess(
-      await useInternalManuallyBlockingAds().getUserRules()
+      (await useInternalManuallyBlockingAds().getUserRules()).join('\n')
     ),
     { trusted: true }
   )

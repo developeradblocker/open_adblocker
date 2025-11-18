@@ -15,38 +15,34 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-import { AppMessageListener, Box } from '@/utils/dispatcher/dispatcher.types'
+import { inject, injectable } from '@/utils/di/di.types'
+import { AppMessageListener } from '@/utils/dispatcher/dispatcher.types'
 import {
   ManuallyBlockingAdsMessages,
-  ManuallyBlockingAdsStartMessage
+  ManuallyBlockingAdsSelectElementMessage
 } from '@/modules/manually-blocking-ads/common/manually-blocking-ads.messages'
-import { inject, injectable } from '@/utils/di/di.types'
-import { IframeManager } from '@/modules/manually-blocking-ads/content/services/iframe.manager'
 import {
   ContentManuallyBlockingAdsIdentifiers
 } from '@/modules/manually-blocking-ads/content/manually-blocking-ads.types'
 import { SelectorService } from '@/modules/manually-blocking-ads/content/services/selector.service'
 
 @injectable()
-export class StartManualAdBlockingListener implements AppMessageListener<ManuallyBlockingAdsStartMessage> {
+export class SelectElementListener implements AppMessageListener<ManuallyBlockingAdsSelectElementMessage> {
   constructor (
-    @inject(ContentManuallyBlockingAdsIdentifiers.iframeManager)
-    private readonly iframeManager: IframeManager,
-
     @inject(ContentManuallyBlockingAdsIdentifiers.service)
     private readonly selector: SelectorService
-  ) {}
+  ) {
+  }
 
-  on (): ManuallyBlockingAdsMessages.start {
-    return ManuallyBlockingAdsMessages.start
+  on (): ManuallyBlockingAdsMessages.selectElement {
+    return ManuallyBlockingAdsMessages.selectElement
   }
 
   main (): false {
     return false
   }
 
-  async handle ({ message }: Box<ManuallyBlockingAdsStartMessage>): Promise<void> {
-    await this.iframeManager.start(message.payload.appliedRules)
+  async handle (): Promise<void> {
     this.selector.start()
   }
 }

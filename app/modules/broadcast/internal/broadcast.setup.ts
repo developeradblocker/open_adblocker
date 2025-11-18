@@ -49,4 +49,4 @@ export const setupInternalBroadcast = (): void => {
   })
 }
 
-export const useInternalBroadcast = () => di.get<InternalBroadcastServiceInterface>(InternalBroadcastIdentifiers.service)
+export const useInternalBroadcast = (): InternalBroadcastServiceInterface => di.get(InternalBroadcastIdentifiers.service)

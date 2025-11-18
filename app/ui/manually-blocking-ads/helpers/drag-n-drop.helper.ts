@@ -15,13 +15,27 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-export enum ExternalManuallyBlockingAdsIdentifiers {
-  /**
-   * @link ManuallyBlockingAdsServiceInterface
-   */
-  service = 'ManuallyBlockingAds.Service'
+import { MANUALLY_BLOCKING_ADS_IFRAME_ID } from '@/modules/manually-blocking-ads/common/constants'
+
+export enum DragMessages {
+  start= `${MANUALLY_BLOCKING_ADS_IFRAME_ID}__DRAG_START`,
+  end = `${MANUALLY_BLOCKING_ADS_IFRAME_ID}__DRAG_END`,
 }
 
-export interface ExternalManuallyBlockingAdsServiceInterface {
-  triggerStart(): Promise<void>
+export const startDragging = (e: MouseEvent): void => {
+  e.preventDefault()
+  window.parent.postMessage({
+    type: DragMessages.start,
+    e: {
+      button: e.button,
+      clientX: e.clientX,
+      clientY: e.clientY
+    }
+  }, '*')
+}
+
+export const finishDragging = (): void => {
+  window.parent.postMessage({
+    type: DragMessages.end
+  }, '*')
 }

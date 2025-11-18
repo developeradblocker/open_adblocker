@@ -38,6 +38,7 @@
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
 import { getVersion } from '@/ui/settings/utils/get-version'
+
 const version = getVersion()
 </script>
 

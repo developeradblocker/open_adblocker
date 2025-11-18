@@ -1,19 +1,19 @@
 /**
  * @file
- * This file is part of Open Ad Blocker Browser Extension (https://github.com/developeradblocker/open_adblocker).
+ * This file is part of AdGuard Browser Extension (https://github.com/AdguardTeam/AdguardBrowserExtension).
  *
- * Open Ad Blocker Browser Extension is free software: you can redistribute it and/or modify
+ * AdGuard Browser Extension is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Open Ad Blocker Browser Extension is distributed in the hope that it will be useful,
+ * AdGuard Browser Extension is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
+ * along with AdGuard Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
 import cssEscape from './libs/css.escape.js'
 import protectedApi from './protectedApi.js'
@@ -22,30 +22,30 @@ import protectedApi from './protectedApi.js'
  * Adguard rules constructor
  * @type {Function}
  */
-function AdguardRulesConstructorLib(api = {}) {
-    const CSS_RULE_MARK = '##';
-    const RULE_OPTIONS_MARK = '$';
+function AdguardRulesConstructorLib (api = {}) {
+  const CSS_RULE_MARK = '##'
+  const RULE_OPTIONS_MARK = '$'
 
-    const URLBLOCK_ATTRIBUTES = ['src', 'data'];
+  const URLBLOCK_ATTRIBUTES = ['src', 'data']
 
-    const linkHelper = protectedApi.createElement('a');
+  const linkHelper = protectedApi.createElement('a')
 
-    /**
+  /**
      * Constructs css selector by combining classes by AND
      * @param classList
      * @returns {string}
      */
-    const constructClassCssSelectorByAND = (classList) => {
-        const selectors = [];
-        if (classList) {
-            for (let i = 0; i < classList.length; i += 1) {
-                selectors.push(`.${cssEscape(classList[i])}`);
-            }
-        }
-        return selectors.join('');
-    };
+  const constructClassCssSelectorByAND = (classList) => {
+    const selectors = []
+    if (classList) {
+      for (let i = 0; i < classList.length; i += 1) {
+        selectors.push(`.${cssEscape(classList[i])}`)
+      }
+    }
+    return selectors.join('')
+  }
 
-    /**
+  /**
      * Constructs css selector for element using tag name,
      * id and classed, like: tagName#id.class1.class2
      *
@@ -56,16 +56,16 @@ function AdguardRulesConstructorLib(api = {}) {
      * @param excludeId Omit element id in selector
      * @returns {string}
      */
-    const makeDefaultCssFilter = (element, classList, excludeTagName, excludeId) => {
-        let cssSelector = excludeTagName ? '' : element.tagName.toLowerCase();
-        if (element.id && !excludeId) {
-            cssSelector += `#${cssEscape(element.id)}`;
-        }
-        cssSelector += constructClassCssSelectorByAND(classList || element.classList);
-        return cssSelector;
-    };
+  const makeDefaultCssFilter = (element, classList, excludeTagName, excludeId) => {
+    let cssSelector = excludeTagName ? '' : element.tagName.toLowerCase()
+    if (element.id && !excludeId) {
+      cssSelector += `#${cssEscape(element.id)}`
+    }
+    cssSelector += constructClassCssSelectorByAND(classList || element.classList)
+    return cssSelector
+  }
 
-    /**
+  /**
      * Constructs css selector for element using parent elements
      * and nth-child (first-child, last-child) pseudo classes.
      *
@@ -74,103 +74,102 @@ function AdguardRulesConstructorLib(api = {}) {
      * For example: {excludeTagName: false, excludeId: false, classList: []}
      * @returns {string}
      */
-    const makeCssNthChildFilter = (element, options) => {
-        // eslint-disable-next-line no-param-reassign
-        options = options || {};
+  const makeCssNthChildFilter = (element, options) => {
+    options = options || {}
 
-        const { classList, excludeTagName, excludeId } = options;
+    const { classList, excludeTagName, excludeId } = options
 
-        const excludeTagNameOverride = 'excludeTagName' in options;
-        const excludeIdOverride = 'excludeId' in options;
+    const excludeTagNameOverride = 'excludeTagName' in options
+    const excludeIdOverride = 'excludeId' in options
 
-        const path = [];
-        let el = element;
-        while (el.parentNode) {
-            const nodeName = el && el.nodeName ? el.nodeName.toUpperCase() : '';
-            if (nodeName === 'BODY') {
-                break;
-            }
-            if (el.id) {
-                /**
+    const path = []
+    let el = element
+    while (el.parentNode) {
+      const nodeName = el && el.nodeName ? el.nodeName.toUpperCase() : ''
+      if (nodeName === 'BODY') {
+        break
+      }
+      if (el.id) {
+        /**
                  * Be default we don't include tag name and classes
                  * to selector for element with id attribute
                  */
-                let cssSelector = '';
-                if (el === element) {
-                    cssSelector = makeDefaultCssFilter(
-                        el,
-                        classList || [],
-                        excludeTagNameOverride ? excludeTagName : true,
-                        excludeIdOverride ? excludeId : false,
-                    );
-                } else {
-                    cssSelector = makeDefaultCssFilter(el, [], true, false);
-                }
-                path.unshift(cssSelector);
-                break;
-            } else {
-                let c = 1;
-                for (let e = el; e.previousSibling; e = e.previousSibling) {
-                    if (e.previousSibling.nodeType === 1) {
-                        c += 1;
-                    }
-                }
+        let cssSelector = ''
+        if (el === element) {
+          cssSelector = makeDefaultCssFilter(
+            el,
+            classList || [],
+            excludeTagNameOverride ? excludeTagName : true,
+            excludeIdOverride ? excludeId : false
+          )
+        } else {
+          cssSelector = makeDefaultCssFilter(el, [], true, false)
+        }
+        path.unshift(cssSelector)
+        break
+      } else {
+        let c = 1
+        for (let e = el; e.previousSibling; e = e.previousSibling) {
+          if (e.previousSibling.nodeType === 1) {
+            c += 1
+          }
+        }
 
-                let cldCount = 0;
-                for (let i = 0; el.parentNode && i < el.parentNode.childNodes.length; i += 1) {
-                    cldCount += el.parentNode.childNodes[i].nodeType === 1 ? 1 : 0;
-                }
+        let cldCount = 0
+        for (let i = 0; el.parentNode && i < el.parentNode.childNodes.length; i += 1) {
+          cldCount += el.parentNode.childNodes[i].nodeType === 1 ? 1 : 0
+        }
 
-                let ch;
-                if (cldCount === 0 || cldCount === 1) {
-                    ch = '';
-                } else if (c === 1) {
-                    ch = ':first-child';
-                } else if (c === cldCount) {
-                    ch = ':last-child';
-                } else {
-                    ch = `:nth-child(${c})`;
-                }
+        let ch
+        if (cldCount === 0 || cldCount === 1) {
+          ch = ''
+        } else if (c === 1) {
+          ch = ':first-child'
+        } else if (c === cldCount) {
+          ch = ':last-child'
+        } else {
+          ch = `:nth-child(${c})`
+        }
 
-                /**
+        /**
                  * By default we include tag name and
                  * element classes to selector for element without id attribute
                  */
-                if (el === element) {
-                    let p = makeDefaultCssFilter(
-                        el,
-                        classList,
-                        excludeId,
-                        excludeTagNameOverride ? excludeTagName : false,
-                    );
-                    p += ch;
-                    path.unshift(p);
-                } else {
-                    path.unshift(makeDefaultCssFilter(el, el.classList, false, false) + ch);
-                }
-
-                el = el.parentNode;
-            }
+        if (el === element) {
+          let p = makeDefaultCssFilter(
+            el,
+            classList,
+            excludeId,
+            excludeTagNameOverride ? excludeTagName : false
+          )
+          p += ch
+          path.unshift(p)
+        } else {
+          path.unshift(makeDefaultCssFilter(el, el.classList, false, false) + ch)
         }
-        return path.join(' > ');
-    };
 
-    /**
+        el = el.parentNode
+      }
+    }
+    return path.join(' > ')
+  }
+
+  /**
      * Constructs css selector by combining classes by OR
      * @param classList
      * @returns {string}
      */
-    const constructClassCssSelectorByOR = (classList) => {
-        const selectors = [];
-        if (classList) {
-            for (let i = 0; i < classList.length; i += 1) {
-                selectors.push(`.${cssEscape(classList[i])}`);
-            }
-        }
-        return selectors.join(', ');
-    };
+  const constructClassCssSelectorByOR = (classList) => {
+    const selectors = []
+    if (classList) {
+      for (let i = 0; i < classList.length; i += 1) {
+        selectors.push(`.${cssEscape(classList[i])}`)
+      }
+    }
+    return selectors.join(', ')
+  }
 
-    /**
+  /**
      * Constructs element selector for matching elements
      * that contain any of classes in original element.
      * For example <el class='cl1 cl2 cl3'></el> => .cl1, .cl2, .cl3
@@ -180,11 +179,11 @@ function AdguardRulesConstructorLib(api = {}) {
      * (If classList is null, element classes will be used)
      * @returns {string}
      */
-    const makeSimilarCssFilter = (element, classList) => (
-        constructClassCssSelectorByOR(classList || element.classList)
-    );
+  const makeSimilarCssFilter = (element, classList) => (
+    constructClassCssSelectorByOR(classList || element.classList)
+  )
 
-    /**
+  /**
      * Creates css rule text
      * @param element Element
      * @param options Construct options.
@@ -195,180 +194,178 @@ function AdguardRulesConstructorLib(api = {}) {
      * }
      * @returns {string}
      */
-    const constructCssRuleText = (element, options) => {
-        if (!element) {
-            return;
-        }
+  const constructCssRuleText = (element, options) => {
+    if (!element) {
+      return
+    }
 
-        // eslint-disable-next-line no-param-reassign
-        options = options || {};
-        const cssSelectorType = options.cssSelectorType || 'STRICT_FULL';
+    options = options || {}
+    const cssSelectorType = options.cssSelectorType || 'STRICT_FULL'
 
-        let selector;
-        switch (cssSelectorType) {
-            case 'STRICT_FULL':
-                selector = makeCssNthChildFilter(element, options);
-                break;
-            case 'STRICT':
-                selector = makeDefaultCssFilter(
-                    element,
-                    options.classList,
-                    options.excludeTagName,
-                    options.excludeId,
-                );
-                break;
-            case 'SIMILAR':
-                selector = makeSimilarCssFilter(element, options.classList, true);
-                break;
-            default:
-                break;
-        }
+    let selector
+    switch (cssSelectorType) {
+      case 'STRICT_FULL':
+        selector = makeCssNthChildFilter(element, options)
+        break
+      case 'STRICT':
+        selector = makeDefaultCssFilter(
+          element,
+          options.classList,
+          options.excludeTagName,
+          options.excludeId
+        )
+        break
+      case 'SIMILAR':
+        selector = makeSimilarCssFilter(element, options.classList, true)
+        break
+      default:
+        break
+    }
 
-        // eslint-disable-next-line consistent-return
-        return selector ? CSS_RULE_MARK + selector : '';
-    };
+    return selector ? CSS_RULE_MARK + selector : ''
+  }
 
-    const constructUrlBlockRuleText = (element, urlBlockAttribute, oneDomain, domain) => {
-        if (!urlBlockAttribute) {
-            return null;
-        }
+  const constructUrlBlockRuleText = (element, urlBlockAttribute, oneDomain, domain) => {
+    if (!urlBlockAttribute) {
+      return null
+    }
 
-        let blockUrlRuleText = urlBlockAttribute.replace(/^http:\/\/(www\.)?/, '||');
-        if (blockUrlRuleText.indexOf('.') === 0) {
-            blockUrlRuleText = blockUrlRuleText.substring(1);
-        }
+    let blockUrlRuleText = urlBlockAttribute.replace(/^http:\/\/(www\.)?/, '||')
+    if (blockUrlRuleText.indexOf('.') === 0) {
+      blockUrlRuleText = blockUrlRuleText.substring(1)
+    }
 
-        if (!oneDomain) {
-            blockUrlRuleText = `${blockUrlRuleText}${RULE_OPTIONS_MARK}domain=${domain}`;
-        }
+    if (!oneDomain) {
+      blockUrlRuleText = `${blockUrlRuleText}${RULE_OPTIONS_MARK}domain=${domain}`
+    }
 
-        return blockUrlRuleText;
-    };
+    return blockUrlRuleText
+  }
 
-    const isValidUrl = (value) => {
-        if (value) {
-            linkHelper.href = value;
-            if (linkHelper.hostname) {
-                return true;
-            }
-        }
+  const isValidUrl = (value) => {
+    if (value) {
+      linkHelper.href = value
+      if (linkHelper.hostname) {
+        return true
+      }
+    }
 
-        return false;
-    };
+    return false
+  }
 
-    const getUrlBlockAttribute = (element) => {
-        if (!element || !element.getAttribute) {
-            return null;
-        }
+  const getUrlBlockAttribute = (element) => {
+    if (!element || !element.getAttribute) {
+      return null
+    }
 
-        for (let i = 0; i < URLBLOCK_ATTRIBUTES.length; i += 1) {
-            const attr = URLBLOCK_ATTRIBUTES[i];
-            const value = element.getAttribute(attr);
-            if (isValidUrl(value)) {
-                return value;
-            }
-        }
+    for (let i = 0; i < URLBLOCK_ATTRIBUTES.length; i += 1) {
+      const attr = URLBLOCK_ATTRIBUTES[i]
+      const value = element.getAttribute(attr)
+      if (isValidUrl(value)) {
+        return value
+      }
+    }
 
-        return null;
-    };
+    return null
+  }
 
-    const haveUrlBlockParameter = (element) => {
-        const value = getUrlBlockAttribute(element);
-        return value && value !== '';
-    };
+  const haveUrlBlockParameter = (element) => {
+    const value = getUrlBlockAttribute(element)
+    return value && value !== ''
+  }
 
-    const haveClassAttribute = (element) => element.classList && element.classList.length > 0;
+  const haveClassAttribute = (element) => element.classList && element.classList.length > 0
 
-    const haveIdAttribute = (element) => element.id && element.id.trim() !== '';
+  const haveIdAttribute = (element) => element.id && element.id.trim() !== ''
 
-    const getUrl = (url) => {
-        const pattern = '^(([^:/\\?#]+):)?(//(([^:/\\?#]*)(?::([^/\\?#]*))?))?([^\\?#]*)(\\?([^#]*))?(#(.*))?$';
-        const rx = new RegExp(pattern);
-        const parts = rx.exec(url);
+  const getUrl = (url) => {
+    const pattern = '^(([^:/\\?#]+):)?(//(([^:/\\?#]*)(?::([^/\\?#]*))?))?([^\\?#]*)(\\?([^#]*))?(#(.*))?$'
+    const rx = new RegExp(pattern)
+    const parts = rx.exec(url)
 
-        return {
-            host: parts[4] || '',
-            path: parts[7] || '',
-        };
-    };
+    return {
+      host: parts[4] || '',
+      path: parts[7] || ''
+    }
+  }
 
-    const cropDomain = (url) => {
-        const domain = getUrl(url).host;
-        return domain.replace('www.', '').replace(/:\d+/, '');
-    };
+  const cropDomain = (url) => {
+    const domain = getUrl(url).host
+    return domain.replace('www.', '').replace(/:\d+/, '')
+  }
 
-    /**
+  /**
      * Utility method
      *
      * @param element
      * @returns {string}
      */
-    // eslint-disable-next-line no-param-reassign
-    api.makeCssNthChildFilter = makeCssNthChildFilter;
 
-    /**
+  api.makeCssNthChildFilter = makeCssNthChildFilter
+
+  /**
      * Returns detailed element info
      *
      * @param element
      */
-    // eslint-disable-next-line no-param-reassign
-    api.getElementInfo = (element) => {
-        // Convert attributes to array
-        const attributes = [];
-        const elementAttributes = element.attributes;
-        if (elementAttributes) {
-            for (let i = 0; i < elementAttributes.length; i += 1) {
-                const attr = elementAttributes[i];
-                attributes.push({
-                    name: attr.name,
-                    value: attr.value,
-                });
-            }
-        }
 
-        return {
-            tagName: element.tagName,
-            attributes,
-            urlBlockAttributeValue: getUrlBlockAttribute(element),
-            haveUrlBlockParameter: haveUrlBlockParameter(element),
-            haveClassAttribute: haveClassAttribute(element),
-            haveIdAttribute: haveIdAttribute(element),
-        };
-    };
+  api.getElementInfo = (element) => {
+    // Convert attributes to array
+    const attributes = []
+    const elementAttributes = element.attributes
+    if (elementAttributes) {
+      for (let i = 0; i < elementAttributes.length; i += 1) {
+        const attr = elementAttributes[i]
+        attributes.push({
+          name: attr.name,
+          value: attr.value
+        })
+      }
+    }
 
-    /**
+    return {
+      tagName: element.tagName,
+      attributes,
+      urlBlockAttributeValue: getUrlBlockAttribute(element),
+      haveUrlBlockParameter: haveUrlBlockParameter(element),
+      haveClassAttribute: haveClassAttribute(element),
+      haveIdAttribute: haveIdAttribute(element)
+    }
+  }
+
+  /**
      * Constructs css selector for specified rule
      *
      * @param ruleText rule text
      * @returns {string} css style selector
      */
-    // eslint-disable-next-line no-param-reassign
-    api.constructRuleCssSelector = (ruleText) => {
-        if (!ruleText) {
-            return null;
-        }
 
-        const index = ruleText.indexOf(CSS_RULE_MARK);
-        const optionsIndex = ruleText.indexOf(RULE_OPTIONS_MARK);
+  api.constructRuleCssSelector = (ruleText) => {
+    if (!ruleText) {
+      return null
+    }
 
-        if (index >= 0) {
-            return ruleText.substring(
-                index + CSS_RULE_MARK.length,
-                optionsIndex >= 0 ? optionsIndex : ruleText.length,
-            );
-        }
+    const index = ruleText.indexOf(CSS_RULE_MARK)
+    const optionsIndex = ruleText.indexOf(RULE_OPTIONS_MARK)
 
-        let s = ruleText.substring(0, optionsIndex);
-        s = s.replace(/[|]|[\^]/g, '');
+    if (index >= 0) {
+      return ruleText.substring(
+        index + CSS_RULE_MARK.length,
+        optionsIndex >= 0 ? optionsIndex : ruleText.length
+      )
+    }
 
-        if (isValidUrl(s)) {
-            return `[src*="${s}"]`;
-        }
+    let s = ruleText.substring(0, optionsIndex)
+    s = s.replace(/[|]|[\^]/g, '')
 
-        return null;
-    };
+    if (isValidUrl(s)) {
+      return `[src*="${s}"]`
+    }
 
-    /**
+    return null
+  }
+
+  /**
      * Constructs adguard rule text from element node and specified options
      *
      * const options = {
@@ -388,44 +385,44 @@ function AdguardRulesConstructorLib(api = {}) {
      * @param options
      * @returns {*}
      */
-    // eslint-disable-next-line no-param-reassign
-    api.constructRuleText = (element, options) => {
-        const croppedDomain = cropDomain(options.url);
 
-        const { ruleType } = options;
+  api.constructRuleText = (element, options) => {
+    const croppedDomain = cropDomain(options.url)
 
-        if (ruleType === 'URL') {
-            const blockUrlRuleText = constructUrlBlockRuleText(
-                element,
-                options.urlMask,
-                options.isBlockOneDomain,
-                croppedDomain,
-            );
-            if (blockUrlRuleText) {
-                return blockUrlRuleText;
-            }
-        }
+    const { ruleType } = options
 
-        let result;
+    if (ruleType === 'URL') {
+      const blockUrlRuleText = constructUrlBlockRuleText(
+        element,
+        options.urlMask,
+        options.isBlockOneDomain,
+        croppedDomain
+      )
+      if (blockUrlRuleText) {
+        return blockUrlRuleText
+      }
+    }
 
-        if (ruleType === 'CSS') {
-            result = constructCssRuleText(element, options);
+    let result
 
-            // Append html attributes to css selector
-            if (options.attributes) {
-                result = (result || CSS_RULE_MARK + result) + options.attributes;
-            }
-        }
+    if (ruleType === 'CSS') {
+      result = constructCssRuleText(element, options)
 
-        if (!options.isBlockOneDomain) {
-            result = croppedDomain + result;
-        }
+      // Append html attributes to css selector
+      if (options.attributes) {
+        result = (result || CSS_RULE_MARK + result) + options.attributes
+      }
+    }
 
-        return result;
-    };
+    if (!options.isBlockOneDomain) {
+      result = croppedDomain + result
+    }
 
-    return api;
+    return result
+  }
+
+  return api
 }
-const adguardRulesConstructor = new AdguardRulesConstructorLib();
+const adguardRulesConstructor = new AdguardRulesConstructorLib()
 
-export default adguardRulesConstructor;
+export default adguardRulesConstructor

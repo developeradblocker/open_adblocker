@@ -26,8 +26,7 @@ import { Route } from '@/ui/manually-blocking-ads/router/route-names'
 
 @injectable()
 export class ElementSelectedListener implements AppMessageListener<ManuallyBlockingAdsElementSelectedMessage> {
-
-  on(): ManuallyBlockingAdsMessages.elementSelected {
+  on (): ManuallyBlockingAdsMessages.elementSelected {
     return ManuallyBlockingAdsMessages.elementSelected
   }
 

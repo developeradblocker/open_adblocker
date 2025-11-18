@@ -84,7 +84,7 @@ const toggleCookieCleaner = async (state: boolean): Promise<void> => {
   }
 }
 const onBlockElement = () => {
-  useExternalManuallyBlockingAds().start()
+  useExternalManuallyBlockingAds().triggerStart()
 }
 onMounted(async () => {
   const webRTCToggle: HTMLDivElement = document.querySelector('#web-rtc-toggle')

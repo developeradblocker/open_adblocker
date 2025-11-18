@@ -27,14 +27,15 @@ import {
   ContentBroadcastServiceInterface
 } from '@/modules/broadcast/content/broadcast.types'
 
-const HIGHLIGHT_COLOR ='#3A40EF'
+const HIGHLIGHT_COLOR = '#3A40EF'
 
 @injectable()
 export class SelectorService {
   private isStarted = false
   private currentEl: HTMLElement
   private traversedElements: HTMLElement[]
-  constructor(
+  private highlightElement: HTMLElement
+  constructor (
     @inject(ContentBroadcastIdentifiers.service)
     private readonly broadcast: ContentBroadcastServiceInterface
   ) {
@@ -43,6 +44,7 @@ export class SelectorService {
 
   start (): void {
     this.currentEl = null
+    this.highlightElement = null
     this.traversedElements = null
     this.isStarted = true
   }
@@ -54,7 +56,7 @@ export class SelectorService {
   onClose (): void {
     this.exitPreview()
     this.stop()
-    this.removeHighlight(this.currentEl)
+    this.removeHighlight()
     this.currentEl = null
     this.traversedElements = []
   }
@@ -64,17 +66,18 @@ export class SelectorService {
       return
     }
 
-    this.removeHighlight(this.currentEl)
     this.currentEl = this.traversedElements[newIndex]
     this.highlight(this.currentEl)
   }
 
   enterPreview (): void {
     this.currentEl.style.cssText += 'display: none !important;'
+    this.highlightElement.style.display = 'none'
   }
 
   exitPreview (): void {
     this.currentEl.style.cssText = this.currentEl.style.cssText.replace('display: none !important;', '')
+    this.highlightElement.style.display = 'block'
   }
 
   blockElement (allWebsites: boolean, blockSimilar: boolean): void {
@@ -83,7 +86,7 @@ export class SelectorService {
       cssSelectorType: blockSimilar ? 'SIMILAR' : 'STRICT_FULL',
       isBlockOneDomain: allWebsites,
       url: document.location,
-      ruleType: 'CSS',
+      ruleType: 'CSS'
     }
 
     const ruleText = adguardRulesConstructor.constructRuleText(this.currentEl, options)
@@ -94,6 +97,7 @@ export class SelectorService {
       }
     }
     this.currentEl.style.cssText += 'display: none !important;'
+    this.removeHighlight()
     this.broadcast.sendMessage(message)
   }
 
@@ -101,31 +105,49 @@ export class SelectorService {
     if (!this.isStarted) {
       return
     }
+
     const el = document.elementFromPoint(event.clientX, event.clientY) as HTMLElement
-    if (!this.currentEl) {
-      this.currentEl = el
-    } else if (this.currentEl !== el) {
-      this.removeHighlight(this.currentEl)
-      this.currentEl = el
+
+    if (this.currentEl && this.currentEl.isSameNode(el)) {
+      return
     }
+
+    if (this.currentEl) {
+      this.currentEl.removeEventListener('click', this.onClick.bind(this))
+    }
+
+    this.currentEl = el
     this.highlight(el)
   }
 
   private highlight (element: HTMLElement): void {
-    element.setAttribute('data-tag-name', element.tagName)
-    element.style.outline = `2px solid ${HIGHLIGHT_COLOR}`
-    element.style.borderRadius = '4px'
-    element.style.transition = 'all linear .1s'
-    // eslint-disable-next-line @typescript-eslint/no-misused-promises
+    const isNewEl = !this.highlightElement
+    if (isNewEl) {
+      this.highlightElement = document.createElement('span')
+      this.highlightElement.style.border = '2px solid ' + HIGHLIGHT_COLOR
+      this.highlightElement.style.borderRadius = '4px'
+      this.highlightElement.style.position = 'absolute'
+      this.highlightElement.style.outline = 'none'
+      this.highlightElement.style.transition = 'all .1s linear'
+      this.highlightElement.style.pointerEvents = 'none'
+      this.highlightElement.style.zIndex = '999999999'
+    }
+
+    const r = element.getBoundingClientRect()
+    this.highlightElement.style.left = r.left + 'px'
+    this.highlightElement.style.top = window.pageYOffset + r.top + 'px'
+    this.highlightElement.style.width = r.width + 'px'
+    this.highlightElement.style.height = r.height + 'px'
+
+    if (isNewEl) {
+      this.highlightElement = document.body.appendChild(this.highlightElement)
+    }
     element.addEventListener('click', this.onClick.bind(this))
   }
 
-  private removeHighlight (element: HTMLElement): void {
-    element.style.borderRadius = ''
-    element.style.outline = ''
-    element.style.transition = ''
-    // eslint-disable-next-line @typescript-eslint/no-misused-promises,@typescript-eslint/unbound-method
-    element.removeEventListener('click', this.onClick)
+  private removeHighlight (): void {
+    this.highlightElement?.remove()
+    this.highlightElement = null
   }
 
   private onClick (event: MouseEvent): void {
@@ -142,12 +164,11 @@ export class SelectorService {
       type: ManuallyBlockingAdsMessages.elementSelected,
       payload: {
         elementsInTraversedTree: traversedTree.elements.length,
-        elementIndex: traversedTree.selectedElementIndex,
+        elementIndex: traversedTree.selectedElementIndex
       }
     }
     this.broadcast.sendMessageToIframes(message)
     this.stop()
-    return
   }
 
   private getUrlBlockAttribute = (element: HTMLElement): string | null => {
@@ -165,11 +186,11 @@ export class SelectorService {
   private getTraversedElements (): {
     elements: HTMLElement[],
     selectedElementIndex: number
-  } {
+    } {
     const elements: HTMLElement[] = [this.currentEl]
     let currentEl = this.currentEl.firstElementChild as HTMLElement
 
-    while(currentEl && this.checkVisibility(currentEl)) {
+    while (currentEl && this.checkVisibility(currentEl)) {
       elements.unshift(currentEl)
       currentEl = currentEl.firstElementChild as HTMLElement
     }
