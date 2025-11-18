@@ -32,6 +32,7 @@ import {
 import { ExitPreviewStateListener } from '@/modules/manually-blocking-ads/content/listeners/exit-preview-state.listener'
 import { CloseManualAdBlockingListener } from '@/modules/manually-blocking-ads/content/listeners/close.listener'
 import { BlockElementListener } from '@/modules/manually-blocking-ads/content/listeners/block-element.listener'
+import { SelectElementListener } from '@/modules/manually-blocking-ads/content/listeners/select-element.listener'
 
 export const setupContentManuallyBlockingAds = (options: ContentManuallyBlockingAdsOptions): void => {
   inject([
@@ -57,4 +58,5 @@ export const setupContentManuallyBlockingAds = (options: ContentManuallyBlocking
   dispatcher().onWithClass(ExitPreviewStateListener)
   dispatcher().onWithClass(CloseManualAdBlockingListener)
   dispatcher().onWithClass(BlockElementListener)
+  dispatcher().onWithClass(SelectElementListener)
 }

@@ -17,55 +17,50 @@
  */
 import { inject, injectable } from '@/utils/di/di.types'
 import {
-  ManuallyBlockingAdsMessages,
-  ManuallyBlockingAdsStartMessage, ManuallyBlockingAdsStopMessage
-} from '@/modules/manually-blocking-ads/common/manually-blocking-ads.messages'
-import { logger } from '@/utils/logger/logger'
-import {
   InternalManuallyBlockingAdsIdentifiers,
   InternalManuallyBlockingAdsServiceInterface
 } from '@/modules/manually-blocking-ads/internal/manually-blocking-ads.types'
-import {
-  InternalBroadcastIdentifiers,
-  InternalBroadcastServiceInterface
-} from '@/modules/broadcast/internal/broadcast.types'
 import { UserRulesStorage } from '@/modules/manually-blocking-ads/internal/storage/user-rules.storage'
+import { dispatcher } from '@/utils/setup-worker'
+import {
+  ManuallyBlockingAdsMessages,
+  ManuallyBlockingAdsRulesUpdatedMessage
+} from '@/modules/manually-blocking-ads/common/manually-blocking-ads.messages'
 
 @injectable()
 export class ManuallyBlockingAdsService implements InternalManuallyBlockingAdsServiceInterface {
   constructor (
-    @inject(InternalBroadcastIdentifiers.service)
-    private readonly broadcast: InternalBroadcastServiceInterface,
-
     @inject(InternalManuallyBlockingAdsIdentifiers._storage)
     private readonly storage: UserRulesStorage
   ) {
   }
 
-  async start (): Promise<void> {
-    const tabs = await chrome.tabs.query({ active: true, currentWindow: true })
-    if (!tabs.length) {
-      logger.warn('No active tab found')
+  async addRule (ruleText: string): Promise<void> {
+    const existing = await this.storage.get()
+    if (existing.includes(ruleText)) {
+      return
     }
-    const message: ManuallyBlockingAdsStartMessage = {
-      type: ManuallyBlockingAdsMessages.start,
-      payload: { tabId: tabs[0].id }
-    }
-    this.broadcast.sendMessage(message.payload.tabId, message)
+    existing.push(ruleText)
+    await this.storage.set(existing)
+    await dispatcher().sendMessage({ type: ManuallyBlockingAdsMessages.rulesUpdated })
   }
 
-  async stop (): Promise<void> {
-    const tabs = await chrome.tabs.query({ active: true, currentWindow: true })
-    if (!tabs.length) {
-      logger.warn('No active tab found')
-    }
-    const message: ManuallyBlockingAdsStopMessage = {
-      type: ManuallyBlockingAdsMessages.stop
-    }
-    this.broadcast.sendMessage(tabs[0].id, message)
-  }
-
-  async getUserRules (): Promise<string> {
+  async getUserRules (): Promise<string[]> {
     return this.storage.get()
+  }
+
+  async resetRules (rules: string[]): Promise<void> {
+    const existingRules = await this.storage.get()
+    const newRules = existingRules
+      .filter(rule => !rules.includes(rule))
+    await this.storage.set(newRules)
+
+    const message: ManuallyBlockingAdsRulesUpdatedMessage = {
+      type: ManuallyBlockingAdsMessages.rulesUpdated,
+      payload: {
+        needReload: true
+      }
+    }
+    await dispatcher().sendMessage(message)
   }
 }

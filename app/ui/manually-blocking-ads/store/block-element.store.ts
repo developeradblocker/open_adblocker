@@ -15,13 +15,22 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-export enum ExternalManuallyBlockingAdsIdentifiers {
-  /**
-   * @link ManuallyBlockingAdsServiceInterface
-   */
-  service = 'ManuallyBlockingAds.Service'
+import { defineStore } from 'pinia'
+
+export interface AppState {
+  appliedRules: string[]
 }
 
-export interface ExternalManuallyBlockingAdsServiceInterface {
-  triggerStart(): Promise<void>
-}
+export const useBlockElementStore = defineStore('BlockElementStore', {
+  state: (): AppState => ({
+    appliedRules: []
+  }),
+  actions: {
+    addRule (rule: string): void {
+      this.appliedRules.push(rule)
+    },
+    removeRule (rule: string): void {
+      this.appliedRules = this.appliedRules.filter((appliedRule: string) => appliedRule !== rule)
+    }
+  }
+})

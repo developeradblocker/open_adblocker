@@ -24,7 +24,7 @@ export enum InternalManuallyBlockingAdsIdentifiers {
 }
 
 export interface InternalManuallyBlockingAdsServiceInterface {
-  start(): Promise<void>
-  stop(): Promise<void>
-  getUserRules(): Promise<string>
+  getUserRules(): Promise<string[]>
+  addRule(ruleText: string): Promise<void>
+  resetRules(rules: string[]): Promise<void>
 }

@@ -23,17 +23,25 @@ import './style.less'
 import { dispatcher, setupWorker } from '@/utils/setup-worker'
 import { setupContentBroadcast } from '@/modules/broadcast/content/broadcast.setup'
 import { setupUIManuallyBlockingAds } from '@/modules/manually-blocking-ads/ui/manually-blocking-ads.setup'
+import { createPinia, Pinia } from 'pinia'
+import { useBlockElementStore } from '@/ui/manually-blocking-ads/store/block-element.store'
 
 setupWorker('ManuallyBlockingAds')
 setupContentBroadcast()
-setupUIManuallyBlockingAds()
+setupUIManuallyBlockingAds();
 
-void (async (): Promise<void> => {
+(async (): Promise<void> => {
   const app = createApp(App)
+  const pinia: Pinia = createPinia()
 
+  const params: URLSearchParams = new URLSearchParams(window.location.search)
+  const payload: string[] = JSON.parse(params.get('payload'))
   app.use(router)
+  app.use(pinia)
   app.component('BaseSvg', InlineSvg)
-
+  useBlockElementStore().$patch({
+    appliedRules: payload
+  })
   await dispatcher().work()
   app.mount('#manually-blocking-ads')
 })()

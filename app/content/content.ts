@@ -44,8 +44,8 @@ const manuallyBlockingAdsOptions: ContentManuallyBlockingAdsOptions = {
 
 setupWorker('CSW')
 setupContentBroadcast()
-setupContentManuallyBlockingAds(manuallyBlockingAdsOptions)
+setupContentManuallyBlockingAds(manuallyBlockingAdsOptions);
 
-void (async () => {
+(async (): Promise<void> => {
   await dispatcher().work()
 })()

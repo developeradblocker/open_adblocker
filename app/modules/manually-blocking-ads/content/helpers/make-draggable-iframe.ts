@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-// draggable-iframe.ts
+import { DragMessages } from '@/ui/manually-blocking-ads/helpers/drag-n-drop.helper'
 
 export interface DraggableIframeOptions {
   /** Right margin (px) */
@@ -26,15 +26,6 @@ export interface DraggableIframeOptions {
   z?: number
 }
 
-export interface DraggableIframeController {
-  /** The iframe element you passed in */
-  element: HTMLIFrameElement;
-  /** Set the iframe position programmatically (px) */
-  setPosition: (x: number, y: number) => void;
-  /** Remove listeners/cover and stop managing the iframe */
-  destroy: () => void;
-}
-
 /**
  * Make an existing <iframe> draggable without injecting anything inside it.
  * Uses a temporary full-window transparent cover during drag.
@@ -42,7 +33,7 @@ export interface DraggableIframeController {
 export function makeIframeDraggable (
   Iframe: HTMLIFrameElement,
   opts: DraggableIframeOptions = {}
-): DraggableIframeController {
+): void {
   const {
     offsetRight = 40,
     y = 40,
@@ -51,6 +42,16 @@ export function makeIframeDraggable (
 
   // Ensure it's in the DOM
   if (!Iframe.isConnected) document.body.appendChild(Iframe)
+
+  window.addEventListener('message', (event: MessageEvent) => {
+    const message = event.data
+
+    if (message.type === DragMessages.start) {
+      onPointerDown(message.e)
+    } else if (message.type === DragMessages.end) {
+      onPointerUp()
+    }
+  })
 
   const leftMargin = window.innerWidth - Iframe.getBoundingClientRect().width - offsetRight
   // Base style
@@ -95,8 +96,8 @@ export function makeIframeDraggable (
     const r = getRect()
     dragging = true
 
-    startDX = e.clientX - r.left
-    startDY = e.clientY - r.top
+    startDX = e.clientX
+    startDY = e.clientY
     posX = r.left
     posY = r.top
 
@@ -160,19 +161,5 @@ export function makeIframeDraggable (
   function onPointerUp (): void {
     if (!dragging) return
     cleanupDrag()
-  }
-
-  Iframe.addEventListener('pointerdown', onPointerDown)
-
-  return {
-    element: Iframe,
-    setPosition (nx: number, ny: number): void {
-      posX = nx
-      posY = ny
-    },
-    destroy (): void {
-      Iframe.removeEventListener('pointerdown', onPointerDown)
-      cleanupDrag()
-    }
   }
 }

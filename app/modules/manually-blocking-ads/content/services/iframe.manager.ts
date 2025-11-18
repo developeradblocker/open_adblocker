@@ -21,6 +21,7 @@ import {
   ContentManuallyBlockingAdsOptions
 } from '@/modules/manually-blocking-ads/content/manually-blocking-ads.types'
 import { makeIframeDraggable } from '@/modules/manually-blocking-ads/content/helpers/make-draggable-iframe'
+import { MANUALLY_BLOCKING_ADS_IFRAME_ID } from '@/modules/manually-blocking-ads/common/constants'
 
 @injectable()
 export class IframeManager {
@@ -31,13 +32,13 @@ export class IframeManager {
   ) {
   }
 
-  async start (): Promise<void> {
+  async start (appliedRules: string[]): Promise<void> {
     if (this.iframe) {
       return
     }
     if (!document.body) {
       setTimeout(() => {
-        void this.start()
+        this.start(appliedRules)
       }, 200)
       return
     }
@@ -47,9 +48,11 @@ export class IframeManager {
       // eslint-disable-next-line brace-style
       this.iframe.onload = (): void => { resolve() }
       Object.assign(this.iframe.style, this.options.iframe.style)
-      const src = `${this.options.iframe.url}`
+      const payload = encodeURIComponent(JSON.stringify(appliedRules))
+      const src = `${this.options.iframe.url}?payload=${payload}`
+
       this.iframe.src = chrome.runtime.getURL(src)
-      this.iframe.id = 'manually-blocking-ads'
+      this.iframe.id = MANUALLY_BLOCKING_ADS_IFRAME_ID
       makeIframeDraggable(this.iframe, { offsetRight: 16, y: 16, z: 9999999999 })
     })
   }

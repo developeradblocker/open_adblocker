@@ -16,32 +16,24 @@
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
 import { AppMessageListener, Box } from '@/utils/dispatcher/dispatcher.types'
+import { injectable } from '@/utils/di/di.types'
 import {
-  ManuallyBlockingAdsMessages,
-  ManuallyBlockingAdsStartMessage
+  ManuallyBlockingAdsAddRuleMessage,
+  ManuallyBlockingAdsMessages
 } from '@/modules/manually-blocking-ads/common/manually-blocking-ads.messages'
-import { inject, injectable } from '@/utils/di/di.types'
-import {
-  InternalBroadcastIdentifiers,
-  InternalBroadcastServiceInterface
-} from '@/modules/broadcast/internal/broadcast.types'
+import { useBlockElementStore } from '@/ui/manually-blocking-ads/store/block-element.store'
 
 @injectable()
-export class StartManualAdBlockingListener implements AppMessageListener<ManuallyBlockingAdsStartMessage> {
-  constructor (
-    @inject(InternalBroadcastIdentifiers.service)
-    private readonly broadcast: InternalBroadcastServiceInterface
-  ) {}
-
-  on (): ManuallyBlockingAdsMessages.start {
-    return ManuallyBlockingAdsMessages.start
+export class AddRuleListener implements AppMessageListener<ManuallyBlockingAdsAddRuleMessage> {
+  on (): ManuallyBlockingAdsMessages.addRule {
+    return ManuallyBlockingAdsMessages.addRule
   }
 
   main (): false {
     return false
   }
 
-  async handle ({ message }: Box<ManuallyBlockingAdsStartMessage>): Promise<void> {
-    this.broadcast.sendMessage(message.payload.tabId, message)
+  async handle ({ message }: Box<ManuallyBlockingAdsAddRuleMessage>): Promise<void> {
+    useBlockElementStore().addRule(message.payload.ruleText)
   }
 }

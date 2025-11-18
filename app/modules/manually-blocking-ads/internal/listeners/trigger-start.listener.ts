@@ -17,32 +17,52 @@
  */
 import { AppMessageListener, Box } from '@/utils/dispatcher/dispatcher.types'
 import {
-  ManuallyBlockingAdsAddRuleMessage,
-  ManuallyBlockingAdsMessages
+  ManuallyBlockingAdsMessages,
+  ManuallyBlockingAdsStartMessage, ManuallyBlockingAdsTriggerStartMessage
 } from '@/modules/manually-blocking-ads/common/manually-blocking-ads.messages'
 import { inject, injectable } from '@/utils/di/di.types'
+import {
+  InternalBroadcastIdentifiers,
+  InternalBroadcastServiceInterface
+} from '@/modules/broadcast/internal/broadcast.types'
 import {
   InternalManuallyBlockingAdsIdentifiers,
   InternalManuallyBlockingAdsServiceInterface
 } from '@/modules/manually-blocking-ads/internal/manually-blocking-ads.types'
 
 @injectable()
-export class AddRuleListener implements AppMessageListener<ManuallyBlockingAdsAddRuleMessage> {
+export class TriggerStartManualAdBlockingListener implements AppMessageListener<ManuallyBlockingAdsTriggerStartMessage> {
   constructor (
+    @inject(InternalBroadcastIdentifiers.service)
+    private readonly broadcast: InternalBroadcastServiceInterface,
+
     @inject(InternalManuallyBlockingAdsIdentifiers.service)
     private readonly service: InternalManuallyBlockingAdsServiceInterface
-  ) {
-  }
+  ) {}
 
-  on (): ManuallyBlockingAdsMessages.addRule {
-    return ManuallyBlockingAdsMessages.addRule
+  on (): ManuallyBlockingAdsMessages.triggerStart {
+    return ManuallyBlockingAdsMessages.triggerStart
   }
 
   main (): false {
     return false
   }
 
-  async handle ({ message }: Box<ManuallyBlockingAdsAddRuleMessage>): Promise<void> {
-    await this.service.addRule(message.payload.ruleText)
+  async handle ({ message }: Box<ManuallyBlockingAdsTriggerStartMessage>): Promise<void> {
+    const appliedRules = (await this.service.getUserRules())
+      .filter((rule: string) => {
+        const currentDomain = (new URL(message.payload.url)).host.replace('www.', '').replace(/:\d+/, '')
+        const availableDomains = ['', currentDomain]
+        return availableDomains.includes(rule.split('##')[0])
+      })
+
+    const startMessage: ManuallyBlockingAdsStartMessage = {
+      type: ManuallyBlockingAdsMessages.start,
+      payload: {
+        tabId: message.payload.tabId,
+        appliedRules
+      }
+    }
+    this.broadcast.sendMessage(message.payload.tabId, startMessage)
   }
 }

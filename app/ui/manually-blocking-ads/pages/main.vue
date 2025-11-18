@@ -1,33 +1,23 @@
 <template>
   <primary-layout class="main-page">
     <template #header>
-      <div class="main-page__heading">
-        <base-svg class="heading__logo" src="../../icons/logo.svg"/>
-        <h1 class="heading__title">Remove element</h1>
-        <base-svg class="heading__close" src="../../icons/close.svg" @click="onClose"/>
-      </div>
+      <draggable-heading title="Remove element"/>
     </template>
     <template #content>
       <div class="main-page__content">
         <div class="main-page__list"
-             v-if="blockedElements.length"
+             v-if="appliedRules.length"
         >
           <div class="main-page__list-item"
-               v-for="(element, index) in blockedElements"
-               :key="element.rule"
+               v-for="(element, index) in appliedRules"
+               :key="index"
           >
             <p class="list-item__title">
               Element {{ index + 1 }}
             </p>
             <div class="list-item__controls">
-              <base-svg class="controls__action-item"
-                        :class="{
-                        'action-item--show': isHidden(element),
-                        'action-item--hide': !isHidden(element)
-                      }"
-                        :src="`../../icons/${isHidden(element) ? 'show' : 'hide'}.svg`" />
               <base-svg class="controls__action-item action-item--remove"
-                        src="../../icons/delete.svg"/>
+                        src="../../icons/delete.svg" @click="onRemoveRule(element)"/>
             </div>
           </div>
         </div>
@@ -36,12 +26,12 @@
           <p class="list-placeholder__label">Click the element<br/>you want to remove</p>
         </div>
         <div class="main-page__footer">
-          <template v-if="blockedElements.length">
-            <base-button label="Reset all" class="footer__action" :type="BaseButtonType.secondary"/>
-            <base-button label="Block another element" class="footer__action" :type="BaseButtonType.primary"/>
+          <template v-if="appliedRules.length">
+            <base-button label="Reset all" class="footer__action" :type="BaseButtonType.secondary" @click="onResetAll"/>
+            <base-button label="Block another element" class="footer__action" :type="BaseButtonType.primary" @click="onSelectElement"/>
           </template>
           <template v-else>
-            <base-button label="Cancel" class="footer__action" :type="BaseButtonType.secondary"/>
+            <base-button label="Cancel" class="footer__action" :type="BaseButtonType.secondary" @click="onClose"/>
           </template>
         </div>
       </div>
@@ -71,11 +61,27 @@ import PrimaryLayout from '@/ui/toolbar-popup/layouts/primary.layout.vue'
 import BaseButton from '@/ui/shared/components/button/base-button.vue'
 import { BaseButtonType } from '@/ui/shared/components/button/base-button.types'
 import { useUIManuallyBlockingAds } from '@/modules/manually-blocking-ads/ui/manually-blocking-ads.setup'
+import { storeToRefs } from 'pinia'
+import { useBlockElementStore } from '@/ui/manually-blocking-ads/store/block-element.store'
+import DraggableHeading from '@/ui/manually-blocking-ads/components/draggable-heading.vue'
 
-const blockedElements: unknown[] = []
-const isHidden = (element: any): boolean => !element.visible
+const $store = useBlockElementStore()
+const { appliedRules } = storeToRefs($store)
+const $manuallyBlockingAdsService = useUIManuallyBlockingAds()
+
 const onClose = () => {
-  useUIManuallyBlockingAds().stop()
+  $manuallyBlockingAdsService.stop()
+}
+const onSelectElement = () => {
+  $manuallyBlockingAdsService.startSelecting()
+}
+const onResetAll = () => {
+  $manuallyBlockingAdsService.resetRules(appliedRules.value)
+  $manuallyBlockingAdsService.stop()
+}
+const onRemoveRule = (ruleText: string) => {
+  $manuallyBlockingAdsService.resetRules([ruleText])
+  $store.removeRule(ruleText)
 }
 </script>
 
@@ -91,14 +97,6 @@ const onClose = () => {
   width: 100%;
 }
 
-.main-page__heading {
-  display: flex;
-  flex-flow: row nowrap;
-  align-items: center;
-  justify-content: space-between;
-  padding: 15px 16px;
-}
-
 .main-page__content {
   padding: 0 0 16px;
   height: 100%;
@@ -107,6 +105,7 @@ const onClose = () => {
   justify-content: space-between;
   box-sizing: border-box;
 }
+
 .main-page__list {
   flex-grow: 1;
   overflow-y: auto;
@@ -181,25 +180,6 @@ const onClose = () => {
   letter-spacing: 0;
   text-align: center;
 
-}
-
-.heading__title {
-  margin: 0;
-  font-weight: 700;
-  font-size: 14px;
-  line-height: 18px;
-  text-align: center;
-}
-
-.heading__logo {
-  width: 22px;
-  fill: #3A40EF;
-}
-
-.heading__close {
-  cursor: pointer;
-  width: 20px;
-  fill: #9693A5;
 }
 
 :deep(.primary-layout__content) {

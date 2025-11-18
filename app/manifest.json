@@ -18,7 +18,7 @@
   },
   "content_scripts": [
     {
-      "all_frames": true,
+      "all_frames": false,
       "js": [
         "content/tswebextension/content-script.js"
       ],
@@ -30,7 +30,7 @@
       "run_at": "document_idle"
     },
     {
-      "all_frames": true,
+      "all_frames": false,
       "js": [
         "content/content.js"
       ],

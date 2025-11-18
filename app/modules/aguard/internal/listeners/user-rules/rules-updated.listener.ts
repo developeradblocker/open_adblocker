@@ -21,40 +21,48 @@ import { AdGuardIdentifiers } from '@/modules/aguard/internal/adguaird.types'
 import { TsWebExtension } from '@adguard/tswebextension/mv3'
 import { ConfigurationMV3 } from '@adguard/tswebextension/dist/types/lib/mv3/background/configuration'
 import {
-  ManuallyBlockingAdsAddRuleMessage,
-  ManuallyBlockingAdsMessages
+  ManuallyBlockingAdsMessages,
+  ManuallyBlockingAdsRulesUpdatedMessage
 } from '@/modules/manually-blocking-ads/common/manually-blocking-ads.messages'
 import { FilterListPreprocessor } from '@adguard/tsurlfilter'
+import {
+  InternalManuallyBlockingAdsIdentifiers,
+  InternalManuallyBlockingAdsServiceInterface
+} from '@/modules/manually-blocking-ads/internal/manually-blocking-ads.types'
 
 @injectable()
-export class AddRuleListener implements AppMessageListener<ManuallyBlockingAdsAddRuleMessage> {
+export class RulesUpdatedListener implements AppMessageListener<ManuallyBlockingAdsRulesUpdatedMessage> {
   constructor (
     @inject(AdGuardIdentifiers._tsWebExtension)
     private readonly tsWebExtension: TsWebExtension,
 
     @inject(AdGuardIdentifiers._config)
-    private readonly config: ConfigurationMV3
+    private readonly config: ConfigurationMV3,
+
+    @inject(InternalManuallyBlockingAdsIdentifiers.service)
+    private readonly service: InternalManuallyBlockingAdsServiceInterface
   ) {
   }
 
-  on (): ManuallyBlockingAdsMessages.addRule {
-    return ManuallyBlockingAdsMessages.addRule
+  on (): ManuallyBlockingAdsMessages.rulesUpdated {
+    return ManuallyBlockingAdsMessages.rulesUpdated
   }
 
   main (): false {
     return false
   }
 
-  async handle ({ message }: Box<ManuallyBlockingAdsAddRuleMessage>): Promise<void> {
-    let rawFiltersList = this.config.userrules.rawFilterList
-    if (rawFiltersList.length > 0 && !rawFiltersList.endsWith('\n')) {
-      rawFiltersList += '\n'
-    }
-    rawFiltersList += message.payload.ruleText
+  async handle ({ message }: Box<ManuallyBlockingAdsRulesUpdatedMessage>): Promise<void> {
+    const userRules = await this.service.getUserRules()
+
     this.config.userrules = Object.assign(
-      FilterListPreprocessor.preprocess(rawFiltersList),
+      FilterListPreprocessor.preprocess(userRules.join('\n')),
       { trusted: true }
     )
     await this.tsWebExtension.configure(this.config)
+
+    if (message.payload.needReload) {
+      await chrome.tabs.reload()
+    }
   }
 }

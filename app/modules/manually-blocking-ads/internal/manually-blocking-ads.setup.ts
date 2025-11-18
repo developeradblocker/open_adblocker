@@ -23,9 +23,10 @@ import {
   InternalManuallyBlockingAdsIdentifiers, InternalManuallyBlockingAdsServiceInterface
 } from '@/modules/manually-blocking-ads/internal/manually-blocking-ads.types'
 import { di, dispatcher } from '@/utils/setup-worker'
-import { StartManualAdBlockingListener } from '@/modules/manually-blocking-ads/internal/listeners/start.listener'
+import { TriggerStartManualAdBlockingListener } from '@/modules/manually-blocking-ads/internal/listeners/trigger-start.listener'
 import { UserRulesStorage } from '@/modules/manually-blocking-ads/internal/storage/user-rules.storage'
 import { AddRuleListener } from '@/modules/manually-blocking-ads/internal/listeners/add-rule.listener'
+import { ResetRulesListener } from '@/modules/manually-blocking-ads/internal/listeners/reset-rules.listener'
 
 export const setupInternalManuallyBlockingAds = (): void => {
   inject([
@@ -39,8 +40,9 @@ export const setupInternalManuallyBlockingAds = (): void => {
     }
   ])
 
-  dispatcher().onWithClass(StartManualAdBlockingListener)
+  dispatcher().onWithClass(TriggerStartManualAdBlockingListener)
   dispatcher().onWithClass(AddRuleListener)
+  dispatcher().onWithClass(ResetRulesListener)
 }
 
 export const useInternalManuallyBlockingAds = (): InternalManuallyBlockingAdsServiceInterface => di.get(InternalManuallyBlockingAdsIdentifiers.service)

@@ -20,6 +20,7 @@ import { UIManuallyBlockingAdsIdentifiers } from '@/modules/manually-blocking-ad
 import { UiAdsBlockerService } from '@/modules/manually-blocking-ads/ui/services/ui-ads-blocker.service'
 import { di, dispatcher } from '@/utils/setup-worker'
 import { ElementSelectedListener } from '@/modules/manually-blocking-ads/ui/listeners/element-selected.listener'
+import { AddRuleListener } from '@/modules/manually-blocking-ads/ui/listeners/add-rule.listener'
 
 export const setupUIManuallyBlockingAds = (): void => {
   inject([
@@ -30,6 +31,7 @@ export const setupUIManuallyBlockingAds = (): void => {
   ])
 
   dispatcher().onWithClass(ElementSelectedListener)
+  dispatcher().onWithClass(AddRuleListener)
 }
 
 export const useUIManuallyBlockingAds = (): UiAdsBlockerService => di.get(UIManuallyBlockingAdsIdentifiers.service)

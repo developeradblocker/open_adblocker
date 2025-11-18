@@ -1,82 +1,85 @@
 /**
  * @file
- * This file is part of Open Ad Blocker Browser Extension (https://github.com/developeradblocker/open_adblocker).
+ * This file is part of AdGuard Browser Extension (https://github.com/AdguardTeam/AdguardBrowserExtension).
  *
- * Open Ad Blocker Browser Extension is free software: you can redistribute it and/or modify
+ * AdGuard Browser Extension is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Open Ad Blocker Browser Extension is distributed in the hope that it will be useful,
+ * AdGuard Browser Extension is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
+ * along with AdGuard Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
+
 /**
  * TODO: rewrite to class
  * TODO: add relevant jsdoc
  * Protected API
  * @constructor
  */
-function ProtectedApi() {
-    /**
+function ProtectedApi () {
+  /**
      * Default Trusted Types policy name provided by CoreLibs.
      */
-    const DEFAULT_POLICY_NAME = 'AGPolicy';
-    const win = window;
-    const functionPType = Function.prototype;
-    const originalGetOwnPropertyDescriptor = Object.getOwnPropertyDescriptor;
-    const { documentMode, documentElement } = document;
-    const originalAppendChild = document.appendChild;
-    const originalJSON = win.JSON;
-    const functionApply = functionPType.apply;
-    const functionBind = functionPType.bind;
-    const COMPLETE = 'complete';
-    const originalAttachShadow = documentElement.attachShadow;
+  const DEFAULT_POLICY_NAME = 'AGPolicy'
+  const win = window
+  const functionPType = Function.prototype
+  const originalGetOwnPropertyDescriptor = Object.getOwnPropertyDescriptor
+  const { documentMode, documentElement } = document
+  const originalAppendChild = document.appendChild
+  const originalJSON = win.JSON
+  const functionApply = functionPType.apply
+  const functionBind = functionPType.bind
+  const COMPLETE = 'complete'
+  const originalAttachShadow = documentElement.attachShadow
 
-    // eslint-disable-next-line func-names
-    const apply = typeof Reflect !== 'undefined' ? Reflect.apply : function (target, _this, _arguments) {
-        return functionApply.call(target, _this, _arguments);
-    };
+  const apply = typeof Reflect !== 'undefined'
+    ? Reflect.apply
+    : function (target, _this, _arguments) {
+      return functionApply.call(target, _this, _arguments)
+    }
 
-    const noop = () => { };
-    const methodCallerFactory = (owner, prop) => {
-        if (!owner) { return noop; }
-        // Keeps reference to the method, so that it is unaffected
-        // when `owner` is mutated.
-        const method = owner[prop];
-        // eslint-disable-next-line consistent-return, func-names
-        return function () {
-            if (method) {
-                // eslint-disable-next-line prefer-rest-params
-                return apply(method, owner, arguments);
-            }
-        };
-    };
+  const noop = () => { }
+  const methodCallerFactory = (owner, prop) => {
+    if (!owner) {
+      return noop
+    }
+    // Keeps reference to the method, so that it is unaffected
+    // when `owner` is mutated.
+    const method = owner[prop]
 
-    const getReadyState = () => {
-        // We need to add this hook for tests, because a phantomjs
-        // doesn't work with Object.getOwnPropertyDescriptor correctly
-        if (typeof originalGetOwnPropertyDescriptor(Document.prototype, 'readyState') === 'undefined') {
-            return COMPLETE;
-        }
+    return function () {
+      if (method) {
+        return apply(method, owner, arguments)
+      }
+    }
+  }
 
-        const readyStateGetter = originalGetOwnPropertyDescriptor(Document.prototype, 'readyState').get;
-        return apply(readyStateGetter, document, []);
-    };
+  const getReadyState = () => {
+    // We need to add this hook for tests, because a phantomjs
+    // doesn't work with Object.getOwnPropertyDescriptor correctly
+    if (typeof originalGetOwnPropertyDescriptor(Document.prototype, 'readyState') === 'undefined') {
+      return COMPLETE
+    }
 
-    const addListenerToWindow = methodCallerFactory(win, 'addEventListener');
-    const removeListenerFromWindow = methodCallerFactory(win, 'removeEventListener');
-    const querySelector = methodCallerFactory(document, 'querySelector');
+    const readyStateGetter = originalGetOwnPropertyDescriptor(Document.prototype, 'readyState').get
+    return apply(readyStateGetter, document, [])
+  }
 
-    const appendChildToElement = (elem, child) => {
-        apply(originalAppendChild, elem, [child]);
-    };
+  const addListenerToWindow = methodCallerFactory(win, 'addEventListener')
+  const removeListenerFromWindow = methodCallerFactory(win, 'removeEventListener')
+  const querySelector = methodCallerFactory(document, 'querySelector')
 
-    /**
+  const appendChildToElement = (elem, child) => {
+    apply(originalAppendChild, elem, [child])
+  }
+
+  /**
      * Creating element instead `document.createElement`
      * to prevented a custom `document.createElement`
      * see: https://github.com/AdguardTeam/AdguardAssistant/issues/165
@@ -85,53 +88,52 @@ function ProtectedApi() {
      * we will use it with default AdGuard policy to create elements from strings.
      * see: https://github.com/AdguardTeam/AdguardAssistant/issues/438
      */
-    const createElement = (markup) => {
-        const doc = document.implementation.createHTMLDocument('');
+  const createElement = (markup) => {
+    const doc = document.implementation.createHTMLDocument('')
 
-        if (markup && markup[0] !== '<') {
-            // eslint-disable-next-line no-param-reassign
-            markup = `<${markup}></${markup}>`;
-        }
+    if (markup && markup[0] !== '<') {
+      markup = `<${markup}></${markup}>`
+    }
 
-        try {
-            if (win.trustedTypes && win.trustedTypes.createPolicy) {
-                const policy = win.trustedTypes.createPolicy(DEFAULT_POLICY_NAME, {
-                    createHTML: (s) => s,
-                });
-                // eslint-disable-next-line no-param-reassign
-                markup = policy.createHTML(markup);
-            }
-        } catch (e) {
-            // Do nothing
-        }
+    try {
+      if (win.trustedTypes && win.trustedTypes.createPolicy) {
+        const policy = win.trustedTypes.createPolicy(DEFAULT_POLICY_NAME, {
+          createHTML: (s) => s
+        })
 
-        doc.body.innerHTML = markup;
+        markup = policy.createHTML(markup)
+      }
+    } catch (e) {
+      console.error(e)
+    }
 
-        return doc.body.firstChild;
-    };
+    doc.body.innerHTML = markup
 
-    /**
+    return doc.body.firstChild
+  }
+
+  /**
      * Set innerHTML to element.
      *
      * @param {HTMLElement} element Element to add HTML.
      * @param {string} html HTML string.
      */
-    const setInnerHtml = (element, html) => {
-        // Clear existing content
-        while (element.lastChild) {
-            element.removeChild(element.lastChild);
-        }
+  const setInnerHtml = (element, html) => {
+    // Clear existing content
+    while (element.lastChild) {
+      element.removeChild(element.lastChild)
+    }
 
-        // Add new content
-        element.appendChild(createElement(html));
-    };
+    // Add new content
+    element.appendChild(createElement(html))
+  }
 
-    const json = {
-        parse: methodCallerFactory(originalJSON, 'parse'),
-        stringify: methodCallerFactory(originalJSON, 'stringify'),
-    };
+  const json = {
+    parse: methodCallerFactory(originalJSON, 'parse'),
+    stringify: methodCallerFactory(originalJSON, 'stringify')
+  }
 
-    /**
+  /**
      * Creating style element
      * @param {String} styles css styles in string
      * @param {String} nonce  attribute for content-security-policy
@@ -139,57 +141,57 @@ function ProtectedApi() {
      * @return {Object|false} style tag with styles or false
      * if the styles with transferred id is exist
      */
-    const createStylesElement = (styles, nonce, id) => {
-        if (id && querySelector(`#${id}`)) {
-            return false;
-        }
+  const createStylesElement = (styles, nonce, id) => {
+    if (id && querySelector(`#${id}`)) {
+      return false
+    }
 
-        const tagNode = createElement('style');
-        tagNode.setAttribute('type', 'text/css');
+    const tagNode = createElement('style')
+    tagNode.setAttribute('type', 'text/css')
 
-        if (id) {
-            tagNode.setAttribute('id', id);
-        }
+    if (id) {
+      tagNode.setAttribute('id', id)
+    }
 
-        tagNode.setAttribute('nonce', nonce);
+    tagNode.setAttribute('nonce', nonce)
 
-        if (tagNode.styleSheet) {
-            tagNode.styleSheet.cssText = styles;
-        } else {
-            appendChildToElement(tagNode, document.createTextNode(styles));
-        }
+    if (tagNode.styleSheet) {
+      tagNode.styleSheet.cssText = styles
+    } else {
+      appendChildToElement(tagNode, document.createTextNode(styles))
+    }
 
-        return tagNode;
-    };
+    return tagNode
+  }
 
-    /**
+  /**
      * Check browser shadow dom support.
      * Safari crashes after adding style tag in attachShadow so exclude it
      * see: https://github.com/AdguardTeam/AdguardBrowserExtension/issues/974
      */
-    const checkShadowDomSupport = () => {
-        const SAFARI_UA_REGEX = /^((?!chrome|android).)*safari/i;
-        const isSafari = window.safari !== undefined
-            || SAFARI_UA_REGEX.test(navigator.userAgent);
+  const checkShadowDomSupport = () => {
+    const SAFARI_UA_REGEX = /^((?!chrome|android).)*safari/i
+    const isSafari = window.safari !== undefined ||
+            SAFARI_UA_REGEX.test(navigator.userAgent)
 
-        return typeof originalAttachShadow !== 'undefined' && !isSafari;
-    };
+    return typeof originalAttachShadow !== 'undefined' && !isSafari
+  }
 
-    return {
-        functionBind,
-        addListenerToWindow,
-        removeListenerFromWindow,
-        getReadyState,
-        documentMode,
-        appendChildToElement,
-        createElement,
-        setInnerHtml,
-        json,
-        createStylesElement,
-        checkShadowDomSupport,
-    };
+  return {
+    functionBind,
+    addListenerToWindow,
+    removeListenerFromWindow,
+    getReadyState,
+    documentMode,
+    appendChildToElement,
+    createElement,
+    setInnerHtml,
+    json,
+    createStylesElement,
+    checkShadowDomSupport
+  }
 }
 
-const protectedApi = new ProtectedApi();
+const protectedApi = new ProtectedApi()
 
-export default protectedApi;
+export default protectedApi
