@@ -29,6 +29,7 @@ import { POPUP_ROUTE } from '@/ui/toolbar-popup/router/route-names'
 import { useUserActivity } from '@/modules/user-activity/external/utils'
 import { setupExternalWebRTC } from '@/modules/features/web-rtc/external/web-rtc.setup'
 import { setupExternalFilters } from '@/modules/filters/external/filters.setup'
+import { setupExternalManuallyBlockingAds } from '@/modules/manually-blocking-ads/external/manually-blocking-ads.setup'
 
 jest.mock('vue', () => ({
   defineComponent: jest.fn(),
@@ -90,6 +91,11 @@ jest.mock('@/modules/filters/external/filters.setup', () => ({
   setupExternalFilters: jest.fn()
 }))
 
+jest.mock('@/modules/manually-blocking-ads/external/manually-blocking-ads.setup', () => ({
+  setupExternalManuallyBlockingAds: jest.fn()
+}))
+
+
 jest.mock('@/modules/user-activity/external/utils', () => ({
   useUserActivity: jest.fn(() => ({
     visitPage: jest.fn()
@@ -123,6 +129,7 @@ describe('Popup entry script', () => {
       expect(setupExternalWebRTC).toHaveBeenCalled()
       expect(setupExternalApp).toHaveBeenCalled()
       expect(setupExternalFilters).toHaveBeenCalled()
+      expect(setupExternalManuallyBlockingAds).toHaveBeenCalled()
       expect(dispatcher).toHaveBeenCalled()
       expect(mockWork).toHaveBeenCalled()
       expect(logger.info).toHaveBeenCalledWith('Popup started...')
