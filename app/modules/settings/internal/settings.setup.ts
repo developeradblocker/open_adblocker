@@ -23,21 +23,36 @@ import { InternalSettingsIdentifiers } from '@/modules/settings/internal/setting
 import { SettingsService } from '@/modules/settings/internal/service/settings.service'
 import { ExportSettingsListener } from '@/modules/settings/internal/listeners/export-settings.listener'
 import { ImportSettingsListener } from '@/modules/settings/internal/listeners/import-settings.listener'
-import { onAdGuardReady } from '@/modules/aguard/internal/expose.messages'
+import { GetSettingsListener } from '@/modules/settings/internal/listeners/get-settings.listener'
+import { FiltersStateChangedListener } from '@/modules/settings/internal/listeners/state-changed/filters.listener'
+import { WebRTCStateChangedListener } from '@/modules/settings/internal/listeners/state-changed/web-rtc.listener'
+import { WhitelistStateChangedListener } from '@/modules/settings/internal/listeners/state-changed/whitelist.listener'
+import { MetadataService } from '@/modules/settings/internal/service/metadata.service'
+import { MetadataStorage } from '@/modules/settings/internal/storage/metadata.storage'
+import { onInstallHandler } from '@/modules/settings/internal/handlers/on-install.handler'
 
 const injections: Injection[] = [
   {
     key: InternalSettingsIdentifiers.service,
     use: SettingsService
+  },
+  {
+    key: InternalSettingsIdentifiers.metadata,
+    use: MetadataService
+  },
+  {
+    key: InternalSettingsIdentifiers._metadataStorage,
+    use: MetadataStorage
   }
 ]
 
-const handleOnAdGuardReady = async (): Promise<void> => {
+export const setupInternalSettings = (): void => {
+  chrome.runtime.onInstalled.addListener(onInstallHandler)
   inject(injections)
   dispatcher().onWithClass(ExportSettingsListener)
   dispatcher().onWithClass(ImportSettingsListener)
-}
-
-export const setupInternalSettings = (): void => {
-  onAdGuardReady(handleOnAdGuardReady)
+  dispatcher().onWithClass(GetSettingsListener)
+  dispatcher().onWithClass(FiltersStateChangedListener)
+  dispatcher().onWithClass(WebRTCStateChangedListener)
+  dispatcher().onWithClass(WhitelistStateChangedListener)
 }

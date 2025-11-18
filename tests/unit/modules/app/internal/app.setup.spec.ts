@@ -53,6 +53,4 @@ describe('setupInternalApp', () => {
     expect(onHandledAllRequiredMessages).toHaveBeenCalledTimes(1)
     expect(onHandledAllRequiredMessages).toHaveBeenCalledWith(requiredMessages, handleOnAppReady)
   })
-
-  it.todo('write tests for "handleOnAppReady"')
 })

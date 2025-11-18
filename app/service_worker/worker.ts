@@ -31,7 +31,7 @@ import { setupInternalWhitelist } from '@/modules/whitelist/internal/whitelist.s
 import { setupInternalUserActivity } from '@/modules/user-activity/internal/user-activity.setup'
 import { helloAndGoodbyeSetup } from '@/modules/hello-and-goodbye/internal/hello-and-goodbye.setup'
 import { setupInternalWebRTC } from '@/modules/features/web-rtc/internal/web-rtc.setup'
-import { setupInternalFilters } from '@/modules/filters/internal/filter.setup'
+import { setupInternalFilters } from '@/modules/filters/internal/filters.setup'
 import { setupInternalConfig } from '@/modules/config/internal/config.setup'
 import { setupInternalSettings } from '@/modules/settings/internal/settings.setup'
 import { setupInternalBroadcast } from '@/modules/broadcast/internal/broadcast.setup'

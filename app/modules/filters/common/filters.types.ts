@@ -15,9 +15,9 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
+
 export interface FiltersBaseInterface {
   toggle: (id: FilterId) => Promise<void>
-  isEnabled: (id: FilterId) => Promise<boolean>
 }
 
-export type FilterId = number | string
+export type FilterId = number

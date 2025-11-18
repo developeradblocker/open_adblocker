@@ -295,6 +295,7 @@ export default defineConfig([
       'tests/**/*.ts'
     ],
     rules: {
+      'no-void': 'off',
       'dot-notation': 'off',
       '@typescript-eslint/no-unsafe-function-type': 'off'
     }

@@ -43,7 +43,7 @@ export class InternalAppService implements InternalAppServiceInterface {
     @inject(InternalWebRTCIdentifiers.service)
     private webRtc: WebRTCInterface,
 
-    @inject(InternalFiltersIdentifiers.service)
+    @inject(InternalFiltersIdentifiers.filters)
     private filters: FiltersServiceInterface
   ) {
   }

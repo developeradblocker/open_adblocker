@@ -25,14 +25,6 @@ export const fileManagerPlugin = ({ distName, filters, mode }) => {
     destination: `./build/filters/declarative/${filter}/${filter}.json`
   }))
 
-  /**
-   * filter with id 0 is required it holds the checksums for all filters
-   */
-  declarativeFilters.push({
-    source: './app/filters/declarative/ruleset_0/ruleset_0.json',
-    destination: './build/filters/declarative/ruleset_0/ruleset_0.json'
-  })
-
   const config = {
     events: {
       onEnd: {

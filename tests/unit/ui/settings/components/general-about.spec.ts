@@ -20,11 +20,17 @@ import { shallowMount } from '@vue/test-utils'
 import GeneralAbout from '@/ui/settings/components/general/general-about.vue'
 import TransparentStub from '../../../../helpers/TransparentStub'
 import { GITHUB_LINK, PRIVACY_POLICY_LINK, TERMS_LINK, WEB_PAGE_LINK } from '@/ui/shared/constants'
+import { useUserActivity } from '@/modules/user-activity/external/utils'
+import { ElementsUI } from '@/modules/user-activity/common/user-activity.types'
+import { SETTINGS_ROUTE } from '@/ui/settings/router/route-names'
+
+jest.mock('@/modules/user-activity/external/utils')
 
 describe('GeneralAbout.vue', () => {
   let wrapper: VueWrapper<any>
 
   const createTabMock = jest.fn()
+  const clickActivityMock = jest.fn()
   const elements = {
     policy: '[data-test="policy"]',
     terms: '[data-test="terms"]',
@@ -54,6 +60,9 @@ describe('GeneralAbout.vue', () => {
         create: createTabMock
       }
     } as any
+    void (useUserActivity as jest.Mock).mockReturnValue({
+      click: clickActivityMock
+    })
     doMount()
   })
 
@@ -68,6 +77,11 @@ describe('GeneralAbout.vue', () => {
     expect(createTabMock).toHaveBeenCalledWith({
       url: TERMS_LINK
     })
+    expect(clickActivityMock).toHaveBeenCalledTimes(1)
+    expect(clickActivityMock).toHaveBeenCalledWith(ElementsUI.terms, {
+      page: SETTINGS_ROUTE.GENERAL,
+      to: TERMS_LINK
+    })
   })
 
   it('should create new tab on policy clicked', async () => {
@@ -75,6 +89,12 @@ describe('GeneralAbout.vue', () => {
     expect(createTabMock).toHaveBeenCalledTimes(1)
     expect(createTabMock).toHaveBeenCalledWith({
       url: PRIVACY_POLICY_LINK
+    })
+
+    expect(clickActivityMock).toHaveBeenCalledTimes(1)
+    expect(clickActivityMock).toHaveBeenCalledWith(ElementsUI.privacy, {
+      page: SETTINGS_ROUTE.GENERAL,
+      to: PRIVACY_POLICY_LINK
     })
   })
 
@@ -84,6 +104,12 @@ describe('GeneralAbout.vue', () => {
     expect(createTabMock).toHaveBeenCalledWith({
       url: GITHUB_LINK
     })
+
+    expect(clickActivityMock).toHaveBeenCalledTimes(1)
+    expect(clickActivityMock).toHaveBeenCalledWith(ElementsUI.githubButton, {
+      page: SETTINGS_ROUTE.GENERAL,
+      to: GITHUB_LINK
+    })
   })
 
   it('should create new tab on website clicked', async () => {
@@ -91,6 +117,12 @@ describe('GeneralAbout.vue', () => {
     expect(createTabMock).toHaveBeenCalledTimes(1)
     expect(createTabMock).toHaveBeenCalledWith({
       url: WEB_PAGE_LINK
+    })
+
+    expect(clickActivityMock).toHaveBeenCalledTimes(1)
+    expect(clickActivityMock).toHaveBeenCalledWith(ElementsUI.websiteButton, {
+      page: SETTINGS_ROUTE.GENERAL,
+      to: WEB_PAGE_LINK
     })
   })
 })

@@ -19,22 +19,16 @@ import { AppMessage } from '@/utils/dispatcher/dispatcher.types'
 import { FilterId } from '@/modules/filters/common/filters.types'
 
 export enum FiltersMessages {
-  toggle = 'Filters.Toggle',
-  filtersUpdated = 'Filters.FiltersUpdated',
-  isEnabled = 'Filters.IsEnabled',
+  toggleFilter = 'Filters.ToggleFilter',
+  filtersStateChanged = 'Filters.FiltersStateChanged'
 }
 
 export interface ToggleFilterMessage extends AppMessage {
-  type: FiltersMessages.toggle
+  type: FiltersMessages.toggleFilter
   payload: { id: FilterId }
 }
 
-export interface IsEnabledFilterMessage extends AppMessage {
-  type: FiltersMessages.isEnabled
-  payload: { id: FilterId }
-}
-
-export interface FiltersUpdatedMessage extends AppMessage {
-  type: FiltersMessages.filtersUpdated
-  payload: { enabledFilters: number[] }
+export interface FiltersStateChangedMessage extends AppMessage {
+  type: FiltersMessages.filtersStateChanged
+  payload: { enabledFilters: FilterId[] }
 }

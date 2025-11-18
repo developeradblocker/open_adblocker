@@ -16,13 +16,24 @@
       {{ title }}
     </h1>
     <div
+      v-if="withSettings"
+      data-test="settings"
+      class="header__settings"
+      @click="onSettingsClick"
+    >
+      <BaseSvg
+        class="header__icon"
+        src="../icons/settings.svg"
+      />
+    </div>
+    <div
       v-if="withClose"
       data-test="menu"
       class="header__menu"
       @click="onMenuClick"
     >
       <BaseSvg
-        class="header__menu-icon"
+        class="header__icon"
         :src="`../icons/${menuClosed ? 'hamburger' : 'close' }.svg`"
       />
     </div>
@@ -56,16 +67,19 @@ import {
 } from '@/modules/user-activity/common/user-activity.types'
 import { useRoute } from 'vue-router'
 import { WEB_PAGE_LINK } from '@/ui/shared/constants'
+import { SETTINGS_PATH } from '../../../../constants'
 
 const $emit = defineEmits(['menu-click'])
 const props = withDefaults(defineProps<{
   withClose?: boolean
   withBorder?: boolean
+  withSettings?: boolean
   title?: string
   menuClosed?: boolean
 }>(), {
   withClose: true,
   withBorder: false,
+  withSettings: false,
   menuClosed: true
 })
 const activity = useUserActivity()
@@ -76,6 +90,16 @@ const onLogoClick = async (): Promise<void> => {
     page: $route.name as PageUI
   })
   await chrome.tabs.create({ url: WEB_PAGE_LINK })
+}
+
+const onSettingsClick = async (): Promise<void> => {
+  const settingsPage = chrome.runtime.getURL(SETTINGS_PATH)
+  const [activeSettings] = await chrome.tabs.query({ url: settingsPage })
+  if (activeSettings?.id) {
+    await chrome.tabs.update(activeSettings?.id, { active: true })
+  } else {
+    await chrome.tabs.create({ url: settingsPage })
+  }
 }
 
 const onMenuClick = async (): Promise<void> => {
@@ -120,7 +144,7 @@ const onMenuClick = async (): Promise<void> => {
 
 .header__text, .header__title {
   margin: 0;
-  font-size: 17px;
+  font-size: 15px;
   line-height: 20px;
 }
 
@@ -143,13 +167,42 @@ const onMenuClick = async (): Promise<void> => {
     cursor: pointer;
     background: var(--secondary-bg-color);
 
-    .header__menu-icon {
+    .header__icon {
       fill: var(--primary-color)
     }
   }
 }
 
-.header__menu-icon {
+.header__icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 18px;
+  height: 18px;
+  fill: #9693A5;
+  transform: translate(-50%, -50%);
+}
+
+.header__settings {
+  position: absolute;
+  top: 8px;
+  right: 44px;
+  width: 36px;
+  height: 36px;
+  border-radius: 4px;
+  cursor: pointer;
+
+  &:hover {
+    cursor: pointer;
+    background: var(--secondary-bg-color);
+
+    .header__icon {
+      fill: var(--primary-color)
+    }
+  }
+}
+
+.header__icon {
   position: absolute;
   top: 50%;
   left: 50%;
