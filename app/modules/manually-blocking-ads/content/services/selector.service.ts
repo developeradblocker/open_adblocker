@@ -35,6 +35,7 @@ export class SelectorService {
   private currentEl: HTMLElement
   private traversedElements: HTMLElement[]
   private highlightElement: HTMLElement
+  private isPreview = false
   constructor (
     @inject(ContentBroadcastIdentifiers.service)
     private readonly broadcast: ContentBroadcastServiceInterface
@@ -51,6 +52,7 @@ export class SelectorService {
 
   stop (): void {
     this.isStarted = false
+    this.removeHighlight()
   }
 
   onClose (): void {
@@ -71,11 +73,16 @@ export class SelectorService {
   }
 
   enterPreview (): void {
+    this.isPreview = true
     this.currentEl.style.cssText += 'display: none !important;'
     this.highlightElement.style.display = 'none'
   }
 
   exitPreview (): void {
+    if (!this.isPreview) {
+      return
+    }
+
     this.currentEl.style.cssText = this.currentEl.style.cssText.replace('display: none !important;', '')
     this.highlightElement.style.display = 'block'
   }
