@@ -48,7 +48,7 @@
  */
 import { computed, onMounted, ref, watch } from 'vue'
 
-type Emits = {
+export type Emits = {
   (e: 'update:modelValue', value: boolean): void
   (e: 'change', value: boolean): void
 }
