@@ -18,7 +18,7 @@
 import { AppMessage } from '@/utils/dispatcher/dispatcher.types'
 
 export enum ContentBroadcastIdentifiers {
-  service = 'service'
+  service = 'Broadcast.Service'
 }
 
 export interface ContentBroadcastServiceInterface {

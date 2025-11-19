@@ -15,17 +15,25 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-import { AppMessage } from '@/utils/dispatcher/dispatcher.types'
+import { AppMessageListener, Box } from '@/utils/dispatcher/dispatcher.types'
+import { injectable } from '@/utils/di/di.types'
+import {
+  ManualBlockingAddRuleMessage,
+  ManualBlockingMessages
+} from '@/modules/features/manual-blocking/common/manual-blocking.messages'
+import { useBlockElementStore } from '@/ui/manual-blocking/store/block-element.store'
 
-export enum InternalBroadcastIdentifiers {
-  service = 'Broadcast.Service'
-}
+@injectable()
+export class AddRuleListener implements AppMessageListener<ManualBlockingAddRuleMessage> {
+  on (): ManualBlockingMessages.addRule {
+    return ManualBlockingMessages.addRule
+  }
 
-export interface InternalBroadcastServiceInterface {
-  /**
-   * Send message to all iframes of a tab
-   * @param {number} tabId - tab id
-   * @param {AppMessage} message - message
-   */
-  sendMessage: (tabId: number, message: AppMessage) => void
+  main (): false {
+    return false
+  }
+
+  async handle ({ message }: Box<ManualBlockingAddRuleMessage>): Promise<void> {
+    useBlockElementStore().addRule(message.payload.ruleText)
+  }
 }

@@ -15,17 +15,22 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-import { AppMessage } from '@/utils/dispatcher/dispatcher.types'
+import { defineStore } from 'pinia'
 
-export enum InternalBroadcastIdentifiers {
-  service = 'Broadcast.Service'
+export interface BlockElementState {
+  appliedRules: string[]
 }
 
-export interface InternalBroadcastServiceInterface {
-  /**
-   * Send message to all iframes of a tab
-   * @param {number} tabId - tab id
-   * @param {AppMessage} message - message
-   */
-  sendMessage: (tabId: number, message: AppMessage) => void
-}
+export const useBlockElementStore = defineStore('BlockElementStore', {
+  state: (): BlockElementState => ({
+    appliedRules: []
+  }),
+  actions: {
+    addRule (rule: string): void {
+      this.appliedRules.push(rule)
+    },
+    removeRule (rule: string): void {
+      this.appliedRules = this.appliedRules.filter((appliedRule: string) => appliedRule !== rule)
+    }
+  }
+})

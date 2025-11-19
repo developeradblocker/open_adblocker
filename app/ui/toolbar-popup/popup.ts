@@ -39,7 +39,7 @@ import { useUserActivity } from '@/modules/user-activity/external/utils'
 import { PageUI } from '@/modules/user-activity/common/user-activity.types'
 import { setupExternalWebRTC } from '@/modules/features/web-rtc/external/web-rtc.setup'
 import { setupExternalFilters } from '@/modules/filters/external/filters.setup'
-import { setupExternalManuallyBlockingAds } from '@/modules/manually-blocking-ads/external/manually-blocking-ads.setup'
+import { setupExternalManualBlocking } from '@/modules/features/manual-blocking/external/manual-blocking.setup'
 
 /**
  * Popup Worker (PW)
@@ -50,8 +50,8 @@ setupExternalAdBlocker()
 setupExternalFilters()
 setupExternalUserActivity(uuidv4())
 setupExternalWebRTC()
-setupExternalApp()
-setupExternalManuallyBlockingAds();
+setupExternalManualBlocking()
+setupExternalApp();
 
 (async (): Promise<void> => {
   await dispatcher().work()

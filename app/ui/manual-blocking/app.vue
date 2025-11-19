@@ -1,3 +1,10 @@
+<template>
+  <div class="app">
+    <router-view />
+  </div>
+</template>
+
+<script setup lang="ts">
 /**
  * @file
  * This file is part of Open Ad Blocker Browser Extension (https://github.com/developeradblocker/open_adblocker).
@@ -15,17 +22,9 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-import { AppMessage } from '@/utils/dispatcher/dispatcher.types'
 
-export enum InternalBroadcastIdentifiers {
-  service = 'Broadcast.Service'
-}
+</script>
 
-export interface InternalBroadcastServiceInterface {
-  /**
-   * Send message to all iframes of a tab
-   * @param {number} tabId - tab id
-   * @param {AppMessage} message - message
-   */
-  sendMessage: (tabId: number, message: AppMessage) => void
-}
+<style lang="less">
+
+</style>

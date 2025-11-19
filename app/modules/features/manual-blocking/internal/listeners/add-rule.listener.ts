@@ -16,53 +16,33 @@
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
 import { AppMessageListener, Box } from '@/utils/dispatcher/dispatcher.types'
-import { inject, injectable } from '@/utils/di/di.types'
-import { AdGuardIdentifiers } from '@/modules/aguard/internal/adguaird.types'
-import { TsWebExtension } from '@adguard/tswebextension/mv3'
-import { ConfigurationMV3 } from '@adguard/tswebextension/dist/types/lib/mv3/background/configuration'
 import {
-  ManualBlockingMessages,
-  ManualBlockingRulesUpdatedMessage
+  ManualBlockingAddRuleMessage,
+  ManualBlockingMessages
 } from '@/modules/features/manual-blocking/common/manual-blocking.messages'
-import { FilterListPreprocessor } from '@adguard/tsurlfilter'
+import { inject, injectable } from '@/utils/di/di.types'
 import {
   InternalManualBlockingIdentifiers,
   InternalManualBlockingServiceInterface
 } from '@/modules/features/manual-blocking/internal/manual-blocking.types'
 
 @injectable()
-export class RulesUpdatedListener implements AppMessageListener<ManualBlockingRulesUpdatedMessage> {
+export class AddRuleListener implements AppMessageListener<ManualBlockingAddRuleMessage> {
   constructor (
-    @inject(AdGuardIdentifiers._tsWebExtension)
-    private readonly tsWebExtension: TsWebExtension,
-
-    @inject(AdGuardIdentifiers._config)
-    private readonly config: ConfigurationMV3,
-
     @inject(InternalManualBlockingIdentifiers.service)
     private readonly service: InternalManualBlockingServiceInterface
   ) {
   }
 
-  on (): ManualBlockingMessages.rulesUpdated {
-    return ManualBlockingMessages.rulesUpdated
+  on (): ManualBlockingMessages.addRule {
+    return ManualBlockingMessages.addRule
   }
 
   main (): false {
     return false
   }
 
-  async handle ({ message }: Box<ManualBlockingRulesUpdatedMessage>): Promise<void> {
-    const userRules = await this.service.getUserRules()
-
-    this.config.userrules = Object.assign(
-      FilterListPreprocessor.preprocess(userRules.join('\n')),
-      { trusted: true }
-    )
-    await this.tsWebExtension.configure(this.config)
-
-    if (message.payload.needReload) {
-      await chrome.tabs.reload()
-    }
+  async handle ({ message }: Box<ManualBlockingAddRuleMessage>): Promise<void> {
+    await this.service.addRule(message.payload.ruleText)
   }
 }
