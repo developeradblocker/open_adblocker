@@ -44,6 +44,7 @@ export class SelectorService {
   }
 
   start (): void {
+    this.removeHighlight()
     this.currentEl = null
     this.highlightElement = null
     this.traversedElements = null
@@ -52,7 +53,6 @@ export class SelectorService {
 
   stop (): void {
     this.isStarted = false
-    this.removeHighlight()
   }
 
   onClose (): void {

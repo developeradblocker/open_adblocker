@@ -70,14 +70,14 @@ const { appliedRules } = storeToRefs($store)
 const $manuallyBlockingAdsService = useUIManualBlocking()
 
 const onClose = () => {
-  $manuallyBlockingAdsService.stop()
+  $manuallyBlockingAdsService.close()
 }
 const onSelectElement = () => {
   $manuallyBlockingAdsService.startSelecting()
 }
 const onResetAll = () => {
   $manuallyBlockingAdsService.resetRules(appliedRules.value)
-  $manuallyBlockingAdsService.stop()
+  $manuallyBlockingAdsService.close()
 }
 const onRemoveRule = (ruleText: string) => {
   $manuallyBlockingAdsService.resetRules([ruleText])
