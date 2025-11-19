@@ -15,17 +15,27 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-import { AppMessage } from '@/utils/dispatcher/dispatcher.types'
+import { MANUAL_BLOCKING_IFRAME_ID } from '@/modules/features/manual-blocking/common/constants'
 
-export enum InternalBroadcastIdentifiers {
-  service = 'Broadcast.Service'
+export enum DragMessages {
+  start= `${MANUAL_BLOCKING_IFRAME_ID}__DRAG_START`,
+  end = `${MANUAL_BLOCKING_IFRAME_ID}__DRAG_END`,
 }
 
-export interface InternalBroadcastServiceInterface {
-  /**
-   * Send message to all iframes of a tab
-   * @param {number} tabId - tab id
-   * @param {AppMessage} message - message
-   */
-  sendMessage: (tabId: number, message: AppMessage) => void
+export const startDragging = (e: MouseEvent): void => {
+  e.preventDefault()
+  window.parent.postMessage({
+    type: DragMessages.start,
+    e: {
+      button: e.button,
+      clientX: e.clientX,
+      clientY: e.clientY
+    }
+  }, '*')
+}
+
+export const finishDragging = (): void => {
+  window.parent.postMessage({
+    type: DragMessages.end
+  }, '*')
 }

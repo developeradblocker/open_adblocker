@@ -50,8 +50,8 @@ export const fileManagerPlugin = ({ distName, filters, mode }) => {
             destination: './build/web-accessible-resources'
           },
           {
-            source: 'app/ui/manually-blocking-ads/index.html',
-            destination: 'build/content/manually-blocking-ads/index.html'
+            source: 'app/ui/manual-blocking/index.html',
+            destination: 'build/content/manual-blocking/index.html'
           },
           ...declarativeFilters
         ],

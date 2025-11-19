@@ -67,7 +67,7 @@ export const commonMode = (env, mode) => {
       [`${buildPath}/popup/popup`]: './app/ui/toolbar-popup/popup.ts',
       [`${buildPath}/settings/settings`]: './app/ui/settings/settings.ts',
       [`${buildPath}/content/tswebextension/content-script`]: './node_modules/@adguard/tswebextension/dist/content-script.mv3.js',
-      [`${buildPath}/content/manually-blocking-ads/content-script`]: './app/ui/manually-blocking-ads/main.ts',
+      [`${buildPath}/content/manual-blocking/content-script`]: './app/ui/manual-blocking/main.ts',
       [`${buildPath}/content/content`]: './app/content/content.ts'
     },
     module: {

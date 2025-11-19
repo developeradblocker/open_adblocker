@@ -45,7 +45,7 @@
   "web_accessible_resources": [
     {
       "resources": [
-        "/content/manually-blocking-ads/index.html"
+        "/content/manual-blocking/index.html"
       ],
       "matches": [
         "<all_urls>"

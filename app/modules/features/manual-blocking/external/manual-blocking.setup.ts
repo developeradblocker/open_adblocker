@@ -15,17 +15,22 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-import { AppMessage } from '@/utils/dispatcher/dispatcher.types'
+import { inject } from '@/utils/inject/inject'
+import {
+  ManualBlockingService
+} from '@/modules/features/manual-blocking/external/services/manual-blocking.service'
+import {
+  ExternalManualBlockingIdentifiers, ExternalManualBlockingServiceInterface
+} from '@/modules/features/manual-blocking/external/manual-blocking.types'
+import { di } from '@/utils/setup-worker'
 
-export enum InternalBroadcastIdentifiers {
-  service = 'Broadcast.Service'
+export const setupExternalManualBlocking = (): void => {
+  inject([
+    {
+      key: ExternalManualBlockingIdentifiers.service,
+      use: ManualBlockingService
+    }
+  ])
 }
 
-export interface InternalBroadcastServiceInterface {
-  /**
-   * Send message to all iframes of a tab
-   * @param {number} tabId - tab id
-   * @param {AppMessage} message - message
-   */
-  sendMessage: (tabId: number, message: AppMessage) => void
-}
+export const useExternalManualBlocking = (): ExternalManualBlockingServiceInterface => di.get(ExternalManualBlockingIdentifiers.service)

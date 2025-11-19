@@ -15,17 +15,20 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-import { AppMessage } from '@/utils/dispatcher/dispatcher.types'
+import { RouteRecordRaw } from 'vue-router'
+import Main from '@/ui/manual-blocking/pages/main.vue'
+import Selection from '@/ui/manual-blocking/pages/selection.vue'
+import { Route } from '@/ui/manual-blocking/router/route-names'
 
-export enum InternalBroadcastIdentifiers {
-  service = 'Broadcast.Service'
-}
-
-export interface InternalBroadcastServiceInterface {
-  /**
-   * Send message to all iframes of a tab
-   * @param {number} tabId - tab id
-   * @param {AppMessage} message - message
-   */
-  sendMessage: (tabId: number, message: AppMessage) => void
-}
+export const routes: RouteRecordRaw[] = [
+  {
+    name: Route.main,
+    path: '/',
+    component: Main
+  },
+  {
+    name: Route.selection,
+    path: '/selection',
+    component: Selection
+  }
+]

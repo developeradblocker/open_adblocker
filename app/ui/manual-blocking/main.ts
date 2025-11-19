@@ -15,37 +15,33 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-import 'reflect-metadata'
-import { setupContentManualBlocking } from '@/modules/features/manual-blocking/content/manual-blocking.setup'
-import { ContentManualBlockingOptions } from '@/modules/features/manual-blocking/content/manual-blocking.types'
+import { createApp } from 'vue'
+import App from './app.vue'
+import router from './router'
+import InlineSvg from 'vue-inline-svg'
+import './style.less'
 import { dispatcher, setupWorker } from '@/utils/setup-worker'
 import { setupContentBroadcast } from '@/modules/broadcast/content/broadcast.setup'
+import { setupUIManualBlocking } from '@/modules/features/manual-blocking/ui/manual-blocking.setup'
+import { createPinia, Pinia } from 'pinia'
+import { useBlockElementStore } from '@/ui/manual-blocking/store/block-element.store'
 
-const commonStyles: Partial<CSSStyleDeclaration> = {
-  position: 'fixed',
-  borderRadius: '4px',
-  boxShadow: '0px 3px 12px 0px rgba(0, 0, 0, 0.10)',
-  backgroundColor: '#fff',
-  border: 'solid 1px #D9D9DD',
-  transition: 'right 2s'
-}
-
-const manuallyBlockingAdsOptions: ContentManualBlockingOptions = {
-  iframe: {
-    url: '/content/manual-blocking/index.html',
-    style: {
-      display: 'block',
-      width: '280px',
-      height: '420px',
-      ...commonStyles
-    }
-  }
-}
-
-setupWorker('CSW')
+setupWorker('ManuallyBlockingAds')
 setupContentBroadcast()
-setupContentManualBlocking(manuallyBlockingAdsOptions);
+setupUIManualBlocking();
 
 (async (): Promise<void> => {
+  const app = createApp(App)
+  const pinia: Pinia = createPinia()
+
+  const params: URLSearchParams = new URLSearchParams(window.location.search)
+  const payload: string[] = JSON.parse(params.get('payload'))
+  app.use(router)
+  app.use(pinia)
+  app.component('BaseSvg', InlineSvg)
+  useBlockElementStore().$patch({
+    appliedRules: payload
+  })
   await dispatcher().work()
+  app.mount('#manual-blocking')
 })()

@@ -50,7 +50,7 @@ import { COOKIE_CLEANER_ID } from '../../../../../constants'
 import { useNotificationStore } from '@/ui/toolbar-popup/components/notification/notification.store'
 import { useExternalFilters } from '@/modules/filters/external/filters.utils'
 import { NotificationTypes } from '@/ui/toolbar-popup/components/notification/notification.types'
-import { useExternalManuallyBlockingAds } from '@/modules/manually-blocking-ads/external/manually-blocking-ads.setup'
+import { useExternalManualBlocking } from '@/modules/features/manual-blocking/external/manual-blocking.setup'
 
 const appStore = useAppStore()
 const webRTC = useWebRTC()
@@ -84,7 +84,7 @@ const toggleCookieCleaner = async (state: boolean): Promise<void> => {
   }
 }
 const onBlockElement = () => {
-  useExternalManuallyBlockingAds().triggerStart()
+  useExternalManualBlocking().triggerStart()
 }
 onMounted(async () => {
   const webRTCToggle: HTMLDivElement = document.querySelector('#web-rtc-toggle')

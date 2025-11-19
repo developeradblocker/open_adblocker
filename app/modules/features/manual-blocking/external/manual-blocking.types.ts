@@ -15,17 +15,13 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-import { AppMessage } from '@/utils/dispatcher/dispatcher.types'
-
-export enum InternalBroadcastIdentifiers {
-  service = 'Broadcast.Service'
+export enum ExternalManualBlockingIdentifiers {
+  /**
+   * @link ExternalManualBlockingServiceInterface
+   */
+  service = 'ManuallyBlockingAds.Service'
 }
 
-export interface InternalBroadcastServiceInterface {
-  /**
-   * Send message to all iframes of a tab
-   * @param {number} tabId - tab id
-   * @param {AppMessage} message - message
-   */
-  sendMessage: (tabId: number, message: AppMessage) => void
+export interface ExternalManualBlockingServiceInterface {
+  triggerStart(): Promise<void>
 }

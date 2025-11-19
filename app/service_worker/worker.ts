@@ -35,7 +35,7 @@ import { setupInternalFilters } from '@/modules/filters/internal/filters.setup'
 import { setupInternalConfig } from '@/modules/config/internal/config.setup'
 import { setupInternalSettings } from '@/modules/settings/internal/settings.setup'
 import { setupInternalBroadcast } from '@/modules/broadcast/internal/broadcast.setup'
-import { setupInternalManuallyBlockingAds } from '@/modules/manually-blocking-ads/internal/manually-blocking-ads.setup'
+import { setupInternalManualBlocking } from '@/modules/features/manual-blocking/internal/manual-blocking.setup'
 
 logger.info('Service Worker preparing')
 /**
@@ -56,7 +56,7 @@ setupInternalRateUs()
 setupInternalApp()
 setupInternalSettings()
 setupPopupIcon()
-setupInternalManuallyBlockingAds();
+setupInternalManualBlocking();
 
 (async (): Promise<void> => {
   /**

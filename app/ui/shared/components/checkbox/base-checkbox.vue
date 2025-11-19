@@ -89,9 +89,6 @@ function onChange (e: Event) {
 </script>
 
 <style lang="less" scoped>
-@blue: var(--secondary-color);
-@grey: var(--secondary-bg-color);
-
 .base-checkbox {
   display: inline-flex;
   align-items: center;
@@ -117,8 +114,8 @@ function onChange (e: Event) {
   }
 
   &:checked + .base-checkbox__box {
-    background-color: @blue;
-    border-color: @blue;
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
 
     .base-checkbox__icon {
       opacity: 1;
@@ -133,7 +130,7 @@ function onChange (e: Event) {
   width: 20px;
   height: 20px;
   border-radius: 6px;
-  border: 2px solid @grey;
+  border: 2px solid var(--secondary-bg-color);
   background: #FFF;
   display: inline-flex;
   align-items: center;
@@ -177,8 +174,8 @@ function onChange (e: Event) {
 /* Indeterminate */
 .base-checkbox--indeterminate {
   .base-checkbox__box {
-    background-color: @blue;
-    border-color: @blue;
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
   }
 
   .base-checkbox__icon {

@@ -32,7 +32,7 @@ import { useInternalWebRTC } from '@/modules/features/web-rtc/internal/web-rtc.u
 import { WebRTCStateChangedListener } from '@/modules/aguard/internal/listeners/web-rtc/web-rtc-state-changed.listener'
 import { RulesUpdatedListener } from '@/modules/aguard/internal/listeners/user-rules/rules-updated.listener'
 import { FilterListPreprocessor } from '@adguard/tsurlfilter'
-import { useInternalManuallyBlockingAds } from '@/modules/manually-blocking-ads/internal/manually-blocking-ads.setup'
+import { useInternalManualBlocking } from '@/modules/features/manual-blocking/internal/manual-blocking.setup'
 
 const injections: Injection[] = [
   {
@@ -80,7 +80,7 @@ export const getConfiguration = async (): Promise<ConfigurationMV3> => {
   config.settings.stealth.blockWebRTC = await useInternalWebRTC().getState()
   config.userrules = Object.assign(
     FilterListPreprocessor.preprocess(
-      (await useInternalManuallyBlockingAds().getUserRules()).join('\n')
+      (await useInternalManualBlocking().getUserRules()).join('\n')
     ),
     { trusted: true }
   )
