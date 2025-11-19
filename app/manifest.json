@@ -38,7 +38,8 @@
     "management",
     "declarativeNetRequest",
     "alarms",
-    "tabs"
+    "tabs",
+    "cookies"
   ],
   "optional_permissions": [
     "privacy"
