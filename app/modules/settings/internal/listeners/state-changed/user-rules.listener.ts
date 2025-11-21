@@ -27,7 +27,7 @@ import { SettingsInterface } from '../../../common/settings.types'
 import { InternalSettingsIdentifiers } from '../../../internal/settings.types'
 
 @injectable()
-export class UserRulesListener implements AppMessageListener<ManualBlockingRulesUpdatedMessage> {
+export class UserRulesChangedListener implements AppMessageListener<ManualBlockingRulesUpdatedMessage> {
   constructor (
     @inject(InternalSettingsIdentifiers.service)
     private readonly service: SettingsInterface

@@ -28,7 +28,7 @@ import { GetSettingsListener } from '@/modules/settings/internal/listeners/get-s
 import { FiltersStateChangedListener } from '@/modules/settings/internal/listeners/state-changed/filters.listener'
 import { WebRTCStateChangedListener } from '@/modules/settings/internal/listeners/state-changed/web-rtc.listener'
 import { WhitelistStateChangedListener } from '@/modules/settings/internal/listeners/state-changed/whitelist.listener'
-import { UserRulesListener } from '@/modules/settings/internal/listeners/state-changed/user-rules.listener'
+import { UserRulesChangedListener } from '@/modules/settings/internal/listeners/state-changed/user-rules.listener'
 
 jest.mock('@/utils/inject/inject')
 jest.mock('@/utils/setup-worker', () => ({
@@ -91,7 +91,7 @@ describe('settings.setup', () => {
       expect(mockDispatcherInstance.onWithClass).toHaveBeenCalledWith(FiltersStateChangedListener)
       expect(mockDispatcherInstance.onWithClass).toHaveBeenCalledWith(WebRTCStateChangedListener)
       expect(mockDispatcherInstance.onWithClass).toHaveBeenCalledWith(WhitelistStateChangedListener)
-      expect(mockDispatcherInstance.onWithClass).toHaveBeenCalledWith(UserRulesListener)
+      expect(mockDispatcherInstance.onWithClass).toHaveBeenCalledWith(UserRulesChangedListener)
     })
   })
 })
