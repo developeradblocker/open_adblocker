@@ -40,14 +40,11 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-import { SETTINGS_ROUTE } from '@/ui/settings/router/route-names'
-import { useRoute } from 'vue-router'
-import { useExternalPort } from '@/modules/port/external/port.setup'
-import { useExternalSettings } from '@/modules/settings/external/settings.utils'
-import { useSettingsStore } from '@/ui/settings/store/settings.store'
-import { onMounted } from 'vue'
 import Loader from '@/ui/settings/components/loader.vue'
+import { SETTINGS_ROUTE } from '@/ui/settings/router/route-names'
+import { useSettingsStore } from '@/ui/settings/store/settings.store'
 import BaseSnackbar from '@/ui/shared/components/snackbar/base-snackbar.vue'
+import { useRoute } from 'vue-router'
 
 interface MenuNavLink {
   route: SETTINGS_ROUTE
@@ -62,6 +59,10 @@ const NAV_LINKS: MenuNavLink[] = [
   {
     route: SETTINGS_ROUTE.GROUPS,
     text: 'Filters'
+  },
+  {
+    route: SETTINGS_ROUTE.USERRULES,
+    text: 'User rules'
   }
 ]
 
@@ -70,15 +71,8 @@ const isActive = (route: SETTINGS_ROUTE): boolean => {
   return $route.name === route || $route.path.includes(route.toLowerCase())
 }
 
-const $settings = useExternalSettings()
-const $port = useExternalPort()
 const $store = useSettingsStore()
 
-onMounted(async () => {
-  await $port.establish()
-  const settings = await $settings.get()
-  $store.setSettingsInfo(settings)
-})
 </script>
 <style lang="less" scoped>
 .app {
@@ -109,6 +103,7 @@ onMounted(async () => {
 .app__nav {
   position: sticky;
   top: 120px;
+  width: max-content;
 }
 
 .app__view {

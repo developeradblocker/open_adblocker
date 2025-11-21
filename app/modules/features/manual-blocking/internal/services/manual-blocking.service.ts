@@ -26,6 +26,7 @@ import {
   ManualBlockingMessages,
   ManualBlockingRulesUpdatedMessage
 } from '@/modules/features/manual-blocking/common/manual-blocking.messages'
+import { logger } from '@/utils/logger/logger'
 
 @injectable()
 export class ManualBlockingService implements InternalManualBlockingServiceInterface {
@@ -62,5 +63,22 @@ export class ManualBlockingService implements InternalManualBlockingServiceInter
       }
     }
     await dispatcher().sendMessage(message)
+  }
+
+  async setRules (rules: string[], needReload = false): Promise<boolean> {
+    try {
+      await this.storage.set(rules)
+      const message: ManualBlockingRulesUpdatedMessage = {
+        type: ManualBlockingMessages.rulesUpdated,
+        payload: {
+          needReload
+        }
+      }
+      await dispatcher().sendMessage(message)
+      return true
+    } catch (e) {
+      logger.error('InternalManualBlocking: Failed to set rules due to error', e)
+      return false
+    }
   }
 }

@@ -30,6 +30,7 @@ import { WhitelistStateChangedListener } from '@/modules/settings/internal/liste
 import { MetadataService } from '@/modules/settings/internal/service/metadata.service'
 import { MetadataStorage } from '@/modules/settings/internal/storage/metadata.storage'
 import { onInstallHandler } from '@/modules/settings/internal/handlers/on-install.handler'
+import { UserRulesListener } from './listeners/state-changed/user-rules.listener'
 
 const injections: Injection[] = [
   {
@@ -55,4 +56,5 @@ export const setupInternalSettings = (): void => {
   dispatcher().onWithClass(FiltersStateChangedListener)
   dispatcher().onWithClass(WebRTCStateChangedListener)
   dispatcher().onWithClass(WhitelistStateChangedListener)
+  dispatcher().onWithClass(UserRulesListener)
 }

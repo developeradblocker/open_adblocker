@@ -33,7 +33,8 @@ export const useSettingsStore = defineStore('SettingsStore', {
         enabledFilters: [],
         whiteList: {
           domains: []
-        }
+        },
+        userRules: []
       },
       metadata: {
         filters: [],
@@ -57,6 +58,12 @@ export const useSettingsStore = defineStore('SettingsStore', {
     },
     whiteList (): Domain[] {
       return this.settings.filters?.whiteList?.domains
+    },
+    userRules (): string[] {
+      return this.settings.filters?.userRules
+    },
+    stringUserRules (): string {
+      return this.settings.filters?.userRules.join('\n')
     }
   },
   actions: {

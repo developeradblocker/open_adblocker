@@ -49,14 +49,14 @@ setupAdGuard()
 setupInternalPortChannel()
 setupInternalBroadcast()
 setupInternalWhitelist()
+setupInternalManualBlocking()
 setupInternalFilters()
 setupInternalAdBlocker()
 setupInternalUserActivity()
 setupInternalRateUs()
 setupInternalApp()
 setupInternalSettings()
-setupPopupIcon()
-setupInternalManualBlocking();
+setupPopupIcon();
 
 (async (): Promise<void> => {
   /**
