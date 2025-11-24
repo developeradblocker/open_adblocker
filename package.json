@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@adguard/agtree": "^3.2.4",
-    "@adguard/tsurlfilter": "^3.4.7",
+    "@adguard/tsurlfilter": "^3.5.0",
     "@adguard/tswebextension": "^3.2.14",
     "inversify": "^7.10.4",
     "pinia": "^3.0.3",
