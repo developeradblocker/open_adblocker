@@ -15,11 +15,25 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
+import { AppMessage } from '@/utils/dispatcher/dispatcher.types'
 
-export enum SETTINGS_ROUTE {
-  GENERAL = 'SETTINGS_GENERAL',
-  GROUPS = 'SETTINGS_GROUPS',
-  FILTERS = 'SETTINGS_FILTERS',
-  USERRULES = 'SETTINGS_USERRULES',
-  WHITELIST = 'SETTINGS_WHITELIST'
+export enum WhitelistMessages {
+  import = 'Whitelist.Import',
+  export = 'Whitelist.Export',
+  listUpdated = 'Whitelist.Updated'
+}
+
+export interface WhitelistImportMessage extends AppMessage {
+  type: WhitelistMessages.import,
+  payload: {
+      domainString: string
+  }
+}
+
+export interface WhitelistExportMessage extends AppMessage {
+  type: WhitelistMessages.export
+}
+
+export interface WhitelistUpdatedMessage extends AppMessage {
+  type: WhitelistMessages.listUpdated
 }

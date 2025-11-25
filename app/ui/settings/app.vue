@@ -61,6 +61,10 @@ const NAV_LINKS: MenuNavLink[] = [
     text: 'Filters'
   },
   {
+    route: SETTINGS_ROUTE.WHITELIST,
+    text: 'Whitelist'
+  },
+  {
     route: SETTINGS_ROUTE.USERRULES,
     text: 'User rules'
   }

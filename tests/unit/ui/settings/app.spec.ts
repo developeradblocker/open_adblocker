@@ -116,10 +116,11 @@ describe('App.vue', () => {
 
   it('should render navigation links', () => {
     const links = wrapper.findAll('.app__nav-link')
-    expect(links).toHaveLength(3)
+    expect(links).toHaveLength(4)
     expect(links[0].text()).toBe('General')
     expect(links[1].text()).toBe('Filters')
-    expect(links[2].text()).toBe('User rules')
+    expect(links[2].text()).toBe('Whitelist')
+    expect(links[3].text()).toBe('User rules')
   })
 
   it('should mark Filters link as active when path includes groups', () => {

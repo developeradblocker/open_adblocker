@@ -59,6 +59,9 @@ export const useSettingsStore = defineStore('SettingsStore', {
     whiteList (): Domain[] {
       return this.settings.filters?.whiteList?.domains
     },
+    stringWhiteList (): string {
+      return this.settings.filters?.whiteList?.domains.join('\n')
+    },
     userRules (): string[] {
       return this.settings.filters?.userRules
     },
