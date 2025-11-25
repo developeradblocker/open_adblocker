@@ -27,4 +27,5 @@ export interface InternalManualBlockingServiceInterface {
   getUserRules(): Promise<string[]>
   addRule(ruleText: string): Promise<void>
   resetRules(rules: string[]): Promise<void>
+  setRules(rules: string[]): Promise<boolean>
 }

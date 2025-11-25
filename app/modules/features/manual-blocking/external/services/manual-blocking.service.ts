@@ -17,6 +17,7 @@
  */
 import { injectable } from '@/utils/di/di.types'
 import {
+  ManualBlockingImportMessage,
   ManualBlockingMessages,
   ManualBlockingTriggerStartMessage
 } from '@/modules/features/manual-blocking/common/manual-blocking.messages'
@@ -39,5 +40,15 @@ export class ManualBlockingService implements ExternalManualBlockingServiceInter
     }
     await this.port.sendMessage(message)
     window.close()
+  }
+
+  async import (userRules: string[]): Promise<boolean> {
+    const message: ManualBlockingImportMessage = {
+      type: ManualBlockingMessages.import,
+      payload: {
+        userRules
+      }
+    }
+    return await this.port.sendMessage(message)
   }
 }
