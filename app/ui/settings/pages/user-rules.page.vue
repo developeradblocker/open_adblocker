@@ -10,47 +10,47 @@
         />
         For experienced users only
       </div>
-      <base-editor class="user-rules__editor" v-model="userRules"/>
+      <BaseEditor class="user-rules__editor" v-model="userRules"/>
       <div class="user-rules__controls">
-        <base-button
+        <BaseButton
          :type="BaseButtonType.primary"
          :disabled="!hasChanges"
          @click="onSave"
          label="Save"
         />
-        <base-import @change="onImport" accept=".txt">
+        <BaseImport @change="onImport" accept="txt">
           <template #default="{ input }">
-            <base-button
+            <BaseButton
               data-test="import"
               label="Import settings" :type="BaseButtonType.secondary" @click="initImport(input)"/>
           </template>
-        </base-import>
-        <base-button
+        </BaseImport>
+        <BaseButton
          :type="BaseButtonType.secondary"
          label="Export"
          @click="onExport"
         />
       </div>
     </BaseBox>
-    <base-modal
+    <BaseModal
       class="user-rules__save-modal"
       title="Save changes"
       subtitle="Do you want to save changes before leaving this page?"
       v-if="showSaveModal"
     >
       <template #controls>
-        <base-button
+        <BaseButton
          :type="BaseButtonType.primary"
           label="Save"
           @click="onModalResponse(true)"
         />
-        <base-button
+        <BaseButton
          :type="BaseButtonType.secondary"
           label="Discard"
           @click="onModalResponse(false)"
         />
       </template>
-    </base-modal>
+    </BaseModal>
   </div>
 </template>
 
@@ -76,7 +76,7 @@ import { useExternalManualBlocking } from '@/modules/features/manual-blocking/ex
 import { exportData, ExportFormat, ExportTypes } from '@/ui/settings/utils/export-data'
 import { importData } from '@/ui/settings/utils/import-data'
 import { BaseButtonType } from '@/ui/shared/components/button/base-button.types'
-import baseButton from '@/ui/shared/components/button/base-button.vue'
+import BaseButton from '@/ui/shared/components/button/base-button.vue'
 import { logger } from '@/utils/logger/logger'
 import { computed, onMounted, Ref, ref, watch } from 'vue'
 import { NavigationGuardNext, onBeforeRouteLeave, RouteLocationNormalized, RouteLocationNormalizedLoaded } from 'vue-router'
@@ -115,20 +115,21 @@ const onImport = async (event: InputEvent): Promise<void> => {
     const success = await $userRules.import(content.split('\n'))
     if (!success) {
       $store.setSnackbar({
-        message: 'Couldn\'t import the whitelist. Please retry',
+        message: 'Couldn\'t import user rules. Please retry',
         type: 'error'
       })
+      $store.setShowLoader(false)
       return
     }
 
     $store.setSnackbar({
-      message: 'Whitelist was imported successfully',
+      message: 'User rules were imported successfully',
       type: 'info'
     })
   } catch (error) {
-    logger.error('Couldn\'t import the whitelist due to error', error)
+    logger.error('Couldn\'t import user rules due to error', error)
     $store.setSnackbar({
-      message: 'Couldn\'t import the whitelist. Please retry',
+      message: 'Couldn\'t import user rules. Please retry',
       type: 'error'
     })
   } finally {
