@@ -37,6 +37,7 @@ describe('App.vue', () => {
   const getMock = jest.fn()
   const setSettingsInfoMock = jest.fn()
   const setSnackbarMock = jest.fn()
+  const resetSnackbarMock = jest.fn()
 
   const mockSettings = {
     version: '1.0.0',
@@ -94,6 +95,7 @@ describe('App.vue', () => {
     void (useSettingsStore as unknown as jest.Mock).mockReturnValue({
       setSettingsInfo: setSettingsInfoMock,
       setSnackbar: setSnackbarMock,
+      resetSnackbar: resetSnackbarMock,
       showLoader: true,
       snackbar: {
         test: true
@@ -138,7 +140,6 @@ describe('App.vue', () => {
 
   it('should set null to snackbar when closed', async () => {
     await wrapper.findComponent(BaseSnackbar).vm.$emit('close')
-    expect(setSnackbarMock).toHaveBeenCalledTimes(1)
-    expect(setSnackbarMock).toHaveBeenCalledWith(null)
+    expect(resetSnackbarMock).toHaveBeenCalledTimes(1)
   })
 })

@@ -86,6 +86,10 @@ export const useSettingsStore = defineStore('SettingsStore', {
       this.snackbar = snackbar
     },
 
+    resetSnackbar (): void {
+      this.snackbar = null
+    },
+
     toggleFilter (filterId: FilterId): void {
       const enabled = this.settings.filters.enabledFilters.includes(filterId)
       if (enabled) {

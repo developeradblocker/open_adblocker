@@ -15,7 +15,9 @@
           <template #default="{ input }">
             <BaseButton
               data-test="import"
-              label="Import settings" :type="BaseButtonType.secondary" @click="initImport(input)"/>
+              label="Import"
+              :type="BaseButtonType.secondary"
+              @click="initImport(input)"/>
           </template>
         </BaseImport>
         <BaseButton
@@ -90,6 +92,7 @@ const hasChanges = computed(() => {
 })
 
 const initImport = async (input: HTMLInputElement): Promise<void> => {
+  $store.resetSnackbar()
   input.click()
 }
 
@@ -131,6 +134,7 @@ const onImport = async (event: InputEvent): Promise<void> => {
 }
 
 const onExport = async (): Promise<void> => {
+  $store.resetSnackbar()
   await exportData<string>(ExportTypes.whitelist, $store.stringWhiteList, ExportFormat.txt)
 }
 
