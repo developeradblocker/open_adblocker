@@ -137,9 +137,8 @@ describe('Popup entry script', () => {
       expect(afterEachMock).toHaveBeenCalledTimes(1)
       const callback = afterEachMock.mock.calls[0][0]
       callback({ name: POPUP_ROUTE.HOME })
-      expect(visitPageMock).toHaveBeenCalledTimes(2)
-      expect(visitPageMock).toHaveBeenNthCalledWith(1, POPUP_ROUTE.INIT)
-      expect(visitPageMock).toHaveBeenNthCalledWith(2, POPUP_ROUTE.HOME)
+      expect(visitPageMock).toHaveBeenCalledTimes(1)
+      expect(visitPageMock).toHaveBeenNthCalledWith(1, POPUP_ROUTE.HOME)
     })
   })
 })

@@ -44,10 +44,10 @@ const icons = {
   error: 'info-round'
 }
 
-const props = defineProps<{ value: SnackbarProps }>()
+const props = defineProps<{ value: SnackbarProps | null }>()
 let timeoutId: ReturnType<typeof setTimeout>
 const emit = defineEmits(['close'])
-watch(props.value, (current: SnackbarProps) => {
+watch(() => props.value, (current: SnackbarProps | null) => {
   if (current) {
     clearTimeout(timeoutId)
     timeoutId = setTimeout(() => emit('close'), current.timeout ?? DEFAULT_SNACKBAR_TIMEOUT)

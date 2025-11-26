@@ -183,10 +183,11 @@ describe('GeneralMain.vue', () => {
       test: true
     })
 
-    expect(setSnackbarMock).toHaveBeenCalledTimes(1)
+    expect(setSnackbarMock).toHaveBeenCalledTimes(2)
     expect(setSnackbarMock).toHaveBeenCalledWith({
       message: 'Successfully imported settings',
       type: 'info'
     })
+    expect(setSnackbarMock).toHaveBeenCalledWith(null)
   })
 })
