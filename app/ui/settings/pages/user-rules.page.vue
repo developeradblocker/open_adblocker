@@ -102,6 +102,7 @@ const initImport = async (input: HTMLInputElement): Promise<void> => {
 }
 
 const onImport = async (event: InputEvent): Promise<void> => {
+  $store.resetSnackbar()
   const target = event.target as HTMLInputElement
   const file = target.files?.[0]
   if (!file) {
@@ -139,6 +140,7 @@ const onImport = async (event: InputEvent): Promise<void> => {
 }
 
 const onExport = async (): Promise<void> => {
+  $store.resetSnackbar()
   await exportData<string>(ExportTypes.userRules, $store.stringUserRules, ExportFormat.txt)
 }
 
