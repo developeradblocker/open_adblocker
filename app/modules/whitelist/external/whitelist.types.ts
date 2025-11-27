@@ -26,6 +26,6 @@ export enum ExternalWhitelistIdentifiers {
 }
 
 export interface ExternalWhitelistInterface {
-  import: (domainString: string) => Promise<Domain[]>
+  import: (rawDomain: string) => Promise<Domain[]>
   export: () => Promise<Domain[]>
 }

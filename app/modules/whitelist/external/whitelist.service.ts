@@ -31,11 +31,11 @@ export class ExternalWhitelistService implements ExternalWhitelistInterface {
     this.port = useExternalPort()
   }
 
-  async import (domainString: string): Promise<Domain[]> {
+  async import (rawDomain: string): Promise<Domain[]> {
     const message: WhitelistImportMessage = {
       type: WhitelistMessages.import,
       payload: {
-        domainString
+        rawDomain
       }
     }
     return await this.port.sendMessage(message)

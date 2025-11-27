@@ -39,7 +39,7 @@ export class WhitelistImportListener implements AppMessageListener<WhitelistImpo
   }
 
   async handle ({ message }: Box<WhitelistImportMessage>): Promise<Domain[]> {
-    const res = await this.service.import(message.payload.domainString)
+    const res = await this.service.import(message.payload.rawDomain)
     dispatcher().sendMessage({
       type: WhitelistMessages.listUpdated
     })

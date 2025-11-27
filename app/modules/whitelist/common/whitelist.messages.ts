@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
+import { Domain } from '@/common/types'
 import { AppMessage } from '@/utils/dispatcher/dispatcher.types'
 
 export enum WhitelistMessages {
@@ -26,7 +27,7 @@ export enum WhitelistMessages {
 export interface WhitelistImportMessage extends AppMessage {
   type: WhitelistMessages.import,
   payload: {
-      domainString: string
+      rawDomain: Domain
   }
 }
 

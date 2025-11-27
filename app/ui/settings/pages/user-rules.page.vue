@@ -145,13 +145,16 @@ const onExport = async (): Promise<void> => {
 }
 
 const onSave = async (): Promise<void> => {
+  $store.setShowLoader(true)
   const content = userRules.value.split('\n')
   const success = await $userRules.import(content)
+
   if (!success) {
     $store.setSnackbar({
       message: 'Couldn\'t save changes. Please retry',
       type: 'error'
     })
+    $store.setShowLoader(false)
     return
   }
 
@@ -160,6 +163,7 @@ const onSave = async (): Promise<void> => {
     message: 'Changes were saved successfully',
     type: 'info'
   })
+  $store.setShowLoader(false)
 }
 const onModalResponse = async (shouldSave: boolean): Promise<void> => {
   if (shouldSave) {
