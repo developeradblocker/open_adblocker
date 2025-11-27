@@ -55,7 +55,7 @@ setupInternalAdBlocker()
 setupInternalUserActivity()
 setupInternalRateUs()
 setupInternalApp()
-setupInternalSettings()
+setupInternalSettings(process.env.API_URL)
 setupPopupIcon();
 
 (async (): Promise<void> => {

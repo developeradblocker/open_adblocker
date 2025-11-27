@@ -45,6 +45,11 @@ const handleConfig = res => {
   res.end(JSON.stringify(config))
 }
 
+const handleReport = res => {
+  res.writeHead(200, { 'Content-Type': 'application/json' })
+  res.end()
+}
+
 const handleNotFound = res => {
   const notFoundPath = join(getDirPath(), 'views', 'not-found.html')
   fs.readFile(notFoundPath, 'utf8', (err, data) => {
@@ -68,6 +73,10 @@ const server = http.createServer((req, res) => {
 
     case '/rest/v3/configs/extensions/open-ad-blocker':
       handleConfig(res)
+      break
+
+    case '/rest/v1/support/extension':
+      handleReport(res)
       break
 
     default:

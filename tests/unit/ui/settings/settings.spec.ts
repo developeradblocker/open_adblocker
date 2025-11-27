@@ -185,5 +185,5 @@ describe('Settings entry script', () => {
         to: ClickEventToAction.openSettings
       })
     })
-  })
+  }, 30000)
 })

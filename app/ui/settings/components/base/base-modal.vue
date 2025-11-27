@@ -42,7 +42,7 @@ defineProps<{
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 9999999999;
+  z-index: 9999;
   background-color: #FFF;
   border: 1px solid rgba(217, 216, 222, 1);
   border-radius: 12px;
@@ -55,7 +55,7 @@ defineProps<{
   left: 0;
   right: 0;
   background: rgba(0, 0, 0, 0.3);
-  z-index: 99999999;
+  z-index: 999;
 }
 .base-modal__title {
   font-weight: 700;

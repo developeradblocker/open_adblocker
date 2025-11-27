@@ -29,6 +29,7 @@ import { FiltersStateChangedListener } from '@/modules/settings/internal/listene
 import { WebRTCStateChangedListener } from '@/modules/settings/internal/listeners/state-changed/web-rtc.listener'
 import { WhitelistStateChangedListener } from '@/modules/settings/internal/listeners/state-changed/whitelist.listener'
 import { UserRulesChangedListener } from '@/modules/settings/internal/listeners/state-changed/user-rules.listener'
+import { ReportIssueListener } from '@/modules/settings/internal/listeners/report-issue.listener'
 
 jest.mock('@/utils/inject/inject')
 jest.mock('@/utils/setup-worker', () => ({
@@ -64,7 +65,7 @@ describe('settings.setup', () => {
 
   describe('setupInternalSettings', () => {
     it('should inject dependencies and register listeners', async () => {
-      setupInternalSettings()
+      setupInternalSettings('mockedURL')
 
       expect(mockedInject).toHaveBeenCalledTimes(1)
       expect(mockedInject).toHaveBeenCalledWith([
@@ -79,12 +80,17 @@ describe('settings.setup', () => {
         {
           key: InternalSettingsIdentifiers._metadataStorage,
           use: MetadataStorage
+        },
+        {
+          key: InternalSettingsIdentifiers._reportIssueURL,
+          use: 'mockedURL',
+          value: true
         }
       ])
 
       expect(mockedDispatcher).toHaveBeenCalled()
 
-      expect(mockDispatcherInstance.onWithClass).toHaveBeenCalledTimes(7)
+      expect(mockDispatcherInstance.onWithClass).toHaveBeenCalledTimes(8)
       expect(mockDispatcherInstance.onWithClass).toHaveBeenCalledWith(ExportSettingsListener)
       expect(mockDispatcherInstance.onWithClass).toHaveBeenCalledWith(ImportSettingsListener)
       expect(mockDispatcherInstance.onWithClass).toHaveBeenCalledWith(GetSettingsListener)
@@ -92,6 +98,7 @@ describe('settings.setup', () => {
       expect(mockDispatcherInstance.onWithClass).toHaveBeenCalledWith(WebRTCStateChangedListener)
       expect(mockDispatcherInstance.onWithClass).toHaveBeenCalledWith(WhitelistStateChangedListener)
       expect(mockDispatcherInstance.onWithClass).toHaveBeenCalledWith(UserRulesChangedListener)
+      expect(mockDispatcherInstance.onWithClass).toHaveBeenCalledWith(ReportIssueListener)
     })
   })
 })

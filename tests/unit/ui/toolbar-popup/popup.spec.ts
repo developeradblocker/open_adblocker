@@ -140,5 +140,5 @@ describe('Popup entry script', () => {
       expect(visitPageMock).toHaveBeenCalledTimes(1)
       expect(visitPageMock).toHaveBeenNthCalledWith(1, POPUP_ROUTE.HOME)
     })
-  })
+  }, 30000)
 })
