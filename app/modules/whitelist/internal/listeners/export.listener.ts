@@ -15,11 +15,29 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
+import { Domain } from '@/common/types'
+import { inject, injectable } from '@/utils/di/di.types'
+import { AppMessageListener } from '@/utils/dispatcher/dispatcher.types'
+import { WhitelistInterface } from '../../common/whetelist.types'
+import { WhitelistExportMessage, WhitelistMessages } from '../../common/whitelist.messages'
+import { WhitelistIdentifiers } from '../whitelist.types'
 
-export enum SETTINGS_ROUTE {
-  GENERAL = 'SETTINGS_GENERAL',
-  GROUPS = 'SETTINGS_GROUPS',
-  FILTERS = 'SETTINGS_FILTERS',
-  USERRULES = 'SETTINGS_USERRULES',
-  WHITELIST = 'SETTINGS_WHITELIST'
+@injectable()
+export class WhitelistExportListener implements AppMessageListener<WhitelistExportMessage, Domain[]> {
+  constructor (
+      @inject(WhitelistIdentifiers.service)
+      private readonly service: WhitelistInterface
+  ) {}
+
+  on (): WhitelistMessages.export {
+    return WhitelistMessages.export
+  }
+
+  main (): true {
+    return true
+  }
+
+  async handle (): Promise<Domain[]> {
+    return await this.service.getDomains()
+  }
 }

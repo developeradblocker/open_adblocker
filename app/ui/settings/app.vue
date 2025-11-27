@@ -19,7 +19,7 @@
       </div>
     </div>
     <Loader v-if="$store.showLoader" text="Applying changes" />
-    <BaseSnackbar :value="$store.snackbar" @close="$store.setSnackbar(null)"/>
+    <BaseSnackbar :value="$store.snackbar" @close="$store.resetSnackbar"/>
   </div>
 </template>
 <script lang="ts" setup>
@@ -59,6 +59,10 @@ const NAV_LINKS: MenuNavLink[] = [
   {
     route: SETTINGS_ROUTE.GROUPS,
     text: 'Filters'
+  },
+  {
+    route: SETTINGS_ROUTE.WHITELIST,
+    text: 'Whitelist'
   },
   {
     route: SETTINGS_ROUTE.USERRULES,

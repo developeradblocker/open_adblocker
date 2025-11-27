@@ -16,10 +16,16 @@
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
 
-export enum SETTINGS_ROUTE {
-  GENERAL = 'SETTINGS_GENERAL',
-  GROUPS = 'SETTINGS_GROUPS',
-  FILTERS = 'SETTINGS_FILTERS',
-  USERRULES = 'SETTINGS_USERRULES',
-  WHITELIST = 'SETTINGS_WHITELIST'
+import { Domain } from '@/common/types'
+
+export enum ExternalWhitelistIdentifiers {
+  /**
+   * @link ExternalWhitelistInterface
+   */
+  service = 'Whitelist.Service'
+}
+
+export interface ExternalWhitelistInterface {
+  import: (rawDomain: string) => Promise<Domain[]>
+  export: () => Promise<Domain[]>
 }

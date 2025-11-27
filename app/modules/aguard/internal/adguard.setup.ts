@@ -33,6 +33,7 @@ import { WebRTCStateChangedListener } from '@/modules/aguard/internal/listeners/
 import { RulesUpdatedListener } from '@/modules/aguard/internal/listeners/user-rules/rules-updated.listener'
 import { FilterListPreprocessor } from '@adguard/tsurlfilter'
 import { useInternalManualBlocking } from '@/modules/features/manual-blocking/internal/manual-blocking.setup'
+import { WhitelistUpdatedListener } from './listeners/whitelist/whitelist-updated.listener'
 
 const injections: Injection[] = [
   {
@@ -66,6 +67,7 @@ const adGuardSetupAsync = async (): Promise<void> => {
   dispatcher().onWithClass(FiltersStateChangedListener)
   dispatcher().onWithClass(WebRTCStateChangedListener)
   dispatcher().onWithClass(RulesUpdatedListener)
+  dispatcher().onWithClass(WhitelistUpdatedListener)
   const message: AdGuardOnReadyMessage = {
     type: AdGuardMessages.ready,
     force: true

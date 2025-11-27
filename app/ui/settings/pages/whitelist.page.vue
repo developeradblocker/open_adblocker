@@ -1,28 +1,23 @@
 <template>
-  <div class="user-rules-page user-rules">
+  <div class="whitelist-page whitelist">
     <BaseBox with-header>
-      <h3 class="user-rules__title">User rules</h3>
-      <p class="user-rules__description">Customize your ad-blocking experience with custom-defined rules.</p>
-      <div class="user-rules__attention">
-        <BaseSvg
-          class="attention__icon"
-          src="../icons/info-rounded.svg"
-        />
-        For experienced users only
-      </div>
-      <BaseEditor class="user-rules__editor" v-model="userRules"/>
-      <div class="user-rules__controls">
+      <h3 class="whitelist__title">Whitelist</h3>
+      <p class="whitelist__description">Open AdBlocker will not be active on websites from this list:</p>
+      <BaseEditor class="whitelist__editor" v-model="whitelist"/>
+      <div class="whitelist__controls">
         <BaseButton
          :type="BaseButtonType.primary"
          :disabled="!hasChanges"
          @click="onSave"
          label="Save"
         />
-        <BaseImport @change="onImport" accept="txt">
+        <BaseImport @change="onImport" accept=".txt">
           <template #default="{ input }">
             <BaseButton
               data-test="import"
-              label="Import settings" :type="BaseButtonType.secondary" @click="initImport(input)"/>
+              label="Import"
+              :type="BaseButtonType.secondary"
+              @click="initImport(input)"/>
           </template>
         </BaseImport>
         <BaseButton
@@ -33,7 +28,7 @@
       </div>
     </BaseBox>
     <BaseModal
-      class="user-rules__save-modal"
+      class="whitelist__save-modal"
       title="Save changes"
       subtitle="Do you want to save changes before leaving this page?"
       v-if="showSaveModal"
@@ -72,37 +67,36 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-import { useExternalManualBlocking } from '@/modules/features/manual-blocking/external/manual-blocking.setup'
-import { exportData, ExportFormat, ExportTypes } from '@/ui/settings/utils/export-data'
-import { importData } from '@/ui/settings/utils/import-data'
+import { useExternalWhitelist } from '@/modules/whitelist/external/utils'
 import { BaseButtonType } from '@/ui/shared/components/button/base-button.types'
 import BaseButton from '@/ui/shared/components/button/base-button.vue'
-import { logger } from '@/utils/logger/logger'
 import { computed, onMounted, Ref, ref, watch } from 'vue'
-import { NavigationGuardNext, onBeforeRouteLeave, RouteLocationNormalized, RouteLocationNormalizedLoaded } from 'vue-router'
 import BaseBox from '../components/base/base-box.vue'
 import BaseEditor from '../components/base/base-editor.vue'
 import BaseImport from '../components/base/base-import.vue'
-import BaseModal from '../components/base/base-modal.vue'
 import { useSettingsStore } from '../store/settings.store'
+import { exportData, ExportFormat, ExportTypes } from '../utils/export-data'
+import { importData } from '../utils/import-data'
+import { logger } from '@/utils/logger/logger'
+import { NavigationGuardNext, onBeforeRouteLeave, RouteLocationNormalized, RouteLocationNormalizedLoaded } from 'vue-router'
 
 const $store = useSettingsStore()
-const $userRules = useExternalManualBlocking()
+const $whitelist = useExternalWhitelist()
 
+const whitelist = ref('')
 const nextNavigation: Ref<() => void> = ref(null)
-const userRules = ref('')
 const showSaveModal = ref(false)
 
 const hasChanges = computed(() => {
-  return userRules.value !== $store.stringUserRules
+  return whitelist.value !== $store.stringWhiteList
 })
 
 const initImport = async (input: HTMLInputElement): Promise<void> => {
+  $store.resetSnackbar()
   input.click()
 }
 
 const onImport = async (event: InputEvent): Promise<void> => {
-  $store.resetSnackbar()
   const target = event.target as HTMLInputElement
   const file = target.files?.[0]
   if (!file) {
@@ -113,24 +107,24 @@ const onImport = async (event: InputEvent): Promise<void> => {
   try {
     $store.setShowLoader(true)
     const content = await importData(file, ExportFormat.txt)
-    const success = await $userRules.import(content.split('\n'))
-    if (!success) {
+    const savedList = await $whitelist.import(content)
+    if (!savedList) {
       $store.setSnackbar({
-        message: 'Couldn\'t import user rules. Please retry',
+        message: 'Couldn\'t import the whitelist. Please retry',
         type: 'error'
       })
-      $store.setShowLoader(false)
       return
     }
 
+    $store.settings.filters.whiteList.domains = savedList
     $store.setSnackbar({
-      message: 'User rules were imported successfully',
+      message: 'Whitelist was imported successfully',
       type: 'info'
     })
   } catch (error) {
-    logger.error('Couldn\'t import user rules due to error', error)
+    logger.error('Couldn\'t import the whitelist due to error', error)
     $store.setSnackbar({
-      message: 'Couldn\'t import user rules. Please retry',
+      message: 'Couldn\'t import the whitelist. Please retry',
       type: 'error'
     })
   } finally {
@@ -141,15 +135,14 @@ const onImport = async (event: InputEvent): Promise<void> => {
 
 const onExport = async (): Promise<void> => {
   $store.resetSnackbar()
-  await exportData<string>(ExportTypes.userRules, $store.stringUserRules, ExportFormat.txt)
+  await exportData<string>(ExportTypes.whitelist, $store.stringWhiteList, ExportFormat.txt)
 }
 
 const onSave = async (): Promise<void> => {
   $store.setShowLoader(true)
-  const content = userRules.value.split('\n')
-  const success = await $userRules.import(content)
+  const savedList = await $whitelist.import(whitelist.value)
 
-  if (!success) {
+  if (!savedList) {
     $store.setSnackbar({
       message: 'Couldn\'t save changes. Please retry',
       type: 'error'
@@ -158,7 +151,7 @@ const onSave = async (): Promise<void> => {
     return
   }
 
-  $store.settings.filters.userRules = content
+  $store.settings.filters.whiteList.domains = savedList
   $store.setSnackbar({
     message: 'Changes were saved successfully',
     type: 'info'
@@ -174,14 +167,14 @@ const onModalResponse = async (shouldSave: boolean): Promise<void> => {
 }
 
 watch(
-  () => $store.settings.filters.userRules,
+  () => $store.settings.filters.whiteList.domains,
   () => {
-    userRules.value = $store.settings.filters.userRules.join('\n')
+    whitelist.value = $store.stringWhiteList
   }
 )
 
 onMounted(() => {
-  userRules.value = $store.stringUserRules
+  whitelist.value = $store.stringWhiteList
 })
 
 onBeforeRouteLeave((to: RouteLocationNormalized, from: RouteLocationNormalizedLoaded, next: NavigationGuardNext) => {
@@ -195,7 +188,7 @@ onBeforeRouteLeave((to: RouteLocationNormalized, from: RouteLocationNormalizedLo
 </script>
 
 <style lang="less" scoped>
-.user-rules__title {
+.whitelist__title {
   font-weight: 700;
   font-size: 22px;
   line-height: 28px;
@@ -203,7 +196,7 @@ onBeforeRouteLeave((to: RouteLocationNormalized, from: RouteLocationNormalizedLo
   margin: 0 0 10px;
 }
 
-.user-rules__description {
+.whitelist__description {
   font-weight: 400;
   font-size: 14px;
   line-height: 18px;
@@ -211,28 +204,11 @@ onBeforeRouteLeave((to: RouteLocationNormalized, from: RouteLocationNormalizedLo
   margin-bottom: 24px;
 }
 
-.user-rules__attention {
-  padding: 12px 16px;
-  width: fit-content;
-  background: #FDF4E2;
-  border-radius: 8px;
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 16px;
-  font-family: Lato;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 18px;
-  color: #6B4906;
-}
-
-.user-rules__editor {
+.whitelist__editor {
   margin-top: 28px;
 }
 
-.user-rules__controls {
+.whitelist__controls {
   margin-top: 28px;
   width: 100%;
   display: flex;
@@ -248,7 +224,7 @@ onBeforeRouteLeave((to: RouteLocationNormalized, from: RouteLocationNormalizedLo
   }
 }
 
-.user-rules__save-modal {
+.whitelist__save-modal {
   .base-button {
     width: 170px;
     height: 40px;

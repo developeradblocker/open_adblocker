@@ -57,4 +57,10 @@ export class InternalWhitelistService implements WhitelistInterface {
     const list = await this.getDomains()
     return list.includes(domain)
   }
+
+  async import (rawDomains: string): Promise<Domain[]> {
+    const domainList = rawDomains.split('\n').filter(domain => domain)
+    await this.storage.write(domainList)
+    return domainList
+  }
 }
