@@ -14,7 +14,7 @@
         <BaseToggle id="web-rtc-toggle" :is-active="webRtc" />
       </template>
     </Feature>
-    <Feature icon="eraser" label="Block element" @click="onBlockElement">
+    <Feature icon="eraser" label="Block element" @click="onBlockElement" :disabled="blockElementDisabled">
     </Feature>
   </div>
 </template>
@@ -51,12 +51,15 @@ import { useNotificationStore } from '@/ui/toolbar-popup/components/notification
 import { useExternalFilters } from '@/modules/filters/external/filters.utils'
 import { NotificationTypes } from '@/ui/toolbar-popup/components/notification/notification.types'
 import { useExternalManualBlocking } from '@/modules/features/manual-blocking/external/manual-blocking.setup'
+import { getActiveTabHelper } from '@/helpers/get-active-tab.helper'
+import { isContentScriptBlockedOnPage } from '@/helpers/is-content-script-blocked-on-page.helper'
 
 const appStore = useAppStore()
 const webRTC = useWebRTC()
 const filters = useExternalFilters()
 const activity = useUserActivity()
 const notification = useNotificationStore()
+const blockElementDisabled = ref(false)
 
 const cookieCleanerToggleLoading = ref(false)
 const webRtc = computed(() => appStore.app.isWebRTCEnabled)
@@ -84,6 +87,10 @@ const toggleCookieCleaner = async (state: boolean): Promise<void> => {
   }
 }
 const onBlockElement = () => {
+  if (blockElementDisabled.value) {
+    return
+  }
+
   useExternalManualBlocking().triggerStart()
 }
 onMounted(async () => {
@@ -99,6 +106,8 @@ onMounted(async () => {
     await requestWebRTCPermissions()
     window.close()
   })
+  const activeTabUrl = (await getActiveTabHelper()).url
+  blockElementDisabled.value = isContentScriptBlockedOnPage(activeTabUrl)
 })
 </script>
 

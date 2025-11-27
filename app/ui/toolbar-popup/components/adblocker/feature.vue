@@ -1,5 +1,10 @@
 <template>
-  <div class="ad-blocker-feature">
+  <div
+    :class="{
+      'ad-blocker-feature': true,
+      'ad-blocker-feature--disabled': disabled
+    }"
+  >
     <div class="ad-blocker-feature__main">
       <BaseSvg class="ad-blocker-feature__icon" :src="`../icons/${icon}.svg`"/>
       <p class="ad-blocker-feature__label">{{ label }}</p>
@@ -43,7 +48,7 @@
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
 
-defineProps<{ label: string, icon: string, info?: string }>()
+defineProps<{ label: string, icon: string, info?: string, disabled?: boolean }>()
 </script>
 
 <style scoped lang="less">
@@ -102,6 +107,31 @@ defineProps<{ label: string, icon: string, info?: string }>()
   display: block;
   .popper {
     width: 90%;
+  }
+}
+
+.ad-blocker-feature--disabled {
+  cursor: not-allowed;
+
+  .ad-blocker-feature__icon,
+  .ad-blocker-feature__info {
+    fill: var(--disabled-color);
+  }
+
+  .ad-blocker-feature__label {
+    color: var(--disabled-color);
+  }
+
+  &:hover {
+    background-color: #FFF;
+
+    .ad-blocker-feature__label {
+      color: var(--disabled-color);
+    }
+
+    .ad-blocker-feature__info {
+      fill: var(--disabled-color);
+    }
   }
 }
 </style>
