@@ -17,6 +17,7 @@
             v-model="description"
             :error="errors.description"
             :max-chars="MAX_CHARS_DESCRIPTION"
+            :height="112"
             placeholder="Issue description"
           />
       </div>
@@ -138,10 +139,6 @@ const closePopup = () => {
   display: flex;
   flex-flow: column nowrap;
   row-gap: 4px;
-
-  .base-textarea {
-    height: 112px;
-  }
 }
 
 .report-issue {

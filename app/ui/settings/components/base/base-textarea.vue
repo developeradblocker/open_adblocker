@@ -5,6 +5,7 @@
       'base-textarea--disabled': disabled,
       'base-textarea--with-errors': error !== undefined
     }"
+    :style="`height: ${height}px;`"
   >
     <textarea
       class="base-textarea__native"
@@ -53,6 +54,7 @@ const { modelValue } = defineProps<{
   disabled?: boolean,
   error?: string
   maxChars?: number
+  height?: number
 }>()
 const valueLen = computed(() => modelValue.trim().length)
 </script>
