@@ -39,6 +39,7 @@ import { useUserActivity } from '@/modules/user-activity/external/utils'
 import { useSettingsStore } from './store/settings.store'
 import { useExternalSettings } from '@/modules/settings/external/settings.utils'
 import { setupExternalManualBlocking } from '@/modules/features/manual-blocking/external/manual-blocking.setup'
+import { setupExternalWhitelist } from '@/modules/whitelist/external/whitelist.setup'
 import './validations/validators'
 
 /**
@@ -49,6 +50,7 @@ setupExternalPortChannel({ name: 'Settings' })
 setupExternalUserActivity(uuidv4())
 setupExternalFilters()
 setupExternalManualBlocking()
+setupExternalWhitelist()
 setupExternalSettings();
 
 (async (): Promise<void> => {

@@ -19,7 +19,8 @@ import { getVersion } from '@/ui/settings/utils/get-version'
 
 export enum ExportTypes {
   settings = 'settings',
-  userRules = 'userRules'
+  userRules = 'userRules',
+  whitelist = 'whitelist'
 }
 
 export enum ExportFormat {

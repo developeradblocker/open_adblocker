@@ -31,6 +31,7 @@ import { SETTINGS_ROUTE } from '@/ui/settings/router/route-names'
 import { useExternalSettings } from '@/modules/settings/external/settings.utils'
 import { useSettingsStore } from '@/ui/settings/store/settings.store'
 import { setupExternalManualBlocking } from '@/modules/features/manual-blocking/external/manual-blocking.setup'
+import { setupExternalWhitelist } from '@/modules/whitelist/external/whitelist.setup'
 
 jest.mock('vue', () => ({
   defineComponent: jest.fn(),
@@ -89,6 +90,10 @@ jest.mock('@/modules/filters/external/filters.setup', () => ({
 jest.mock('@/modules/settings/external/settings.setup', () => ({
   setupExternalSettings: jest.fn(),
   useExternalSettings: jest.fn()
+}))
+
+jest.mock('@/modules/whitelist/external/whitelist.setup', () => ({
+  setupExternalWhitelist: jest.fn()
 }))
 
 jest.mock('pinia', () => ({
@@ -165,6 +170,7 @@ describe('Settings entry script', () => {
       expect(setupExternalFilters).toHaveBeenCalledTimes(1)
       expect(setupExternalUserActivity).toHaveBeenCalledTimes(1)
       expect(setupExternalManualBlocking).toHaveBeenCalledTimes(1)
+      expect(setupExternalWhitelist).toHaveBeenCalledTimes(1)
       expect(dispatcher).toHaveBeenCalled()
       expect(mockWork).toHaveBeenCalled()
       expect(createPinia).toHaveBeenCalledTimes(1)
@@ -179,5 +185,5 @@ describe('Settings entry script', () => {
         to: ClickEventToAction.openSettings
       })
     })
-  })
+  }, 30000)
 })

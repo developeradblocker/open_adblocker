@@ -93,7 +93,7 @@ const toggleReportModal = (state: boolean): void => {
 }
 
 const onExport = async (): Promise<void> => {
-  $store.setSnackbar(null)
+  $store.resetSnackbar()
   $activity.click(ElementsUI.exportSettings, {
     page: SETTINGS_ROUTE.GENERAL,
     to: ClickEventToAction.exportSettings
@@ -103,7 +103,7 @@ const onExport = async (): Promise<void> => {
 }
 
 const initImport = async (input: HTMLInputElement): Promise<void> => {
-  $store.setSnackbar(null)
+  $store.resetSnackbar()
   $activity.click(ElementsUI.importSettings, {
     page: SETTINGS_ROUTE.GENERAL,
     to: ClickEventToAction.importSettings

@@ -37,6 +37,7 @@ describe('App.vue', () => {
   const getMock = jest.fn()
   const setSettingsInfoMock = jest.fn()
   const setSnackbarMock = jest.fn()
+  const resetSnackbarMock = jest.fn()
 
   const mockSettings = {
     version: '1.0.0',
@@ -94,6 +95,7 @@ describe('App.vue', () => {
     void (useSettingsStore as unknown as jest.Mock).mockReturnValue({
       setSettingsInfo: setSettingsInfoMock,
       setSnackbar: setSnackbarMock,
+      resetSnackbar: resetSnackbarMock,
       showLoader: true,
       snackbar: {
         test: true
@@ -116,10 +118,11 @@ describe('App.vue', () => {
 
   it('should render navigation links', () => {
     const links = wrapper.findAll('.app__nav-link')
-    expect(links).toHaveLength(3)
+    expect(links).toHaveLength(4)
     expect(links[0].text()).toBe('General')
     expect(links[1].text()).toBe('Filters')
-    expect(links[2].text()).toBe('User rules')
+    expect(links[2].text()).toBe('Whitelist')
+    expect(links[3].text()).toBe('User rules')
   })
 
   it('should mark Filters link as active when path includes groups', () => {
@@ -137,7 +140,6 @@ describe('App.vue', () => {
 
   it('should set null to snackbar when closed', async () => {
     await wrapper.findComponent(BaseSnackbar).vm.$emit('close')
-    expect(setSnackbarMock).toHaveBeenCalledTimes(1)
-    expect(setSnackbarMock).toHaveBeenCalledWith(null)
+    expect(resetSnackbarMock).toHaveBeenCalledTimes(1)
   })
 })

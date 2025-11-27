@@ -59,6 +59,9 @@ export const useSettingsStore = defineStore('SettingsStore', {
     whiteList (): Domain[] {
       return this.settings.filters?.whiteList?.domains
     },
+    stringWhiteList (): string {
+      return this.settings.filters?.whiteList?.domains.join('\n')
+    },
     userRules (): string[] {
       return this.settings.filters?.userRules
     },
@@ -81,6 +84,10 @@ export const useSettingsStore = defineStore('SettingsStore', {
 
     setSnackbar (snackbar: SnackbarProps | null): void {
       this.snackbar = snackbar
+    },
+
+    resetSnackbar (): void {
+      this.snackbar = null
     },
 
     toggleFilter (filterId: FilterId): void {
