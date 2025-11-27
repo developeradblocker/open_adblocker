@@ -39,9 +39,10 @@ import { useUserActivity } from '@/modules/user-activity/external/utils'
 import { useSettingsStore } from './store/settings.store'
 import { useExternalSettings } from '@/modules/settings/external/settings.utils'
 import { setupExternalManualBlocking } from '@/modules/features/manual-blocking/external/manual-blocking.setup'
+import './validations/validators'
 
 /**
- * Settings Worker (PW)
+ * Settings Worker (Settings)
  */
 setupWorker('Settings')
 setupExternalPortChannel({ name: 'Settings' })

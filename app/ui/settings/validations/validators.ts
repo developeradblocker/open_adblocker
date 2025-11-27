@@ -15,24 +15,36 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-export enum InternalSettingsIdentifiers {
-  /**
-   * @link SettingsInterface
-   */
-  service = 'Settings.Service',
+import { defineRule } from 'vee-validate'
+import { Validators } from './validators.types'
 
-  /**
-   * MetadataServiceInterface
-   */
-  metadata = 'Settings.Metadata',
+defineRule(Validators.required, (value: string, ctx: any, { name }) => {
+  if (!value?.length) {
+    return `${capitalize(name)} field is required`
+  }
+  return true
+})
 
-  /**
-   * @link MetadataStorage
-   */
-  _metadataStorage = 'Settings.MetadataStorage',
+defineRule(Validators.email, (value: string) => {
+  if (!value?.length) {
+    return true
+  }
 
-  /**
-   * API URL for report issue endpoint
-   */
-  _reportIssueURL = 'Settings.ReportIssueURL'
+  return /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value) ||
+    'This field must be a valid email'
+})
+
+defineRule(Validators.maxLen, (value: string, [maxLen]: [number]) => {
+  if (value.length <= maxLen) {
+    return true
+  }
+
+  return 'The message is too long'
+})
+
+const capitalize = (str: string): string => {
+  if (!str.length) {
+    return ''
+  }
+  return str.charAt(0).toUpperCase() + str.slice(1)
 }

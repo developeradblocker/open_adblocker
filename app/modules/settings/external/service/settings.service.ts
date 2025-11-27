@@ -18,10 +18,11 @@
 import { injectable } from '@/utils/di/di.types'
 import { useExternalPort } from '@/modules/port/external/port.setup'
 import { ExternalPortChannel } from '@/modules/port/external/port.types'
-import { ExportedSettings, OpenADBSettings, SettingsInterface } from '@/modules/settings/common/settings.types'
+import { ExportedSettings, OpenADBSettings, ReportIssueForm, SettingsInterface } from '@/modules/settings/common/settings.types'
 import {
   ExportSettingsMessage, GetSettingsMessage,
   ImportSettingsMessage,
+  ReportIssueMessage,
   SettingsMessages
 } from '@/modules/settings/common/settings.messages'
 
@@ -55,5 +56,14 @@ export class SettingsService implements SettingsInterface {
     }
 
     return await this.port.sendMessage<OpenADBSettings>(message)
+  }
+
+  async reportIssue (form: ReportIssueForm): Promise<boolean> {
+    const message: ReportIssueMessage = {
+      type: SettingsMessages.reportIssue,
+      payload: form
+    }
+
+    return await this.port.sendMessage<boolean>(message)
   }
 }

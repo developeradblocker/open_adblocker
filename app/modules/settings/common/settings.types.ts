@@ -21,6 +21,12 @@ export interface SettingsInterface {
   export: () => Promise<ExportedSettings>
   import: (content: string) => Promise<boolean>
   get: () => Promise<OpenADBSettings>
+  reportIssue: (form: ReportIssueForm) => Promise<boolean>
+}
+
+export interface ReportIssueForm {
+  email: string,
+  description: string
 }
 
 export const SETTINGS_VERSION = '1.0'

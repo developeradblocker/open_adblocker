@@ -15,24 +15,8 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-export enum InternalSettingsIdentifiers {
-  /**
-   * @link SettingsInterface
-   */
-  service = 'Settings.Service',
-
-  /**
-   * MetadataServiceInterface
-   */
-  metadata = 'Settings.Metadata',
-
-  /**
-   * @link MetadataStorage
-   */
-  _metadataStorage = 'Settings.MetadataStorage',
-
-  /**
-   * API URL for report issue endpoint
-   */
-  _reportIssueURL = 'Settings.ReportIssueURL'
+export enum Validators {
+  required = 'required',
+  maxLen = 'maxLen',
+  email = 'email'
 }

@@ -102,7 +102,8 @@ describe('SettingsService', () => {
       mockMetadata,
       mockWebRtc,
       mockWhitelist,
-      mockUserRules
+      mockUserRules,
+      'mockedURL'
     )
   })
 

@@ -19,6 +19,7 @@ import { inject, injectable } from '@/utils/di/di.types'
 import {
   ExportedSettings, MetadataServiceInterface,
   OpenADBSettings,
+  ReportIssueForm,
   SETTINGS_VERSION,
   SettingsInterface
 } from '@/modules/settings/common/settings.types'
@@ -51,7 +52,9 @@ export class SettingsService implements SettingsInterface {
     @inject(WhitelistIdentifiers.service)
     private readonly whitelist: WhitelistInterface,
     @inject(InternalManualBlockingIdentifiers.service)
-    private readonly userRules: InternalManualBlockingServiceInterface
+    private readonly userRules: InternalManualBlockingServiceInterface,
+    @inject(InternalSettingsIdentifiers._reportIssueURL)
+    private readonly url: string
   ) {
   }
 
@@ -94,6 +97,25 @@ export class SettingsService implements SettingsInterface {
     return {
       ...main,
       metadata: { filters, groups }
+    }
+  }
+
+  async reportIssue (form: ReportIssueForm): Promise<boolean> {
+    try {
+      const headers = new Headers()
+      headers.append('Content-Type', 'application/json')
+      await fetch(`${this.url}/rest/v1/support/extension`, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({
+          ...form,
+          extensionVersion: chrome.runtime.getManifest().version
+        })
+      })
+      return true
+    } catch (error) {
+      logger.error('SettingsService: failed to report issue:', error)
+      return false
     }
   }
 

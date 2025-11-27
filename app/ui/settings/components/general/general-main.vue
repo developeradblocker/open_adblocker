@@ -24,13 +24,15 @@
 
     <div class="main__cards">
       <BaseCard
-        disabled
         data-test="report"
-        label="Report a bug (coming soon)" icon="bug" class="main__card" />
+        label="Report a bug" icon="bug" class="main__card"
+        @click="toggleReportModal(true)"
+        />
       <BaseCard
         data-test="rate"
         label="Share feedback" icon="rate" class="main__card" @click="onRateUsClicked"/>
     </div>
+    <ReportIssue v-show="reportModalShown" @close="toggleReportModal(false)"/>
   </BaseBox>
 </template>
 
@@ -68,11 +70,14 @@ import { useSettingsStore } from '@/ui/settings/store/settings.store'
 import { useUserActivity } from '@/modules/user-activity/external/utils'
 import { SETTINGS_ROUTE } from '@/ui/settings/router/route-names'
 import { ClickEventToAction, ElementsUI } from '@/modules/user-activity/common/user-activity.types'
+import ReportIssue from '@/ui/settings/components/report-issue.vue'
 
 const $activity = useUserActivity()
 const importError = ref<string>(null)
 const $settings = useExternalSettings()
 const $store = useSettingsStore()
+const reportModalShown = ref(false)
+
 const onRateUsClicked = async (): Promise<void> => {
   $activity.click(ElementsUI.rateUsButton, {
     page: SETTINGS_ROUTE.GENERAL,
@@ -81,6 +86,10 @@ const onRateUsClicked = async (): Promise<void> => {
   await chrome.tabs.create({
     url: RATE_US_URL
   })
+}
+
+const toggleReportModal = (state: boolean): void => {
+  reportModalShown.value = state
 }
 
 const onExport = async (): Promise<void> => {
