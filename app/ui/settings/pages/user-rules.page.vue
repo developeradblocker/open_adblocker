@@ -22,7 +22,7 @@
           <template #default="{ input }">
             <BaseButton
               data-test="import"
-              label="Import settings" :type="BaseButtonType.secondary" @click="initImport(input)"/>
+              label="Import" :type="BaseButtonType.secondary" @click="initImport(input)"/>
           </template>
         </BaseImport>
         <BaseButton
