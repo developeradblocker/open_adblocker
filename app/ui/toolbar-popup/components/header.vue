@@ -94,7 +94,7 @@ const onLogoClick = async (): Promise<void> => {
 
 const onSettingsClick = async (): Promise<void> => {
   const settingsPage = chrome.runtime.getURL(SETTINGS_PATH)
-  const [activeSettings] = await chrome.tabs.query({ url: settingsPage })
+  const [activeSettings] = await chrome.tabs.query({ url: settingsPage, currentWindow: true })
   if (activeSettings?.id) {
     await chrome.tabs.update(activeSettings?.id, { active: true })
   } else {
