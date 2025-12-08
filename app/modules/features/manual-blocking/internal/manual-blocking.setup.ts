@@ -27,7 +27,7 @@ import { TriggerStartManualBlockingListener } from '@/modules/features/manual-bl
 import { UserRulesStorage } from '@/modules/features/manual-blocking/internal/storage/user-rules.storage'
 import { AddRuleListener } from '@/modules/features/manual-blocking/internal/listeners/add-rule.listener'
 import { ResetRulesListener } from '@/modules/features/manual-blocking/internal/listeners/reset-rules.listener'
-import { ImportListener } from './listeners/import.listener'
+import { SaveListener } from './listeners/save.listener'
 
 export const setupInternalManualBlocking = (): void => {
   inject([
@@ -44,7 +44,7 @@ export const setupInternalManualBlocking = (): void => {
   dispatcher().onWithClass(TriggerStartManualBlockingListener)
   dispatcher().onWithClass(AddRuleListener)
   dispatcher().onWithClass(ResetRulesListener)
-  dispatcher().onWithClass(ImportListener)
+  dispatcher().onWithClass(SaveListener)
 }
 
 export const useInternalManualBlocking = (): InternalManualBlockingServiceInterface => di.get(InternalManualBlockingIdentifiers.service)

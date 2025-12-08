@@ -113,7 +113,7 @@ const onImport = async (event: InputEvent): Promise<void> => {
   try {
     $store.setShowLoader(true)
     const content = await importData(file, ExportFormat.txt)
-    const success = await $userRules.import(content.split('\n'))
+    const success = await $userRules.save(content.split('\n'), false)
     if (!success) {
       $store.setSnackbar({
         message: 'Couldn\'t import user rules. Please retry',
@@ -147,7 +147,7 @@ const onExport = async (): Promise<void> => {
 const onSave = async (): Promise<void> => {
   $store.setShowLoader(true)
   const content = userRules.value.split('\n')
-  const success = await $userRules.import(content)
+  const success = await $userRules.save(content)
 
   if (!success) {
     $store.setSnackbar({

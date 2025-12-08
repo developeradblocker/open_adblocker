@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
+import { getDomainsWithSubDomains } from '@/helpers/get-domains-with-subdomains.helper'
 import { AdGuardIdentifiers } from '@/modules/aguard/internal/adguaird.types'
 import { WhitelistInterface } from '@/modules/whitelist/common/whetelist.types'
 import { WhitelistMessages, WhitelistUpdatedMessage } from '@/modules/whitelist/common/whitelist.messages'
@@ -47,7 +48,7 @@ export class WhitelistUpdatedListener implements AppMessageListener<WhitelistUpd
   }
 
   async handle (): Promise<void> {
-    this.config.allowlist = await this.service.getDomains()
+    this.config.allowlist = getDomainsWithSubDomains(await this.service.getDomains())
     await this.tsWebExtension.configure(this.config)
   }
 }

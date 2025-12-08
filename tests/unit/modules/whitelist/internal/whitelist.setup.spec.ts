@@ -22,7 +22,7 @@ import { WhitelistIdentifiers } from '@/modules/whitelist/internal/whitelist.typ
 import { InternalWhitelistService } from '@/modules/whitelist/internal/whitelist.service'
 import { dispatcher } from '@/utils/setup-worker'
 import { DispatcherInterface } from '@/utils/dispatcher/dispatcher.types'
-import { WhitelistImportListener } from '@/modules/whitelist/internal/listeners/import.listener'
+import { WhitelistSaveListener } from '@/modules/whitelist/internal/listeners/save.listener'
 import { WhitelistExportListener } from '@/modules/whitelist/internal/listeners/export.listener'
 
 jest.mock('@/utils/inject/inject', () => ({
@@ -52,7 +52,7 @@ describe('setupInternalWhitelist', () => {
       }
     ])
     expect(dispatcher().onWithClass).toHaveBeenCalledTimes(2)
-    expect(dispatcher().onWithClass).toHaveBeenCalledWith(WhitelistImportListener)
+    expect(dispatcher().onWithClass).toHaveBeenCalledWith(WhitelistSaveListener)
     expect(dispatcher().onWithClass).toHaveBeenCalledWith(WhitelistExportListener)
   })
 })

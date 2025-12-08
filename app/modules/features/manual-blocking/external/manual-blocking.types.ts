@@ -24,5 +24,5 @@ export enum ExternalManualBlockingIdentifiers {
 
 export interface ExternalManualBlockingServiceInterface {
   triggerStart(): Promise<void>
-  import(userRules: string[]): Promise<boolean>
+  save(userRules: string[], override?: boolean): Promise<boolean>
 }

@@ -81,7 +81,7 @@ describe('SettingsService', () => {
 
     mockUserRules = {
       getUserRules: jest.fn(),
-      setRules: jest.fn()
+      saveRules: jest.fn()
     } as any
 
     mockMetadata = {

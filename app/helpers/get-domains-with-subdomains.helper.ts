@@ -15,17 +15,14 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-export enum InternalManualBlockingIdentifiers {
-  /**
-   * @link InternalManualBlockingServiceInterface
-   */
-  service = 'ManualBlocking.Service',
-  _storage = 'ManualBlocking.Storage'
-}
+import { Domain } from '@/common/types'
 
-export interface InternalManualBlockingServiceInterface {
-  getUserRules(): Promise<string[]>
-  addRule(ruleText: string): Promise<void>
-  resetRules(rules: string[]): Promise<void>
-  saveRules(rules: string[], needReload?: boolean, override?: boolean): Promise<boolean>
+export const getDomainsWithSubDomains = (domains: Domain[]): Domain[] => {
+  return domains.reduce((acc, domain) => {
+    acc.push(domain)
+    if (!domain.startsWith('*.')) {
+      acc.push(`*.${domain}`)
+    }
+    return acc
+  }, [])
 }
