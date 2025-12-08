@@ -4,7 +4,7 @@
     class="report-issue"
     title="Report an issue"
     subtitle="Let us know what we could improve."
-    @close="closePopup"
+    @close.stop
   >
     <template #content>
       <div class="report-issue__form">
@@ -72,7 +72,7 @@ import { ref } from 'vue'
 const $emit = defineEmits(['close'])
 const $settings = useExternalSettings()
 const $store = useSettingsStore()
-const MAX_CHARS_DESCRIPTION = 800
+const MAX_CHARS_DESCRIPTION = 500
 const reportSendingInProgress = ref(false)
 
 const { errors, defineField, resetForm, submitForm, meta } = useForm({

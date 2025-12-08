@@ -107,7 +107,7 @@ const onImport = async (event: InputEvent): Promise<void> => {
   try {
     $store.setShowLoader(true)
     const content = await importData(file, ExportFormat.txt)
-    const savedList = await $whitelist.import(content)
+    const savedList = await $whitelist.save(content, false)
     if (!savedList) {
       $store.setSnackbar({
         message: 'Couldn\'t import the whitelist. Please retry',
@@ -140,7 +140,7 @@ const onExport = async (): Promise<void> => {
 
 const onSave = async (): Promise<void> => {
   $store.setShowLoader(true)
-  const savedList = await $whitelist.import(whitelist.value)
+  const savedList = await $whitelist.save(whitelist.value)
 
   if (!savedList) {
     $store.setSnackbar({

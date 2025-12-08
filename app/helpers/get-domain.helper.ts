@@ -21,7 +21,8 @@ import { logger } from '@/utils/logger/logger'
 export const getDomainHelper = (url: string): Domain => {
   try {
     const tmp = new URL(url)
-    return tmp.hostname
+    const hostname = tmp.hostname
+    return hostname.startsWith('www.') ? hostname.substring(4) : hostname
   } catch (e) {
     logger.error(e)
     return url

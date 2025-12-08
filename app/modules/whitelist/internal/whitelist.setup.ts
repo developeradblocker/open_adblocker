@@ -22,7 +22,7 @@ import { inject } from '@/utils/inject/inject'
 import { Injection } from '@/utils/inject/inject.types'
 import { dispatcher } from '@/utils/setup-worker'
 import { WhitelistExportListener } from './listeners/export.listener'
-import { WhitelistImportListener } from './listeners/import.listener'
+import { WhitelistSaveListener } from './listeners/save.listener'
 
 const injections: Injection[] = [
   {
@@ -34,6 +34,6 @@ const injections: Injection[] = [
 export const setupInternalWhitelist = (): void => {
   inject(injections)
 
-  dispatcher().onWithClass(WhitelistImportListener)
+  dispatcher().onWithClass(WhitelistSaveListener)
   dispatcher().onWithClass(WhitelistExportListener)
 }

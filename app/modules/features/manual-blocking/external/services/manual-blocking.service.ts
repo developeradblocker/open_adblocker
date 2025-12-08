@@ -17,7 +17,7 @@
  */
 import { injectable } from '@/utils/di/di.types'
 import {
-  ManualBlockingImportMessage,
+  ManualBlockingSaveMessage,
   ManualBlockingMessages,
   ManualBlockingTriggerStartMessage
 } from '@/modules/features/manual-blocking/common/manual-blocking.messages'
@@ -42,11 +42,12 @@ export class ManualBlockingService implements ExternalManualBlockingServiceInter
     window.close()
   }
 
-  async import (userRules: string[]): Promise<boolean> {
-    const message: ManualBlockingImportMessage = {
-      type: ManualBlockingMessages.import,
+  async save (userRules: string[], override = true): Promise<boolean> {
+    const message: ManualBlockingSaveMessage = {
+      type: ManualBlockingMessages.save,
       payload: {
-        userRules
+        userRules,
+        override
       }
     }
     return await this.port.sendMessage(message)
