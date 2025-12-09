@@ -81,7 +81,7 @@ describe('ManualBlockingService (internal)', () => {
   })
 
   it('sets rules successfully with configurable reload flag', async () => {
-    const result = await service.setRules(['a'], true)
+    const result = await service.saveRules(['a'], true)
 
     expect(storage.set).toHaveBeenCalledWith(['a'])
     expect(sendMessageMock).toHaveBeenCalledWith({
@@ -95,7 +95,7 @@ describe('ManualBlockingService (internal)', () => {
     const error = new Error('failed')
     storage.set.mockRejectedValueOnce(error)
 
-    await expect(service.setRules(['a'])).resolves.toBe(false)
+    await expect(service.saveRules(['a'])).resolves.toBe(false)
     expect(logger.error).toHaveBeenCalledWith(
       'InternalManualBlocking: Failed to set rules due to error',
       error

@@ -127,6 +127,6 @@ export class SettingsService implements SettingsInterface {
     await this.filters.setup(settings.filters.enabledFilters)
     await this.webRtc.setup(settings.general.webRTC)
     await this.whitelist.setup(settings.filters.whiteList.domains)
-    await this.userRules.setRules(settings.filters.userRules)
+    await this.userRules.saveRules(settings.filters.userRules)
   }
 }

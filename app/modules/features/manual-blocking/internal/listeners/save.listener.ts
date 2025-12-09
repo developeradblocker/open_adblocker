@@ -15,34 +15,35 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-import { Domain } from '@/common/types'
+import {
+  ManualBlockingSaveMessage,
+  ManualBlockingMessages
+} from '@/modules/features/manual-blocking/common/manual-blocking.messages'
+import {
+  InternalManualBlockingIdentifiers,
+  InternalManualBlockingServiceInterface
+} from '@/modules/features/manual-blocking/internal/manual-blocking.types'
 import { inject, injectable } from '@/utils/di/di.types'
 import { AppMessageListener, Box } from '@/utils/dispatcher/dispatcher.types'
-import { WhitelistInterface } from '../../common/whetelist.types'
-import { WhitelistImportMessage, WhitelistMessages } from '../../common/whitelist.messages'
-import { WhitelistIdentifiers } from '../whitelist.types'
-import { dispatcher } from '@/utils/setup-worker'
 
 @injectable()
-export class WhitelistImportListener implements AppMessageListener<WhitelistImportMessage, Domain[]> {
+export class SaveListener implements AppMessageListener<ManualBlockingSaveMessage, boolean> {
   constructor (
-      @inject(WhitelistIdentifiers.service)
-      private readonly service: WhitelistInterface
-  ) {}
+    @inject(InternalManualBlockingIdentifiers.service)
+    private readonly service: InternalManualBlockingServiceInterface
+  ) {
+  }
 
-  on (): WhitelistMessages.import {
-    return WhitelistMessages.import
+  on (): ManualBlockingMessages.save {
+    return ManualBlockingMessages.save
   }
 
   main (): true {
     return true
   }
 
-  async handle ({ message }: Box<WhitelistImportMessage>): Promise<Domain[]> {
-    const res = await this.service.import(message.payload.rawDomain)
-    dispatcher().sendMessage({
-      type: WhitelistMessages.listUpdated
-    })
-    return res
+  async handle ({ message }: Box<ManualBlockingSaveMessage>): Promise<boolean> {
+    const { userRules, override } = message.payload
+    return await this.service.saveRules(userRules, false, override)
   }
 }

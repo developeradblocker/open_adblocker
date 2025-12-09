@@ -68,12 +68,13 @@ describe('ManualBlockingService (external)', () => {
   it('import forwards rules through the port', async () => {
     const service = new ManualBlockingService()
 
-    const result = await service.import(['rule'])
+    const result = await service.save(['rule'])
 
     expect(port.sendMessage).toHaveBeenCalledWith({
-      type: ManualBlockingMessages.import,
+      type: ManualBlockingMessages.save,
       payload: {
-        userRules: ['rule']
+        userRules: ['rule'],
+        override: true
       }
     })
     expect(result).toBe(true)

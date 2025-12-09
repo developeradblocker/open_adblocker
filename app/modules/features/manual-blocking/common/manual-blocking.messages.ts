@@ -32,7 +32,7 @@ export enum ManualBlockingMessages {
   removeRule = 'ManualBlocking.RemoveRule',
   resetRules = 'ManualBlocking.ResetAll',
   rulesUpdated = 'ManualBlocking.RulesUpdated',
-  import = 'ManualBlocking.Import'
+  save = 'ManualBlocking.Save'
 }
 
 export interface ManualBlockingStartMessage extends AppMessage {
@@ -104,9 +104,10 @@ export interface ManualBlockingRulesUpdatedMessage extends AppMessage {
   }
 }
 
-export interface ManualBlockingImportMessage extends AppMessage {
-  type: ManualBlockingMessages.import,
+export interface ManualBlockingSaveMessage extends AppMessage {
+  type: ManualBlockingMessages.save,
   payload: {
-    userRules: string[]
+    userRules: string[],
+    override: boolean
   }
 }

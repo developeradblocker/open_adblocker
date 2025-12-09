@@ -19,15 +19,16 @@ import { Domain } from '@/common/types'
 import { AppMessage } from '@/utils/dispatcher/dispatcher.types'
 
 export enum WhitelistMessages {
-  import = 'Whitelist.Import',
   export = 'Whitelist.Export',
+  save = 'Whitelist.Save',
   listUpdated = 'Whitelist.Updated'
 }
 
-export interface WhitelistImportMessage extends AppMessage {
-  type: WhitelistMessages.import,
+export interface WhitelistSaveMessage extends AppMessage {
+  type: WhitelistMessages.save,
   payload: {
-      rawDomain: Domain
+    rawDomain: Domain,
+    override: boolean
   }
 }
 

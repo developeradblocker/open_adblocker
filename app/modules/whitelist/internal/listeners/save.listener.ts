@@ -15,34 +15,35 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-import {
-  ManualBlockingImportMessage,
-  ManualBlockingMessages
-} from '@/modules/features/manual-blocking/common/manual-blocking.messages'
-import {
-  InternalManualBlockingIdentifiers,
-  InternalManualBlockingServiceInterface
-} from '@/modules/features/manual-blocking/internal/manual-blocking.types'
+import { Domain } from '@/common/types'
 import { inject, injectable } from '@/utils/di/di.types'
 import { AppMessageListener, Box } from '@/utils/dispatcher/dispatcher.types'
+import { WhitelistInterface } from '../../common/whetelist.types'
+import { WhitelistSaveMessage, WhitelistMessages } from '../../common/whitelist.messages'
+import { WhitelistIdentifiers } from '../whitelist.types'
+import { dispatcher } from '@/utils/setup-worker'
 
 @injectable()
-export class ImportListener implements AppMessageListener<ManualBlockingImportMessage, boolean> {
+export class WhitelistSaveListener implements AppMessageListener<WhitelistSaveMessage, Domain[]> {
   constructor (
-    @inject(InternalManualBlockingIdentifiers.service)
-    private readonly service: InternalManualBlockingServiceInterface
-  ) {
-  }
+      @inject(WhitelistIdentifiers.service)
+      private readonly service: WhitelistInterface
+  ) {}
 
-  on (): ManualBlockingMessages.import {
-    return ManualBlockingMessages.import
+  on (): WhitelistMessages.save {
+    return WhitelistMessages.save
   }
 
   main (): true {
     return true
   }
 
-  async handle ({ message }: Box<ManualBlockingImportMessage>): Promise<boolean> {
-    return await this.service.setRules(message.payload.userRules)
+  async handle ({ message }: Box<WhitelistSaveMessage>): Promise<Domain[]> {
+    const { rawDomain, override } = message.payload
+    const res = await this.service.save(rawDomain, override)
+    dispatcher().sendMessage({
+      type: WhitelistMessages.listUpdated
+    })
+    return res
   }
 }

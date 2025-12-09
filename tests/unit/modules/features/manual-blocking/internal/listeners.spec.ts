@@ -17,7 +17,7 @@
  */
 import { AddRuleListener } from '@/modules/features/manual-blocking/internal/listeners/add-rule.listener'
 import { ResetRulesListener } from '@/modules/features/manual-blocking/internal/listeners/reset-rules.listener'
-import { ImportListener } from '@/modules/features/manual-blocking/internal/listeners/import.listener'
+import { SaveListener } from '@/modules/features/manual-blocking/internal/listeners/save.listener'
 import {
   ManualBlockingMessages
 } from '@/modules/features/manual-blocking/common/manual-blocking.messages'
@@ -27,7 +27,7 @@ describe('Manual blocking listeners', () => {
   const service = {
     addRule: jest.fn(),
     resetRules: jest.fn(),
-    setRules: jest.fn()
+    saveRules: jest.fn()
   }
 
   beforeEach(() => {
@@ -64,17 +64,17 @@ describe('Manual blocking listeners', () => {
   })
 
   it('ImportListener returns service result', async () => {
-    const listener = new ImportListener(service as any)
-    service.setRules.mockResolvedValueOnce(true)
+    const listener = new SaveListener(service as any)
+    service.saveRules.mockResolvedValueOnce(true)
 
-    expect(listener.on()).toBe(ManualBlockingMessages.import)
+    expect(listener.on()).toBe(ManualBlockingMessages.save)
     expect(listener.main()).toBe(true)
 
     const result = await listener.handle({
-      message: { payload: { userRules: ['a'] } }
+      message: { payload: { userRules: ['a'], override: false } }
     } as Box<any>)
 
-    expect(service.setRules).toHaveBeenCalledWith(['a'])
+    expect(service.saveRules).toHaveBeenCalledWith(['a'], false, false)
     expect(result).toBe(true)
   })
 })

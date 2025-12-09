@@ -65,9 +65,18 @@ export class ManualBlockingService implements InternalManualBlockingServiceInter
     await dispatcher().sendMessage(message)
   }
 
-  async setRules (rules: string[], needReload = false): Promise<boolean> {
+  async saveRules (rules: string[], needReload = false, override = true): Promise<boolean> {
+    let result: string[]
+
+    if (override) {
+      result = rules
+    } else {
+      result = await this.storage.get()
+      rules.forEach(rule => !result.includes(rule) && result.push(rule))
+    }
+
     try {
-      await this.storage.set(rules)
+      await this.storage.set(result)
       const message: ManualBlockingRulesUpdatedMessage = {
         type: ManualBlockingMessages.rulesUpdated,
         payload: {

@@ -20,7 +20,7 @@ import { Domain } from '@/common/types'
 import { useExternalPort } from '@/modules/port/external/port.setup'
 import { ExternalPortChannel } from '@/modules/port/external/port.types'
 import { injectable } from 'inversify'
-import { WhitelistImportMessage, WhitelistMessages } from '../common/whitelist.messages'
+import { WhitelistSaveMessage, WhitelistMessages } from '../common/whitelist.messages'
 import { ExternalWhitelistInterface } from './whitelist.types'
 
 @injectable()
@@ -31,11 +31,12 @@ export class ExternalWhitelistService implements ExternalWhitelistInterface {
     this.port = useExternalPort()
   }
 
-  async import (rawDomain: string): Promise<Domain[]> {
-    const message: WhitelistImportMessage = {
-      type: WhitelistMessages.import,
+  async save (rawDomain: string, override = true): Promise<Domain[]> {
+    const message: WhitelistSaveMessage = {
+      type: WhitelistMessages.save,
       payload: {
-        rawDomain
+        rawDomain,
+        override
       }
     }
     return await this.port.sendMessage(message)

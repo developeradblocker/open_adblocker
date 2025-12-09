@@ -29,7 +29,7 @@ import { UserRulesStorage } from '@/modules/features/manual-blocking/internal/st
 import { TriggerStartManualBlockingListener } from '@/modules/features/manual-blocking/internal/listeners/trigger-start.listener'
 import { AddRuleListener } from '@/modules/features/manual-blocking/internal/listeners/add-rule.listener'
 import { ResetRulesListener } from '@/modules/features/manual-blocking/internal/listeners/reset-rules.listener'
-import { ImportListener } from '@/modules/features/manual-blocking/internal/listeners/import.listener'
+import { SaveListener } from '@/modules/features/manual-blocking/internal/listeners/save.listener'
 
 jest.mock('@/utils/inject/inject', () => ({
   inject: jest.fn()
@@ -70,7 +70,7 @@ describe('setupInternalManualBlocking', () => {
     expect(onWithClassMock).toHaveBeenCalledWith(TriggerStartManualBlockingListener)
     expect(onWithClassMock).toHaveBeenCalledWith(AddRuleListener)
     expect(onWithClassMock).toHaveBeenCalledWith(ResetRulesListener)
-    expect(onWithClassMock).toHaveBeenCalledWith(ImportListener)
+    expect(onWithClassMock).toHaveBeenCalledWith(SaveListener)
   })
 })
 
