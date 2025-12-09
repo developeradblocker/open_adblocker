@@ -18,7 +18,7 @@
          @click="onSave"
          label="Save"
         />
-        <BaseImport @change="onImport" accept="txt">
+        <BaseImport @change="onImport" accept=".txt">
           <template #default="{ input }">
             <BaseButton
               data-test="import"
