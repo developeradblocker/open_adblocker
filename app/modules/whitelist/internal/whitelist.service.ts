@@ -55,7 +55,10 @@ export class InternalWhitelistService implements WhitelistInterface {
 
   async hasDomain (domain: Domain): Promise<boolean> {
     const list = await this.getDomains()
-    return list.includes(domain)
+    return Boolean(list.find(item => {
+      const regexIncludingSubdomains = new RegExp(`^(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)?)*${item}$`)
+      return regexIncludingSubdomains.test(domain)
+    }))
   }
 
   async save (rawDomains: string, override?: boolean): Promise<Domain[]> {
