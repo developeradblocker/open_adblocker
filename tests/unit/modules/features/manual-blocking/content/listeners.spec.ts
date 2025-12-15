@@ -71,11 +71,11 @@ describe('Content manual blocking listeners', () => {
     await listener.handle({
       message: {
         type: ManualBlockingMessages.start,
-        payload: { tabId: 1, appliedRules: ['rule'] }
+        payload: { tabId: 1, appliedRules: ['rule'], sessionId: 'session-id' }
       }
     } as Box<ManualBlockingStartMessage>)
 
-    expect(iframeManager.start).toHaveBeenCalledWith(['rule'])
+    expect(iframeManager.start).toHaveBeenCalledWith(['rule'], 'session-id')
     expect(selector.start).toHaveBeenCalledTimes(1)
   })
 

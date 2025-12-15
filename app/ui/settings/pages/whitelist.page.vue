@@ -79,9 +79,15 @@ import { exportData, ExportFormat, ExportTypes } from '../utils/export-data'
 import { importData } from '../utils/import-data'
 import { logger } from '@/utils/logger/logger'
 import { NavigationGuardNext, onBeforeRouteLeave, RouteLocationNormalized, RouteLocationNormalizedLoaded } from 'vue-router'
+import { SnackbarId } from '@/ui/shared/components/snackbar/base-snackbar.types'
+import { useUserActivity } from '@/modules/user-activity/external/utils'
+import { ClickEventToAction } from '@/modules/user-activity/common/user-activity.types'
+import { ElementsUI } from '@/modules/user-activity/common/user-activity.types'
+import { SETTINGS_ROUTE } from '../router/route-names'
 
 const $store = useSettingsStore()
 const $whitelist = useExternalWhitelist()
+const $activity = useUserActivity()
 
 const whitelist = ref('')
 const nextNavigation: Ref<() => void> = ref(null)
@@ -92,6 +98,10 @@ const hasChanges = computed(() => {
 })
 
 const initImport = async (input: HTMLInputElement): Promise<void> => {
+  $activity.click(ElementsUI.import, {
+    page: SETTINGS_ROUTE.WHITELIST,
+    to: ClickEventToAction.importWhitelist
+  })
   $store.resetSnackbar()
   input.click()
 }
@@ -111,7 +121,9 @@ const onImport = async (event: InputEvent): Promise<void> => {
     if (!savedList) {
       $store.setSnackbar({
         message: 'Couldn\'t import the whitelist. Please retry',
-        type: 'error'
+        type: 'error',
+        trackActivity: true,
+        snackbarId: SnackbarId.importWhitelist
       })
       return
     }
@@ -119,13 +131,17 @@ const onImport = async (event: InputEvent): Promise<void> => {
     $store.settings.filters.whiteList.domains = savedList
     $store.setSnackbar({
       message: 'Whitelist was imported successfully',
-      type: 'info'
+      type: 'info',
+      trackActivity: true,
+      snackbarId: SnackbarId.importWhitelist
     })
   } catch (error) {
     logger.error('Couldn\'t import the whitelist due to error', error)
     $store.setSnackbar({
       message: 'Couldn\'t import the whitelist. Please retry',
-      type: 'error'
+      type: 'error',
+      trackActivity: true,
+      snackbarId: SnackbarId.importWhitelist
     })
   } finally {
     $store.setShowLoader(false)
@@ -135,17 +151,28 @@ const onImport = async (event: InputEvent): Promise<void> => {
 
 const onExport = async (): Promise<void> => {
   $store.resetSnackbar()
+  $activity.click(ElementsUI.export, {
+    page: SETTINGS_ROUTE.WHITELIST,
+    to: ClickEventToAction.exportWhitelist
+  })
+
   await exportData<string>(ExportTypes.whitelist, $store.stringWhiteList, ExportFormat.txt)
 }
 
 const onSave = async (): Promise<void> => {
   $store.setShowLoader(true)
+  $activity.click(ElementsUI.save, {
+    page: SETTINGS_ROUTE.WHITELIST,
+    to: ClickEventToAction.saveWhitelist
+  })
   const savedList = await $whitelist.save(whitelist.value)
 
   if (!savedList) {
     $store.setSnackbar({
       message: 'Couldn\'t save changes. Please retry',
-      type: 'error'
+      type: 'error',
+      trackActivity: true,
+      snackbarId: SnackbarId.saveWhitelist
     })
     $store.setShowLoader(false)
     return
@@ -154,7 +181,9 @@ const onSave = async (): Promise<void> => {
   $store.settings.filters.whiteList.domains = savedList
   $store.setSnackbar({
     message: 'Changes were saved successfully',
-    type: 'info'
+    type: 'info',
+    trackActivity: true,
+    snackbarId: SnackbarId.saveWhitelist
   })
   $store.setShowLoader(false)
 }
@@ -175,6 +204,7 @@ watch(
 
 onMounted(() => {
   whitelist.value = $store.stringWhiteList
+  $activity.visitPage(SETTINGS_ROUTE.WHITELIST)
 })
 
 onBeforeRouteLeave((to: RouteLocationNormalized, from: RouteLocationNormalizedLoaded, next: NavigationGuardNext) => {

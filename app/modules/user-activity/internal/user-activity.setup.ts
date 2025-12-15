@@ -19,6 +19,7 @@ import { dispatcher } from '@/utils/setup-worker'
 import { UserActivityMessage, UserActivityMessages } from '@/modules/user-activity/common/user-activity.messages'
 import {
   BaseUserClickPayload, SettingsImportErrorActivity,
+  SnackbarShownActivity,
   UserActivityType,
   UserClickActivity,
   UserPageVisited,
@@ -61,6 +62,10 @@ export const handleOnVisitPage = (activity: UserPageVisited): void => {
   logger.info(`user visits a page "${activity.page}"`)
 }
 
+const handleOnSnackbarShown = (activity: SnackbarShownActivity): void => {
+  logger.info(`snackbar shown: "${activity.snackId}". success: "${activity.snackSuccess}"`)
+}
+
 type UserActivityHandlers = Record<UserActivityType, () => Promise<void>>
 
 export const handleUserActivity = async (
@@ -79,11 +84,15 @@ export const handleUserActivity = async (
   const onSettingsImportError = async () : Promise<void> => {
     handleOnSettingsImportError(message.payload as SettingsImportErrorActivity)
   }
+  const onSnackbarShown = async () : Promise<void> => {
+    handleOnSnackbarShown(message.payload as SnackbarShownActivity)
+  }
   const handlers: UserActivityHandlers = {
     [UserActivityType.click]: onClick,
     [UserActivityType.visitPage]: onPageVisit,
     [UserActivityType.toggle]: onToggle,
-    [UserActivityType.settingsImportError]: onSettingsImportError
+    [UserActivityType.settingsImportError]: onSettingsImportError,
+    [UserActivityType.snackbarShown]: onSnackbarShown
   }
 
   const { type } = message.payload

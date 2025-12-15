@@ -71,6 +71,7 @@ import { useUserActivity } from '@/modules/user-activity/external/utils'
 import { SETTINGS_ROUTE } from '@/ui/settings/router/route-names'
 import { ClickEventToAction, ElementsUI } from '@/modules/user-activity/common/user-activity.types'
 import ReportIssue from '@/ui/settings/components/report-issue.vue'
+import { SnackbarId } from '@/ui/shared/components/snackbar/base-snackbar.types'
 
 const $activity = useUserActivity()
 const importError = ref<string>(null)
@@ -90,6 +91,13 @@ const onRateUsClicked = async (): Promise<void> => {
 
 const toggleReportModal = (state: boolean): void => {
   reportModalShown.value = state
+
+  if (state) {
+    $activity.click(ElementsUI.reportIssue, {
+      page: SETTINGS_ROUTE.GENERAL,
+      to: ClickEventToAction.openReportIssueForm
+    })
+  }
 }
 
 const onExport = async (): Promise<void> => {
@@ -133,7 +141,9 @@ const onImport = async (event: InputEvent): Promise<void> => {
     $store.setSettingsInfo(await $settings.get())
     $store.setSnackbar({
       message: 'Successfully imported settings',
-      type: 'info'
+      type: 'info',
+      trackActivity: true,
+      snackbarId: SnackbarId.importSettings
     })
   } catch (error) {
     // @ts-ignore-error

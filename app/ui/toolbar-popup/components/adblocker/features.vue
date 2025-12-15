@@ -45,7 +45,7 @@ import { useAppStore } from '@/ui/toolbar-popup/store/app.store'
 import { checkWebRTCPermissions, requestWebRTCPermissions } from '@/modules/features/web-rtc/common/web-rtc.utils'
 import { useWebRTC } from '@/modules/features/web-rtc/external/web-rtc.utils'
 import { useUserActivity } from '@/modules/user-activity/external/utils'
-import { ElementsUI } from '@/modules/user-activity/common/user-activity.types'
+import { ClickEventToAction, ElementsUI } from '@/modules/user-activity/common/user-activity.types'
 import { COOKIE_CLEANER_ID } from '../../../../../constants'
 import { useNotificationStore } from '@/ui/toolbar-popup/components/notification/notification.store'
 import { useExternalFilters } from '@/modules/filters/external/filters.utils'
@@ -53,6 +53,7 @@ import { NotificationTypes } from '@/ui/toolbar-popup/components/notification/no
 import { useExternalManualBlocking } from '@/modules/features/manual-blocking/external/manual-blocking.setup'
 import { getActiveTabHelper } from '@/helpers/get-active-tab.helper'
 import { isContentScriptBlockedOnPage } from '@/helpers/is-content-script-blocked-on-page.helper'
+import { POPUP_ROUTE } from '../../router/route-names'
 
 const appStore = useAppStore()
 const webRTC = useWebRTC()
@@ -91,6 +92,10 @@ const onBlockElement = () => {
     return
   }
 
+  activity.click(ElementsUI.blockElement, {
+    page: POPUP_ROUTE.HOME,
+    to: ClickEventToAction.openRemoveElementPopup
+  })
   useExternalManualBlocking().triggerStart()
 }
 onMounted(async () => {

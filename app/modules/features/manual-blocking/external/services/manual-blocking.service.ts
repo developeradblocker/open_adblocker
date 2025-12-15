@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-import { injectable } from '@/utils/di/di.types'
+import { inject, injectable } from '@/utils/di/di.types'
 import {
   ManualBlockingSaveMessage,
   ManualBlockingMessages,
@@ -26,17 +26,24 @@ import {
 } from '@/modules/features/manual-blocking/external/manual-blocking.types'
 import { useExternalPort } from '@/modules/port/external/port.setup'
 import { ExternalPortChannel } from '@/modules/port/external/port.types'
+import { UserActivityIdentifiers } from '@/modules/user-activity/external/user-activity.types'
 
 @injectable()
 export class ManualBlockingService implements ExternalManualBlockingServiceInterface {
   private readonly port: ExternalPortChannel
-  constructor () {
+  constructor (
+    @inject(UserActivityIdentifiers.sessionId)
+    private readonly sessionId: string
+  ) {
     this.port = useExternalPort()
   }
 
   async triggerStart (): Promise<void> {
     const message: ManualBlockingTriggerStartMessage = {
-      type: ManualBlockingMessages.triggerStart
+      type: ManualBlockingMessages.triggerStart,
+      payload: {
+        sessionId: this.sessionId
+      }
     }
     await this.port.sendMessage(message)
     window.close()

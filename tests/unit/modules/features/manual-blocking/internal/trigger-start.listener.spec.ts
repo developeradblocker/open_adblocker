@@ -16,9 +16,10 @@
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
 import { TriggerStartManualBlockingListener } from '@/modules/features/manual-blocking/internal/listeners/trigger-start.listener'
-import { ManualBlockingMessages } from '@/modules/features/manual-blocking/common/manual-blocking.messages'
+import { ManualBlockingMessages, ManualBlockingTriggerStartMessage } from '@/modules/features/manual-blocking/common/manual-blocking.messages'
 import { logger } from '@/utils/logger/logger'
 import Tab = chrome.tabs.Tab
+import { Box } from '@/utils/dispatcher/dispatcher.types'
 jest.mock('@/utils/logger/logger', () => ({
   logger: {
     warn: jest.fn(),
@@ -52,7 +53,7 @@ describe('TriggerStartManualBlockingListener', () => {
     const listener = new TriggerStartManualBlockingListener(broadcast as any, service as any)
     queryMock.mockImplementation(async () => [])
 
-    await listener.handle()
+    await listener.handle({ message: { type: ManualBlockingMessages.triggerStart, payload: { sessionId: 'session-id' } } } as Box<ManualBlockingTriggerStartMessage>)
     expect(logger.warn).toHaveBeenCalledWith('No active tab found')
     expect(broadcast.sendMessage).not.toHaveBeenCalled()
   })
@@ -67,13 +68,14 @@ describe('TriggerStartManualBlockingListener', () => {
       '##.global'
     ])
 
-    await listener.handle()
+    await listener.handle({ message: { type: ManualBlockingMessages.triggerStart, payload: { sessionId: 'session-id' } } } as Box<ManualBlockingTriggerStartMessage>)
 
     expect(broadcast.sendMessage).toHaveBeenCalledWith(10, {
       type: ManualBlockingMessages.start,
       payload: {
         tabId: 10,
-        appliedRules: ['example.com##.ad', '##.global']
+        appliedRules: ['example.com##.ad', '##.global'],
+        sessionId: 'session-id'
       }
     })
   })

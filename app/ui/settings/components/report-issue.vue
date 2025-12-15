@@ -68,10 +68,15 @@ import { useExternalSettings } from '@/modules/settings/external/settings.utils'
 import { BaseButtonType } from '@/ui/shared/components/button/base-button.types'
 import { useSettingsStore } from '../store/settings.store'
 import { ref } from 'vue'
+import { SnackbarId } from '@/ui/shared/components/snackbar/base-snackbar.types'
+import { SETTINGS_ROUTE } from '../router/route-names'
+import { ClickEventToAction, ElementsUI } from '@/modules/user-activity/common/user-activity.types'
+import { useUserActivity } from '@/modules/user-activity/external/utils'
 
 const $emit = defineEmits(['close'])
 const $settings = useExternalSettings()
 const $store = useSettingsStore()
+const $activity = useUserActivity()
 const MAX_CHARS_DESCRIPTION = 500
 const reportSendingInProgress = ref(false)
 
@@ -96,6 +101,11 @@ const onSubmit = async (): Promise<void> => {
   }
   reportSendingInProgress.value = true
 
+  $activity.click(ElementsUI.submitIssue, {
+    page: SETTINGS_ROUTE.GENERAL,
+    to: ClickEventToAction.sendReport
+  })
+
   const success = await $settings.reportIssue({
     email: email.value,
     description: description.value.trim()
@@ -106,14 +116,18 @@ const onSubmit = async (): Promise<void> => {
   if (!success) {
     $store.setSnackbar({
       type: 'error',
-      message: 'Couldn\'t submit the report. Please retry'
+      message: 'Couldn\'t submit the report. Please retry',
+      trackActivity: true,
+      snackbarId: SnackbarId.reportIssue
     })
     return
   }
 
   $store.setSnackbar({
     type: 'info',
-    message: 'Report was submitted successfully'
+    message: 'Report was submitted successfully',
+    trackActivity: true,
+    snackbarId: SnackbarId.reportIssue
   })
   closePopup()
 }

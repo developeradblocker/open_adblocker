@@ -16,7 +16,7 @@
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
 import { createApp } from 'vue'
-import { setupContentBroadcast } from '@/modules/broadcast/content/broadcast.setup'
+import { setupContentBroadcast, useContentBroadcast } from '@/modules/broadcast/content/broadcast.setup'
 import { setupUIManualBlocking } from '@/modules/features/manual-blocking/ui/manual-blocking.setup'
 import { dispatcher, setupWorker } from '@/utils/setup-worker'
 import { DispatcherInterface } from '@/utils/dispatcher/dispatcher.types'
@@ -37,18 +37,17 @@ jest.mock('vue', () => ({
 jest.mock('vue-inline-svg', () => ({}))
 
 jest.mock('@/modules/broadcast/content/broadcast.setup', () => ({
-  setupContentBroadcast: jest.fn()
+  setupContentBroadcast: jest.fn(),
+  useContentBroadcast: jest.fn()
 }))
 
 jest.mock('@/modules/features/manual-blocking/ui/manual-blocking.setup', () => ({
   setupUIManualBlocking: jest.fn()
 }))
 
-jest.mock('@/ui/manual-blocking/store/block-element.store', () => {
-  return {
-    useBlockElementStore: jest.fn()
-  }
-})
+jest.mock('@/ui/manual-blocking/store/block-element.store', () => ({
+  useBlockElementStore: jest.fn()
+}))
 
 jest.mock('@/utils/setup-worker', () => ({
   setupWorker: jest.fn(),
@@ -78,11 +77,24 @@ describe('manual-blocking UI entrypoint', () => {
     appliedRules: []
   }
 
+  const broadcastService = {
+    sendMessage: jest.fn()
+  }
+
   it('bootstraps worker/services and mounts the Vue app', async () => {
     await jest.isolateModulesAsync(async () => {
       jest.mocked(createApp).mockReturnValue(appInstance as any)
       jest.mocked(dispatcher).mockReturnValue({ work: dispatcherWorkMock } as unknown as DispatcherInterface)
       jest.mocked(useBlockElementStore).mockReturnValue(storeInstance as any)
+      jest.mocked(useContentBroadcast).mockReturnValue(broadcastService as any)
+      // Since jsdom is not allow to mock window.location, we need to mock the URLSearchParams.prototype.get method
+      // Assuming that window.location.search is correctly set to the payload
+      const getSpy = jest.spyOn(URLSearchParams.prototype, 'get')
+      getSpy.mockReturnValue(JSON.stringify({
+        appliedRules: [],
+        sessionId: 'session-id',
+        currentDomain: 'localhost'
+      }))
       require('../../../../../app/ui/manual-blocking/main')
       await flushPromises()
       expect(setupWorker).toHaveBeenCalledWith('ManuallyBlockingAds')
@@ -90,6 +102,11 @@ describe('manual-blocking UI entrypoint', () => {
       expect(setupUIManualBlocking).toHaveBeenCalled()
       expect(createApp).toHaveBeenCalled()
       expect(dispatcherWorkMock).toHaveBeenCalled()
+      expect(storeInstance.$patch).toHaveBeenCalledWith({
+        appliedRules: [],
+        sessionId: 'session-id',
+        currentDomain: 'localhost'
+      })
     })
   })
 })
