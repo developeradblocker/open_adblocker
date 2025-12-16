@@ -26,7 +26,6 @@ const commonStyles: Partial<CSSStyleDeclaration> = {
   borderRadius: '4px',
   boxShadow: '0px 3px 12px 0px rgba(0, 0, 0, 0.10)',
   backgroundColor: '#fff',
-  border: 'solid 1px #D9D9DD',
   transition: 'right 2s'
 }
 
@@ -37,6 +36,7 @@ const manuallyBlockingAdsOptions: ContentManualBlockingOptions = {
       display: 'block',
       width: '280px',
       height: '420px',
+      border: 'none',
       ...commonStyles
     }
   }
