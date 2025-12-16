@@ -64,6 +64,14 @@ import { useUIManualBlocking } from '@/modules/features/manual-blocking/ui/manua
 import { storeToRefs } from 'pinia'
 import { useBlockElementStore } from '@/ui/manual-blocking/store/block-element.store'
 import DraggableHeading from '@/ui/manual-blocking/components/draggable-heading.vue'
+import { UserClickActivity } from '@/modules/user-activity/common/user-activity.types'
+import { BaseUserClickPayload } from '@/modules/user-activity/common/user-activity.types'
+import { UserActivityType } from '@/modules/user-activity/common/user-activity.types'
+import { ElementsUI } from '@/modules/user-activity/common/user-activity.types'
+import { ClickEventToAction } from '@/modules/user-activity/common/user-activity.types'
+import { UserActivityMessage } from '@/modules/user-activity/common/user-activity.messages'
+import { UserActivityMessages } from '@/modules/user-activity/common/user-activity.messages'
+import { useContentBroadcast } from '@/modules/broadcast/content/broadcast.setup'
 
 const $store = useBlockElementStore()
 const { appliedRules } = storeToRefs($store)
@@ -71,6 +79,20 @@ const $manuallyBlockingAdsService = useUIManualBlocking()
 
 const onClose = () => {
   $manuallyBlockingAdsService.close()
+  const activity: UserClickActivity<BaseUserClickPayload> = {
+    sessionId: $store.sessionId,
+    type: UserActivityType.click,
+    element: ElementsUI.close,
+    payload: {
+      page: 'REMOVE_ELEMENT_POPUP',
+      to: ClickEventToAction.closeRemoveElementPopup
+    }
+  }
+  const message: UserActivityMessage = {
+    type: UserActivityMessages.activity,
+    payload: activity
+  }
+  useContentBroadcast().sendMessage(message)
 }
 const onSelectElement = () => {
   $manuallyBlockingAdsService.startSelecting()

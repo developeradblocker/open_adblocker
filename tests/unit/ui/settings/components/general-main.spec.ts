@@ -29,6 +29,7 @@ import { useSettingsStore } from '@/ui/settings/store/settings.store'
 import { useUserActivity } from '@/modules/user-activity/external/utils'
 import { SETTINGS_ROUTE } from '@/ui/settings/router/route-names'
 import { ClickEventToAction, ElementsUI } from '@/modules/user-activity/common/user-activity.types'
+import { SnackbarId } from '@/ui/shared/components/snackbar/base-snackbar.types'
 
 jest.mock('@/modules/settings/external/settings.utils')
 jest.mock('@/ui/settings/utils/import-data')
@@ -190,7 +191,9 @@ describe('GeneralMain.vue', () => {
     expect(setSnackbarMock).toHaveBeenCalledTimes(1)
     expect(setSnackbarMock).toHaveBeenCalledWith({
       message: 'Successfully imported settings',
-      type: 'info'
+      type: 'info',
+      trackActivity: true,
+      snackbarId: SnackbarId.importSettings
     })
   })
 })

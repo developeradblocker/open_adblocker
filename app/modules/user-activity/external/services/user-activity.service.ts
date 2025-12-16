@@ -20,6 +20,7 @@ import {
   BaseUserClickPayload,
   ElementID,
   PageUI, SettingsImportErrorActivity,
+  SnackbarShownActivity,
   UserActivityInterface,
   UserActivityType,
   UserClickActivity,
@@ -89,6 +90,19 @@ export class UserActivityService implements UserActivityInterface {
       sessionId: this.sessionId,
       type: UserActivityType.settingsImportError,
       reason
+    }
+    const message: UserActivityMessage = {
+      type: UserActivityMessages.activity,
+      payload: activity
+    }
+    await this.port.sendMessage(message)
+  }
+
+  async snackbarShown (snackId: string, snackSuccess: boolean): Promise<void> {
+    const activity: SnackbarShownActivity = {
+      type: UserActivityType.snackbarShown,
+      snackId,
+      snackSuccess
     }
     const message: UserActivityMessage = {
       type: UserActivityMessages.activity,

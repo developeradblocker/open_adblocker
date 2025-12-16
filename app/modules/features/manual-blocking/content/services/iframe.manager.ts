@@ -32,13 +32,13 @@ export class IframeManager {
   ) {
   }
 
-  async start (appliedRules: string[]): Promise<void> {
+  async start (appliedRules: string[], sessionId: string): Promise<void> {
     if (this.iframe) {
       return
     }
     if (!document.body) {
       setTimeout(() => {
-        this.start(appliedRules)
+        this.start(appliedRules, sessionId)
       }, 200)
       return
     }
@@ -48,7 +48,7 @@ export class IframeManager {
       // eslint-disable-next-line brace-style
       this.iframe.onload = (): void => { resolve() }
       Object.assign(this.iframe.style, this.options.iframe.style)
-      const payload = encodeURIComponent(JSON.stringify(appliedRules))
+      const payload = encodeURIComponent(JSON.stringify({ appliedRules, sessionId, currentDomain: document.location.hostname }))
       const src = `${this.options.iframe.url}?payload=${payload}`
 
       this.iframe.src = chrome.runtime.getURL(src)

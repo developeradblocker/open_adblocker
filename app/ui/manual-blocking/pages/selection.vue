@@ -50,20 +50,29 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-import PrimaryLayout from '@/ui/toolbar-popup/layouts/primary.layout.vue'
-import BaseButton from '@/ui/shared/components/button/base-button.vue'
-import { BaseButtonType } from '@/ui/shared/components/button/base-button.types'
-import { computed, onMounted, ref } from 'vue'
-import Slider from '@/ui/manual-blocking/components/slider.vue'
-import BaseCheckbox from '@/ui/shared/components/checkbox/base-checkbox.vue'
-import { useRoute, useRouter } from 'vue-router'
-import { Route } from '@/ui/manual-blocking/router/route-names'
 import { useUIManualBlocking } from '@/modules/features/manual-blocking/ui/manual-blocking.setup'
 import DraggableHeading from '@/ui/manual-blocking/components/draggable-heading.vue'
+import Slider from '@/ui/manual-blocking/components/slider.vue'
+import { Route } from '@/ui/manual-blocking/router/route-names'
+import { BaseButtonType } from '@/ui/shared/components/button/base-button.types'
+import BaseButton from '@/ui/shared/components/button/base-button.vue'
+import BaseCheckbox from '@/ui/shared/components/checkbox/base-checkbox.vue'
+import PrimaryLayout from '@/ui/toolbar-popup/layouts/primary.layout.vue'
+import { computed, onMounted, ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { useBlockElementStore } from '@/ui/manual-blocking/store/block-element.store'
+import { UserClickActivity } from '@/modules/user-activity/common/user-activity.types'
+import { BaseUserClickPayload } from '@/modules/user-activity/common/user-activity.types'
+import { UserActivityType } from '@/modules/user-activity/common/user-activity.types'
+import { ElementsUI } from '@/modules/user-activity/common/user-activity.types'
+import { ClickEventToAction } from '@/modules/user-activity/common/user-activity.types'
+import { UserActivityMessage, UserActivityMessages } from '@/modules/user-activity/common/user-activity.messages'
+import { useContentBroadcast } from '@/modules/broadcast/content/broadcast.setup'
 
 const $router = useRouter()
 const $route = useRoute()
 const $manuallyBlockingAds = useUIManualBlocking()
+const $store = useBlockElementStore()
 
 const isPreviewMode = ref(false)
 const applyToAll = ref(false)
@@ -95,6 +104,21 @@ const onReselect = () => {
 }
 const onBlock = () => {
   $manuallyBlockingAds.blockElement(applyToAll.value, blockSimilar.value)
+  const activity: UserClickActivity<BaseUserClickPayload> = {
+    sessionId: $store.sessionId,
+    type: UserActivityType.click,
+    element: ElementsUI.blockElement,
+    payload: {
+      page: 'REMOVE_ELEMENT_POPUP',
+      to: ClickEventToAction.blockElement,
+      domain: applyToAll.value ? 'ALL' : $store.currentDomain
+    } as BaseUserClickPayload
+  }
+  const message: UserActivityMessage = {
+    type: UserActivityMessages.activity,
+    payload: activity
+  }
+  useContentBroadcast().sendMessage(message)
   $router.push({ name: Route.main })
 }
 const onSliderChange = () => {

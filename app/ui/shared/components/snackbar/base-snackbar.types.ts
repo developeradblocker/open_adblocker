@@ -15,8 +15,28 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-export interface SnackbarProps {
+export interface BaseSnackbarProps {
   type: 'info' | 'error'
   message: string
   timeout?: number
+  trackActivity?: boolean
+  snackbarId?: SnackbarId
+}
+export interface SnackbarPropsWithActivity extends BaseSnackbarProps {
+  trackActivity: true
+  snackbarId: SnackbarId
+}
+export interface SnackbarPropsWithoutActiviy extends Omit<BaseSnackbarProps, 'snackbarId'> {
+  trackActivity?: false
+}
+
+export type SnackbarProps = SnackbarPropsWithActivity | SnackbarPropsWithoutActiviy
+
+export enum SnackbarId {
+  reportIssue = 'report_issue',
+  importUserRules = 'import_user_rules',
+  saveUserRules = 'save_user_rules',
+  importWhitelist = 'import_whitelist',
+  saveWhitelist = 'save_whitelist',
+  importSettings = 'import_settings'
 }

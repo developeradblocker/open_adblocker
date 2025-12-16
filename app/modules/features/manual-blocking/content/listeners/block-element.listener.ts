@@ -15,16 +15,16 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-import { AppMessageListener, Box } from '@/utils/dispatcher/dispatcher.types'
 import {
   ManualBlockingBlockElementMessage,
   ManualBlockingMessages
 } from '@/modules/features/manual-blocking/common/manual-blocking.messages'
-import { inject, injectable } from '@/utils/di/di.types'
 import {
   ContentManualBlockingIdentifiers
 } from '@/modules/features/manual-blocking/content/manual-blocking.types'
 import { SelectorService } from '@/modules/features/manual-blocking/content/services/selector.service'
+import { inject, injectable } from '@/utils/di/di.types'
+import { AppMessageListener, Box } from '@/utils/dispatcher/dispatcher.types'
 
 @injectable()
 export class BlockElementListener implements AppMessageListener<ManualBlockingBlockElementMessage> {

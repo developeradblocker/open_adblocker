@@ -29,14 +29,26 @@ export enum ClickEventToAction {
   openGroup = 'open_group',
   openSettings = 'open_settings',
   importSettings = 'import_settings',
-  exportSettings = 'export_settings'
+  exportSettings = 'export_settings',
+  openReportIssueForm = 'open_report_issue_form',
+  sendReport = 'send_report',
+  exportWhitelist = 'export_whitelist',
+  importWhitelist = 'import_whitelist',
+  saveWhitelist = 'save_whitelist',
+  exportUserRules = 'export_user_rules',
+  importUserRules = 'import_user_rules',
+  saveUserRules = 'save_user_eules',
+  openRemoveElementPopup = 'open_remove_element_popup',
+  closeRemoveElementPopup = 'close_remove_element_popup',
+  blockElement = 'block_element'
 }
 
 export enum UserActivityType {
   click = 'click',
   visitPage = 'visitPage',
   toggle = 'toggle',
-  settingsImportError = 'settings_import_error'
+  settingsImportError = 'settings_import_error',
+  snackbarShown = 'snackbar_shown'
 }
 
 export enum ElementsUI {
@@ -58,10 +70,16 @@ export enum ElementsUI {
   importSettings = 'import_settings',
   exportSettings = 'export_settings',
   githubButton = 'github_button',
-  websiteButton = 'website_button'
+  websiteButton = 'website_button',
+  reportIssue = 'report_issue',
+  submitIssue = 'submit_issue',
+  export = 'export',
+  import = 'import',
+  save = 'save',
+  blockElement = 'block_element'
 }
 
-export type PageUI = POPUP_ROUTE | SETTINGS_ROUTE
+export type PageUI = POPUP_ROUTE | SETTINGS_ROUTE | 'REMOVE_ELEMENT_POPUP'
 
 export interface BaseUserActivity {
   sessionId: string
@@ -75,6 +93,7 @@ export type UserActivity =
  | UserPageVisited
  | UserToggleActivity
  | SettingsImportErrorActivity
+ | SnackbarShownActivity
 
 export interface BaseUserClickPayload {
   page: PageUI
@@ -97,6 +116,12 @@ export interface SettingsImportErrorActivity extends BaseUserActivity {
   reason: ImportErrorReason
 }
 
+export interface SnackbarShownActivity extends Omit<BaseUserActivity, 'sessionId'> {
+  type: UserActivityType.snackbarShown
+  snackId: string
+  snackSuccess: boolean
+}
+
 export interface UserToggleActivity extends BaseUserActivity {
   type: UserActivityType.toggle
   element: ElementID
@@ -108,4 +133,5 @@ export interface UserActivityInterface {
   toggle: (toggleId: ElementID, state: boolean) => Promise<void>
   click: <T extends BaseUserClickPayload>(element: ElementID, payload?: T) => Promise<void>
   settingsImportError: (reason: ImportErrorReason) => Promise<void>
+  snackbarShown: (snackbarId: string, snackbarSuccess: boolean) => Promise<void>
 }

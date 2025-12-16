@@ -51,7 +51,7 @@ describe('IframeManager', () => {
 
   it('creates iframe once, applies styles, sets src, and makes it draggable', async () => {
     const rules = ['example##.ad']
-    const promise = manager.start(rules)
+    const promise = manager.start(rules, 'session-id')
     const iframe = (manager as any).iframe as HTMLIFrameElement
     expect(iframe).toBeInstanceOf(HTMLIFrameElement)
 
@@ -61,16 +61,16 @@ describe('IframeManager', () => {
     expect(iframe.id).toBe(MANUAL_BLOCKING_IFRAME_ID)
     expect(iframe.style.width).toBe('320px')
     expect(iframe.style.height).toBe('480px')
-    expect(chrome.runtime.getURL).toHaveBeenCalledWith('manual-blocking.html?payload=%5B%22example%23%23.ad%22%5D')
+    expect(chrome.runtime.getURL).toHaveBeenCalledWith('manual-blocking.html?payload=%7B%22appliedRules%22%3A%5B%22example%23%23.ad%22%5D%2C%22sessionId%22%3A%22session-id%22%2C%22currentDomain%22%3A%22localhost%22%7D')
     expect(makeIframeDraggable).toHaveBeenCalledWith(iframe, { offsetRight: 16, y: 16, z: 9999999999 })
 
     // second call should be ignored because iframe already exists
-    await manager.start([])
+    await manager.start([], 'session-id')
     expect(chrome.runtime.getURL).toHaveBeenCalledTimes(1)
   })
 
   it('removes iframe on stop', async () => {
-    const promise = manager.start([])
+    const promise = manager.start([], 'session-id')
     const iframe = (manager as any).iframe as HTMLIFrameElement
     iframe.onload?.(new Event('load'))
     await promise

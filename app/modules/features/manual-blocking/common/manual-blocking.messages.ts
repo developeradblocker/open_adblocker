@@ -37,11 +37,14 @@ export enum ManualBlockingMessages {
 
 export interface ManualBlockingStartMessage extends AppMessage {
   type: ManualBlockingMessages.start
-  payload: { tabId: number, appliedRules: string[] }
+  payload: { tabId: number, appliedRules: string[], sessionId: string }
 }
 
 export interface ManualBlockingTriggerStartMessage extends AppMessage {
   type: ManualBlockingMessages.triggerStart
+  payload: {
+    sessionId: string
+  }
 }
 
 export interface ManualBlockingSelectElementMessage extends AppMessage {

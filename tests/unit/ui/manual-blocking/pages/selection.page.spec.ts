@@ -20,6 +20,8 @@ import { mount, VueWrapper } from '@vue/test-utils'
 import { Route } from '@/ui/manual-blocking/router/route-names'
 import { useUIManualBlocking } from '@/modules/features/manual-blocking/ui/manual-blocking.setup'
 import { useRoute, useRouter } from 'vue-router'
+import { useContentBroadcast } from '@/modules/broadcast/content/broadcast.setup'
+import { useBlockElementStore } from '@/ui/manual-blocking/store/block-element.store'
 
 const service = {
   enterPreview: jest.fn(),
@@ -39,7 +41,16 @@ const routeMock = {
 
 jest.mock('@/modules/features/manual-blocking/ui/manual-blocking.setup')
 jest.mock('vue-router')
+jest.mock('@/modules/broadcast/content/broadcast.setup')
+jest.mock('@/ui/manual-blocking/store/block-element.store')
+const blockElementStore = {
+  sessionId: 'session-id',
+  currentDomain: 'localhost'
+}
 
+const broadcastService = {
+  sendMessage: jest.fn()
+}
 let SelectionPage: any
 
 beforeAll(async () => {
@@ -100,6 +111,8 @@ describe('Selection manual-blocking page', () => {
     jest.mocked(useUIManualBlocking).mockReturnValue(service as any)
     jest.mocked(useRoute).mockReturnValue(routeMock as any)
     jest.mocked(useRouter).mockReturnValue({ push: pushMock } as any)
+    jest.mocked(useContentBroadcast).mockReturnValue(broadcastService as any)
+    jest.mocked(useBlockElementStore).mockReturnValue(blockElementStore as any)
   })
 
   it('initializes slider params from the route query', async () => {

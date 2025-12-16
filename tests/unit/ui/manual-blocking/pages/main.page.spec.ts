@@ -20,6 +20,7 @@ import { mount, type VueWrapper } from '@vue/test-utils'
 import { storeToRefs } from 'pinia'
 import { useUIManualBlocking } from '@/modules/features/manual-blocking/ui/manual-blocking.setup'
 import { useBlockElementStore } from '@/ui/manual-blocking/store/block-element.store'
+import { useContentBroadcast } from '@/modules/broadcast/content/broadcast.setup'
 
 const manualBlockingService = {
   close: jest.fn(),
@@ -31,6 +32,10 @@ const blockElementStore = {
   removeRule: jest.fn()
 }
 
+const broadcastService = {
+  sendMessage: jest.fn()
+}
+
 jest.mock('@/modules/features/manual-blocking/ui/manual-blocking.setup', () => ({
   __esModule: true,
   useUIManualBlocking: jest.fn()
@@ -39,6 +44,11 @@ jest.mock('@/modules/features/manual-blocking/ui/manual-blocking.setup', () => (
 jest.mock('@/ui/manual-blocking/store/block-element.store', () => ({
   __esModule: true,
   useBlockElementStore: jest.fn(() => blockElementStore)
+}))
+
+jest.mock('@/modules/broadcast/content/broadcast.setup', () => ({
+  __esModule: true,
+  useContentBroadcast: jest.fn(() => broadcastService)
 }))
 
 jest.mock('pinia', () => {
@@ -87,6 +97,7 @@ describe('Main manual-blocking page', () => {
     manualBlockingService.resetRules.mockClear()
     jest.mocked(useUIManualBlocking).mockReturnValue(manualBlockingService as any)
     jest.mocked(useBlockElementStore).mockReturnValue(blockElementStore as any)
+    jest.mocked(useContentBroadcast).mockReturnValue(broadcastService as any)
   })
 
   it('shows the list of applied rules and supports removal actions', async () => {

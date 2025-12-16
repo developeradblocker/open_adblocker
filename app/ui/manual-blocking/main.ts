@@ -21,10 +21,12 @@ import router from './router'
 import InlineSvg from 'vue-inline-svg'
 import './style.less'
 import { dispatcher, setupWorker } from '@/utils/setup-worker'
-import { setupContentBroadcast } from '@/modules/broadcast/content/broadcast.setup'
+import { setupContentBroadcast, useContentBroadcast } from '@/modules/broadcast/content/broadcast.setup'
 import { setupUIManualBlocking } from '@/modules/features/manual-blocking/ui/manual-blocking.setup'
 import { createPinia, Pinia } from 'pinia'
-import { useBlockElementStore } from '@/ui/manual-blocking/store/block-element.store'
+import { BlockElementState, useBlockElementStore } from '@/ui/manual-blocking/store/block-element.store'
+import { UserActivityType, UserPageVisited } from '@/modules/user-activity/common/user-activity.types'
+import { UserActivityMessage, UserActivityMessages } from '@/modules/user-activity/common/user-activity.messages'
 
 setupWorker('ManuallyBlockingAds')
 setupContentBroadcast()
@@ -35,13 +37,26 @@ setupUIManualBlocking();
   const pinia: Pinia = createPinia()
 
   const params: URLSearchParams = new URLSearchParams(window.location.search)
-  const payload: string[] = JSON.parse(params.get('payload'))
+  const { appliedRules, sessionId, currentDomain }: BlockElementState = JSON.parse(params.get('payload'))
   app.use(router)
   app.use(pinia)
   app.component('BaseSvg', InlineSvg)
   useBlockElementStore().$patch({
-    appliedRules: payload
+    appliedRules,
+    sessionId,
+    currentDomain
   })
   await dispatcher().work()
   app.mount('#manual-blocking')
+
+  const activity: UserPageVisited = {
+    sessionId,
+    type: UserActivityType.visitPage,
+    page: 'REMOVE_ELEMENT_POPUP'
+  }
+  const message: UserActivityMessage = {
+    type: UserActivityMessages.activity,
+    payload: activity
+  }
+  useContentBroadcast().sendMessage(message)
 })()
