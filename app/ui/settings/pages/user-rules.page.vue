@@ -85,9 +85,15 @@ import BaseEditor from '../components/base/base-editor.vue'
 import BaseImport from '../components/base/base-import.vue'
 import BaseModal from '../components/base/base-modal.vue'
 import { useSettingsStore } from '../store/settings.store'
+import { SnackbarId } from '@/ui/shared/components/snackbar/base-snackbar.types'
+import { useUserActivity } from '@/modules/user-activity/external/utils'
+import { ClickEventToAction } from '@/modules/user-activity/common/user-activity.types'
+import { ElementsUI } from '@/modules/user-activity/common/user-activity.types'
+import { SETTINGS_ROUTE } from '../router/route-names'
 
 const $store = useSettingsStore()
 const $userRules = useExternalManualBlocking()
+const $activity = useUserActivity()
 
 const nextNavigation: Ref<() => void> = ref(null)
 const userRules = ref('')
@@ -98,6 +104,10 @@ const hasChanges = computed(() => {
 })
 
 const initImport = async (input: HTMLInputElement): Promise<void> => {
+  $activity.click(ElementsUI.import, {
+    page: SETTINGS_ROUTE.USERRULES,
+    to: ClickEventToAction.importUserRules
+  })
   input.click()
 }
 
@@ -117,7 +127,9 @@ const onImport = async (event: InputEvent): Promise<void> => {
     if (!success) {
       $store.setSnackbar({
         message: 'Couldn\'t import user rules. Please retry',
-        type: 'error'
+        type: 'error',
+        trackActivity: true,
+        snackbarId: SnackbarId.importUserRules
       })
       $store.setShowLoader(false)
       return
@@ -125,13 +137,17 @@ const onImport = async (event: InputEvent): Promise<void> => {
 
     $store.setSnackbar({
       message: 'User rules were imported successfully',
-      type: 'info'
+      type: 'info',
+      trackActivity: true,
+      snackbarId: SnackbarId.importUserRules
     })
   } catch (error) {
     logger.error('Couldn\'t import user rules due to error', error)
     $store.setSnackbar({
       message: 'Couldn\'t import user rules. Please retry',
-      type: 'error'
+      type: 'error',
+      trackActivity: true,
+      snackbarId: SnackbarId.importUserRules
     })
   } finally {
     $store.setShowLoader(false)
@@ -141,18 +157,28 @@ const onImport = async (event: InputEvent): Promise<void> => {
 
 const onExport = async (): Promise<void> => {
   $store.resetSnackbar()
+  $activity.click(ElementsUI.export, {
+    page: SETTINGS_ROUTE.USERRULES,
+    to: ClickEventToAction.exportUserRules
+  })
   await exportData<string>(ExportTypes.userRules, $store.stringUserRules, ExportFormat.txt)
 }
 
 const onSave = async (): Promise<void> => {
   $store.setShowLoader(true)
+  $activity.click(ElementsUI.save, {
+    page: SETTINGS_ROUTE.USERRULES,
+    to: ClickEventToAction.saveUserRules
+  })
   const content = userRules.value.split('\n')
   const success = await $userRules.save(content)
 
   if (!success) {
     $store.setSnackbar({
       message: 'Couldn\'t save changes. Please retry',
-      type: 'error'
+      type: 'error',
+      trackActivity: true,
+      snackbarId: SnackbarId.saveUserRules
     })
     $store.setShowLoader(false)
     return
@@ -161,7 +187,9 @@ const onSave = async (): Promise<void> => {
   $store.settings.filters.userRules = content
   $store.setSnackbar({
     message: 'Changes were saved successfully',
-    type: 'info'
+    type: 'info',
+    trackActivity: true,
+    snackbarId: SnackbarId.saveUserRules
   })
   $store.setShowLoader(false)
 }
@@ -182,6 +210,7 @@ watch(
 
 onMounted(() => {
   userRules.value = $store.stringUserRules
+  $activity.visitPage(SETTINGS_ROUTE.USERRULES)
 })
 
 onBeforeRouteLeave((to: RouteLocationNormalized, from: RouteLocationNormalizedLoaded, next: NavigationGuardNext) => {

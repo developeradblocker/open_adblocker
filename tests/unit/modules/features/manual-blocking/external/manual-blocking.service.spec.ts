@@ -57,16 +57,16 @@ describe('ManualBlockingService (external)', () => {
   })
 
   it('triggerStart sends message and closes the popup window', async () => {
-    const service = new ManualBlockingService()
+    const service = new ManualBlockingService('session-id')
 
     await service.triggerStart()
 
-    expect(port.sendMessage).toHaveBeenCalledWith({ type: ManualBlockingMessages.triggerStart })
+    expect(port.sendMessage).toHaveBeenCalledWith({ type: ManualBlockingMessages.triggerStart, payload: { sessionId: 'session-id' } })
     expect(global.close).toHaveBeenCalledTimes(1)
   })
 
   it('import forwards rules through the port', async () => {
-    const service = new ManualBlockingService()
+    const service = new ManualBlockingService('session-id')
 
     const result = await service.save(['rule'])
 

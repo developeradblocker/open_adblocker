@@ -27,6 +27,15 @@
 import { finishDragging, startDragging } from '@/ui/manual-blocking/helpers/drag-n-drop.helper'
 import { useUIManualBlocking } from '@/modules/features/manual-blocking/ui/manual-blocking.setup'
 import { ref } from 'vue'
+import { UserClickActivity } from '@/modules/user-activity/common/user-activity.types'
+import { BaseUserClickPayload } from '@/modules/user-activity/common/user-activity.types'
+import { UserActivityType } from '@/modules/user-activity/common/user-activity.types'
+import { ElementsUI } from '@/modules/user-activity/common/user-activity.types'
+import { ClickEventToAction } from '@/modules/user-activity/common/user-activity.types'
+import { UserActivityMessage } from '@/modules/user-activity/common/user-activity.messages'
+import { UserActivityMessages } from '@/modules/user-activity/common/user-activity.messages'
+import { useContentBroadcast } from '@/modules/broadcast/content/broadcast.setup'
+import { useBlockElementStore } from '@/ui/manual-blocking/store/block-element.store'
 
 defineProps<{
   title: string
@@ -35,6 +44,20 @@ const $manuallyBlockingAds = useUIManualBlocking()
 const isDragging = ref(false)
 const onClose = () => {
   $manuallyBlockingAds.close()
+  const activity: UserClickActivity<BaseUserClickPayload> = {
+    sessionId: useBlockElementStore().sessionId,
+    type: UserActivityType.click,
+    element: ElementsUI.close,
+    payload: {
+      page: 'REMOVE_ELEMENT_POPUP',
+      to: ClickEventToAction.closeRemoveElementPopup
+    }
+  }
+  const message: UserActivityMessage = {
+    type: UserActivityMessages.activity,
+    payload: activity
+  }
+  useContentBroadcast().sendMessage(message)
 }
 const toggleDragMode = (e: MouseEvent) => {
   if (isDragging.value) {

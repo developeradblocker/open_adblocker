@@ -19,11 +19,15 @@ import { defineStore } from 'pinia'
 
 export interface BlockElementState {
   appliedRules: string[]
+  sessionId: string
+  currentDomain: string
 }
 
 export const useBlockElementStore = defineStore('BlockElementStore', {
   state: (): BlockElementState => ({
-    appliedRules: []
+    appliedRules: [],
+    sessionId: '',
+    currentDomain: ''
   }),
   actions: {
     addRule (rule: string): void {

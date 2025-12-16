@@ -46,7 +46,7 @@ export class StartManualAdBlockingListener implements AppMessageListener<ManualB
   }
 
   async handle ({ message }: Box<ManualBlockingStartMessage>): Promise<void> {
-    await this.iframeManager.start(message.payload.appliedRules)
+    await this.iframeManager.start(message.payload.appliedRules, message.payload.sessionId)
     this.selector.start()
   }
 }

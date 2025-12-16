@@ -31,6 +31,7 @@ import {
   InternalManualBlockingServiceInterface
 } from '@/modules/features/manual-blocking/internal/manual-blocking.types'
 import { logger } from '@/utils/logger/logger'
+import { Box } from '@/utils/dispatcher/dispatcher.types'
 
 @injectable()
 export class TriggerStartManualBlockingListener implements AppMessageListener<ManualBlockingTriggerStartMessage> {
@@ -50,7 +51,7 @@ export class TriggerStartManualBlockingListener implements AppMessageListener<Ma
     return false
   }
 
-  async handle (): Promise<void> {
+  async handle ({ message }: Box<ManualBlockingTriggerStartMessage>): Promise<void> {
     const tabs = await chrome.tabs.query({ active: true, currentWindow: true })
 
     if (!tabs.length) {
@@ -69,7 +70,8 @@ export class TriggerStartManualBlockingListener implements AppMessageListener<Ma
       type: ManualBlockingMessages.start,
       payload: {
         tabId: tabs[0].id,
-        appliedRules
+        appliedRules,
+        sessionId: message.payload.sessionId
       }
     }
     this.broadcast.sendMessage(tabs[0].id, startMessage)

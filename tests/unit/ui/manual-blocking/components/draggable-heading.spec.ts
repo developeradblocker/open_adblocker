@@ -20,11 +20,19 @@ import { shallowMount } from '@vue/test-utils'
 import DraggableHeading from '@/ui/manual-blocking/components/draggable-heading.vue'
 import { useUIManualBlocking } from '@/modules/features/manual-blocking/ui/manual-blocking.setup'
 import { startDragging } from '@/ui/manual-blocking/helpers/drag-n-drop.helper'
+import { useContentBroadcast } from '@/modules/broadcast/content/broadcast.setup'
+import { useBlockElementStore } from '@/ui/manual-blocking/store/block-element.store'
 
+jest.mock('@/ui/manual-blocking/store/block-element.store', () => ({
+  useBlockElementStore: jest.fn()
+}))
 jest.mock('@/modules/features/manual-blocking/ui/manual-blocking.setup', () => ({
   useUIManualBlocking: jest.fn()
 }))
 
+jest.mock('@/modules/broadcast/content/broadcast.setup', () => ({
+  useContentBroadcast: jest.fn()
+}))
 jest.mock('@/ui/manual-blocking/helpers/drag-n-drop.helper', () => ({
   startDragging: jest.fn(),
   finishDragging: jest.fn()
@@ -43,12 +51,19 @@ const BaseSvgStub = defineComponent({
 
 describe('DraggableHeading.vue', () => {
   const closeMock = jest.fn()
-
+  const broadcastService = {
+    sendMessage: jest.fn()
+  }
+  const blockElementStore = {
+    sessionId: 'session-id'
+  }
   beforeEach(() => {
     jest.clearAllMocks()
     jest.mocked(useUIManualBlocking).mockReturnValue({
       close: closeMock
     } as any)
+    jest.mocked(useContentBroadcast).mockReturnValue(broadcastService as any)
+    jest.mocked(useBlockElementStore).mockReturnValue(blockElementStore as any)
   })
 
   it('delegates close clicks to manual blocking service', async () => {
