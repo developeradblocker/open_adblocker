@@ -24,7 +24,7 @@ import { dispatcher, setupWorker } from '@/utils/setup-worker'
 import { setupContentBroadcast, useContentBroadcast } from '@/modules/broadcast/content/broadcast.setup'
 import { setupUIManualBlocking } from '@/modules/features/manual-blocking/ui/manual-blocking.setup'
 import { createPinia, Pinia } from 'pinia'
-import { useBlockElementStore } from '@/ui/manual-blocking/store/block-element.store'
+import { BlockElementState, useBlockElementStore } from '@/ui/manual-blocking/store/block-element.store'
 import { UserActivityType, UserPageVisited } from '@/modules/user-activity/common/user-activity.types'
 import { UserActivityMessage, UserActivityMessages } from '@/modules/user-activity/common/user-activity.messages'
 
@@ -37,7 +37,7 @@ setupUIManualBlocking();
   const pinia: Pinia = createPinia()
 
   const params: URLSearchParams = new URLSearchParams(window.location.search)
-  const { appliedRules, sessionId, currentDomain }: { appliedRules: string[], sessionId: string, currentDomain: string } = JSON.parse(params.get('payload'))
+  const { appliedRules, sessionId, currentDomain }: BlockElementState = JSON.parse(params.get('payload'))
   app.use(router)
   app.use(pinia)
   app.component('BaseSvg', InlineSvg)
