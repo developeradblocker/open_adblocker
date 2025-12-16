@@ -60,7 +60,6 @@ export function makeIframeDraggable (
     left: `${leftMargin}px`,
     top: `${y}px`,
     margin: '0',
-    borderTopWidth: '10px',
     zIndex: String(z),
     touchAction: 'none' // avoid UA panning on touch
   })

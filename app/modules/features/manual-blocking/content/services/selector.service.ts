@@ -26,6 +26,7 @@ import {
   ContentBroadcastIdentifiers,
   ContentBroadcastServiceInterface
 } from '@/modules/broadcast/content/broadcast.types'
+import { ContentManualBlockingIdentifiers, ContentManualBlockingOptions } from '../manual-blocking.types'
 
 const HIGHLIGHT_COLOR = '#3A40EF'
 
@@ -38,7 +39,10 @@ export class SelectorService {
   private isPreview = false
   constructor (
     @inject(ContentBroadcastIdentifiers.service)
-    private readonly broadcast: ContentBroadcastServiceInterface
+    private readonly broadcast: ContentBroadcastServiceInterface,
+
+    @inject(ContentManualBlockingIdentifiers.options)
+    private readonly options: ContentManualBlockingOptions
   ) {
     document.body.addEventListener('mousemove', this.onMouseMove.bind(this))
   }
@@ -114,6 +118,11 @@ export class SelectorService {
     }
 
     const el = document.elementFromPoint(event.clientX, event.clientY) as HTMLElement
+    const isManualBlockingPopup = el.tagName === 'IFRAME' && (el as HTMLIFrameElement).src.includes(this.options.iframe.url)
+
+    if (isManualBlockingPopup) {
+      return
+    }
 
     if (this.currentEl && this.currentEl.isSameNode(el)) {
       return
