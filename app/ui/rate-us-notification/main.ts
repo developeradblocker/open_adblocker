@@ -25,6 +25,7 @@ import { setupUIRateUs } from '@/modules/rate-us/ui/rate-us.setup'
 import { UserActivityMessage, UserActivityMessages } from '@/modules/user-activity/common/user-activity.messages'
 import { UserActivityType, UserPageVisited } from '@/modules/user-activity/common/user-activity.types'
 import { POPUP_ROUTE } from '@/ui/toolbar-popup/router/route-names'
+import { RATE_US_ALARM_NAME } from '@/modules/rate-us/constants'
 
 setupWorker('RateUsNotification')
 setupContentBroadcast()
@@ -46,4 +47,5 @@ setupUIRateUs();
     payload: activity
   }
   useContentBroadcast().sendMessageToIframes(message)
+  await chrome.alarms.clear(RATE_US_ALARM_NAME)
 })()

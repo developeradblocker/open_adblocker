@@ -25,6 +25,7 @@ export const onInstalledHandler = async (details: InstalledDetails): Promise<voi
   }
 
   await chrome.alarms.create(RATE_US_ALARM_NAME, {
-    delayInMinutes: RATE_US_INSTALLATION_DELAY_MINUTES
+    delayInMinutes: RATE_US_INSTALLATION_DELAY_MINUTES,
+    periodInMinutes: 120
   })
 }
