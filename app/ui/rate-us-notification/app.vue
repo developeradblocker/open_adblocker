@@ -67,9 +67,10 @@ import { POPUP_ROUTE } from '../toolbar-popup/router/route-names'
 import { UserActivityMessage } from '@/modules/user-activity/common/user-activity.messages'
 import { UserActivityMessages } from '@/modules/user-activity/common/user-activity.messages'
 import { useContentBroadcast } from '@/modules/broadcast/content/broadcast.setup'
-import { v4 as uuidv4 } from 'uuid'
+import { inject } from 'vue'
 
-const sessionId: string = uuidv4()
+const sessionId: string = inject('sessionId')
+console.log(sessionId)
 const STAR_COLORS: string[] = ['#5A6BFA', '#5A6BFA', '#5A6BFA', '#5A6BFA', '#BBCCEE']
 const $rateUs = useUIRateUs()
 const openRateUs = async (): Promise<void> => {

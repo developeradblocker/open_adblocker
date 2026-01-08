@@ -26,6 +26,7 @@ import { UserActivityMessage, UserActivityMessages } from '@/modules/user-activi
 import { UserActivityType, UserPageVisited } from '@/modules/user-activity/common/user-activity.types'
 import { POPUP_ROUTE } from '@/ui/toolbar-popup/router/route-names'
 import { RATE_US_ALARM_NAME } from '@/modules/rate-us/constants'
+import { v4 as uuidv4 } from 'uuid'
 
 setupWorker('RateUsNotification')
 setupContentBroadcast()
@@ -33,12 +34,14 @@ setupUIRateUs();
 
 (async (): Promise<void> => {
   const app = createApp(App)
+  const sessionId = uuidv4()
   app.component('BaseSvg', InlineSvg)
+  app.provide('sessionId', sessionId)
   await dispatcher().work()
   app.mount('#rate-us')
 
   const activity: UserPageVisited = {
-    sessionId: '',
+    sessionId,
     type: UserActivityType.visitPage,
     page: POPUP_ROUTE.RATE_US
   }
