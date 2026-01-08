@@ -17,6 +17,7 @@
  */
 import { rateUsService } from '@/modules/rate-us/internal/utils'
 import { onUpdatedHandler } from '@/modules/rate-us/internal/handlers/on-updated.handler'
+import { RATE_US_STORAGE_KEY } from '@/modules/rate-us/constants'
 
 jest.mock('@/modules/rate-us/internal/utils')
 
@@ -24,17 +25,23 @@ describe('onUpdatedHandler', () => {
   const visitMock = jest.fn()
   const rateMock = jest.fn()
   const removeMock = jest.fn()
+  const getMock = jest.fn()
   beforeEach(() => {
     global.chrome = {
       storage: {
         local: {
-          remove: removeMock
+          remove: removeMock,
+          get: getMock
         }
+      },
+      alarms: {
+        create: jest.fn()
       }
     } as any
     (rateUsService as jest.Mock).mockReturnValue({ visit: visitMock, rate: rateMock })
   })
   it('should be able to migrate "1.2.0"', async () => {
+    getMock.mockResolvedValueOnce({ [RATE_US_STORAGE_KEY]: { lastVisited: Date.now() } })
     await onUpdatedHandler({ reason: 'install', previousVersion: '1.1.0' })
     expect(visitMock).not.toHaveBeenCalled()
     expect(rateMock).not.toHaveBeenCalled()

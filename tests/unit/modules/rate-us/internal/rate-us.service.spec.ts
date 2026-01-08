@@ -21,6 +21,7 @@ import { InternalRateUsService } from '@/modules/rate-us/internal/services/rate-
 import { dayToMs } from '@/helpers/time/day-to-ms'
 import { ConfigServiceInterface } from '@/modules/config/internal/config.types'
 import { DEFAULT_CONFIG } from '@/modules/config/common/config.constants'
+import { InternalBroadcastServiceInterface } from '@/modules/broadcast/internal/broadcast.types'
 
 jest.mock('@/utils/storage/make-data-accessor')
 
@@ -28,6 +29,7 @@ describe('InternalRateUsService', () => {
   let storageMock: DataAccessorInterface<unknown>
   let service: InternalRateUsService
   let configService: ConfigServiceInterface
+  let broadcastService: InternalBroadcastServiceInterface
 
   const existsMock = jest.fn()
   beforeEach(() => {
@@ -39,25 +41,14 @@ describe('InternalRateUsService', () => {
     configService = {
       get: jest.fn().mockResolvedValue(DEFAULT_CONFIG)
     } as unknown as ConfigServiceInterface
+    broadcastService = {
+      sendMessage: jest.fn()
+    } as unknown as InternalBroadcastServiceInterface
     jest.mocked(makeDataAccessor).mockReturnValue(storageMock)
-    service = new InternalRateUsService(configService)
+    service = new InternalRateUsService(configService, broadcastService)
   })
 
   it('returns false if RATE_US_DATA was not settled', async () => {
-    const result = await service.needVisit()
-    expect(result).toBe(false)
-  })
-
-  it('returns true if RATE_US_DATA was not settled and threshold is met', async () => {
-    jest.mocked(storageMock.exists).mockResolvedValue(true)
-    jest.mocked(storageMock.read).mockResolvedValue({ firstShowAfter: Date.now() - 5000 })
-    const result = await service.needVisit()
-    expect(result).toBe(true)
-  })
-
-  it('returns false if RATE_US_DATA was not settled and threshold is not met', async () => {
-    jest.mocked(storageMock.exists).mockResolvedValue(true)
-    jest.mocked(storageMock.read).mockResolvedValue({ firstShowAfter: Date.now() + 15000 })
     const result = await service.needVisit()
     expect(result).toBe(false)
   })

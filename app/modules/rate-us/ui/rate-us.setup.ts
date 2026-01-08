@@ -15,18 +15,18 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
+import { inject } from '@/utils/inject/inject'
+import { di } from '@/utils/setup-worker'
+import { UIRateUsIdentifiers } from './rate-us.types'
+import { RateUsService } from './services/rate-us.service'
 
-export const RATE_US_URL = 'https://chromewebstore.google.com/detail/jncabfnemmiofhiimdgelgeobggelpci'
+export const setupUIRateUs = (): void => {
+  inject([
+    {
+      key: UIRateUsIdentifiers.service,
+      use: RateUsService
+    }
+  ])
+}
 
-/**
- * How much time should pass after installation of the extension before showing the rate us page
- */
-export const RATE_US_INSTALLATION_DELAY_MINUTES = 24 * 60
-
-export const HOME_PAGE_VISITED_COUNTER = 'homePageVisited'
-
-export const RATE_US_ALARM_NAME = 'RATE_US_ALARM'
-
-export const RATE_US_STORAGE_KEY = 'RATE_US_DATA'
-
-export const RATE_US_FRAME_ID = 'rate_us'
+export const useUIRateUs = (): RateUsService => di.get(UIRateUsIdentifiers.service)

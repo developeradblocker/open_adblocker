@@ -16,17 +16,17 @@
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
 
-export const RATE_US_URL = 'https://chromewebstore.google.com/detail/jncabfnemmiofhiimdgelgeobggelpci'
+export enum ContentRateUsIdentifiers {
+  iframeManager = 'RateUs.IframeManager',
+  /**
+   * @link ContentRateUsOptions
+   */
+  options = 'RateUs.Options'
+}
 
-/**
- * How much time should pass after installation of the extension before showing the rate us page
- */
-export const RATE_US_INSTALLATION_DELAY_MINUTES = 24 * 60
-
-export const HOME_PAGE_VISITED_COUNTER = 'homePageVisited'
-
-export const RATE_US_ALARM_NAME = 'RATE_US_ALARM'
-
-export const RATE_US_STORAGE_KEY = 'RATE_US_DATA'
-
-export const RATE_US_FRAME_ID = 'rate_us'
+export interface ContentRateUsOptions {
+  iframe: {
+    url: string
+    style: Partial<CSSStyleDeclaration>
+  }
+}

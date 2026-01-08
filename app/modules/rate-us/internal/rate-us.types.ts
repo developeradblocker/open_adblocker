@@ -24,10 +24,10 @@ export interface InternalRateUsServiceInterface {
   visit: () => Promise<void>
   needVisit: () => Promise<boolean>
   rate: () => Promise<void>
+  showRateUsPopup: () => Promise<void>
 }
 
 export interface RateUsDataInterface {
   rated?: boolean
   lastVisited?: number
-  firstShowAfter?: number
 }

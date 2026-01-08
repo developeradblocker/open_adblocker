@@ -18,15 +18,29 @@
 
 import { rateUsService } from '@/modules/rate-us/internal/utils'
 import InstalledDetails = chrome.runtime.InstalledDetails;
+import { RATE_US_ALARM_NAME, RATE_US_INSTALLATION_DELAY_MINUTES, RATE_US_STORAGE_KEY } from '@/modules/rate-us/constants'
+import { RateUsDataInterface } from '@/modules/rate-us/internal/rate-us.types'
 
 export const onUpdatedHandler = async (details: InstalledDetails): Promise<void> => {
-  if (details.reason === 'update' && details.previousVersion < '1.2.0') {
+  if (details.reason !== 'update') {
+    return
+  }
+
+  if (details.previousVersion < '1.2.0') {
     await chrome.storage.local.remove('RATE_US_SHOWN')
     await rateUsService().visit()
     await rateUsService().rate()
   }
 
-  if (details.reason === 'update' && details.previousVersion < '1.4.0') {
+  if (details.previousVersion < '1.4.0') {
     await chrome.storage.local.remove('homePageVisitedCounter')
+  }
+
+  const rateUsData: RateUsDataInterface | undefined = (await chrome.storage.local.get(RATE_US_STORAGE_KEY))[RATE_US_STORAGE_KEY]
+
+  if (!rateUsData?.lastVisited) {
+    await chrome.alarms.create(RATE_US_ALARM_NAME, {
+      delayInMinutes: RATE_US_INSTALLATION_DELAY_MINUTES
+    })
   }
 }

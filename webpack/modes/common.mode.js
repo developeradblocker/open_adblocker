@@ -68,6 +68,7 @@ export const commonMode = (env, mode) => {
       [`${buildPath}/settings/settings`]: './app/ui/settings/settings.ts',
       [`${buildPath}/content/tswebextension/content-script`]: './node_modules/@adguard/tswebextension/dist/content-script.mv3.js',
       [`${buildPath}/content/manual-blocking/content-script`]: './app/ui/manual-blocking/main.ts',
+      [`${buildPath}/content/rate-us/content-script`]: './app/ui/rate-us-notification/main.ts',
       [`${buildPath}/content/content`]: './app/content/content.ts'
     },
     module: {

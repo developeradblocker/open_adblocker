@@ -45,7 +45,8 @@
   "web_accessible_resources": [
     {
       "resources": [
-        "/content/manual-blocking/index.html"
+        "/content/manual-blocking/index.html",
+        "/content/rate-us/index.html"
       ],
       "matches": [
         "<all_urls>"
