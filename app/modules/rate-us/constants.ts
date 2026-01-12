@@ -19,8 +19,14 @@
 export const RATE_US_URL = 'https://chromewebstore.google.com/detail/jncabfnemmiofhiimdgelgeobggelpci'
 
 /**
- * How much time user should use an extension until he sees the rate us page
+ * How much time should pass after installation of the extension before showing the rate us page
  */
-export const RATE_US_DAYS_AFTER_FIRST_USAGE_THRESHOLD = 5
+export const RATE_US_INSTALLATION_DELAY_MINUTES = 24 * 60
 
 export const HOME_PAGE_VISITED_COUNTER = 'homePageVisited'
+
+export const RATE_US_ALARM_NAME = 'RATE_US_ALARM'
+
+export const RATE_US_STORAGE_KEY = 'RATE_US_DATA'
+
+export const RATE_US_FRAME_ID = 'rate_us'

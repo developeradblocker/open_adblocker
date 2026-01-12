@@ -22,17 +22,24 @@ import { inject } from '@/utils/di/di.types'
 import { injectable } from 'inversify'
 import { ConfigServiceInterface, InternalConfigIdentifiers } from '@/modules/config/internal/config.types'
 import { dayToMs } from '@/helpers/time/day-to-ms'
-import { RATE_US_DAYS_AFTER_FIRST_USAGE_THRESHOLD } from '@/modules/rate-us/constants'
+import { RATE_US_STORAGE_KEY } from '../../constants'
+import { InternalBroadcastIdentifiers } from '@/modules/broadcast/internal/broadcast.types'
+import { InternalBroadcastServiceInterface } from '@/modules/broadcast/internal/broadcast.types'
+import { RateUsMessages } from '../../common/rate-us.messages'
+import { logger } from '@/utils/logger/logger'
 
 @injectable()
 export class InternalRateUsService implements InternalRateUsServiceInterface {
   constructor (
     @inject(InternalConfigIdentifiers.service)
-    private readonly config: ConfigServiceInterface
+    private readonly config: ConfigServiceInterface,
+
+    @inject(InternalBroadcastIdentifiers.service)
+    private readonly broadcast: InternalBroadcastServiceInterface
   ) {
   }
 
-  private storage = makeDataAccessor<RateUsDataInterface>('local', 'RATE_US_DATA', {
+  private storage = makeDataAccessor<RateUsDataInterface>('local', RATE_US_STORAGE_KEY, {
     useCache: false
   })
 
@@ -49,17 +56,12 @@ export class InternalRateUsService implements InternalRateUsServiceInterface {
 
   async needVisit (): Promise<boolean> {
     if (!(await this.storage.exists())) {
-      await this.storage.write({ firstShowAfter: Date.now() + dayToMs(RATE_US_DAYS_AFTER_FIRST_USAGE_THRESHOLD) })
       return false
     }
 
-    const { rated, lastVisited, firstShowAfter } = await this.storage.read()
+    const { rated, lastVisited } = await this.storage.read()
 
-    if (!lastVisited) {
-      return firstShowAfter < Date.now()
-    }
-
-    if (rated) {
+    if (!lastVisited || rated) {
       return false
     }
 
@@ -70,5 +72,16 @@ export class InternalRateUsService implements InternalRateUsServiceInterface {
   async rate (): Promise<void> {
     const data = await this.storage.read()
     await this.storage.write({ lastVisited: data.lastVisited, rated: true })
+  }
+
+  async showRateUsPopup (): Promise<void> {
+    const [activeTab] = await chrome.tabs.query({ active: true, currentWindow: true })
+
+    if (!activeTab) {
+      logger.warn('RateUsModule: No active tab found')
+      return
+    }
+
+    this.broadcast.sendMessage(activeTab.id, { type: RateUsMessages.showNotification })
   }
 }

@@ -20,6 +20,8 @@ import { setupContentManualBlocking } from '@/modules/features/manual-blocking/c
 import { ContentManualBlockingOptions } from '@/modules/features/manual-blocking/content/manual-blocking.types'
 import { dispatcher, setupWorker } from '@/utils/setup-worker'
 import { setupContentBroadcast } from '@/modules/broadcast/content/broadcast.setup'
+import { ContentRateUsOptions } from '@/modules/rate-us/content/rate-us.types'
+import { setupContentRateUs } from '@/modules/rate-us/content/rate-us.setup'
 
 const commonStyles: Partial<CSSStyleDeclaration> = {
   position: 'fixed',
@@ -42,9 +44,26 @@ const manuallyBlockingAdsOptions: ContentManualBlockingOptions = {
   }
 }
 
+const rateUsNotificationOptions: ContentRateUsOptions = {
+  iframe: {
+    url: '/content/rate-us/index.html',
+    style: {
+      display: 'block',
+      width: '264px',
+      height: '380px',
+      border: 'none',
+      top: '10px',
+      right: '10px',
+      zIndex: '99999999',
+      ...commonStyles
+    }
+  }
+}
+
 setupWorker('CSW')
 setupContentBroadcast()
-setupContentManualBlocking(manuallyBlockingAdsOptions);
+setupContentManualBlocking(manuallyBlockingAdsOptions)
+setupContentRateUs(rateUsNotificationOptions);
 
 (async (): Promise<void> => {
   await dispatcher().work()

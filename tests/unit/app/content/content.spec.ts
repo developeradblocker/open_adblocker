@@ -20,6 +20,7 @@ import { setupContentBroadcast } from '@/modules/broadcast/content/broadcast.set
 import { dispatcher, setupWorker } from '@/utils/setup-worker'
 import { flushPromises } from '../../../helpers/flushPromises'
 import { DispatcherInterface } from '@/utils/dispatcher/dispatcher.types'
+import { setupContentRateUs } from '@/modules/rate-us/content/rate-us.setup'
 const dispatcherWorkMock = jest.fn()
 
 jest.mock('@/modules/features/manual-blocking/content/manual-blocking.setup', () => ({
@@ -28,6 +29,10 @@ jest.mock('@/modules/features/manual-blocking/content/manual-blocking.setup', ()
 
 jest.mock('@/modules/broadcast/content/broadcast.setup', () => ({
   setupContentBroadcast: jest.fn()
+}))
+
+jest.mock('@/modules/rate-us/content/rate-us.setup', () => ({
+  setupContentRateUs: jest.fn()
 }))
 
 jest.mock('@/utils/setup-worker', () => ({
@@ -53,6 +58,22 @@ describe('content entrypoint', () => {
             width: '280px',
             height: '420px',
             borderRadius: '4px',
+            backgroundColor: '#fff'
+          })
+        })
+      }))
+      expect(setupContentRateUs).toHaveBeenCalledWith(expect.objectContaining({
+        iframe: expect.objectContaining({
+          url: '/content/rate-us/index.html',
+          style: expect.objectContaining({
+            display: 'block',
+            width: '264px',
+            height: '380px',
+            border: 'none',
+            top: '10px',
+            right: '10px',
+            borderRadius: '4px',
+            boxShadow: '0px 3px 12px 0px rgba(0, 0, 0, 0.10)',
             backgroundColor: '#fff'
           })
         })
