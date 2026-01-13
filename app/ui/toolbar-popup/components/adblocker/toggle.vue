@@ -1,9 +1,10 @@
 <template>
-  <div class="ad-blocker-toggle">
+  <div class="ad-blocker-toggle" data-test="adblocker-toggle">
     <ToggleButton class="ad-blocker-toggle__button" :loading="isLoading" @click="onChange"/>
     <div
       :class="{'ad-blocker-toggle__title--disabled': appStore.app.isServicePage}"
       class="ad-blocker-toggle__title"
+      data-test="adblocker-toggle__title"
     >
       {{ title }}
     </div>

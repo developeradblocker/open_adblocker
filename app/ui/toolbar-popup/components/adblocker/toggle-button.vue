@@ -1,6 +1,7 @@
 <template>
   <div
     class="ad-blocker-toggle-button"
+    data-test="adblocker-toggle-button"
     :class="{
       'ad-blocker-toggle-button--disabled': appStore.app.isServicePage,
       'ad-blocker-toggle-button--paused': appStore.app.isPaused,

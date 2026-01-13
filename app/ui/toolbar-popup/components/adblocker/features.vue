@@ -2,7 +2,8 @@
   <div class="ad-blocker-features">
     <Feature icon="cookie-cleaner" label="Hide cookie alerts" info="Hide cookie consent dialogs on websites">
       <template #action>
-        <BaseToggle id="cookie-cleaner-toggle"
+        <BaseToggle data-test="cookie-cleaner-toggle"
+                    id="cookie-cleaner-toggle"
                     :loading="cookieCleanerToggleLoading"
                     :is-active="cookieCleaner"
                     @toggle="toggleCookieCleaner"
@@ -11,7 +12,7 @@
     </Feature>
     <Feature icon="web-rtc" label="WebRTC protection" info="Prevent WebRTC from revealing your IP address">
       <template #action>
-        <BaseToggle id="web-rtc-toggle" :is-active="webRtc" />
+        <BaseToggle data-test="web-rtc-toggle" id="web-rtc-toggle" :is-active="webRtc" />
       </template>
     </Feature>
     <Feature icon="eraser" label="Block element" @click="onBlockElement" :disabled="blockElementDisabled">
