@@ -16,11 +16,11 @@
         </div>
         <h2 class="rate-us-page__title">Enjoy using Open AdBlocker?</h2>
         <p class="rate-us-page__description">Recommend us to others <br> by rating us on {{ browser }} store</p>
-        <span data-test="reminder" class="rate-us-page__reminder" @click="onRemindClick">Remind later</span>
+        <span data-test="rate-us__action--reminder" class="rate-us-page__reminder" @click="onRemindClick">Remind later</span>
         <BaseButton
           full-width
           :type="BaseButtonType.primary"
-          label="Rate us!" class="rate-us-page__action" @click="openRateUs"/>
+          label="Rate us!" data-test="rate-us__action--rate-us" class="rate-us-page__action" @click="openRateUs"/>
       </div>
     </template>
   </PrimaryLayout>

@@ -24,7 +24,6 @@ import { useRouter } from 'vue-router'
 import { useUserActivity } from '@/modules/user-activity/external/utils'
 import { ClickEventToAction, ElementsUI } from '@/modules/user-activity/common/user-activity.types'
 import { RATE_US_URL } from '@/modules/rate-us/constants'
-import BaseButton from '@/ui/shared/components/button/base-button.vue'
 
 jest.mock('vue-router')
 jest.mock('@/modules/user-activity/external/utils')
@@ -35,6 +34,10 @@ describe('RateUsPage.vue', () => {
   const clickMock = jest.fn()
   const pushMock = jest.fn()
   const createMock = jest.fn()
+  const elements = {
+    reminder: '[data-test="rate-us__action--reminder"]',
+    rateUs: '[data-test="rate-us__action--rate-us"]'
+  }
 
   const doMount = (): void => {
     if (wrapper?.exists()) {
@@ -73,7 +76,7 @@ describe('RateUsPage.vue', () => {
   })
 
   it('should navigate to home remind click', async () => {
-    await wrapper.get('[data-test="reminder"]').trigger('click')
+    await wrapper.get(elements.reminder).trigger('click')
     expect(clickMock).toHaveBeenLastCalledWith(ElementsUI.rateUsReminder, {
       page: POPUP_ROUTE.RATE_US,
       to: ClickEventToAction.closePage
@@ -82,7 +85,7 @@ describe('RateUsPage.vue', () => {
   })
 
   it('should open rate us on button click', async () => {
-    await wrapper.getComponent(BaseButton).trigger('click')
+    await wrapper.get(elements.rateUs).trigger('click')
     expect(clickMock).toHaveBeenLastCalledWith(ElementsUI.rateUsButton, {
       to: RATE_US_URL,
       page: POPUP_ROUTE.RATE_US
