@@ -1,5 +1,5 @@
 <template>
-  <div class="loader">
+  <div class="loader" data-test="loader">
     <div class="loader__overlay">
       <div class="loader__container">
           <BaseSvg src="../icons/loader.svg" class="loader__icon"/>

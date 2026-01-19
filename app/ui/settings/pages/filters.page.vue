@@ -13,7 +13,7 @@
       <div class="filters__separator"/>
       <div class="filters__list">
         <BaseListItem
-          data-test="filter"
+          :data-test="`filter--${filter.filterId}`"
           class="filters__list-item"
           v-for="filter of filters"
           :key="filter.filterId"

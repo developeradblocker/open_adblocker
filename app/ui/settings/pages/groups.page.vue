@@ -9,6 +9,7 @@
         <BaseListItem
           class="groups__list-item"
           v-for="group in $store.groups"
+          :data-test="`group--${group.groupId}`"
           :key="group.groupId"
           :title="group.groupName"
           :icon="groupIcon(group.groupId)"

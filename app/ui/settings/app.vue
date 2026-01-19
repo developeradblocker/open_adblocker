@@ -7,6 +7,7 @@
             v-for="link of NAV_LINKS"
             :key="link.route"
             class="app__nav-link"
+            :data-test="`nav-link--${link.text.toLowerCase().replace(' ', '_')}`"
             :class="{ 'app__nav-link--active': isActive(link.route) }"
             :to="{ name: link.route }"
           >

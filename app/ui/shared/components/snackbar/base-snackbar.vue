@@ -3,6 +3,7 @@
     <div
       v-if="value"
       class="base-snackbar snackbar"
+      data-test="snackbar"
       :class="{[`snackbar--${value.type}`]: true}"
     >
       <BaseSvg class="snackbar__icon" :src="`../icons/${icons[value.type]}.svg`"/>

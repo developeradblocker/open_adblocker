@@ -37,7 +37,7 @@ describe('FiltersPage.vue', () => {
 
   const elements = {
     back: '[data-test="back"]',
-    filter: '[data-test="filter"]'
+    filter: '[data-test="filter--1"]'
   }
 
   const toggleMock = jest.fn()

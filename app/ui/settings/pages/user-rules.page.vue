@@ -17,6 +17,7 @@
          :disabled="!hasChanges"
          @click="onSave"
          label="Save"
+         data-test="save"
         />
         <BaseImport @change="onImport" accept=".txt">
           <template #default="{ input }">
@@ -29,6 +30,7 @@
          :type="BaseButtonType.secondary"
          label="Export"
          @click="onExport"
+         data-test="export"
         />
       </div>
     </BaseBox>

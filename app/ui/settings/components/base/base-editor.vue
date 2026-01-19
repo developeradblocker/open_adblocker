@@ -2,6 +2,7 @@
     <v-ace-editor
      v-model:value="value"
      class="base-editor"
+     data-test="editor"
      theme="dreamweaver"
      lang="text"
      :min-lines="1"
