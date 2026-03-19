@@ -26,6 +26,8 @@ import { ElementsUI } from '@/modules/user-activity/common/user-activity.types'
 import { checkWebRTCPermissions, requestWebRTCPermissions } from '@/modules/features/web-rtc/common/web-rtc.utils'
 import { useNotificationStore } from '@/ui/toolbar-popup/components/notification/notification.store'
 import { useExternalFilters } from '@/modules/filters/external/filters.utils'
+import { getActiveTabHelper } from '@/helpers/get-active-tab.helper'
+import Tab = chrome.tabs.Tab
 
 jest.mock('@/ui/toolbar-popup/store/app.store')
 jest.mock('@/ui/toolbar-popup/components/notification/notification.store')
@@ -33,6 +35,7 @@ jest.mock('@/modules/user-activity/external/utils')
 jest.mock('@/modules/features/web-rtc/external/web-rtc.utils')
 jest.mock('@/modules/features/web-rtc/common/web-rtc.utils')
 jest.mock('@/modules/filters/external/filters.utils')
+jest.mock('@/helpers/get-active-tab.helper')
 describe('Features.vue', () => {
   let wrapper: VueWrapper<any>
 
@@ -41,6 +44,7 @@ describe('Features.vue', () => {
   const webRTCToggleMock = jest.fn()
   const filtersToggleMock = jest.fn()
   const closeMock = jest.fn()
+
   const doMount = (): void => {
     if (wrapper?.exists()) {
       wrapper.unmount()
@@ -79,6 +83,7 @@ describe('Features.vue', () => {
       toggle: filtersToggleMock
     } as any)
     jest.mocked(checkWebRTCPermissions).mockResolvedValue(true)
+    jest.mocked(getActiveTabHelper).mockResolvedValueOnce({ url: 'https://facebook.com' } as Tab)
     doMount()
   })
 

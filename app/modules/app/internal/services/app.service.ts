@@ -55,7 +55,7 @@ export class InternalAppService implements InternalAppServiceInterface {
     return {
       isPaused: await this.adBlocker.isPaused(activeHost),
       totalBlocked: await this.adBlocker.getTotalAdCounter(),
-      blockedByTab: await this.adBlocker.getAdCounterByTabId(tab.id),
+      blockedByTab: await this.adBlocker.getAdCounterByTabId(tab?.id),
       isServicePage: isServiceUrlHelper(url),
       needVisitRateUs: await this.rateUsService.needVisit(),
       isWebRTCEnabled: await this.webRtc.getState(),

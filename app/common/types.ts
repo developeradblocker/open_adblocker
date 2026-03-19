@@ -18,7 +18,8 @@
 
 export enum Channel {
   internal = 'internal',
-  port = 'port'
+  port = 'port',
+  broadcast = 'broadcast'
 }
 
 /**

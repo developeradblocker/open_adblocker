@@ -229,7 +229,7 @@ const FILTER_MAP: Record<number, Filter> = {
   },
   252: {
     filterId: 252,
-    name: 'Serbo-Croatian List',
+    name: 'Balkan List',
     description: 'A filter list for websites in Serbian, Montenegrin, Croatian, and Bosnian.'
   },
   253: {

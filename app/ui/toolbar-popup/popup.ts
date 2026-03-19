@@ -19,7 +19,6 @@
 import 'reflect-metadata'
 import { createApp } from 'vue'
 
-import { POPUP_ROUTE } from '@/ui/toolbar-popup/router/route-names'
 import { createRouter, createWebHashHistory, RouteLocationNormalized, RouterOptions } from 'vue-router'
 import App from './app.vue'
 import { createPinia } from 'pinia'
@@ -39,6 +38,7 @@ import { useUserActivity } from '@/modules/user-activity/external/utils'
 import { PageUI } from '@/modules/user-activity/common/user-activity.types'
 import { setupExternalWebRTC } from '@/modules/features/web-rtc/external/web-rtc.setup'
 import { setupExternalFilters } from '@/modules/filters/external/filters.setup'
+import { setupExternalManualBlocking } from '@/modules/features/manual-blocking/external/manual-blocking.setup'
 
 /**
  * Popup Worker (PW)
@@ -49,6 +49,7 @@ setupExternalAdBlocker()
 setupExternalFilters()
 setupExternalUserActivity(uuidv4())
 setupExternalWebRTC()
+setupExternalManualBlocking()
 setupExternalApp();
 
 (async (): Promise<void> => {
@@ -71,5 +72,4 @@ setupExternalApp();
   app.component('BaseSvg', InlineSvg)
   app.component('Popper', Popper)
   app.mount('#toolbar-popup-app')
-  activity.visitPage(POPUP_ROUTE.INIT)
 })()

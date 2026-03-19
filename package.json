@@ -1,6 +1,6 @@
 {
   "name": "open-adblocker",
-  "version": "1.4.0",
+  "version": "1.5.4",
   "type": "module",
   "scripts": {
     "build:dev:chrome": "webpack --config webpack/webpack.config.js --mode=development --env BROWSER=chrome",
@@ -22,14 +22,17 @@
   "dependencies": {
     "@adguard/agtree": "^3.2.4",
     "@adguard/tsurlfilter": "^3.4.7",
-    "@adguard/tswebextension": "^3.2.14",
+    "@adguard/tswebextension": "^3.2.15",
+    "ace-builds": "^1.43.4",
     "inversify": "^7.10.4",
     "pinia": "^3.0.3",
     "reflect-metadata": "^0.2.2",
     "uuid": "^13.0.0",
+    "vee-validate": "^4.15.1",
     "vue": "^3.5.22",
     "vue-inline-svg": "^4.0.1",
     "vue-router": "^4.6.3",
+    "vue3-ace-editor": "^2.2.4",
     "vue3-popper": "^1.5.0",
     "zod": "^3.24.4"
   },

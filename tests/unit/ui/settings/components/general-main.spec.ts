@@ -29,6 +29,7 @@ import { useSettingsStore } from '@/ui/settings/store/settings.store'
 import { useUserActivity } from '@/modules/user-activity/external/utils'
 import { SETTINGS_ROUTE } from '@/ui/settings/router/route-names'
 import { ClickEventToAction, ElementsUI } from '@/modules/user-activity/common/user-activity.types'
+import { SnackbarId } from '@/ui/shared/components/snackbar/base-snackbar.types'
 
 jest.mock('@/modules/settings/external/settings.utils')
 jest.mock('@/ui/settings/utils/import-data')
@@ -55,6 +56,7 @@ describe('GeneralMain.vue', () => {
   const getMock = jest.fn()
   const setShowLoaderMock = jest.fn()
   const setSnackbarMock = jest.fn()
+  const resetSnackbarMock = jest.fn()
 
   const doMount = (): void => {
     if (wrapper?.exists()) {
@@ -75,7 +77,8 @@ describe('GeneralMain.vue', () => {
     void (useSettingsStore as unknown as jest.Mock).mockReturnValue({
       setSettingsInfo: setSettingsInfoMock,
       setShowLoader: setShowLoaderMock,
-      setSnackbar: setSnackbarMock
+      setSnackbar: setSnackbarMock,
+      resetSnackbar: resetSnackbarMock
     })
 
     wrapper = shallowMount(GeneralMain, {
@@ -125,6 +128,7 @@ describe('GeneralMain.vue', () => {
     await wrapper.get(elements.export).trigger('click')
     expect(exportMock).toHaveBeenCalledTimes(1)
     expect(exportData).toHaveBeenCalledTimes(1)
+    expect(resetSnackbarMock).toHaveBeenCalledTimes(1)
     expect(exportData).toHaveBeenCalledWith(ExportTypes.settings, 'exported', ExportFormat.json)
 
     expect(clickActivityMock).toHaveBeenCalledTimes(1)
@@ -183,10 +187,13 @@ describe('GeneralMain.vue', () => {
       test: true
     })
 
+    expect(resetSnackbarMock).toHaveBeenCalledTimes(1)
     expect(setSnackbarMock).toHaveBeenCalledTimes(1)
     expect(setSnackbarMock).toHaveBeenCalledWith({
       message: 'Successfully imported settings',
-      type: 'info'
+      type: 'info',
+      trackActivity: true,
+      snackbarId: SnackbarId.importSettings
     })
   })
 })

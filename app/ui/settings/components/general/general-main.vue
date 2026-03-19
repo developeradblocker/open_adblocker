@@ -24,13 +24,15 @@
 
     <div class="main__cards">
       <BaseCard
-        disabled
         data-test="report"
-        label="Report a bug (coming soon)" icon="bug" class="main__card" />
+        label="Report a bug" icon="bug" class="main__card"
+        @click="toggleReportModal(true)"
+        />
       <BaseCard
         data-test="rate"
         label="Share feedback" icon="rate" class="main__card" @click="onRateUsClicked"/>
     </div>
+    <ReportIssue v-show="reportModalShown" @close="toggleReportModal(false)"/>
   </BaseBox>
 </template>
 
@@ -68,11 +70,15 @@ import { useSettingsStore } from '@/ui/settings/store/settings.store'
 import { useUserActivity } from '@/modules/user-activity/external/utils'
 import { SETTINGS_ROUTE } from '@/ui/settings/router/route-names'
 import { ClickEventToAction, ElementsUI } from '@/modules/user-activity/common/user-activity.types'
+import ReportIssue from '@/ui/settings/components/report-issue.vue'
+import { SnackbarId } from '@/ui/shared/components/snackbar/base-snackbar.types'
 
 const $activity = useUserActivity()
 const importError = ref<string>(null)
 const $settings = useExternalSettings()
 const $store = useSettingsStore()
+const reportModalShown = ref(false)
+
 const onRateUsClicked = async (): Promise<void> => {
   $activity.click(ElementsUI.rateUsButton, {
     page: SETTINGS_ROUTE.GENERAL,
@@ -83,7 +89,19 @@ const onRateUsClicked = async (): Promise<void> => {
   })
 }
 
+const toggleReportModal = (state: boolean): void => {
+  reportModalShown.value = state
+
+  if (state) {
+    $activity.click(ElementsUI.reportIssue, {
+      page: SETTINGS_ROUTE.GENERAL,
+      to: ClickEventToAction.openReportIssueForm
+    })
+  }
+}
+
 const onExport = async (): Promise<void> => {
+  $store.resetSnackbar()
   $activity.click(ElementsUI.exportSettings, {
     page: SETTINGS_ROUTE.GENERAL,
     to: ClickEventToAction.exportSettings
@@ -93,6 +111,7 @@ const onExport = async (): Promise<void> => {
 }
 
 const initImport = async (input: HTMLInputElement): Promise<void> => {
+  $store.resetSnackbar()
   $activity.click(ElementsUI.importSettings, {
     page: SETTINGS_ROUTE.GENERAL,
     to: ClickEventToAction.importSettings
@@ -122,7 +141,9 @@ const onImport = async (event: InputEvent): Promise<void> => {
     $store.setSettingsInfo(await $settings.get())
     $store.setSnackbar({
       message: 'Successfully imported settings',
-      type: 'info'
+      type: 'info',
+      trackActivity: true,
+      snackbarId: SnackbarId.importSettings
     })
   } catch (error) {
     // @ts-ignore-error

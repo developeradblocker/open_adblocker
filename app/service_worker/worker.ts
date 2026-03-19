@@ -34,6 +34,8 @@ import { setupInternalWebRTC } from '@/modules/features/web-rtc/internal/web-rtc
 import { setupInternalFilters } from '@/modules/filters/internal/filters.setup'
 import { setupInternalConfig } from '@/modules/config/internal/config.setup'
 import { setupInternalSettings } from '@/modules/settings/internal/settings.setup'
+import { setupInternalBroadcast } from '@/modules/broadcast/internal/broadcast.setup'
+import { setupInternalManualBlocking } from '@/modules/features/manual-blocking/internal/manual-blocking.setup'
 
 logger.info('Service Worker preparing')
 /**
@@ -45,13 +47,15 @@ setupInternalConfig(process.env.CONFIG_API_URL, Number(process.env.CONFIG_UPDATE
 setupInternalWebRTC()
 setupAdGuard()
 setupInternalPortChannel()
+setupInternalBroadcast()
 setupInternalWhitelist()
+setupInternalManualBlocking()
 setupInternalFilters()
 setupInternalAdBlocker()
 setupInternalUserActivity()
 setupInternalRateUs()
 setupInternalApp()
-setupInternalSettings()
+setupInternalSettings(process.env.API_URL)
 setupPopupIcon();
 
 (async (): Promise<void> => {

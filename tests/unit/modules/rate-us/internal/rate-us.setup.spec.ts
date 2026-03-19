@@ -34,11 +34,17 @@ jest.mock('@/modules/config/internal/expose.messages')
 
 describe('setupInternalRateUs', () => {
   const addListenerMock = jest.fn()
+  const addAlarmListenerMock = jest.fn()
   beforeEach(() => {
     global.chrome = {
       runtime: {
         onInstalled: {
           addListener: addListenerMock
+        }
+      },
+      alarms: {
+        onAlarm: {
+          addListener: addAlarmListenerMock
         }
       }
     } as any
@@ -54,6 +60,7 @@ describe('setupInternalRateUs', () => {
     // Check that onUserActivity was registered with a function
     const callback = (onUserActivity as jest.Mock).mock.calls[0][0]
     expect(typeof callback).toBe('function')
-    expect(chrome.runtime.onInstalled.addListener).toHaveBeenCalledTimes(1)
+    expect(chrome.runtime.onInstalled.addListener).toHaveBeenCalledTimes(2)
+    expect(chrome.alarms.onAlarm.addListener).toHaveBeenCalledTimes(1)
   })
 })

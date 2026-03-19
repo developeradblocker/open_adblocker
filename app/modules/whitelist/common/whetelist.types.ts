@@ -24,4 +24,5 @@ export interface WhitelistInterface {
   removeDomain: (domain: Domain) => Promise<Domain[]>
   hasDomain: (domain: Domain) => Promise<boolean>
   getDomains: () => Promise<Domain[]>
+  save: (rawDomain: string, override: boolean) => Promise<Domain[]>
 }

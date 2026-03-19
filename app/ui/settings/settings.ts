@@ -24,7 +24,7 @@ import App from './app.vue'
 import './style.less'
 import { dispatcher, setupWorker } from '@/utils/setup-worker'
 import { logger } from '@/utils/logger/logger'
-import { setupExternalPortChannel } from '@/modules/port/external/port.setup'
+import { setupExternalPortChannel, useExternalPort } from '@/modules/port/external/port.setup'
 import InlineSvg from 'vue-inline-svg'
 
 import { routes } from '@/ui/settings/router/routes'
@@ -36,14 +36,21 @@ import { setupExternalUserActivity } from '@/modules/user-activity/external/user
 import { SETTINGS_ROUTE } from '@/ui/settings/router/route-names'
 import { ClickEventToAction, ElementsUI } from '@/modules/user-activity/common/user-activity.types'
 import { useUserActivity } from '@/modules/user-activity/external/utils'
+import { useSettingsStore } from './store/settings.store'
+import { useExternalSettings } from '@/modules/settings/external/settings.utils'
+import { setupExternalManualBlocking } from '@/modules/features/manual-blocking/external/manual-blocking.setup'
+import { setupExternalWhitelist } from '@/modules/whitelist/external/whitelist.setup'
+import './validations/validators'
 
 /**
- * Settings Worker (PW)
+ * Settings Worker (Settings)
  */
 setupWorker('Settings')
 setupExternalPortChannel({ name: 'Settings' })
 setupExternalUserActivity(uuidv4())
 setupExternalFilters()
+setupExternalManualBlocking()
+setupExternalWhitelist()
 setupExternalSettings();
 
 (async (): Promise<void> => {
@@ -59,6 +66,15 @@ setupExternalSettings();
   app.use(createPinia())
 
   app.component('BaseSvg', InlineSvg)
+
+  const $settings = useExternalSettings()
+  const $port = useExternalPort()
+  const $store = useSettingsStore()
+
+  await $port.establish()
+  const settings = await $settings.get()
+  $store.setSettingsInfo(settings)
+
   app.mount('#settings-app')
 
   useUserActivity().click(ElementsUI.settings, {

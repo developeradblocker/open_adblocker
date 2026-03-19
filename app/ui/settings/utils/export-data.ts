@@ -19,6 +19,8 @@ import { getVersion } from '@/ui/settings/utils/get-version'
 
 export enum ExportTypes {
   settings = 'settings',
+  userRules = 'userRules',
+  whitelist = 'whitelist'
 }
 
 export enum ExportFormat {
@@ -31,9 +33,9 @@ export const buildFileName = (type: ExportTypes, format: ExportFormat): string =
   return `${product}_${getVersion()}_${Date.now()}.${format}`
 }
 
-export const exportData = async <T extends object>(type: ExportTypes, data: T, format: ExportFormat): Promise<void> => {
+export const exportData = async <T extends object | string>(type: ExportTypes, data: T, format: ExportFormat): Promise<void> => {
   const filename = buildFileName(type, format)
-  const content = JSON.stringify(data)
+  const content = typeof data === 'string' ? data : JSON.stringify(data)
   const blob = new Blob([content])
   const url = URL.createObjectURL(blob)
   const link = document.createElement('a')

@@ -16,10 +16,13 @@
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { WhitelistIdentifiers } from '@/modules/whitelist/internal/whitelist.types'
 import { InternalWhitelistService } from '@/modules/whitelist/internal/whitelist.service'
-import { Injection } from '@/utils/inject/inject.types'
+import { WhitelistIdentifiers } from '@/modules/whitelist/internal/whitelist.types'
 import { inject } from '@/utils/inject/inject'
+import { Injection } from '@/utils/inject/inject.types'
+import { dispatcher } from '@/utils/setup-worker'
+import { WhitelistExportListener } from './listeners/export.listener'
+import { WhitelistSaveListener } from './listeners/save.listener'
 
 const injections: Injection[] = [
   {
@@ -30,4 +33,7 @@ const injections: Injection[] = [
 
 export const setupInternalWhitelist = (): void => {
   inject(injections)
+
+  dispatcher().onWithClass(WhitelistSaveListener)
+  dispatcher().onWithClass(WhitelistExportListener)
 }

@@ -25,6 +25,7 @@ import { structureValidator } from '@/modules/settings/internal/validators/struc
 import { privacyValidator } from '@/modules/settings/internal/validators/privacy.validator'
 import { getConfiguration } from '@/modules/aguard/internal/adguard.setup'
 import { tsWebExtension } from '@/modules/aguard/internal/utils'
+import { InternalManualBlockingServiceInterface } from '@/modules/features/manual-blocking/internal/manual-blocking.types'
 
 jest.mock('@/modules/settings/internal/validators/structure.validator')
 jest.mock('@/modules/settings/internal/validators/privacy.validator')
@@ -48,6 +49,7 @@ describe('SettingsService', () => {
   let mockWebRtc: jest.Mocked<WebRTCInterface>
   let mockWhitelist: jest.Mocked<WhitelistInterface>
   let mockMetadata: jest.Mocked<MetadataServiceInterface>
+  let mockUserRules: jest.Mocked<InternalManualBlockingServiceInterface>
 
   const metadata = {
     filters: [],
@@ -77,6 +79,11 @@ describe('SettingsService', () => {
       setup: jest.fn()
     } as any
 
+    mockUserRules = {
+      getUserRules: jest.fn(),
+      saveRules: jest.fn()
+    } as any
+
     mockMetadata = {
       getMetadata: jest.fn()
     } as any
@@ -94,7 +101,9 @@ describe('SettingsService', () => {
       mockFilters,
       mockMetadata,
       mockWebRtc,
-      mockWhitelist
+      mockWhitelist,
+      mockUserRules,
+      'mockedURL'
     )
   })
 

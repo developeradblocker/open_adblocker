@@ -30,23 +30,30 @@ import { WhitelistStateChangedListener } from '@/modules/settings/internal/liste
 import { MetadataService } from '@/modules/settings/internal/service/metadata.service'
 import { MetadataStorage } from '@/modules/settings/internal/storage/metadata.storage'
 import { onInstallHandler } from '@/modules/settings/internal/handlers/on-install.handler'
+import { UserRulesChangedListener } from './listeners/state-changed/user-rules.listener'
+import { ReportIssueListener } from './listeners/report-issue.listener'
 
-const injections: Injection[] = [
-  {
-    key: InternalSettingsIdentifiers.service,
-    use: SettingsService
-  },
-  {
-    key: InternalSettingsIdentifiers.metadata,
-    use: MetadataService
-  },
-  {
-    key: InternalSettingsIdentifiers._metadataStorage,
-    use: MetadataStorage
-  }
-]
+export const setupInternalSettings = (url: string): void => {
+  const injections: Injection[] = [
+    {
+      key: InternalSettingsIdentifiers.service,
+      use: SettingsService
+    },
+    {
+      key: InternalSettingsIdentifiers.metadata,
+      use: MetadataService
+    },
+    {
+      key: InternalSettingsIdentifiers._metadataStorage,
+      use: MetadataStorage
+    },
+    {
+      key: InternalSettingsIdentifiers._reportIssueURL,
+      use: url,
+      value: true
+    }
+  ]
 
-export const setupInternalSettings = (): void => {
   chrome.runtime.onInstalled.addListener(onInstallHandler)
   inject(injections)
   dispatcher().onWithClass(ExportSettingsListener)
@@ -55,4 +62,6 @@ export const setupInternalSettings = (): void => {
   dispatcher().onWithClass(FiltersStateChangedListener)
   dispatcher().onWithClass(WebRTCStateChangedListener)
   dispatcher().onWithClass(WhitelistStateChangedListener)
+  dispatcher().onWithClass(UserRulesChangedListener)
+  dispatcher().onWithClass(ReportIssueListener)
 }

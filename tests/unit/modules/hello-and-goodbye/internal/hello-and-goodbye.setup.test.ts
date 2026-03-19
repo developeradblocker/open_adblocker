@@ -54,7 +54,7 @@ describe('handleOnInstall', () => {
   })
 
   it('should open a new tab when installed', () => {
-    const details = { reason: chrome.runtime.OnInstalledReason.INSTALL } as any
+    const details = { reason: 'install' } as any
     handleOnInstall(details)
     expect(createTabMock).toHaveBeenCalledWith({
       url: 'https://openadblocker.com/thank-you/'

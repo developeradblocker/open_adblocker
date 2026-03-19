@@ -49,6 +49,14 @@ export const fileManagerPlugin = ({ distName, filters, mode }) => {
             source: './app/web-accessible-resources',
             destination: './build/web-accessible-resources'
           },
+          {
+            source: 'app/ui/manual-blocking/index.html',
+            destination: 'build/content/manual-blocking/index.html'
+          },
+          {
+            source: 'app/ui/rate-us-notification/index.html',
+            destination: 'build/content/rate-us/index.html'
+          },
           ...declarativeFilters
         ],
         ...(distName && {

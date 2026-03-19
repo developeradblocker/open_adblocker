@@ -18,7 +18,7 @@
 import { createApp } from 'vue'
 import { dispatcher, setupWorker } from '@/utils/setup-worker'
 import { logger } from '@/utils/logger/logger'
-import { setupExternalPortChannel } from '@/modules/port/external/port.setup'
+import { setupExternalPortChannel, useExternalPort } from '@/modules/port/external/port.setup'
 import { flushPromises } from '../../../helpers/flushPromises'
 import { DispatcherInterface } from '@/utils/dispatcher/dispatcher.types'
 import { setupExternalSettings } from '@/modules/settings/external/settings.setup'
@@ -28,6 +28,10 @@ import { useUserActivity } from '@/modules/user-activity/external/utils'
 import { setupExternalUserActivity } from '@/modules/user-activity/external/user-activity.setup'
 import { ClickEventToAction, ElementsUI } from '@/modules/user-activity/common/user-activity.types'
 import { SETTINGS_ROUTE } from '@/ui/settings/router/route-names'
+import { useExternalSettings } from '@/modules/settings/external/settings.utils'
+import { useSettingsStore } from '@/ui/settings/store/settings.store'
+import { setupExternalManualBlocking } from '@/modules/features/manual-blocking/external/manual-blocking.setup'
+import { setupExternalWhitelist } from '@/modules/whitelist/external/whitelist.setup'
 
 jest.mock('vue', () => ({
   defineComponent: jest.fn(),
@@ -45,6 +49,7 @@ jest.mock('@/ui/settings/router/routes', () => ({
 jest.mock('@/modules/user-activity/external/utils', () => ({
   useUserActivity: jest.fn()
 }))
+
 jest.mock('vue-router', () => {
   return {
     createRouter: jest.fn(),
@@ -53,6 +58,14 @@ jest.mock('vue-router', () => {
 })
 
 jest.mock('vue-inline-svg', () => ({}))
+jest.mock('@/modules/settings/external/settings.utils')
+jest.mock('@/ui/settings/store/settings.store', () => ({
+  useSettingsStore: jest.fn()
+}))
+
+jest.mock('@/modules/features/manual-blocking/external/manual-blocking.setup', () => ({
+  setupExternalManualBlocking: jest.fn()
+}))
 
 jest.mock('@/utils/setup-worker', () => ({
   dispatcher: jest.fn(() => ({
@@ -66,7 +79,8 @@ jest.mock('@/utils/logger/logger', () => ({
 }))
 
 jest.mock('@/modules/port/external/port.setup', () => ({
-  setupExternalPortChannel: jest.fn()
+  setupExternalPortChannel: jest.fn(),
+  useExternalPort: jest.fn()
 }))
 
 jest.mock('@/modules/filters/external/filters.setup', () => ({
@@ -74,7 +88,12 @@ jest.mock('@/modules/filters/external/filters.setup', () => ({
 }))
 
 jest.mock('@/modules/settings/external/settings.setup', () => ({
-  setupExternalSettings: jest.fn()
+  setupExternalSettings: jest.fn(),
+  useExternalSettings: jest.fn()
+}))
+
+jest.mock('@/modules/whitelist/external/whitelist.setup', () => ({
+  setupExternalWhitelist: jest.fn()
 }))
 
 jest.mock('pinia', () => ({
@@ -92,6 +111,27 @@ describe('Settings entry script', () => {
     component: jest.fn(),
     mount: jest.fn()
   }
+  const establishMock = jest.fn()
+  const getMock = jest.fn()
+  const setSettingsInfoMock = jest.fn()
+
+  const mockSettings = {
+    version: '1.0.0',
+    general: {
+      cookieCleaner: true,
+      webRTC: false
+    },
+    filters: {
+      enabledFilters: [1, 2, 3],
+      whiteList: {
+        domains: ['example.com']
+      }
+    },
+    metadata: {
+      filters: [],
+      groups: []
+    }
+  }
 
   const clickActivityMock = jest.fn()
 
@@ -100,6 +140,23 @@ describe('Settings entry script', () => {
       click: clickActivityMock
     })
     jest.mocked(createApp).mockImplementation(() => appInstance as any)
+
+    establishMock.mockResolvedValue(undefined)
+    getMock.mockResolvedValue(mockSettings)
+
+    void (useExternalPort as jest.Mock).mockReturnValue({
+      establish: establishMock
+    })
+    void (useExternalSettings as jest.Mock).mockReturnValue({
+      get: getMock
+    })
+    void (useSettingsStore as unknown as jest.Mock).mockReturnValue({
+      setSettingsInfo: setSettingsInfoMock,
+      showLoader: true,
+      snackbar: {
+        test: true
+      }
+    })
   })
   it('should initialize and mount the Vue app properly', async () => {
     await jest.isolateModulesAsync(async () => {
@@ -112,17 +169,21 @@ describe('Settings entry script', () => {
       expect(setupExternalSettings).toHaveBeenCalledTimes(1)
       expect(setupExternalFilters).toHaveBeenCalledTimes(1)
       expect(setupExternalUserActivity).toHaveBeenCalledTimes(1)
+      expect(setupExternalManualBlocking).toHaveBeenCalledTimes(1)
+      expect(setupExternalWhitelist).toHaveBeenCalledTimes(1)
       expect(dispatcher).toHaveBeenCalled()
       expect(mockWork).toHaveBeenCalled()
       expect(createPinia).toHaveBeenCalledTimes(1)
       expect(logger.info).toHaveBeenCalledWith('Settings started...')
       expect(createApp).toHaveBeenCalledTimes(1)
-
+      expect(establishMock).toHaveBeenCalledTimes(1)
+      expect(getMock).toHaveBeenCalledTimes(1)
+      expect(setSettingsInfoMock).toHaveBeenCalledWith(mockSettings)
       expect(clickActivityMock).toHaveBeenCalledTimes(1)
       expect(clickActivityMock).toHaveBeenCalledWith(ElementsUI.settings, {
         page: SETTINGS_ROUTE.GENERAL,
         to: ClickEventToAction.openSettings
       })
     })
-  })
+  }, 30000)
 })

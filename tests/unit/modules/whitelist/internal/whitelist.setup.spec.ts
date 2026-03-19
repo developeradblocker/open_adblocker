@@ -20,14 +20,27 @@ import { setupInternalWhitelist } from '@/modules/whitelist/internal/whitelist.s
 import { inject } from '@/utils/inject/inject'
 import { WhitelistIdentifiers } from '@/modules/whitelist/internal/whitelist.types'
 import { InternalWhitelistService } from '@/modules/whitelist/internal/whitelist.service'
+import { dispatcher } from '@/utils/setup-worker'
+import { DispatcherInterface } from '@/utils/dispatcher/dispatcher.types'
+import { WhitelistSaveListener } from '@/modules/whitelist/internal/listeners/save.listener'
+import { WhitelistExportListener } from '@/modules/whitelist/internal/listeners/export.listener'
 
 jest.mock('@/utils/inject/inject', () => ({
   inject: jest.fn()
 }))
 
+jest.mock('@/utils/setup-worker', () => ({
+  dispatcher: jest.fn()
+}))
+
 describe('setupInternalWhitelist', () => {
+  const onMock = jest.fn()
+
   beforeEach(() => {
     jest.clearAllMocks()
+    jest.mocked(dispatcher).mockReturnValue({
+      onWithClass: onMock
+    } as unknown as DispatcherInterface)
   })
 
   it('should call inject with correct injections', () => {
@@ -38,5 +51,8 @@ describe('setupInternalWhitelist', () => {
         use: InternalWhitelistService
       }
     ])
+    expect(dispatcher().onWithClass).toHaveBeenCalledTimes(2)
+    expect(dispatcher().onWithClass).toHaveBeenCalledWith(WhitelistSaveListener)
+    expect(dispatcher().onWithClass).toHaveBeenCalledWith(WhitelistExportListener)
   })
 })

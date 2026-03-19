@@ -15,29 +15,24 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-import { type CounterInterface } from '@/utils/counter/counter.types'
 import { makeDataAccessor } from '@/utils/storage/make-data-accessor'
-import { RATE_US_HOME_PAGE_VISITED_THRESHOLD } from '@/modules/rate-us/constants'
 import { DataAccessorInterface } from '@/utils/storage/storage.types'
 import { InternalRateUsService } from '@/modules/rate-us/internal/services/rate-us.service'
 import { dayToMs } from '@/helpers/time/day-to-ms'
 import { ConfigServiceInterface } from '@/modules/config/internal/config.types'
 import { DEFAULT_CONFIG } from '@/modules/config/common/config.constants'
+import { InternalBroadcastServiceInterface } from '@/modules/broadcast/internal/broadcast.types'
 
 jest.mock('@/utils/storage/make-data-accessor')
 
 describe('InternalRateUsService', () => {
-  let counterMock: CounterInterface
   let storageMock: DataAccessorInterface<unknown>
   let service: InternalRateUsService
   let configService: ConfigServiceInterface
+  let broadcastService: InternalBroadcastServiceInterface
 
   const existsMock = jest.fn()
   beforeEach(() => {
-    counterMock = {
-      get: jest.fn(),
-      increase: jest.fn()
-    } as unknown as CounterInterface
     storageMock = {
       read: jest.fn(),
       write: jest.fn(),
@@ -46,23 +41,14 @@ describe('InternalRateUsService', () => {
     configService = {
       get: jest.fn().mockResolvedValue(DEFAULT_CONFIG)
     } as unknown as ConfigServiceInterface
+    broadcastService = {
+      sendMessage: jest.fn()
+    } as unknown as InternalBroadcastServiceInterface
     jest.mocked(makeDataAccessor).mockReturnValue(storageMock)
-    service = new InternalRateUsService(counterMock, configService)
+    service = new InternalRateUsService(configService, broadcastService)
   })
 
   it('returns false if RATE_US_DATA was not settled', async () => {
-    const result = await service.needVisit()
-    expect(result).toBe(false)
-  })
-
-  it('returns true if RATE_US_DATA was not settled and threshold is met', async () => {
-    jest.mocked(counterMock.get).mockResolvedValue(RATE_US_HOME_PAGE_VISITED_THRESHOLD)
-    const result = await service.needVisit()
-    expect(result).toBe(true)
-  })
-
-  it('returns false if RATE_US_DATA was not settled and threshold is not met', async () => {
-    jest.mocked(counterMock.get).mockResolvedValue(RATE_US_HOME_PAGE_VISITED_THRESHOLD - 1)
     const result = await service.needVisit()
     expect(result).toBe(false)
   })

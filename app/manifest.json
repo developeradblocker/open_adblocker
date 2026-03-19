@@ -1,6 +1,6 @@
 {
-  "name": "Open Adblocker",
-  "description": "Get the best open source ad blocker - Block ads in one click",
+  "name": "Free Adblocker for Chrome by Open Adblocker",
+  "description": "Free Adblocker for Chrome by Open Adblocker",
   "manifest_version": 3,
   "minimum_chrome_version": "110.0",
   "background": {
@@ -18,9 +18,9 @@
   },
   "content_scripts": [
     {
-      "all_frames": true,
+      "all_frames": false,
       "js": [
-        "content/content-script.js"
+        "content/tswebextension/content-script.js"
       ],
       "matches": [
         "http://*/*",
@@ -28,6 +28,29 @@
       ],
       "match_about_blank": true,
       "run_at": "document_idle"
+    },
+    {
+      "all_frames": false,
+      "js": [
+        "content/content.js"
+      ],
+      "matches": [
+        "http://*/*",
+        "https://*/*"
+      ],
+      "match_about_blank": true,
+      "run_at": "document_end"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "/content/manual-blocking/index.html",
+        "/content/rate-us/index.html"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
     }
   ],
   "permissions": [
@@ -38,7 +61,8 @@
     "management",
     "declarativeNetRequest",
     "alarms",
-    "tabs"
+    "tabs",
+    "cookies"
   ],
   "optional_permissions": [
     "privacy"

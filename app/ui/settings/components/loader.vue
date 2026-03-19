@@ -1,5 +1,5 @@
 <template>
-  <div class="loader">
+  <div class="loader" data-test="loader">
     <div class="loader__overlay">
       <div class="loader__container">
           <BaseSvg src="../icons/loader.svg" class="loader__icon"/>
@@ -46,6 +46,7 @@ defineProps<{text: string}>()
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 99999;
 }
 
 .loader__container {
@@ -58,6 +59,7 @@ defineProps<{text: string}>()
   gap: 12px;
   justify-content: center;
   align-items: center;
+  z-index: 9999999;
 }
 
 .loader__icon {

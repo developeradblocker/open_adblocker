@@ -19,9 +19,19 @@
 import { AppMessage } from '@/utils/dispatcher/dispatcher.types'
 
 export enum RateUsMessages {
-  visit = 'RateUs.Visit',
+  rated = 'RateUs.Rated',
+  showNotification = 'RateUs.ShowNotification',
+  closeNotification = 'RateUs.CloseNotification',
 }
 
-export interface RateUsVisitMessage extends AppMessage {
-  type: RateUsMessages.visit
+export interface RateUsRatedMessage extends AppMessage {
+  type: RateUsMessages.rated
+}
+
+export interface RateUsShowNotificationMessage extends AppMessage {
+  type: RateUsMessages.showNotification
+}
+
+export interface RateUsCloseNotificationMessage extends AppMessage {
+  type: RateUsMessages.closeNotification
 }

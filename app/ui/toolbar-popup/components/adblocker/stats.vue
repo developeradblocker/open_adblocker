@@ -2,12 +2,15 @@
   <div class="ad-blocker-stats">
     <div class="ad-blocker-stats__content">
       <div class="ad-blocker-stats__box">
-        <p class="ad-blocker-stats__value" :class="{ 'ad-blocker-stats__value--hidden': isCurrentStatsHidden }">
+        <p
+          class="ad-blocker-stats__value"
+          :class="{ 'ad-blocker-stats__value--hidden': isCurrentStatsHidden }"
+          data-test="adblocker-stats__current">
           {{ current }}</p>
         <p class="ad-blocker-stats__label">Blocked on this page</p>
       </div>
       <div class="ad-blocker-stats__box">
-        <p class="ad-blocker-stats__value">{{ total }}</p>
+        <p class="ad-blocker-stats__value" data-test="adblocker-stats__total">{{ total }}</p>
         <p class="ad-blocker-stats__label">Blocked all time</p>
       </div>
     </div>

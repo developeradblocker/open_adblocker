@@ -19,6 +19,7 @@ import { inject, injectable } from '@/utils/di/di.types'
 import {
   ExportedSettings, MetadataServiceInterface,
   OpenADBSettings,
+  ReportIssueForm,
   SETTINGS_VERSION,
   SettingsInterface
 } from '@/modules/settings/common/settings.types'
@@ -37,6 +38,7 @@ import { privacyValidator } from '@/modules/settings/internal/validators/privacy
 import { getConfiguration } from '@/modules/aguard/internal/adguard.setup'
 import { tsWebExtension } from '@/modules/aguard/internal/utils'
 import { InternalSettingsIdentifiers } from '@/modules/settings/internal/settings.types'
+import { InternalManualBlockingIdentifiers, InternalManualBlockingServiceInterface } from '@/modules/features/manual-blocking/internal/manual-blocking.types'
 
 @injectable()
 export class SettingsService implements SettingsInterface {
@@ -48,7 +50,11 @@ export class SettingsService implements SettingsInterface {
     @inject(InternalWebRTCIdentifiers.service)
     private webRtc: WebRTCInterface,
     @inject(WhitelistIdentifiers.service)
-    private readonly whitelist: WhitelistInterface
+    private readonly whitelist: WhitelistInterface,
+    @inject(InternalManualBlockingIdentifiers.service)
+    private readonly userRules: InternalManualBlockingServiceInterface,
+    @inject(InternalSettingsIdentifiers._reportIssueURL)
+    private readonly url: string
   ) {
   }
 
@@ -63,7 +69,8 @@ export class SettingsService implements SettingsInterface {
         enabledFilters: await this.filters.getEnabledFilters(),
         whiteList: {
           domains: await this.whitelist.getDomains()
-        }
+        },
+        userRules: await this.userRules.getUserRules()
       }
     }
   }
@@ -93,6 +100,25 @@ export class SettingsService implements SettingsInterface {
     }
   }
 
+  async reportIssue (form: ReportIssueForm): Promise<boolean> {
+    try {
+      const headers = new Headers()
+      headers.append('Content-Type', 'application/json')
+      await fetch(`${this.url}/rest/v1/support/extension`, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({
+          ...form,
+          extensionVersion: chrome.runtime.getManifest().version
+        })
+      })
+      return true
+    } catch (error) {
+      logger.error('SettingsService: failed to report issue:', error)
+      return false
+    }
+  }
+
   private async populateLocalSettings (settings: ExportedSettings): Promise<void> {
     const filters = settings.filters.enabledFilters
     if (settings.general.cookieCleaner) {
@@ -101,5 +127,6 @@ export class SettingsService implements SettingsInterface {
     await this.filters.setup(settings.filters.enabledFilters)
     await this.webRtc.setup(settings.general.webRTC)
     await this.whitelist.setup(settings.filters.whiteList.domains)
+    await this.userRules.saveRules(settings.filters.userRules)
   }
 }

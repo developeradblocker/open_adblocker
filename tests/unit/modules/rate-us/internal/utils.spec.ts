@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-import { rateUsService, rateUsCounter } from '@/modules/rate-us/internal/utils'
+import { rateUsService } from '@/modules/rate-us/internal/utils'
 import { di } from '@/utils/setup-worker'
 import { RateUsIdentifiers } from '@/modules/rate-us/internal/rate-us.types'
 
@@ -36,13 +36,5 @@ describe('utils', () => {
 
     expect(rateUsService()).toBe(mockService)
     expect(di.get).toHaveBeenCalledWith(RateUsIdentifiers.rateUsService)
-  })
-
-  it('should return rateUsCounter instance with correct identifier', () => {
-    const mockCounter = {}
-    jest.mocked(di.get).mockReturnValueOnce(mockCounter)
-
-    expect(rateUsCounter()).toBe(mockCounter)
-    expect(di.get).toHaveBeenCalledWith(RateUsIdentifiers._counter)
   })
 })

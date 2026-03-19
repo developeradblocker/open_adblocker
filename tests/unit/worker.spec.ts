@@ -34,6 +34,8 @@ import { setupInternalWebRTC } from '@/modules/features/web-rtc/internal/web-rtc
 import { setupInternalFilters } from '@/modules/filters/internal/filters.setup'
 import { setupInternalConfig } from '@/modules/config/internal/config.setup'
 import { setupInternalSettings } from '@/modules/settings/internal/settings.setup'
+import { setupInternalManualBlocking } from '@/modules/features/manual-blocking/internal/manual-blocking.setup'
+import { setupInternalBroadcast } from '@/modules/broadcast/internal/broadcast.setup'
 
 jest.mock('@/utils/setup-worker', () => ({
   setupWorker: jest.fn(),
@@ -79,6 +81,12 @@ jest.mock('@/modules/user-activity/internal/user-activity.setup', () => ({
 }))
 jest.mock('@/modules/filters/internal/filters.setup', () => ({
   setupInternalFilters: jest.fn()
+}))
+jest.mock('@/modules/broadcast/internal/broadcast.setup', () => ({
+  setupInternalBroadcast: jest.fn()
+}))
+jest.mock('@/modules/features/manual-blocking/internal/manual-blocking.setup', () => ({
+  setupInternalManualBlocking: jest.fn()
 }))
 
 jest.mock('@/utils/on-handled-all-required-messages', () => ({
@@ -131,6 +139,8 @@ describe('serviceWorkerSetup', () => {
       expect(setupInternalFilters).toHaveBeenCalled()
       expect(setupInternalConfig).toHaveBeenCalled()
       expect(setupInternalSettings).toHaveBeenCalled()
+      expect(setupInternalBroadcast).toHaveBeenCalled()
+      expect(setupInternalManualBlocking).toHaveBeenCalled()
       await flushPromises()
       const expectedList = [...list, AppMessages.ready]
       expect(onHandledAllRequiredMessages).toHaveBeenCalledWith(expectedList, expect.any(Function))

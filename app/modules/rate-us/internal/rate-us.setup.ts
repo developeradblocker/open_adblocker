@@ -18,25 +18,16 @@
 
 import { RateUsIdentifiers } from '@/modules/rate-us/internal/rate-us.types'
 import { InternalRateUsService } from '@/modules/rate-us/internal/services/rate-us.service'
-import { makeCounter } from '@/utils/counter/counter'
-import { HOME_PAGE_VISITED_COUNTER } from '@/modules/rate-us/constants'
 import { onUserActivity } from '@/modules/user-activity/internal/expose.messages'
 import { Injection } from '@/utils/inject/inject.types'
 import { inject } from '@/utils/inject/inject'
 import { userActivityHandler } from '@/modules/rate-us/internal/handlers/user-activity.handler'
 import { onUpdatedHandler } from '@/modules/rate-us/internal/handlers/on-updated.handler'
+import { onAlarmHandler } from '@/modules/rate-us/internal/handlers/on-alarm.handler'
 import { onConfigReady } from '@/modules/config/internal/expose.messages'
+import { onInstalledHandler } from '@/modules/rate-us/internal/handlers/on-installed.handler'
 
 const injections: Injection[] = [
-  {
-    key: RateUsIdentifiers._counter,
-    use: makeCounter(
-      HOME_PAGE_VISITED_COUNTER,
-      'local',
-      0
-    ),
-    value: true
-  },
   {
     key: RateUsIdentifiers.rateUsService,
     use: InternalRateUsService
@@ -44,6 +35,7 @@ const injections: Injection[] = [
 ]
 
 export const setupInternalRateUs = (): void => {
+  chrome.runtime.onInstalled.addListener(onInstalledHandler)
   onConfigReady(handleOnConfigReady)
 }
 
@@ -51,4 +43,5 @@ const handleOnConfigReady = async (): Promise<void> => {
   inject(injections)
   onUserActivity(userActivityHandler)
   chrome.runtime.onInstalled.addListener(onUpdatedHandler)
+  chrome.alarms.onAlarm.addListener(onAlarmHandler)
 }

@@ -65,11 +65,14 @@ describe('Header.vue', () => {
         create: createMock,
         query: queryMock,
         update: updateMock
+      },
+      windows: {
+        update: jest.fn()
       }
     } as any
     jest.mocked(useUserActivity).mockImplementation(() => ({ click: clickMock }) as any)
     jest.mocked(useRoute).mockImplementation(() => ({ name: POPUP_ROUTE.RATE_US }) as any)
-    jest.mocked(queryMock).mockResolvedValue([{ id: 1 }])
+    jest.mocked(queryMock).mockResolvedValue([{ id: 1, windowId: 101 }])
     doMount()
   })
 
@@ -83,7 +86,9 @@ describe('Header.vue', () => {
   it('should handle settings click', async () => {
     await wrapper.get('[data-test="settings"]').trigger('click')
     expect(updateMock).toHaveBeenCalledTimes(1)
+    expect(chrome.windows.update).toHaveBeenCalledTimes(1)
     expect(updateMock).toHaveBeenCalledWith(1, { active: true })
+    expect(chrome.windows.update).toHaveBeenCalledWith(101, { focused: true })
   })
 
   it('should handle logo click', async () => {

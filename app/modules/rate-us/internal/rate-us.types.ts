@@ -18,13 +18,13 @@
 
 export enum RateUsIdentifiers {
   rateUsService = 'RateUs.Service',
-  _counter = 'RateUs.Counter'
 }
 
 export interface InternalRateUsServiceInterface {
   visit: () => Promise<void>
   needVisit: () => Promise<boolean>
   rate: () => Promise<void>
+  showRateUsPopup: () => Promise<void>
 }
 
 export interface RateUsDataInterface {

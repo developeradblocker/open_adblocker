@@ -2,7 +2,8 @@
   <div class="ad-blocker-features">
     <Feature icon="cookie-cleaner" label="Hide cookie alerts" info="Hide cookie consent dialogs on websites">
       <template #action>
-        <BaseToggle id="cookie-cleaner-toggle"
+        <BaseToggle data-test="cookie-cleaner-toggle"
+                    id="cookie-cleaner-toggle"
                     :loading="cookieCleanerToggleLoading"
                     :is-active="cookieCleaner"
                     @toggle="toggleCookieCleaner"
@@ -11,8 +12,10 @@
     </Feature>
     <Feature icon="web-rtc" label="WebRTC protection" info="Prevent WebRTC from revealing your IP address">
       <template #action>
-        <BaseToggle id="web-rtc-toggle" :is-active="webRtc" />
+        <BaseToggle data-test="web-rtc-toggle" id="web-rtc-toggle" :is-active="webRtc" />
       </template>
+    </Feature>
+    <Feature icon="eraser" label="Block element" @click="onBlockElement" :disabled="blockElementDisabled">
     </Feature>
   </div>
 </template>
@@ -43,17 +46,22 @@ import { useAppStore } from '@/ui/toolbar-popup/store/app.store'
 import { checkWebRTCPermissions, requestWebRTCPermissions } from '@/modules/features/web-rtc/common/web-rtc.utils'
 import { useWebRTC } from '@/modules/features/web-rtc/external/web-rtc.utils'
 import { useUserActivity } from '@/modules/user-activity/external/utils'
-import { ElementsUI } from '@/modules/user-activity/common/user-activity.types'
+import { ClickEventToAction, ElementsUI } from '@/modules/user-activity/common/user-activity.types'
 import { COOKIE_CLEANER_ID } from '../../../../../constants'
 import { useNotificationStore } from '@/ui/toolbar-popup/components/notification/notification.store'
 import { useExternalFilters } from '@/modules/filters/external/filters.utils'
 import { NotificationTypes } from '@/ui/toolbar-popup/components/notification/notification.types'
+import { useExternalManualBlocking } from '@/modules/features/manual-blocking/external/manual-blocking.setup'
+import { getActiveTabHelper } from '@/helpers/get-active-tab.helper'
+import { isContentScriptBlockedOnPage } from '@/helpers/is-content-script-blocked-on-page.helper'
+import { POPUP_ROUTE } from '../../router/route-names'
 
 const appStore = useAppStore()
 const webRTC = useWebRTC()
 const filters = useExternalFilters()
 const activity = useUserActivity()
 const notification = useNotificationStore()
+const blockElementDisabled = ref(false)
 
 const cookieCleanerToggleLoading = ref(false)
 const webRtc = computed(() => appStore.app.isWebRTCEnabled)
@@ -80,6 +88,17 @@ const toggleCookieCleaner = async (state: boolean): Promise<void> => {
     cookieCleanerToggleLoading.value = false
   }
 }
+const onBlockElement = () => {
+  if (blockElementDisabled.value) {
+    return
+  }
+
+  activity.click(ElementsUI.blockElement, {
+    page: POPUP_ROUTE.HOME,
+    to: ClickEventToAction.openRemoveElementPopup
+  })
+  useExternalManualBlocking().triggerStart()
+}
 onMounted(async () => {
   const webRTCToggle: HTMLDivElement = document.querySelector('#web-rtc-toggle')
   webRTCToggle.addEventListener('click', async () => {
@@ -93,6 +112,8 @@ onMounted(async () => {
     await requestWebRTCPermissions()
     window.close()
   })
+  const activeTabUrl = (await getActiveTabHelper()).url
+  blockElementDisabled.value = isContentScriptBlockedOnPage(activeTabUrl)
 })
 </script>
 

@@ -29,5 +29,10 @@ export enum InternalSettingsIdentifiers {
   /**
    * @link MetadataStorage
    */
-  _metadataStorage = 'Settings.MetadataStorage'
+  _metadataStorage = 'Settings.MetadataStorage',
+
+  /**
+   * API URL for report issue endpoint
+   */
+  _reportIssueURL = 'Settings.ReportIssueURL'
 }

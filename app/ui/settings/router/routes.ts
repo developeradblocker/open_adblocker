@@ -20,7 +20,9 @@ import { type RouteRecordRaw } from 'vue-router'
 import GeneralPage from '@/ui/settings/pages/general.page.vue'
 import FiltersPage from '@/ui/settings/pages/filters.page.vue'
 import GroupsPage from '@/ui/settings/pages/groups.page.vue'
+import UserRulesPage from '@/ui/settings/pages/user-rules.page.vue'
 import { SETTINGS_ROUTE } from '@/ui/settings/router/route-names'
+import WhitelistPage from '@/ui/settings/pages/whitelist.page.vue'
 
 export const routes: RouteRecordRaw[] = [
   {
@@ -38,5 +40,15 @@ export const routes: RouteRecordRaw[] = [
     path: '/groups/:id',
     component: FiltersPage,
     props: true
+  },
+  {
+    name: SETTINGS_ROUTE.USERRULES,
+    path: '/user-rules',
+    component: UserRulesPage
+  },
+  {
+    name: SETTINGS_ROUTE.WHITELIST,
+    path: '/whitelist',
+    component: WhitelistPage
   }
 ]

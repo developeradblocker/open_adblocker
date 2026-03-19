@@ -20,7 +20,8 @@ import { defineStore } from 'pinia'
 import { FilterMetadata, GroupMetadata, OpenADBSettings } from '@/modules/settings/common/settings.types'
 import { FilterId } from '@/modules/filters/common/filters.types'
 import { Domain } from '@/common/types'
-import { SnackbarProps } from '@/ui/shared/components/snackbar/base-snackbar.types'
+import { SnackbarProps, SnackbarPropsWithActivity } from '@/ui/shared/components/snackbar/base-snackbar.types'
+import { useUserActivity } from '@/modules/user-activity/external/utils'
 
 export const useSettingsStore = defineStore('SettingsStore', {
   state: () => ({
@@ -33,7 +34,8 @@ export const useSettingsStore = defineStore('SettingsStore', {
         enabledFilters: [],
         whiteList: {
           domains: []
-        }
+        },
+        userRules: []
       },
       metadata: {
         filters: [],
@@ -57,6 +59,15 @@ export const useSettingsStore = defineStore('SettingsStore', {
     },
     whiteList (): Domain[] {
       return this.settings.filters?.whiteList?.domains
+    },
+    stringWhiteList (): string {
+      return this.settings.filters?.whiteList?.domains.join('\n')
+    },
+    userRules (): string[] {
+      return this.settings.filters?.userRules
+    },
+    stringUserRules (): string {
+      return this.settings.filters?.userRules.join('\n')
     }
   },
   actions: {
@@ -73,7 +84,16 @@ export const useSettingsStore = defineStore('SettingsStore', {
     },
 
     setSnackbar (snackbar: SnackbarProps | null): void {
+      if (snackbar.trackActivity) {
+        const { snackbarId } = snackbar as SnackbarPropsWithActivity
+        useUserActivity().snackbarShown(snackbarId, snackbar.type === 'info')
+      }
+
       this.snackbar = snackbar
+    },
+
+    resetSnackbar (): void {
+      this.snackbar = null
     },
 
     toggleFilter (filterId: FilterId): void {
