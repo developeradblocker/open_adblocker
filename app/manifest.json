@@ -51,6 +51,15 @@
       "matches": [
         "<all_urls>"
       ]
+    },
+    {
+      "resources": [
+        "web-accessible-resources/*"
+      ],
+      "matches": [
+        "http://*/*",
+        "https://*/*"
+      ]
     }
   ],
   "permissions": [
