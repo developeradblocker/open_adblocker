@@ -91,7 +91,7 @@ describe('SettingsService', () => {
     jest.mocked(structureValidator).mockResolvedValue(undefined)
     jest.mocked(privacyValidator).mockResolvedValue(undefined)
     jest.mocked(getConfiguration).mockResolvedValue({} as any)
-    jest.mocked(mockMetadata.getMetadata).mockResolvedValue({ metadata })
+    jest.mocked(mockMetadata.getMetadata).mockResolvedValue({ metadata } as any)
 
     mockFilters.isEnabled.mockResolvedValue(true)
     mockFilters.getEnabledFilters.mockResolvedValue(enabledFilters)
@@ -140,6 +140,7 @@ describe('SettingsService', () => {
       },
       filters: {
         enabledFilters: [1, 2, 3],
+        userRules: [],
         whiteList: {
           domains: ['example.com']
         }

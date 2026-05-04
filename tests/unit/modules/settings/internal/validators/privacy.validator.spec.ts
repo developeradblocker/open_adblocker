@@ -32,6 +32,7 @@ describe('privacyValidator', () => {
     },
     filters: {
       enabledFilters: [],
+      userRules: [],
       whiteList: {
         domains: []
       }
