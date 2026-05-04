@@ -53,8 +53,9 @@ export const baseSettingsSchema = zod.object({
   filters: filtersSchema
 })
 export const settingsSchema = baseSettingsSchema.extend({
-  version: zod.literal(SETTINGS_VERSION)
-}).merge(baseSettingsSchema)
+  version: zod.literal(SETTINGS_VERSION),
+  ...baseSettingsSchema.shape
+})
 
 export type GeneralSettings = zod.infer<typeof generalSchema>
 export type WhiteListSettings = zod.infer<typeof whiteListSchema>
