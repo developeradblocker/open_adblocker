@@ -11,7 +11,7 @@
           v-for="group in $store.groups"
           :data-test="`group--${group.groupId}`"
           :key="group.groupId"
-          :title="group.groupName"
+          :title="groupName(group)"
           :icon="groupIcon(group.groupId)"
           @click="onGroupClick(group.groupId)"
           :description="group.groupDescription"
@@ -48,6 +48,7 @@ import { useUserActivity } from '@/modules/user-activity/external/utils'
 import { onMounted } from 'vue'
 import { ClickEventToAction } from '@/modules/user-activity/common/user-activity.types'
 import { useRouter } from 'vue-router'
+import { GroupMetadata } from '@/modules/settings/common/settings.types'
 
 const $activity = useUserActivity()
 const $store = useSettingsStore()
@@ -71,6 +72,11 @@ const GROUP_ICON_MAP = {
 }
 const groupIcon = (groupId: number): string => {
   return GROUP_ICON_MAP[groupId] || GROUP_ICON_MAP[1]
+}
+const groupName = ({ groupId, groupName }: GroupMetadata): string => {
+  const groupFilters = $store.filters.filter(filter => filter.groupId === groupId)
+  const enabledFilters = groupFilters.filter(filter => $store.enabledFilters.includes(filter.filterId))
+  return `${groupName} (${enabledFilters.length} of ${groupFilters.length})`
 }
 onMounted(() => {
   $activity.visitPage(SETTINGS_ROUTE.GROUPS)
