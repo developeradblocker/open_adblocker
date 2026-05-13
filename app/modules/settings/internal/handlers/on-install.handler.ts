@@ -18,7 +18,19 @@
 import { di } from '@/utils/setup-worker'
 import { InternalSettingsIdentifiers } from '@/modules/settings/internal/settings.types'
 import { MetadataServiceInterface } from '@/modules/settings/common/settings.types'
+import { useInternalFilters } from '@/modules/filters/internal/filters.utils'
+import { getFilterIdsByLocale } from '@/helpers/locale-detect.helper'
+import { DEFAULT_ENABLED_FILTER_IDS } from '../../../../../constants'
+import InstalledDetails = chrome.runtime.InstalledDetails
 
-export const onInstallHandler = async (): Promise<void> => {
-  await di.get<MetadataServiceInterface>(InternalSettingsIdentifiers.metadata).updateMetadata()
+export const onInstallHandler = async (details: InstalledDetails): Promise<void> => {
+  const metadataService = di.get<MetadataServiceInterface>(InternalSettingsIdentifiers.metadata)
+  await metadataService.updateMetadata()
+
+  if (details.reason === chrome.runtime.OnInstalledReason.INSTALL) {
+    const filters = await metadataService.getFilters()
+    const localeFilterIds = getFilterIdsByLocale(filters)
+    const initialFilters = [...new Set([...DEFAULT_ENABLED_FILTER_IDS, ...localeFilterIds])]
+    await useInternalFilters().setup(initialFilters)
+  }
 }
