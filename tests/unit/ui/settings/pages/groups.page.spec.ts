@@ -61,6 +61,8 @@ describe('GroupsPage.vue', () => {
       click: clickActivityMock
     })
     void (useSettingsStore as unknown as jest.Mock).mockReturnValue({
+      filters: [{ filterId: 1, groupId: 1, filterName: 'filter1', filterDescription: 'filter1 description' }],
+      enabledFilters: [1],
       groups: [{ groupId: 1, groupName: 'group1', groupDescription: 'group1 description' }]
     })
     doMount()

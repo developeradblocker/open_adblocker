@@ -70,7 +70,15 @@ const groupId = Number(id)
 const isActiveFilter = (filterId: FilterId): boolean => $store.enabledFilters.includes(filterId)
 
 const activeGroup = computed(() => $store.groups.find((group) => group.groupId === groupId))
-const filters = computed(() => $store.filters.filter((filter) => filter.groupId === groupId))
+const filters = computed(() =>
+  $store.filters
+    .filter((filter) => filter.groupId === groupId)
+    .sort((a, b) => {
+      const aEnabled = $store.enabledFilters.includes(a.filterId) ? 0 : 1
+      const bEnabled = $store.enabledFilters.includes(b.filterId) ? 0 : 1
+      return aEnabled - bEnabled || a.filterId - b.filterId
+    })
+)
 
 const toggleFilter = async (filterId: FilterId, state: boolean): Promise<void> => {
   try {
