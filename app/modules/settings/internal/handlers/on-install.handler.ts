@@ -15,22 +15,20 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-import { di } from '@/utils/setup-worker'
-import { InternalSettingsIdentifiers } from '@/modules/settings/internal/settings.types'
-import { MetadataServiceInterface } from '@/modules/settings/common/settings.types'
 import { useInternalFilters } from '@/modules/filters/internal/filters.utils'
 import { getFilterIdsByLocale } from '@/helpers/locale-detect.helper'
 import { DEFAULT_ENABLED_FILTER_IDS } from '../../../../../constants'
 import InstalledDetails = chrome.runtime.InstalledDetails
+import { useInternalMetadata } from '@/modules/settings/internal/settings.utils'
 
 export const onInstallHandler = async (details: InstalledDetails): Promise<void> => {
-  const metadataService = di.get<MetadataServiceInterface>(InternalSettingsIdentifiers.metadata)
+  const metadataService = useInternalMetadata()
   await metadataService.updateMetadata()
 
   if (details.reason === chrome.runtime.OnInstalledReason.INSTALL) {
     const filters = await metadataService.getFilters()
     const localeFilterIds = getFilterIdsByLocale(filters)
-    const initialFilters = [...new Set([...DEFAULT_ENABLED_FILTER_IDS, ...localeFilterIds])]
-    await useInternalFilters().setup(initialFilters)
+    const initialFilters = new Set([...DEFAULT_ENABLED_FILTER_IDS, ...localeFilterIds])
+    await useInternalFilters().setup([...initialFilters])
   }
 }
