@@ -65,7 +65,7 @@
     "jest-fetch-mock": "^3.0.3",
     "less": "^4.3.0",
     "less-loader": "^12.3.0",
-    "openai": "4.26.0",
+    "openai": "6.38.0",
     "ts-jest": "^29.4.5",
     "ts-loader": "^9.5.4",
     "tsx": "^4.20.3",
