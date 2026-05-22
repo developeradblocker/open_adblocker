@@ -1,11 +1,13 @@
 {
   "name": "open-adblocker",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "type": "module",
   "scripts": {
     "build:dev:chrome": "webpack --config webpack/webpack.config.js --mode=development --env BROWSER=chrome",
     "build:prod:chrome": "webpack --config webpack/webpack.config.js --mode=production --env BROWSER=chrome",
     "build:dev:edge": "webpack --config webpack/webpack.config.js --mode=development --env BROWSER=edge",
+    "build:dev:chrome:watch": "npm run build:dev:chrome -- --env HOT_RELOAD=true --watch",
+    "build:dev:edge:watch": "npm run build:dev:edge -- --env HOT_RELOAD=true --watch",
     "build:prod:edge": "webpack --config webpack/webpack.config.js --mode=production --env BROWSER=edge",
     "build:dev:all": "npm run build:dev:chrome && npm run build:dev:edge",
     "build:prod:all": "npm run build:prod:chrome && npm run build:prod:edge",
@@ -75,6 +77,7 @@
     "vue-style-loader": "^4.1.3",
     "webpack": "^5.106.2",
     "webpack-cli": "^6.0.1",
-    "webpack-merge": "^6.0.1"
+    "webpack-merge": "^6.0.1",
+    "ws": "^8.20.1"
   }
 }
