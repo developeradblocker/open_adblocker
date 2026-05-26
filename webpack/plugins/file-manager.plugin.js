@@ -19,7 +19,7 @@
 import FileManagerPlugin from 'filemanager-webpack-plugin'
 import { isDev } from '../utils/is-dev.js'
 
-export const fileManagerPlugin = ({ distName, filters, mode }) => {
+export const fileManagerPlugin = ({ distName, filters, mode, hotReload }) => {
   const declarativeFilters = filters.map(filter => ({
     source: `./app/filters/declarative/${filter}/${filter}.json`,
     destination: `./build/filters/declarative/${filter}/${filter}.json`
@@ -82,9 +82,7 @@ export const fileManagerPlugin = ({ distName, filters, mode }) => {
             : [])
           ]
         }),
-        delete: [
-          './manifest.temp.json'
-        ]
+        ...(hotReload ? {} : { delete: ['./manifest.temp.json'] })
       }
     }
   }

@@ -35,13 +35,15 @@ import { getDnrFilters } from '../utils/get-dnr-filters.js'
 import { prepareEnv } from '../utils/prepare-env.js'
 import { archiveName } from '../utils/archive-name.js'
 import { modifyManifest } from '../utils/modify-manifest.js'
+import { HotReloadPlugin } from '../plugins/hot-reload.plugin.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 const buildPath = '../build'
 
 export const commonMode = (env, mode) => {
-  const { BROWSER: browser } = env
+  const { BROWSER: browser, HOT_RELOAD } = env
+  const hotReload = HOT_RELOAD === 'true'
 
   /* Extract version */
   const version = getPackageVersion()
@@ -63,7 +65,7 @@ export const commonMode = (env, mode) => {
 
   return {
     entry: {
-      [`${buildPath}/service_worker`]: './app/service_worker/worker.ts',
+      [`${buildPath}/service_worker`]: hotReload ? ['./webpack/hot-reload.client.js', './app/service_worker/worker.ts'] : './app/service_worker/worker.ts',
       [`${buildPath}/popup/popup`]: './app/ui/toolbar-popup/popup.ts',
       [`${buildPath}/settings/settings`]: './app/ui/settings/settings.ts',
       [`${buildPath}/content/tswebextension/content-script`]: './node_modules/@adguard/tswebextension/dist/content-script.mv3.js',
@@ -83,10 +85,12 @@ export const commonMode = (env, mode) => {
       vueLoaderPlugin(),
       webpackPlugin(),
       fileManagerPlugin({
+        hotReload,
         distName: archiveName({ version, mode, browser }),
         filters,
         mode
-      })
+      }),
+      ...(hotReload ? [new HotReloadPlugin()] : [])
     ],
     output: {
       filename: '[name].js',
