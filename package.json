@@ -22,7 +22,7 @@
     "server": "node server/index.mjs"
   },
   "dependencies": {
-    "@adguard/agtree": "^3.2.4",
+    "@adguard/agtree": "^4.1.1",
     "@adguard/tsurlfilter": "^3.4.7",
     "@adguard/tswebextension": "^3.2.15",
     "ace-builds": "^1.43.4",
