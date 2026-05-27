@@ -90,7 +90,7 @@ const previewBtnTitle = computed<string>(() => {
   return isPreviewMode.value ? 'Exit preview' : 'Preview'
 })
 
-const togglePreview = () => {
+const togglePreview = (): void => {
   isPreviewMode.value = !isPreviewMode.value
   if (isPreviewMode.value) {
     $manuallyBlockingAds.enterPreview()
@@ -98,11 +98,11 @@ const togglePreview = () => {
     $manuallyBlockingAds.exitPreview()
   }
 }
-const onReselect = () => {
+const onReselect = (): void => {
   $manuallyBlockingAds.startSelecting()
   $router.push({ name: Route.main })
 }
-const onBlock = () => {
+const onBlock = (): void => {
   $manuallyBlockingAds.blockElement(applyToAll.value, blockSimilar.value)
   const activity: UserClickActivity<BaseUserClickPayload> = {
     sessionId: $store.sessionId,
@@ -121,7 +121,7 @@ const onBlock = () => {
   useContentBroadcast().sendMessage(message)
   $router.push({ name: Route.main })
 }
-const onSliderChange = () => {
+const onSliderChange = (): void => {
   $manuallyBlockingAds.changeElement(sliderValue.value)
 }
 

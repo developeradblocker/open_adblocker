@@ -211,7 +211,7 @@ onMounted(() => {
 
 onBeforeRouteLeave((to: RouteLocationNormalized, from: RouteLocationNormalizedLoaded, next: NavigationGuardNext) => {
   if (hasChanges.value) {
-    nextNavigation.value = () => next()
+    nextNavigation.value = (): void => next()
     showSaveModal.value = true
   } else {
     next()

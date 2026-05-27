@@ -12,7 +12,7 @@
       />
       <div class="slider-container__ticks">
         <div
-          v-for="(tick, index) in (maxValue/step + 1)"
+          v-for="(_, index) in (maxValue/step + 1)"
           :key="index"
           class="slider-container__tick"
           :style="tickStyle(index)"
@@ -53,13 +53,13 @@ const {
 } = defineProps<Props>()
 const $emit = defineEmits(['update:modelValue'])
 
-const handleInput = (event: Event) => {
+const handleInput = (event: Event): void => {
   if ((event.target as HTMLInputElement).value !== undefined) {
     $emit('update:modelValue', Number((event.target as HTMLInputElement).value))
   }
 }
 
-const tickStyle = (tick: number) => {
+const tickStyle = (tick: number): Record<string, string> => {
   const pos = tick / maxValue * 100
   return {
     left: `${pos}%`

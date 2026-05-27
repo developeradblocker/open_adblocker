@@ -88,7 +88,7 @@ const toggleCookieCleaner = async (state: boolean): Promise<void> => {
     cookieCleanerToggleLoading.value = false
   }
 }
-const onBlockElement = () => {
+const onBlockElement = (): void => {
   if (blockElementDisabled.value) {
     return
   }

@@ -42,7 +42,7 @@ defineProps<{
 }>()
 const $manuallyBlockingAds = useUIManualBlocking()
 const isDragging = ref(false)
-const onClose = () => {
+const onClose = (): void => {
   $manuallyBlockingAds.close()
   const activity: UserClickActivity<BaseUserClickPayload> = {
     sessionId: useBlockElementStore().sessionId,
@@ -59,7 +59,7 @@ const onClose = () => {
   }
   useContentBroadcast().sendMessage(message)
 }
-const toggleDragMode = (e: MouseEvent) => {
+const toggleDragMode = (e: MouseEvent): void => {
   if (isDragging.value) {
     finishDragging()
   } else {

@@ -77,7 +77,7 @@ const $store = useBlockElementStore()
 const { appliedRules } = storeToRefs($store)
 const $manuallyBlockingAdsService = useUIManualBlocking()
 
-const onClose = () => {
+const onClose = (): void => {
   $manuallyBlockingAdsService.close()
   const activity: UserClickActivity<BaseUserClickPayload> = {
     sessionId: $store.sessionId,
@@ -94,14 +94,14 @@ const onClose = () => {
   }
   useContentBroadcast().sendMessage(message)
 }
-const onSelectElement = () => {
+const onSelectElement = (): void => {
   $manuallyBlockingAdsService.startSelecting()
 }
-const onResetAll = () => {
+const onResetAll = (): void => {
   $manuallyBlockingAdsService.resetRules(appliedRules.value)
   $manuallyBlockingAdsService.close()
 }
-const onRemoveRule = (ruleText: string) => {
+const onRemoveRule = (ruleText: string): void => {
   $manuallyBlockingAdsService.resetRules([ruleText])
   $store.removeRule(ruleText)
 }
