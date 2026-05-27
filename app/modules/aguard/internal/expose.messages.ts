@@ -16,7 +16,7 @@
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { makeOnAfterListener } from '@/helpers/male-on-after.listener'
+import { makeOnAfterListener } from '@/helpers/make-on-after.listener'
 import { AdGuardMessages, AdGuardOnReadyMessage } from '@/modules/aguard/common/adguard.messages'
 
 /**

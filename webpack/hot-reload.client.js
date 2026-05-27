@@ -16,7 +16,6 @@
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 const DEFAULT_HOT_RELOAD_PORT = 4421
 const connect = () => {
   const ws = new WebSocket(`ws://localhost:${DEFAULT_HOT_RELOAD_PORT}`)

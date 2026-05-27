@@ -15,8 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-import { type VueWrapper } from '@vue/test-utils/dist/vueWrapper'
-import { shallowMount } from '@vue/test-utils'
+import { shallowMount, type VueWrapper } from '@vue/test-utils'
 import App from '@/ui/settings/app.vue'
 import { useExternalPort } from '@/modules/port/external/port.setup'
 import { useExternalSettings } from '@/modules/settings/external/settings.utils'

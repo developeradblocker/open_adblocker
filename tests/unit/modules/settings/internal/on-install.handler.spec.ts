@@ -21,15 +21,24 @@ import { InternalSettingsIdentifiers } from '@/modules/settings/internal/setting
 import { MetadataServiceInterface, FilterMetadata } from '@/modules/settings/common/settings.types'
 import { useInternalFilters } from '@/modules/filters/internal/filters.utils'
 import { getFilterIdsByLocale } from '@/helpers/locale-detect.helper'
+import { tsWebExtension } from '@/modules/aguard/internal/utils'
+import { onAdGuardReady } from '@/modules/aguard/internal/expose.messages'
 
 jest.mock('@/utils/setup-worker', () => ({
   di: {
     get: jest.fn()
   }
 }))
+jest.mock('@/modules/aguard/internal/adguard.setup', () => ({
+  getConfiguration: jest.fn().mockResolvedValue({} as any)
+}))
 
 jest.mock('@/modules/filters/internal/filters.utils', () => ({
   useInternalFilters: jest.fn()
+}))
+
+jest.mock('@/modules/aguard/internal/expose.messages', () => ({
+  onAdGuardReady: jest.fn()
 }))
 
 jest.mock('@/helpers/locale-detect.helper', () => ({
@@ -38,6 +47,10 @@ jest.mock('@/helpers/locale-detect.helper', () => ({
 
 jest.mock('../../../../../constants', () => ({
   DEFAULT_ENABLED_FILTER_IDS: [2, 10]
+}))
+
+jest.mock('@/modules/aguard/internal/utils', () => ({
+  tsWebExtension: jest.fn()
 }))
 
 global.chrome = {
@@ -52,14 +65,21 @@ global.chrome = {
 
 const mockGetFilterIdsByLocale = jest.mocked(getFilterIdsByLocale)
 const mockUseInternalFilters = jest.mocked(useInternalFilters)
+const tsWebExtensionMock = jest.mocked(tsWebExtension)
 
 const createDetails = (reason: string): chrome.runtime.InstalledDetails =>
   ({ reason } as chrome.runtime.InstalledDetails)
+
+const triggerAdguardReady = async (): Promise<void> => {
+  const cb = (onAdGuardReady as jest.MockedFunction<typeof onAdGuardReady>).mock.calls[0][0]
+  await cb({} as any)
+}
 
 describe('onInstallHandler', () => {
   const mockUpdateMetadata = jest.fn()
   const mockGetFilters = jest.fn()
   const mockSetup = jest.fn()
+  const configureMock = jest.fn()
 
   const mockMetadataService: MetadataServiceInterface = {
     updateMetadata: mockUpdateMetadata,
@@ -75,6 +95,7 @@ describe('onInstallHandler', () => {
     mockSetup.mockResolvedValue(undefined)
     mockGetFilterIdsByLocale.mockReturnValue([])
     mockUseInternalFilters.mockReturnValue({ setup: mockSetup } as any)
+    tsWebExtensionMock.mockReturnValue({ configure: configureMock } as any)
   })
 
   describe('metadata update', () => {
@@ -100,10 +121,11 @@ describe('onInstallHandler', () => {
       mockGetFilterIdsByLocale.mockReturnValue([5])
 
       await onInstallHandler(installDetails)
-
+      await triggerAdguardReady()
       expect(mockGetFilters).toHaveBeenCalledTimes(1)
       expect(mockGetFilterIdsByLocale).toHaveBeenCalledWith(filters)
       expect(mockSetup).toHaveBeenCalledWith([2, 10, 5])
+      expect(configureMock).toHaveBeenCalledTimes(1)
     })
 
     it('should deduplicate filter IDs when locale filters overlap with defaults', async () => {
@@ -112,8 +134,9 @@ describe('onInstallHandler', () => {
       mockGetFilterIdsByLocale.mockReturnValue([2])
 
       await onInstallHandler(installDetails)
-
+      await triggerAdguardReady()
       expect(mockSetup).toHaveBeenCalledWith([2, 10])
+      expect(configureMock).toHaveBeenCalledTimes(1)
     })
 
     it('should use only default filters when no locale filters match', async () => {
@@ -121,8 +144,9 @@ describe('onInstallHandler', () => {
       mockGetFilterIdsByLocale.mockReturnValue([])
 
       await onInstallHandler(installDetails)
-
+      await triggerAdguardReady()
       expect(mockSetup).toHaveBeenCalledWith([2, 10])
+      expect(configureMock).toHaveBeenCalledTimes(1)
     })
 
     it('should merge multiple locale filter IDs with defaults', async () => {
@@ -134,8 +158,9 @@ describe('onInstallHandler', () => {
       mockGetFilterIdsByLocale.mockReturnValue([5, 7])
 
       await onInstallHandler(installDetails)
-
+      await triggerAdguardReady()
       expect(mockSetup).toHaveBeenCalledWith([2, 10, 5, 7])
+      expect(configureMock).toHaveBeenCalledTimes(1)
     })
   })
 })

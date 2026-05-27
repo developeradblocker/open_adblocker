@@ -32,7 +32,6 @@ export const prepareMetadata = async (metadata: MetadataRuleSet): Promise<void> 
   }
 
   const groups = groupsMapper(info.groups)
-  // console.log(groups, info.groups)
   const filters = filtersMapper(info.filters)
   metadata.setAdditionalProperty('metadata', {
     ...info,

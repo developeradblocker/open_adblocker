@@ -136,7 +136,7 @@ const onDiscard = async (): Promise<void> => {
   closePopup()
 }
 
-const closePopup = () => {
+const closePopup = (): void => {
   resetForm({
     values: {
       email: '',

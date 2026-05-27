@@ -31,7 +31,8 @@ const IGNORED_FILES = [
   'app/filters',
   'app/declarations',
   'app/web-accessible-resources',
-  'tools/dangerous-rules'
+  'tools/dangerous-rules',
+  'app/assistant'
 ]
 
 export default defineConfig([
@@ -56,7 +57,7 @@ export default defineConfig([
   // vue config
   pluginVue.configs['flat/essential'],
   // vue parse
-  { files: ['**/*.vue'], languageOptions: { parserOptions: { parser: tseslint.parser } } },
+  { files: ['**/*.vue'], languageOptions: { parserOptions: { parser: tseslint.parser } }, rules: { '@typescript-eslint/explicit-function-return-type': 'error' } },
   {
     plugins: { jsdoc },
     rules: {

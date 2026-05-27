@@ -18,7 +18,7 @@
 import { AppMessageListener, Box } from '@/utils/dispatcher/dispatcher.types'
 import { FiltersMessages, FiltersStateChangedMessage } from '@/modules/filters/common/filters.messages'
 import { inject, injectable } from '@/utils/di/di.types'
-import { AdGuardIdentifiers } from '@/modules/aguard/internal/adguaird.types'
+import { AdGuardIdentifiers } from '@/modules/aguard/internal/adguard.types'
 import { TsWebExtension } from '@adguard/tswebextension/mv3'
 import { ConfigurationMV3 } from '@adguard/tswebextension/dist/types/lib/mv3/background/configuration'
 

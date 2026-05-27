@@ -16,7 +16,7 @@
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
 import { getDomainsWithSubDomains } from '@/helpers/get-domains-with-subdomains.helper'
-import { AdGuardIdentifiers } from '@/modules/aguard/internal/adguaird.types'
+import { AdGuardIdentifiers } from '@/modules/aguard/internal/adguard.types'
 import { WhitelistInterface } from '@/modules/whitelist/common/whetelist.types'
 import { WhitelistMessages, WhitelistUpdatedMessage } from '@/modules/whitelist/common/whitelist.messages'
 import { WhitelistIdentifiers } from '@/modules/whitelist/internal/whitelist.types'

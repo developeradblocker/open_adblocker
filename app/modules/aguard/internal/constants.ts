@@ -15,8 +15,8 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-import { Configuration } from '@adguard/tswebextension/mv3'
-import { FilterListPreprocessor } from '@adguard/tsurlfilter'
+import { Configuration, FilterList } from '@adguard/tswebextension/mv3'
+const userRulesFilter = FilterList.createEmpty()
 
 export const DEFAULT_EXTENSION_CONFIG = (): Configuration => ({
   /**
@@ -32,14 +32,10 @@ export const DEFAULT_EXTENSION_CONFIG = (): Configuration => ({
   /**
    * DO NOT MODIFY THIS LIST DUE IT'S CONTROLLED VIA MANUALLY BLOCKING ADS MODULE
    */
-  userrules: Object.assign(
-    FilterListPreprocessor.createEmptyPreprocessedFilterList(),
-    { trusted: true }
-  ),
-  quickFixesRules: Object.assign(
-    FilterListPreprocessor.createEmptyPreprocessedFilterList(),
-    { trusted: true }
-  ),
+  userrules: {
+    content: userRulesFilter.getContent(),
+    conversionData: userRulesFilter.getConversionData()
+  },
   verbose: true,
   filtersPath: 'filters',
   ruleSetsPath: 'filters/declarative',

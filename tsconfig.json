@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "ignoreDeprecations": "6.0",
     "module": "esnext",
     "target": "esnext",
     "outDir": "./dist",
@@ -45,7 +46,7 @@
       "dom",
       "dom.iterable",
       "scripthost"
-    ],
+    ]
   },
   "include": [
     "app/**/*.ts",

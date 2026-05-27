@@ -74,14 +74,14 @@ const inputId = computed(() => props.id ?? `base-checkbox-${uid}`)
 
 const isChecked = computed(() => props.modelValue)
 
-const syncIndeterminate = () => {
+const syncIndeterminate = (): void => {
   if (inputEl.value) inputEl.value.indeterminate = !!props.indeterminate
 }
 
 onMounted(syncIndeterminate)
 watch(() => props.indeterminate, syncIndeterminate)
 
-function onChange (e: Event) {
+function onChange (e: Event): void {
   const next = (e.target as HTMLInputElement).checked
   emit('update:modelValue', next)
   emit('change', next)

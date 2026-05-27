@@ -20,7 +20,7 @@ import { localScriptRules } from '@/filters/local_script_rules'
 import { DEFAULT_EXTENSION_CONFIG } from '@/modules/aguard/internal/constants'
 import { ConfigurationMV3 } from '@adguard/tswebextension/dist/types/lib/mv3/background/configuration'
 import { dispatcher } from '@/utils/setup-worker'
-import { AdGuardIdentifiers } from '@/modules/aguard/internal/adguaird.types'
+import { AdGuardIdentifiers } from '@/modules/aguard/internal/adguard.types'
 import { AdGuardService } from '@/modules/aguard/internal/services/adguard.service'
 import { AdGuardMessages, AdGuardOnReadyMessage } from '@/modules/aguard/common/adguard.messages'
 import { whiteList } from '@/modules/whitelist/internal/utils'
@@ -31,7 +31,7 @@ import { FiltersStateChangedListener } from '@/modules/aguard/internal/listeners
 import { useInternalWebRTC } from '@/modules/features/web-rtc/internal/web-rtc.utils'
 import { WebRTCStateChangedListener } from '@/modules/aguard/internal/listeners/web-rtc/web-rtc-state-changed.listener'
 import { RulesUpdatedListener } from '@/modules/aguard/internal/listeners/user-rules/rules-updated.listener'
-import { FilterListPreprocessor } from '@adguard/tsurlfilter'
+import { FilterList } from '@adguard/tsurlfilter'
 import { useInternalManualBlocking } from '@/modules/features/manual-blocking/internal/manual-blocking.setup'
 import { WhitelistUpdatedListener } from './listeners/whitelist/whitelist-updated.listener'
 import { getDomainsWithSubDomains } from '@/helpers/get-domains-with-subdomains.helper'
@@ -81,12 +81,13 @@ export const getConfiguration = async (): Promise<ConfigurationMV3> => {
   config.allowlist = getDomainsWithSubDomains(await whiteList().getDomains())
   config.staticFiltersIds = await useInternalFilters().getEnabledFilters()
   config.settings.stealth.blockWebRTC = await useInternalWebRTC().getState()
-  config.userrules = Object.assign(
-    FilterListPreprocessor.preprocess(
-      (await useInternalManualBlocking().getUserRules()).join('\n')
-    ),
-    { trusted: true }
+  const userRulesFilter = new FilterList(
+    (await useInternalManualBlocking().getUserRules()).join('\n')
   )
+  config.userrules = {
+    content: userRulesFilter.getContent(),
+    conversionData: userRulesFilter.getConversionData()
+  }
   return config
 }
 
