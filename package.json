@@ -71,7 +71,7 @@
     "ts-jest": "^29.4.5",
     "ts-loader": "^9.5.4",
     "tsx": "^4.20.3",
-    "typescript": "^5.9.3",
+    "typescript": "^6.0.3",
     "typescript-eslint": "^8.60.0",
     "vue-loader": "^17.4.2",
     "vue-style-loader": "^4.1.3",
