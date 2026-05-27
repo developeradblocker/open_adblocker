@@ -15,8 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-import { type VueWrapper } from '@vue/test-utils/dist/vueWrapper'
-import { shallowMount } from '@vue/test-utils'
+import { shallowMount, type VueWrapper } from '@vue/test-utils'
 import Features from '@/ui/toolbar-popup/components/adblocker/features.vue'
 import TransparentStub from '../../../../helpers/TransparentStub'
 import { useAppStore } from '@/ui/toolbar-popup/store/app.store'

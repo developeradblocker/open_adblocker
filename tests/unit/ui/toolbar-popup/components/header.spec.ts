@@ -15,8 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-import { type VueWrapper } from '@vue/test-utils/dist/vueWrapper'
-import { shallowMount } from '@vue/test-utils'
+import { shallowMount, type VueWrapper } from '@vue/test-utils'
 import Header from '@/ui/toolbar-popup/components/header.vue'
 import { useUserActivity } from '@/modules/user-activity/external/utils'
 import { useRoute } from 'vue-router'

@@ -31,7 +31,7 @@ import { FiltersStateChangedListener } from '@/modules/aguard/internal/listeners
 import { useInternalWebRTC } from '@/modules/features/web-rtc/internal/web-rtc.utils'
 import { WebRTCStateChangedListener } from '@/modules/aguard/internal/listeners/web-rtc/web-rtc-state-changed.listener'
 import { RulesUpdatedListener } from '@/modules/aguard/internal/listeners/user-rules/rules-updated.listener'
-import { FilterListPreprocessor } from '@adguard/tsurlfilter'
+import { FilterList } from '@adguard/tsurlfilter'
 import { useInternalManualBlocking } from '@/modules/features/manual-blocking/internal/manual-blocking.setup'
 import { WhitelistUpdatedListener } from './listeners/whitelist/whitelist-updated.listener'
 import { getDomainsWithSubDomains } from '@/helpers/get-domains-with-subdomains.helper'
@@ -80,13 +80,15 @@ export const getConfiguration = async (): Promise<ConfigurationMV3> => {
   const config = DEFAULT_EXTENSION_CONFIG()
   config.allowlist = getDomainsWithSubDomains(await whiteList().getDomains())
   config.staticFiltersIds = await useInternalFilters().getEnabledFilters()
+  console.log('!!!!!!getConfiguration', config)
   config.settings.stealth.blockWebRTC = await useInternalWebRTC().getState()
-  config.userrules = Object.assign(
-    FilterListPreprocessor.preprocess(
-      (await useInternalManualBlocking().getUserRules()).join('\n')
-    ),
-    { trusted: true }
+  const userRulesFilter = new FilterList(
+    (await useInternalManualBlocking().getUserRules()).join('\n')
   )
+  config.userrules = {
+    content: userRulesFilter.getContent(),
+    conversionData: userRulesFilter.getConversionData()
+  }
   return config
 }
 

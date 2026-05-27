@@ -24,7 +24,7 @@ import {
   ManualBlockingMessages,
   ManualBlockingRulesUpdatedMessage
 } from '@/modules/features/manual-blocking/common/manual-blocking.messages'
-import { FilterListPreprocessor } from '@adguard/tsurlfilter'
+import { FilterList } from '@adguard/tsurlfilter'
 import {
   InternalManualBlockingIdentifiers,
   InternalManualBlockingServiceInterface
@@ -55,10 +55,11 @@ export class RulesUpdatedListener implements AppMessageListener<ManualBlockingRu
   async handle ({ message }: Box<ManualBlockingRulesUpdatedMessage>): Promise<void> {
     const userRules = await this.service.getUserRules()
 
-    this.config.userrules = Object.assign(
-      FilterListPreprocessor.preprocess(userRules.join('\n')),
-      { trusted: true }
-    )
+    const userRulesFilter = new FilterList(userRules.join('\n'))
+    this.config.userrules = {
+      content: userRulesFilter.getContent(),
+      conversionData: userRulesFilter.getConversionData()
+    }
     await this.tsWebExtension.configure(this.config)
 
     if (message.payload.needReload) {
