@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-import { makeOnAfterListener } from '@/helpers/male-on-after.listener'
+import { makeOnAfterListener } from '@/helpers/make-on-after.listener'
 import { UserActivityMessage, UserActivityMessages } from '@/modules/user-activity/common/user-activity.messages'
 
 export const onUserActivity = makeOnAfterListener<UserActivityMessage>(UserActivityMessages.activity)

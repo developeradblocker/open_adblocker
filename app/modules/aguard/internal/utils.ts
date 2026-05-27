@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-import { AdGuardIdentifiers } from '@/modules/aguard/internal/adguaird.types'
+import { AdGuardIdentifiers } from '@/modules/aguard/internal/adguard.types'
 import { di } from '@/utils/setup-worker'
 import { TsWebExtension } from '@adguard/tswebextension/mv3'
 

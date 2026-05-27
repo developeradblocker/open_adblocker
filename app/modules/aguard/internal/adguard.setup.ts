@@ -20,7 +20,7 @@ import { localScriptRules } from '@/filters/local_script_rules'
 import { DEFAULT_EXTENSION_CONFIG } from '@/modules/aguard/internal/constants'
 import { ConfigurationMV3 } from '@adguard/tswebextension/dist/types/lib/mv3/background/configuration'
 import { dispatcher } from '@/utils/setup-worker'
-import { AdGuardIdentifiers } from '@/modules/aguard/internal/adguaird.types'
+import { AdGuardIdentifiers } from '@/modules/aguard/internal/adguard.types'
 import { AdGuardService } from '@/modules/aguard/internal/services/adguard.service'
 import { AdGuardMessages, AdGuardOnReadyMessage } from '@/modules/aguard/common/adguard.messages'
 import { whiteList } from '@/modules/whitelist/internal/utils'
@@ -80,7 +80,6 @@ export const getConfiguration = async (): Promise<ConfigurationMV3> => {
   const config = DEFAULT_EXTENSION_CONFIG()
   config.allowlist = getDomainsWithSubDomains(await whiteList().getDomains())
   config.staticFiltersIds = await useInternalFilters().getEnabledFilters()
-  console.log('!!!!!!getConfiguration', config)
   config.settings.stealth.blockWebRTC = await useInternalWebRTC().getState()
   const userRulesFilter = new FilterList(
     (await useInternalManualBlocking().getUserRules()).join('\n')

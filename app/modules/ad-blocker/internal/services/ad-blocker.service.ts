@@ -23,7 +23,7 @@ import {
 } from '@/modules/ad-blocker/internal/ad-blocker.types'
 import { inject, injectable } from '@/utils/di/di.types'
 import { BlockedAdsCounter, Domain } from '@/common/types'
-import { AdGuardIdentifiers, AdGuardServiceInterface } from '@/modules/aguard/internal/adguaird.types'
+import { AdGuardIdentifiers, AdGuardServiceInterface } from '@/modules/aguard/internal/adguard.types'
 import { getActiveTabHelper } from '@/helpers/get-active-tab.helper'
 import { getDomainHelper } from '@/helpers/get-domain.helper'
 import { AdBlockerMessages, AdBlockerStateChanged } from '@/modules/ad-blocker/common/ad-blocker.messages'
