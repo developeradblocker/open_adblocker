@@ -70,7 +70,7 @@ export default {
   moduleNameMapper,
   transform: {
     '^.+\\.tsx?$': 'ts-jest',
-    '^.+\\.vue$': '@vue/vue3-jest',
+    '^.+\\.vue$': '<rootDir>/tests/helpers/vueTransformer.js',
     '\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga|css|less)$':
       '<rootDir>/tests/helpers/fileTransformer.js'
   },
