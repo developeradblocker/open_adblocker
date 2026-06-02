@@ -39,6 +39,7 @@ import { inject } from '@/utils/inject/inject'
 import { onAdGuardReady } from '@/modules/aguard/internal/expose.messages'
 import { getFrameUrlHelper } from '@/helpers/get-frame.helper'
 import { getDomainHelper } from '@/helpers/get-domain.helper'
+import { makeAsyncQueue } from '@/utils/async-queue/async-queue'
 
 const injections: Injection[] = [
   {
@@ -77,22 +78,17 @@ export const handleOnAdGuardReady = async (): Promise<void> => {
 export const setupDispatchingOnAdBlockedMessage = (): void => {
   tsWebExtension()
     .onFilteringLogEvent
-    .subscribe(handleOnFilteringLogEvent)
+    .subscribe(makeHandleOnFilteringLogEvent())
 }
 
 export const handleApplyBasicRule = async ({ data }: ApplyBasicRuleEvent): Promise<void> => {
-  if (data.tabId === HIDDEN_TAB_ID) {
+  if (data.tabId === HIDDEN_TAB_ID ||
+  data.isAllowlist ||
+  data.filterId === null ||
+  data.ruleIndex === null) {
     return
   }
 
-  /**
-   * AdGuard set null for applied filter
-   */
-  const isFilterApplied = data.filterId === null
-
-  if (!isFilterApplied) {
-    return
-  }
   const url = await getFrameUrlHelper(data.tabId)
   const isPaused = await internalAdblocker().isPaused(getDomainHelper(url))
   if (isPaused) {
@@ -106,17 +102,20 @@ export const handleApplyBasicRule = async ({ data }: ApplyBasicRuleEvent): Promi
   const message: AdBlockerOnBlockedAd = {
     type: AdBlockerMessages.blockedAd
   }
-  await dispatcher().sendMessage(message)
+  dispatcher().sendMessage(message)
 }
 
-export const handleOnFilteringLogEvent = (data: FilteringLogEvent): void => {
-  const listenEvents = {
-    applyBasicRule: handleApplyBasicRule
-  } as any
+export const makeHandleOnFilteringLogEvent = () => {
+  const queue = makeAsyncQueue()
+  return (data: FilteringLogEvent): void => {
+    const listenEvents = {
+      applyBasicRule: handleApplyBasicRule
+    } as any
 
-  if (!listenEvents[data.type]) {
-    return
+    if (!listenEvents[data.type]) {
+      return
+    }
+
+    queue.enqueue(() => listenEvents[data.type](data))
   }
-
-  listenEvents[data.type](data)
 }

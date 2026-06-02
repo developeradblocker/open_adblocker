@@ -19,7 +19,7 @@
 import {
   handleApplyBasicRule,
   handleOnAdGuardReady,
-  handleOnFilteringLogEvent,
+  makeHandleOnFilteringLogEvent,
   setupDispatchingOnAdBlockedMessage,
   setupInternalAdBlocker
 } from '@/modules/ad-blocker/internal/ad-blocker.setup'
@@ -33,6 +33,7 @@ import { getFrameUrlHelper } from '@/helpers/get-frame.helper'
 import { getDomainHelper } from '@/helpers/get-domain.helper'
 import { counterByTab, internalAdblocker, totalCounter } from '@/modules/ad-blocker/internal/utils'
 import { AdBlockerMessages } from '@/modules/ad-blocker/common/ad-blocker.messages'
+import { flushPromises } from '../../../../helpers/flushPromises'
 
 jest.mock('@/utils/inject/inject')
 jest.mock('@/utils/setup-worker', () => ({
@@ -94,7 +95,7 @@ describe('setupDispatchingOnAdBlockedMessage', () => {
       onFilteringLogEvent: { subscribe: subscribeSpy }
     } as any)
     setupDispatchingOnAdBlockedMessage()
-    expect(subscribeSpy).toHaveBeenCalledWith(handleOnFilteringLogEvent)
+    expect(subscribeSpy).toHaveBeenCalledWith(expect.any(Function))
   })
 })
 
@@ -114,11 +115,12 @@ describe('handleApplyBasicRule', () => {
     expect(mockDispatcherInstance.sendMessage).not.toHaveBeenCalled()
   })
 
-  it('should return if filterId is not null', async () => {
+  it('should return if filter index is not null', async () => {
     await handleApplyBasicRule({
       data: {
         tabId: 1,
-        filterId: 'some-filter'
+        filterId: 'some-filter',
+        ruleIndex: null
       }
     } as any)
     expect(getFrameUrlHelper).not.toHaveBeenCalled()
@@ -134,7 +136,9 @@ describe('handleApplyBasicRule', () => {
     await handleApplyBasicRule({
       data: {
         tabId: 1,
-        filterId: null
+        filterId: 2,
+        ruleIndex: 3,
+        isAllowlist: false
       }
     } as any)
     expect(internalAdblocker().isPaused).toHaveBeenCalledWith('example.com')
@@ -154,7 +158,9 @@ describe('handleApplyBasicRule', () => {
     await handleApplyBasicRule({
       data: {
         tabId: 1,
-        filterId: null
+        filterId: 2,
+        ruleIndex: 3,
+        isAllowlist: false
       }
     } as any)
     expect(totalIncrement).toHaveBeenCalledTimes(1)
@@ -168,16 +174,17 @@ describe('handleApplyBasicRule', () => {
 describe('handleOnFilteringLogEvent', () => {
   it('should do nothing if event type has no registered handler', () => {
     const data = { type: 'unknown' }
-    expect(handleOnFilteringLogEvent(data as any)).toBeUndefined()
+    expect(makeHandleOnFilteringLogEvent()(data as any)).toBeUndefined()
   })
 
-  it('should call handleApplyBasicRule if event type is "applyBasicRule"', () => {
+  it('should call handleApplyBasicRule if event type is "applyBasicRule"', async () => {
     const applyBasicRuleSpy = jest.spyOn(
       require('@/modules/ad-blocker/internal/ad-blocker.setup'),
       'handleApplyBasicRule'
     ).mockImplementation(() => Promise.resolve())
 
-    handleOnFilteringLogEvent({ type: 'applyBasicRule', data: {} } as any)
+    makeHandleOnFilteringLogEvent()({ type: 'applyBasicRule', data: {} } as any)
+    await flushPromises()
     expect(applyBasicRuleSpy).toHaveBeenCalledWith({ type: 'applyBasicRule', data: {} })
     applyBasicRuleSpy.mockRestore()
   })
