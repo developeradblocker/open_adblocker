@@ -47,3 +47,8 @@ export const DEFAULT_ENABLED_FILTER_IDS = [
 export const SKIPPED_FILTERS = [
   `${RULESET_NAME_PREFIX}1`
 ]
+
+export const CUSTOM_FILTER_ID = 1001
+export const CUSTOM_FILTER_RULES = [
+  '@@||openadblocker.com^$important'
+]

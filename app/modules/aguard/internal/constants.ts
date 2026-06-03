@@ -16,50 +16,60 @@
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
 import { Configuration, FilterList } from '@adguard/tswebextension/mv3'
+import { CUSTOM_FILTER_ID, CUSTOM_FILTER_RULES } from '../../../../constants'
+
 const userRulesFilter = FilterList.createEmpty()
 
-export const DEFAULT_EXTENSION_CONFIG = (): Configuration => ({
-  /**
-   * DO NOT MODIFY THIS LIST DUE IT'S CONTROLLED VIA FILTERS MODULE
-   */
-  staticFiltersIds: [],
-  customFilters: [],
-  trustedDomains: [],
-  /**
-   * DO NOT MODIFY THIS LIST DUE IT'S CONTROLLED VIA WHITE LIST MODULE
-   */
-  allowlist: [],
-  /**
-   * DO NOT MODIFY THIS LIST DUE IT'S CONTROLLED VIA MANUALLY BLOCKING ADS MODULE
-   */
-  userrules: {
-    content: userRulesFilter.getContent(),
-    conversionData: userRulesFilter.getConversionData()
-  },
-  verbose: true,
-  filtersPath: 'filters',
-  ruleSetsPath: 'filters/declarative',
-  declarativeLogEnabled: true,
-  settings: {
-    assistantUrl: 'assistant-inject.js',
-    gpcScriptUrl: 'gpc.js',
-    hideDocumentReferrerScriptUrl: 'hide-document-referrer.js',
-    collectStats: true,
-    allowlistEnabled: true,
-    allowlistInverted: false,
-    stealthModeEnabled: true,
-    filteringEnabled: true,
-    debugScriptlets: false,
-    stealth: {
-      blockChromeClientData: false,
-      hideReferrer: false,
-      hideSearchQueries: false,
-      sendDoNotTrack: false,
-      blockWebRTC: false,
-      selfDestructThirdPartyCookies: false,
-      selfDestructThirdPartyCookiesTime: 3600,
-      selfDestructFirstPartyCookies: false,
-      selfDestructFirstPartyCookiesTime: 3600
+export const DEFAULT_EXTENSION_CONFIG = (): Configuration => {
+  const customFilter = new FilterList(CUSTOM_FILTER_RULES.join('\n'))
+  return ({
+    /**
+     * DO NOT MODIFY THIS LIST DUE IT'S CONTROLLED VIA FILTERS MODULE
+     */
+    staticFiltersIds: [],
+    customFilters: [{
+      filterId: CUSTOM_FILTER_ID,
+      content: customFilter.getContent(),
+      trusted: true,
+      conversionData: customFilter.getConversionData()
+    }],
+    trustedDomains: [],
+    /**
+     * DO NOT MODIFY THIS LIST DUE IT'S CONTROLLED VIA WHITE LIST MODULE
+     */
+    allowlist: [],
+    /**
+     * DO NOT MODIFY THIS LIST DUE IT'S CONTROLLED VIA MANUALLY BLOCKING ADS MODULE
+     */
+    userrules: {
+      content: userRulesFilter.getContent(),
+      conversionData: userRulesFilter.getConversionData()
+    },
+    verbose: true,
+    filtersPath: 'filters',
+    ruleSetsPath: 'filters/declarative',
+    declarativeLogEnabled: true,
+    settings: {
+      assistantUrl: 'assistant-inject.js',
+      gpcScriptUrl: 'gpc.js',
+      hideDocumentReferrerScriptUrl: 'hide-document-referrer.js',
+      collectStats: true,
+      allowlistEnabled: true,
+      allowlistInverted: false,
+      stealthModeEnabled: true,
+      filteringEnabled: true,
+      debugScriptlets: false,
+      stealth: {
+        blockChromeClientData: false,
+        hideReferrer: false,
+        hideSearchQueries: false,
+        sendDoNotTrack: false,
+        blockWebRTC: false,
+        selfDestructThirdPartyCookies: false,
+        selfDestructThirdPartyCookiesTime: 3600,
+        selfDestructFirstPartyCookies: false,
+        selfDestructFirstPartyCookiesTime: 3600
+      }
     }
-  }
-})
+  })
+}
