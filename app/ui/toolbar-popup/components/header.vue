@@ -96,8 +96,8 @@ const onSettingsClick = async (): Promise<void> => {
   const settingsPage = chrome.runtime.getURL(SETTINGS_PATH)
   const [activeSettings] = await chrome.tabs.query({ url: settingsPage })
   if (activeSettings?.id) {
-    await chrome.windows.update(activeSettings.windowId, { focused: true })
     await chrome.tabs.update(activeSettings?.id, { active: true })
+    await chrome.windows.update(activeSettings.windowId, { focused: true })
   } else {
     await chrome.tabs.create({ url: settingsPage })
   }
