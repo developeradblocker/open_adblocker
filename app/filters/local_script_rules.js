@@ -4497,21 +4497,6 @@ export const localScriptRules = {
             console.error('Error executing AG js rule with uniqueId "419ecd20b58c82c1446f3eefaac9ae3b" due to: ' + e);
         }
     },
-    "window.showAds = true;": () => {
-        try {
-            const e = "done";
-            if (Window.prototype.toString["8174026a0a9d6a02df2f05c27e91b2e6"] === e) return;
-            window.showAds = !0;
-            Object.defineProperty(Window.prototype.toString, "8174026a0a9d6a02df2f05c27e91b2e6", {
-                value: e,
-                enumerable: !1,
-                writable: !1,
-                configurable: !1
-            });
-        } catch (e) {
-            console.error('Error executing AG js rule with uniqueId "8174026a0a9d6a02df2f05c27e91b2e6" due to: ' + e);
-        }
-    },
     "window.uabpInject = function() {};": () => {
         try {
             const e = "done";

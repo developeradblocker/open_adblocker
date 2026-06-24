@@ -2274,14 +2274,6 @@
                 "restrictedDomains": []
             }
         ],
-        "window.showAds = true;": [
-            {
-                "permittedDomains": [
-                    "kitsune-subs.anime-odcinki.pl"
-                ],
-                "restrictedDomains": []
-            }
-        ],
         "window.uabpInject = function() {};": [
             {
                 "permittedDomains": [
