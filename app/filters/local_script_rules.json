@@ -3569,6 +3569,14 @@
                 "restrictedDomains": []
             }
         ],
+        "(()=>{let t=!1;const i={apply:(i,n,a)=>{try{!t&&window.ytInitialData&&(window.ytInitialData=JSON.parse(JSON.stringify(window.ytInitialData)),t=!0)}catch(t){}return Reflect.apply(i,n,a)}};window.Promise.prototype.then=new Proxy(window.Promise.prototype.then,i)})();": [
+            {
+                "permittedDomains": [
+                    "www.youtube.com"
+                ],
+                "restrictedDomains": []
+            }
+        ],
         "(()=>{const t={apply:(t,e,n)=>{if(location.href.includes(\"/shorts/\")||location.href.includes(\"youtube.com/tv\")||location.href.includes(\"youtube.com/embed/\"))return Reflect.apply(t,e,n);try{const a=n[0];if(!a?.context?.client)return Reflect.apply(t,e,n);const o=String(Date.now());a.playbackContext&&void 0===a.playbackContext.adPlaybackContext&&(a.playbackContext.contentPlaybackContext.lactMilliseconds=o),a.playerRequest&&void 0===a.playerRequest.playbackContext?.adPlaybackContext&&(a.playerRequest.playbackContext.contentPlaybackContext.lactMilliseconds=o),n[0]=a}catch(t){}return Reflect.apply(t,e,n)}};window.JSON.stringify=new Proxy(window.JSON.stringify,t)})();": [
             {
                 "permittedDomains": [
@@ -4283,6 +4291,10 @@
         "window.addEventListener(\"contextmenu\",function(a){a.stopPropagation()},!0);": [
             {
                 "permittedDomains": [
+                    "anixtv.pro",
+                    "anixtv.in",
+                    "anixtv.us.cc",
+                    "anixx.fun",
                     "cloudorchestranova.com",
                     "nextgencloudfabric.com",
                     "anixx.fun",
@@ -4568,14 +4580,6 @@
             {
                 "permittedDomains": [
                     "hopesandfears.com"
-                ],
-                "restrictedDomains": []
-            }
-        ],
-        "(()=>{let t=!1;const i={apply:(i,n,a)=>{try{!t&&window.ytInitialData&&(window.ytInitialData=JSON.parse(JSON.stringify(window.ytInitialData)),t=!0)}catch(t){}return Reflect.apply(i,n,a)}};window.Promise.prototype.then=new Proxy(window.Promise.prototype.then,i)})();": [
-            {
-                "permittedDomains": [
-                    "www.youtube.com"
                 ],
                 "restrictedDomains": []
             }
