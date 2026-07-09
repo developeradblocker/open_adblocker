@@ -3318,20 +3318,20 @@ export const localScriptRules = {
             console.error('Error executing AG js rule with uniqueId "272813737cd339fd9b635273bcbc7485" due to: ' + e);
         }
     },
-    '(()=>{const e=/free-download-form|\'\\),_0x|\\)\\]\\(function\\(_0x/,o={apply:(e,o,t)=>{const n=t[0];"boolean"==typeof n&&!0===n&&(t[0]=!1),setTimeout((()=>Reflect.apply(e,o,t)),2e3)}},t={apply:(t,n,r)=>{const i=r[0];return"function"==typeof i&&e.test(i.toString())&&(r[0]=new Proxy(r[0],o)),Reflect.apply(t,n,r)}};window.Promise.prototype.then=new Proxy(window.Promise.prototype.then,t),window.addEventListener("load",(()=>{const e=document.querySelector("form#go-link button#link-button");if(e){const o=e.cloneNode(!0);e.parentNode.replaceChild(o,e),o.removeAttribute("disabled")}}))})();': () => {
+    '(()=>{const e=/free-download-form|\'\\),_0x|\\)\\]\\(function\\(_0x|=>\\{return/,o={apply:(e,o,t)=>{const n=t[0];"boolean"==typeof n&&!0===n&&(t[0]=!1),setTimeout((()=>Reflect.apply(e,o,t)),2e3)}},t={apply:(t,n,r)=>{const i=r[0];return"function"==typeof i&&e.test(i.toString())&&(r[0]=new Proxy(r[0],o)),Reflect.apply(t,n,r)}};window.Promise.prototype.then=new Proxy(window.Promise.prototype.then,t),window.addEventListener("load",(()=>{const e=document.querySelector("form#go-link button#link-button");if(e){const o=e.cloneNode(!0);e.parentNode.replaceChild(o,e),o.removeAttribute("disabled")}}))})();': () => {
         try {
             const e = "done";
-            if (Window.prototype.toString.dd2b396f5c265afe3e8e62ee19ad38c3 === e) return;
+            if (Window.prototype.toString["665ddbcb079a55156982aa9f04043a1b"] === e) return;
             (() => {
-                const e = /free-download-form|'\),_0x|\)\]\(function\(_0x/, o = {
+                const e = /free-download-form|'\),_0x|\)\]\(function\(_0x|=>\{return/, o = {
                     apply: (e, o, t) => {
                         const n = t[0];
                         "boolean" == typeof n && !0 === n && (t[0] = !1), setTimeout(() => Reflect.apply(e, o, t), 2e3);
                     }
                 }, t = {
                     apply: (t, n, r) => {
-                        const d = r[0];
-                        return "function" == typeof d && e.test(d.toString()) && (r[0] = new Proxy(r[0], o)), 
+                        const a = r[0];
+                        return "function" == typeof a && e.test(a.toString()) && (r[0] = new Proxy(r[0], o)), 
                         Reflect.apply(t, n, r);
                     }
                 };
@@ -3343,14 +3343,14 @@ export const localScriptRules = {
                     }
                 });
             })();
-            Object.defineProperty(Window.prototype.toString, "dd2b396f5c265afe3e8e62ee19ad38c3", {
+            Object.defineProperty(Window.prototype.toString, "665ddbcb079a55156982aa9f04043a1b", {
                 value: e,
                 enumerable: !1,
                 writable: !1,
                 configurable: !1
             });
         } catch (e) {
-            console.error('Error executing AG js rule with uniqueId "dd2b396f5c265afe3e8e62ee19ad38c3" due to: ' + e);
+            console.error('Error executing AG js rule with uniqueId "665ddbcb079a55156982aa9f04043a1b" due to: ' + e);
         }
     },
     '(()=>{const e=window.Promise,o={construct:(o,t,n)=>t[0]&&t[0]?.toString()?.includes("[!1,!1,!1,!1]")&&t[0]?.toString()?.includes(".responseText")?e.resolve(!1):Reflect.construct(o,t,n)},t=new Proxy(window.Promise,o);Object.defineProperty(window,"Promise",{set:e=>{},get:()=>t})})();': () => {
@@ -9119,6 +9119,24 @@ export const localScriptRules = {
             });
         } catch (e) {
             console.error('Error executing AG js rule with uniqueId "be0a03459654f3c6591908806278974c" due to: ' + e);
+        }
+    },
+    '(()=>{window.addEventListener("click",(function(t){const e=t?.target?.closest?.(".BottomRecirc a[href].Post-item");e&&(t.preventDefault(),location.assign(e.href))}),!0);})();': () => {
+        try {
+            const e = "done";
+            if (Window.prototype.toString["4dc032bef8d7d5715dc533a301523f7e"] === e) return;
+            window.addEventListener("click", function(e) {
+                const t = e?.target?.closest?.(".BottomRecirc a[href].Post-item");
+                t && (e.preventDefault(), location.assign(t.href));
+            }, !0);
+            Object.defineProperty(Window.prototype.toString, "4dc032bef8d7d5715dc533a301523f7e", {
+                value: e,
+                enumerable: !1,
+                writable: !1,
+                configurable: !1
+            });
+        } catch (e) {
+            console.error('Error executing AG js rule with uniqueId "4dc032bef8d7d5715dc533a301523f7e" due to: ' + e);
         }
     },
     '(()=>{const t={apply:async(t,e,r)=>{try{const o=await Reflect.apply(t,e,r);return o?.feed&&Array.isArray(o.feed)&&o.feed.forEach((t=>{t?.data?.shortUrl&&t?.data?.webStoryAction&&Object.keys(t.data.webStoryAction).forEach((e=>{const r=t.data.webStoryAction.webUrl;if("string"==typeof r){const e=r.split("web-blocker"),o=e.length>1?e[1]:null;if(o){const e=document.querySelector(`a[href*="${o}"]`);e&&(e.href=t.data.shortUrl,e.setAttribute("web-blocker","true"))}}t.data.webStoryAction[e]=t.data.shortUrl}))})),o}catch(t){console.trace("Error occurred:",t)}return await Reflect.apply(t,e,r)}};window.Response.prototype.json=new Proxy(window.Response.prototype.json,t),window.addEventListener("click",(function(t){t&&("A"===t.target?.nodeName||"H3"===t.target?.nodeName&&t.target?.closest("li")?.querySelector(\'a[web-blocker="true"]\'))&&t.stopPropagation()}),!0)})();': () => {
