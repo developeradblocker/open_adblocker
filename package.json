@@ -1,6 +1,6 @@
 {
   "name": "open-adblocker",
-  "version": "1.6.12",
+  "version": "1.6.13",
   "type": "module",
   "scripts": {
     "build:dev:chrome": "webpack --config webpack/webpack.config.js --mode=development --env BROWSER=chrome",
