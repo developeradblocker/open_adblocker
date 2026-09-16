@@ -20,7 +20,7 @@ import { inject } from '@/utils/di/di.types'
 import { MetadataStorage } from '@/modules/settings/internal/storage/metadata.storage'
 import { METADATA_PATH } from '../../../../../constants'
 import { logger } from '@/utils/logger/logger'
-import { MetadataRuleSet } from '@adguard/tsurlfilter/es/declarative-converter'
+import { MetadataRuleset } from '@adguard/dnr-converter'
 import {
   FilterMetadata,
   Metadata,
@@ -57,7 +57,7 @@ export class MetadataService implements MetadataServiceInterface {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' }
       })
-      const metadataResponse = MetadataRuleSet.deserialize(await response.text())
+      const metadataResponse = MetadataRuleset.deserialize(await response.text())
 
       const validData = metadataValidator.parse({
         metadata: metadataResponse.getAdditionalProperty('metadata'),

@@ -17,7 +17,7 @@
  */
 import { MetadataService } from '@/modules/settings/internal/service/metadata.service'
 import { MetadataStorage } from '@/modules/settings/internal/storage/metadata.storage'
-import { MetadataRuleSet } from '@adguard/tsurlfilter/es/declarative-converter'
+import { MetadataRuleset } from '@adguard/dnr-converter'
 import { METADATA_PATH } from '../../../../../../constants'
 import { FilterMetadata, GroupMetadata, Metadata, metadataValidator } from '@/modules/settings/common/settings.types'
 
@@ -103,7 +103,7 @@ describe('MetadataService', () => {
           if (key === 'versionTimestampMs') return mockMetadata.versionTimestampMs
         })
       }
-      jest.spyOn(MetadataRuleSet, 'deserialize').mockReturnValue(mockRuleSet as any)
+      jest.spyOn(MetadataRuleset, 'deserialize').mockReturnValue(mockRuleSet as any)
 
       const result = await service.getMetadata()
 
@@ -146,7 +146,7 @@ describe('MetadataService', () => {
           if (key === 'versionTimestampMs') return mockMetadata.versionTimestampMs
         })
       }
-      jest.spyOn(MetadataRuleSet, 'deserialize').mockReturnValue(mockRuleSet as any)
+      jest.spyOn(MetadataRuleset, 'deserialize').mockReturnValue(mockRuleSet as any)
     })
 
     it('should fetch and update metadata successfully', async () => {
@@ -163,7 +163,7 @@ describe('MetadataService', () => {
         }
       )
       expect(mockResponse.text).toHaveBeenCalled()
-      expect(MetadataRuleSet.deserialize).toHaveBeenCalledWith('{"test": "data"}')
+      expect(MetadataRuleset.deserialize).toHaveBeenCalledWith('{"test": "data"}')
       expect(mockStorage.set).toHaveBeenCalledWith({
         metadata: mockMetadata.metadata,
         version: mockMetadata.version,
@@ -181,7 +181,7 @@ describe('MetadataService', () => {
     })
 
     it('should handle deserialization errors', async () => {
-      jest.spyOn(MetadataRuleSet, 'deserialize').mockImplementation(() => {
+      jest.spyOn(MetadataRuleset, 'deserialize').mockImplementation(() => {
         throw new Error('Deserialization failed')
       })
 

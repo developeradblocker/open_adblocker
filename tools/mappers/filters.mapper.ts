@@ -18,7 +18,7 @@
 export interface Filter {
   filterId: number
   name: string
-  description: string
+  description?: string
 }
 
 const FILTER_MAP: Record<number, Filter> = {
@@ -116,6 +116,10 @@ const FILTER_MAP: Record<number, Filter> = {
     filterId: 23,
     name: 'Ukrainian filter',
     description: 'Filter that enables ad blocking on websites in Ukrainian language.'
+  },
+  25: {
+    filterId: 25,
+    name: 'Mail Tracking Protection filter'
   },
   103: {
     filterId: 103,
@@ -261,6 +265,10 @@ const FILTER_MAP: Record<number, Filter> = {
     filterId: 259,
     name: 'Anti-Malware List',
     description: 'Blocks more malware than most other major anti-malware lists - domains and URL patterns used in malware redirection chains, IP addresses that are solely used by malware, PUP nags, and a few scammers.'
+  },
+  260: {
+    filterId: 260,
+    name: 'Stevo\'s AI Blocklist'
   }
 }
 export const filtersMapper = (filters: Filter[]): Filter[] => {
@@ -273,7 +281,7 @@ export const filtersMapper = (filters: Filter[]): Filter[] => {
       ...filter,
       filterId,
       name: mapped.name,
-      description: mapped.description
+      description: mapped.description ?? filter.description
     })
   }).filter(Boolean)
 }

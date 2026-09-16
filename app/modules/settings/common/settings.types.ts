@@ -29,7 +29,7 @@ export interface ReportIssueForm {
   description: string
 }
 
-export const SETTINGS_VERSION = '1.0'
+export const SETTINGS_VERSION = '2.0'
 
 const generalSchema = zod.object({
   cookieCleaner: zod.boolean(),

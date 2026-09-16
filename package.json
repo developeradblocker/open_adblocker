@@ -1,6 +1,6 @@
 {
   "name": "open-adblocker",
-  "version": "1.6.13",
+  "version": "1.7.0",
   "type": "module",
   "scripts": {
     "build:dev:chrome": "webpack --config webpack/webpack.config.js --mode=development --env BROWSER=chrome",
@@ -11,7 +11,7 @@
     "build:prod:edge": "webpack --config webpack/webpack.config.js --mode=production --env BROWSER=edge",
     "build:dev:all": "npm run build:dev:chrome && npm run build:dev:edge",
     "build:prod:all": "npm run build:prod:chrome && npm run build:prod:edge",
-    "sync-rules": "npm update @adguard/dnr-rulesets && tsx tools/sync-rules.ts",
+    "sync-rules": "tsx tools/sync-rules.ts",
     "disclaimer": "npm run lint | tsx tools/add-disclaimer.ts",
     "test": "jest",
     "lint": "npx eslint ./",
@@ -22,9 +22,9 @@
     "server": "node server/index.mjs"
   },
   "dependencies": {
-    "@adguard/agtree": "^4.1.1",
-    "@adguard/tsurlfilter": "^5.0.1",
-    "@adguard/tswebextension": "^4.1.2",
+    "@adguard/agtree": "^4.2.1",
+    "@adguard/tsurlfilter": "6.0.3",
+    "@adguard/tswebextension": "^5.0.3",
     "ace-builds": "^1.43.4",
     "inversify": "^7.10.4",
     "pinia": "^3.0.3",
@@ -40,7 +40,7 @@
   },
   "license": "GPL-3.0",
   "devDependencies": {
-    "@adguard/dnr-rulesets": "~4.2",
+    "@adguard/dnr-rulesets": "~5.0",
     "@babel/core": "^7.29.7",
     "@babel/plugin-proposal-class-properties": "^7.18.6",
     "@babel/plugin-transform-runtime": "^7.28.3",
@@ -68,6 +68,7 @@
     "less": "^4.3.0",
     "less-loader": "^12.3.0",
     "openai": "^6.39.0",
+    "terser-webpack-plugin": "^5.6.1",
     "ts-jest": "^29.4.5",
     "ts-loader": "^9.5.4",
     "tsx": "^4.20.3",
