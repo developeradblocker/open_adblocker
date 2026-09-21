@@ -17,7 +17,7 @@
  */
 
 module.exports = {
-  MetadataRuleSet: {
+  MetadataRuleset: {
     deserialize: jest.fn()
   }
 }

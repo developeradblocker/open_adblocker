@@ -68,6 +68,7 @@ export const handleOnAdGuardReady = async (): Promise<void> => {
   inject(injections)
   dispatcher().onWithClass(AdBlockerToggleListener)
   setupDispatchingOnAdBlockedMessage()
+  setupPerTabCounterReset()
   const message: AdBlockerOnReadyMessage = {
     type: AdBlockerMessages.ready,
     force: true
@@ -81,12 +82,81 @@ export const setupDispatchingOnAdBlockedMessage = (): void => {
     .subscribe(makeHandleOnFilteringLogEvent())
 }
 
+/**
+ * In-memory dedup of assuredly-blocked request URLs, scoped to the current
+ * page load of each tab. Retry-happy sites (WebSocket reconnects, XHR polls,
+ * prebid bidders, video ad SDKs) can produce thousands of real DNR blocks for
+ * the exact same URL within a single visit. AdGuard's own UI collapses these
+ * to a single entry; we do the same so the counter reflects unique blocked
+ * resources on the current page rather than raw network events.
+ *
+ * The set is cleared whenever the per-tab counter is reset (top-frame
+ * navigation, tab removal, or manual reset via the toggle listener).
+ */
+const seenBlockedUrlsByTab = new Map<number, Set<string>>()
+
+const clearSeenBlockedUrls = (tabId: number): void => {
+  seenBlockedUrlsByTab.delete(tabId)
+}
+
+/**
+ * Reset the per-tab blocked-ads counter when the user navigates the top frame
+ * to a new document, and clean up when the tab is closed. Without this the
+ * counter accumulates across every page visited in the tab lifetime, which on
+ * tracker-heavy sites (e.g. cnn.com) produces numbers that do not match what
+ * AdGuard's own extension shows for the current page.
+ */
+export const setupPerTabCounterReset = (): void => {
+  chrome.webNavigation.onCommitted.addListener(async ({ frameId, tabId }) => {
+    // Only reset on top-frame navigations; subframes should not clear the badge.
+    if (frameId !== 0 || tabId === HIDDEN_TAB_ID) {
+      return
+    }
+    clearSeenBlockedUrls(tabId)
+    await counterByTab().reset(tabId)
+    const message: AdBlockerOnBlockedAd = {
+      type: AdBlockerMessages.blockedAd
+    }
+    dispatcher().sendMessage(message)
+  })
+
+  chrome.tabs.onRemoved.addListener(async (tabId) => {
+    clearSeenBlockedUrls(tabId)
+    await counterByTab().reset(tabId)
+  })
+}
+
 export const handleApplyBasicRule = async ({ data }: ApplyBasicRuleEvent): Promise<void> => {
+  // In MV3, tswebextension publishes `ApplyBasicRule` twice per request:
+  //  1. A speculative match from the JS engine during `webRequest.onBeforeRequest`
+  //     (no `isAssuredlyBlocked` flag) - the request may or may not actually be
+  //     blocked by the browser's declarativeNetRequest engine.
+  //  2. A confirmed block from `webRequest.onErrorOccurred` with
+  //     `error === 'net::ERR_BLOCKED_BY_CLIENT'` and `isAssuredlyBlocked: true`.
+  // Only the confirmed events represent real blocks, so we skip the rest to
+  // avoid inflating counters with speculative/observational matches, header-rule
+  // matches, and other non-blocking rule applications.
   if (data.tabId === HIDDEN_TAB_ID ||
   data.isAllowlist ||
   data.filterId === null ||
-  data.ruleIndex === null) {
+  data.ruleIndex === null ||
+  !data.isAssuredlyBlocked) {
     return
+  }
+
+  // Collapse retry storms of the same blocked URL within the current page
+  // load so the counter reflects unique blocked resources, not raw events.
+  const requestUrl = data.requestUrl
+  if (typeof requestUrl === 'string' && requestUrl.length > 0) {
+    let seen = seenBlockedUrlsByTab.get(data.tabId)
+    if (!seen) {
+      seen = new Set<string>()
+      seenBlockedUrlsByTab.set(data.tabId, seen)
+    }
+    if (seen.has(requestUrl)) {
+      return
+    }
+    seen.add(requestUrl)
   }
 
   const url = await getFrameUrlHelper(data.tabId)

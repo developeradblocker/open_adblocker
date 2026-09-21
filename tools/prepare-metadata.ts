@@ -17,7 +17,7 @@
  */
 import { Group, groupsMapper } from './mappers/groups.mapper'
 import { Filter, filtersMapper } from './mappers/filters.mapper'
-import { MetadataRuleSet } from '@adguard/tsurlfilter/es/declarative-converter'
+import { MetadataRuleset } from '@adguard/dnr-converter'
 import { promises as fs } from 'fs'
 import { METADATA_PATH } from '../constants'
 interface Metadata {
@@ -25,7 +25,7 @@ interface Metadata {
   filters: Filter[]
 }
 
-export const prepareMetadata = async (metadata: MetadataRuleSet): Promise<void> => {
+export const prepareMetadata = async (metadata: MetadataRuleset): Promise<void> => {
   const info = metadata.getAdditionalProperty('metadata') as Metadata
   if (!info?.groups?.length || !info?.filters?.length) {
     throw new Error('Groups and filters are not defined!')

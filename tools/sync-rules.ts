@@ -53,7 +53,7 @@ const updateResources = async (): Promise<void> => {
   const folder = `${FILTERS_DIR}/declarative/`
   const metadataRuleSet = await readMetadataRuleSet(folder)
   await prepareMetadata(metadataRuleSet)
-  const ruleSetIds = metadataRuleSet.getRuleSetIds()
+  const ruleSetIds = metadataRuleSet.getRulesetIds()
   const jsRules: Set<string> = new Set()
 
   for (const ruleSetId of ruleSetIds) {

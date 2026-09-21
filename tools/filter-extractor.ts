@@ -16,9 +16,7 @@
  * along with AdGuard Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
 import { readFile } from 'fs/promises'
-
-import { METADATA_RULESET_ID, MetadataRuleSet } from '@adguard/tsurlfilter/es/declarative-converter'
-import { getRuleSetPath } from '@adguard/tsurlfilter/es/declarative-converter-utils'
+import { MetadataRuleset, METADATA_RULESET_ID, getRulesetPath } from '@adguard/dnr-converter'
 
 /**
  * Reads a metadata rule set from a folder.
@@ -27,10 +25,10 @@ import { getRuleSetPath } from '@adguard/tsurlfilter/es/declarative-converter-ut
  *
  * @returns A Promise that resolves to the metadata rule set.
  */
-export const readMetadataRuleSet = async (folder: string): Promise<MetadataRuleSet> => {
-  const metadataRuleSetPath = getRuleSetPath(METADATA_RULESET_ID, folder)
+export const readMetadataRuleSet = async (folder: string): Promise<MetadataRuleset> => {
+  const metadataRuleSetPath = getRulesetPath(METADATA_RULESET_ID, folder)
   const content = await readFile(metadataRuleSetPath, 'utf-8')
-  return MetadataRuleSet.deserialize(content)
+  return MetadataRuleset.deserialize(content)
 }
 
 /**
@@ -45,9 +43,9 @@ export const extractPreprocessedRawFilterList = async (
   ruleSetId: string,
   folder: string
 ): Promise<string> => {
-  const ruleSetPath = getRuleSetPath(ruleSetId, folder)
+  const ruleSetPath = getRulesetPath(ruleSetId, folder)
   const rawRuleSetContent = await readFile(ruleSetPath, 'utf-8')
   const ruleSetContent = JSON.parse(rawRuleSetContent)
 
-  return ruleSetContent[0].metadata.rawFilterList
+  return ruleSetContent[0].metadata.filterContent
 }

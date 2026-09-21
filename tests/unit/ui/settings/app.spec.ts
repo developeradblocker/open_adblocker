@@ -39,7 +39,7 @@ describe('App.vue', () => {
   const resetSnackbarMock = jest.fn()
 
   const mockSettings = {
-    version: '1.0.0',
+    version: '2.0.0',
     general: {
       cookieCleaner: true,
       webRTC: false

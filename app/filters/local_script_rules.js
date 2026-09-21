@@ -3121,49 +3121,6 @@ export const localScriptRules = {
             console.error('Error executing AG js rule with uniqueId "1503dc258e7809ec4d938941a16df979" due to: ' + e);
         }
     },
-    '(()=>{window.vhit=!0;const t=/function\\(_0x.*\\){const _0x.*\\[_0x|adblock|function Boolean\\(\\) \\{\\s*\\[native code\\]/,e={apply:(t,e,o)=>{const n=o[0];"boolean"==typeof n&&!0===n&&(o[0]=!1),setTimeout((()=>Reflect.apply(t,e,o)),2e3)}},o={apply:(o,n,i)=>{const r=i[0];return"function"==typeof r&&t.test(r.toString())&&(i[0]=new Proxy(i[0],e)),Reflect.apply(o,n,i)}};window.Promise.prototype.then=new Proxy(window.Promise.prototype.then,o);const n=async t=>{t.preventDefault();const e=t.currentTarget;"function"==typeof window.vhit?.report&&await window.vhit.report(),e.form.requestSubmit(e)};window.addEventListener("load",(()=>{const t=document.querySelector("form#submit-form button#submit-button");if(t){const e=t.cloneNode(!0);t.parentNode.replaceChild(e,t),e.removeAttribute("disabled"),e.textContent="Continue",e.addEventListener("click",n)}}))})();': () => {
-        try {
-            const e = "done";
-            if (Window.prototype.toString["398430dd88adec0f5cf1932617ebf2cf"] === e) return;
-            (() => {
-                window.vhit = !0;
-                const e = /function\(_0x.*\){const _0x.*\[_0x|adblock|function Boolean\(\) \{\s*\[native code\]/, t = {
-                    apply: (e, t, o) => {
-                        const n = o[0];
-                        "boolean" == typeof n && !0 === n && (o[0] = !1), setTimeout(() => Reflect.apply(e, t, o), 2e3);
-                    }
-                }, o = {
-                    apply: (o, n, r) => {
-                        const i = r[0];
-                        return "function" == typeof i && e.test(i.toString()) && (r[0] = new Proxy(r[0], t)), 
-                        Reflect.apply(o, n, r);
-                    }
-                };
-                window.Promise.prototype.then = new Proxy(window.Promise.prototype.then, o);
-                const n = async e => {
-                    e.preventDefault();
-                    const t = e.currentTarget;
-                    "function" == typeof window.vhit?.report && await window.vhit.report(), t.form.requestSubmit(t);
-                };
-                window.addEventListener("load", () => {
-                    const e = document.querySelector("form#submit-form button#submit-button");
-                    if (e) {
-                        const t = e.cloneNode(!0);
-                        e.parentNode.replaceChild(t, e), t.removeAttribute("disabled"), t.textContent = "Continue", 
-                        t.addEventListener("click", n);
-                    }
-                });
-            })();
-            Object.defineProperty(Window.prototype.toString, "398430dd88adec0f5cf1932617ebf2cf", {
-                value: e,
-                enumerable: !1,
-                writable: !1,
-                configurable: !1
-            });
-        } catch (e) {
-            console.error('Error executing AG js rule with uniqueId "398430dd88adec0f5cf1932617ebf2cf" due to: ' + e);
-        }
-    },
     '(()=>{const e=()=>{document.querySelectorAll(".chakra-portal").forEach((e=>{e.querySelector(\'.chakra-modal__overlay[style*="opacity"]\')&&e.setAttribute("style","display: none !important;")}))},t=()=>{},a=function(t,a){const r={name:t,listener:a};requestAnimationFrame((()=>{try{"rewardedSlotGranted"===r.name&&setTimeout(e,2e3),r.listener()}catch(e){}}))};window.googletag={cmd:[],pubads:()=>({addEventListener:a,removeEventListener:t,refresh:t,getTargeting:()=>[],setTargeting:t,disableInitialLoad:t,enableSingleRequest:t,collapseEmptyDivs:t,getSlots:t}),defineSlot:()=>({addService(){}}),defineOutOfPageSlot:t,enableServices:t,display:t,enums:{OutOfPageFormat:{REWARDED:1}}},googletag.cmd.push=e=>{try{e()}catch(e){}return 1}})();': () => {
         try {
             const e = "done";
@@ -4216,24 +4173,30 @@ export const localScriptRules = {
             console.error('Error executing AG js rule with uniqueId "631aed795dd7ba8bffc8ac13694e2216" due to: ' + e);
         }
     },
-    '(()=>{window.googletag={apiReady:!0,getVersion:function(){return"202307200101"}};})();': () => {
+    '(()=>{window.googletag={cmd:[],apiReady:!0,getVersion:function(){return"202609010101"}};window.pbjs={getConsentMetadata(){}};})();': () => {
         try {
             const e = "done";
-            if (Window.prototype.toString["4f23857baa34d679fafb613b89f85cda"] === e) return;
-            window.googletag = {
-                apiReady: !0,
-                getVersion: function() {
-                    return "202307200101";
-                }
-            };
-            Object.defineProperty(Window.prototype.toString, "4f23857baa34d679fafb613b89f85cda", {
+            if (Window.prototype.toString.d6d22db8f380b5777ac50c35fa683d54 === e) return;
+            (() => {
+                window.googletag = {
+                    cmd: [],
+                    apiReady: !0,
+                    getVersion: function() {
+                        return "202609010101";
+                    }
+                };
+                window.pbjs = {
+                    getConsentMetadata() {}
+                };
+            })();
+            Object.defineProperty(Window.prototype.toString, "d6d22db8f380b5777ac50c35fa683d54", {
                 value: e,
                 enumerable: !1,
                 writable: !1,
                 configurable: !1
             });
         } catch (e) {
-            console.error('Error executing AG js rule with uniqueId "4f23857baa34d679fafb613b89f85cda" due to: ' + e);
+            console.error('Error executing AG js rule with uniqueId "d6d22db8f380b5777ac50c35fa683d54" due to: ' + e);
         }
     },
     '!function(){const e={apply:(e,t,n)=>{if("prg"!==t?.id)return Reflect.apply(e,t,n);const o=Reflect.apply(e,t,n);return Object.defineProperty(o,"top",{value:500}),o}};window.Element.prototype.getBoundingClientRect=new Proxy(window.Element.prototype.getBoundingClientRect,e)}();': () => {

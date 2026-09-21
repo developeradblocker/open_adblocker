@@ -21,7 +21,8 @@ import {
   handleOnAdGuardReady,
   makeHandleOnFilteringLogEvent,
   setupDispatchingOnAdBlockedMessage,
-  setupInternalAdBlocker
+  setupInternalAdBlocker,
+  setupPerTabCounterReset
 } from '@/modules/ad-blocker/internal/ad-blocker.setup'
 import { inject } from '@/utils/inject/inject'
 import { dispatcher } from '@/utils/setup-worker'
@@ -55,6 +56,9 @@ const mockDispatcherInstance = {
   sendMessage: jest.fn().mockResolvedValue(undefined)
 }
 
+const webNavigationOnCommittedAddListener = jest.fn()
+const tabsOnRemovedAddListener = jest.fn()
+
 beforeEach(() => {
   jest.clearAllMocks()
   mockedDispatcher.mockReturnValue(mockDispatcherInstance as any)
@@ -63,6 +67,18 @@ beforeEach(() => {
       subscribe: jest.fn()
     }
   } as any)
+  global.chrome = {
+    webNavigation: {
+      onCommitted: {
+        addListener: webNavigationOnCommittedAddListener
+      }
+    },
+    tabs: {
+      onRemoved: {
+        addListener: tabsOnRemovedAddListener
+      }
+    }
+  } as any
 })
 
 describe('setupInternalAdBlocker', () => {
@@ -126,6 +142,20 @@ describe('handleApplyBasicRule', () => {
     expect(getFrameUrlHelper).not.toHaveBeenCalled()
   })
 
+  it('should return if the event is not flagged as assuredly blocked', async () => {
+    await handleApplyBasicRule({
+      data: {
+        tabId: 1,
+        filterId: 2,
+        ruleIndex: 3,
+        isAllowlist: false
+        // isAssuredlyBlocked omitted - speculative match only, must be ignored
+      }
+    } as any)
+    expect(getFrameUrlHelper).not.toHaveBeenCalled()
+    expect(mockDispatcherInstance.sendMessage).not.toHaveBeenCalled()
+  })
+
   it('should return if internalAdblocker indicates paused', async () => {
     // Mock getFrameUrlHelper and getDomainHelper
     jest.mocked(getFrameUrlHelper).mockResolvedValue(dummyUrl)
@@ -138,7 +168,8 @@ describe('handleApplyBasicRule', () => {
         tabId: 1,
         filterId: 2,
         ruleIndex: 3,
-        isAllowlist: false
+        isAllowlist: false,
+        isAssuredlyBlocked: true
       }
     } as any)
     expect(internalAdblocker().isPaused).toHaveBeenCalledWith('example.com')
@@ -160,7 +191,8 @@ describe('handleApplyBasicRule', () => {
         tabId: 1,
         filterId: 2,
         ruleIndex: 3,
-        isAllowlist: false
+        isAllowlist: false,
+        isAssuredlyBlocked: true
       }
     } as any)
     expect(totalIncrement).toHaveBeenCalledTimes(1)
@@ -168,6 +200,96 @@ describe('handleApplyBasicRule', () => {
     expect(mockDispatcherInstance.sendMessage).toHaveBeenCalledWith({
       type: AdBlockerMessages.blockedAd
     })
+  })
+
+  it('should dedupe repeated blocks of the same URL within a page load', async () => {
+    jest.mocked(getFrameUrlHelper).mockResolvedValue(dummyUrl)
+    jest.mocked(getDomainHelper).mockReturnValue('example.com')
+    jest.mocked(internalAdblocker).mockReturnValue({
+      isPaused: jest.fn().mockResolvedValue(false)
+    } as any)
+    const totalIncrement = jest.fn().mockResolvedValue(undefined)
+    const tabIncrement = jest.fn().mockResolvedValue(undefined)
+    jest.mocked(totalCounter).mockReturnValue({
+      increment: totalIncrement
+    } as any)
+    jest.mocked(counterByTab).mockReturnValue({
+      increment: tabIncrement,
+      reset: jest.fn().mockResolvedValue(undefined)
+    } as any)
+
+    const event = {
+      data: {
+        tabId: 7,
+        filterId: 2,
+        ruleIndex: 3,
+        isAllowlist: false,
+        isAssuredlyBlocked: true,
+        requestUrl: 'https://tracker.example/ping'
+      }
+    } as any
+
+    // Simulate a retry storm: same URL fires many times
+    await handleApplyBasicRule(event)
+    await handleApplyBasicRule(event)
+    await handleApplyBasicRule(event)
+
+    expect(totalIncrement).toHaveBeenCalledTimes(1)
+    expect(tabIncrement).toHaveBeenCalledTimes(1)
+
+    // A different URL on the same tab still counts
+    await handleApplyBasicRule({
+      data: { ...event.data, requestUrl: 'https://tracker.example/other' }
+    } as any)
+    expect(totalIncrement).toHaveBeenCalledTimes(2)
+    expect(tabIncrement).toHaveBeenCalledTimes(2)
+
+    // After a top-frame navigation the dedup set is cleared and the same URL counts again
+    setupPerTabCounterReset()
+    const onCommitted = webNavigationOnCommittedAddListener.mock.calls[0][0]
+    await onCommitted({ frameId: 0, tabId: 7 })
+    await handleApplyBasicRule(event)
+    expect(totalIncrement).toHaveBeenCalledTimes(3)
+    expect(tabIncrement).toHaveBeenCalledTimes(3)
+  })
+})
+
+describe('setupPerTabCounterReset', () => {
+  it('registers listeners for top-frame navigation and tab removal', () => {
+    setupPerTabCounterReset()
+    expect(webNavigationOnCommittedAddListener).toHaveBeenCalledTimes(1)
+    expect(tabsOnRemovedAddListener).toHaveBeenCalledTimes(1)
+  })
+
+  it('resets per-tab counter and notifies UI on top-frame navigation', async () => {
+    const resetMock = jest.fn().mockResolvedValue(undefined)
+    jest.mocked(counterByTab).mockReturnValue({ reset: resetMock } as any)
+    setupPerTabCounterReset()
+    const onCommitted = webNavigationOnCommittedAddListener.mock.calls[0][0]
+    await onCommitted({ frameId: 0, tabId: 42 })
+    expect(resetMock).toHaveBeenCalledWith(42)
+    expect(mockDispatcherInstance.sendMessage).toHaveBeenCalledWith({
+      type: AdBlockerMessages.blockedAd
+    })
+  })
+
+  it('ignores sub-frame navigations', async () => {
+    const resetMock = jest.fn().mockResolvedValue(undefined)
+    jest.mocked(counterByTab).mockReturnValue({ reset: resetMock } as any)
+    setupPerTabCounterReset()
+    const onCommitted = webNavigationOnCommittedAddListener.mock.calls[0][0]
+    await onCommitted({ frameId: 1, tabId: 42 })
+    expect(resetMock).not.toHaveBeenCalled()
+    expect(mockDispatcherInstance.sendMessage).not.toHaveBeenCalled()
+  })
+
+  it('resets per-tab counter when a tab is removed', async () => {
+    const resetMock = jest.fn().mockResolvedValue(undefined)
+    jest.mocked(counterByTab).mockReturnValue({ reset: resetMock } as any)
+    setupPerTabCounterReset()
+    const onRemoved = tabsOnRemovedAddListener.mock.calls[0][0]
+    await onRemoved(99)
+    expect(resetMock).toHaveBeenCalledWith(99)
   })
 })
 

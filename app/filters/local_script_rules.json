@@ -1466,26 +1466,6 @@
             },
             {
                 "permittedDomains": [
-                    "cuttlinks.com",
-                    "exe-links.com",
-                    "cuttty.com",
-                    "cuttyy.com",
-                    "cutynow.com",
-                    "exnion.com",
-                    "cutyion.com",
-                    "jixo.online",
-                    "exe-urls.com",
-                    "evernia.site",
-                    "ijvam.com",
-                    "mrgec.com",
-                    "emxaw.com",
-                    "cety.app",
-                    "cutnet.net"
-                ],
-                "restrictedDomains": []
-            },
-            {
-                "permittedDomains": [
                     "upfilesgo.com",
                     "upplinks.net",
                     "upfion.com",
@@ -1493,28 +1473,6 @@
                     "upfiles-urls.com",
                     "falpus.com",
                     "fooak.com"
-                ],
-                "restrictedDomains": []
-            }
-        ],
-        "(()=>{window.vhit=!0;const t=/function\\(_0x.*\\){const _0x.*\\[_0x|adblock|function Boolean\\(\\) \\{\\s*\\[native code\\]/,e={apply:(t,e,o)=>{const n=o[0];\"boolean\"==typeof n&&!0===n&&(o[0]=!1),setTimeout((()=>Reflect.apply(t,e,o)),2e3)}},o={apply:(o,n,i)=>{const r=i[0];return\"function\"==typeof r&&t.test(r.toString())&&(i[0]=new Proxy(i[0],e)),Reflect.apply(o,n,i)}};window.Promise.prototype.then=new Proxy(window.Promise.prototype.then,o);const n=async t=>{t.preventDefault();const e=t.currentTarget;\"function\"==typeof window.vhit?.report&&await window.vhit.report(),e.form.requestSubmit(e)};window.addEventListener(\"load\",(()=>{const t=document.querySelector(\"form#submit-form button#submit-button\");if(t){const e=t.cloneNode(!0);t.parentNode.replaceChild(e,t),e.removeAttribute(\"disabled\"),e.textContent=\"Continue\",e.addEventListener(\"click\",n)}}))})();": [
-            {
-                "permittedDomains": [
-                    "cuttlinks.com",
-                    "exe-links.com",
-                    "cuttty.com",
-                    "cuttyy.com",
-                    "cutynow.com",
-                    "exnion.com",
-                    "cutyion.com",
-                    "jixo.online",
-                    "exe-urls.com",
-                    "evernia.site",
-                    "ijvam.com",
-                    "mrgec.com",
-                    "emxaw.com",
-                    "cety.app",
-                    "cutnet.net"
                 ],
                 "restrictedDomains": []
             }
@@ -1971,7 +1929,7 @@
                 "restrictedDomains": []
             }
         ],
-        "(()=>{window.googletag={apiReady:!0,getVersion:function(){return\"202307200101\"}};})();": [
+        "(()=>{window.googletag={cmd:[],apiReady:!0,getVersion:function(){return\"202609010101\"}};window.pbjs={getConsentMetadata(){}};})();": [
             {
                 "permittedDomains": [
                     "telsu.fi"
@@ -2444,6 +2402,7 @@
         "(()=>{const t={apply:(t,e,o)=>{try{const t=e;t&&\"object\"==typeof t&&t.context?.bidRequestId&&(e={})}catch(t){}return Reflect.apply(t,e,o)}};window.Object.prototype.hasOwnProperty=new Proxy(window.Object.prototype.hasOwnProperty,t)})();": [
             {
                 "permittedDomains": [
+                    "autocentrum.pl",
                     "benchmark.pl",
                     "dobreprogramy.pl",
                     "so-magazyn.pl",
@@ -2484,6 +2443,7 @@
         "!function(){const r={apply:(r,o,e)=>(e[0]?.includes?.(\"</VAST>\")&&(e[0]=\"\"),Reflect.apply(r,o,e))};window.DOMParser.prototype.parseFromString=new Proxy(window.DOMParser.prototype.parseFromString,r)}();": [
             {
                 "permittedDomains": [
+                    "autocentrum.pl",
                     "benchmark.pl",
                     "wirtualnemedia.pl",
                     "jastrzabpost.pl",
@@ -3426,6 +3386,13 @@
         "(()=>{const e=/html-load\\.com|loader\\.min\\.js|andwonderful\\.com\\/safe\\.min\\.js|shieldload\\.|:\\/\\/loader\\.|core\\.js|\\/sdk\\.js|\\/app\\.js|\\/main\\.js|\\/vendor\\.js/,t={filter:Array.prototype.filter,includes:String.prototype.includes,regexTest:RegExp.prototype.test},o=()=>(new Error).stack,l=o=>t.regexTest.call(e,o),r={construct:(e,r,n)=>{const c=o();return l(c)&&r[0]&&t.includes.call(r[0],\"adshield\")&&(r[0]=[\"(function(){})();\"]),Reflect.construct(e,r,n)}};window.Blob=new Proxy(window.Blob,r);const n={apply:(e,r,n)=>{const c=o();return l(c)&&n[0]&&(t.includes.call(n[0],\"new Error\")||t.includes.call(n[0],\".apply(this\"))&&(n[0]=()=>{}),Reflect.apply(e,r,n)}};window.setTimeout=new Proxy(window.setTimeout,n);const c={apply:(e,r,n)=>{const c=o();return l(c)&&n[0]&&r?.includes?.(\"setTimeout\")&&(r=t.filter.call(r,(e=>!t.includes.call(e,\"setTimeout\")))),Reflect.apply(e,r,n)}};window.Array.prototype.filter=new Proxy(window.Array.prototype.filter,c)})();": [
             {
                 "permittedDomains": [
+                    "komputerswiat.pl",
+                    "businessinsider.com.pl",
+                    "fakt.pl",
+                    "plejada.pl",
+                    "medonet.pl",
+                    "onet.pl",
+                    "nikkansports.com",
                     "eastrennews.co.uk",
                     "kilmarnocktoday.co.uk",
                     "chelmsfordcitynews.co.uk",
