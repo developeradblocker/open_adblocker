@@ -52,7 +52,16 @@ export const useSettingsStore = defineStore('SettingsStore', {
     },
 
     groups (): GroupMetadata[] {
-      return this.settings?.metadata?.groups?.sort((a, b) => a.displayNumber - b.displayNumber) ?? []
+      const otherGroupId = 6
+      return this.settings?.metadata?.groups?.slice().sort((a, b) => {
+        if (a.groupId === otherGroupId) {
+          return 1
+        }
+        if (b.groupId === otherGroupId) {
+          return -1
+        }
+        return a.displayNumber - b.displayNumber
+      }) ?? []
     },
     enabledFilters (): FilterId[] {
       return this.settings.filters?.enabledFilters

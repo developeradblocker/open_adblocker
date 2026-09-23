@@ -67,8 +67,8 @@ const GROUP_ICON_MAP = {
   3: 'connection',
   4: 'popup',
   5: 'shield',
-  6: 'language',
-  7: 'more'
+  6: 'more',
+  7: 'language'
 }
 const groupIcon = (groupId: number): string => {
   return GROUP_ICON_MAP[groupId] || GROUP_ICON_MAP[1]
