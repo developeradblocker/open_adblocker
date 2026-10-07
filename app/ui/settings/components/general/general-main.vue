@@ -22,12 +22,20 @@
 
     <div class="main__separator"/>
 
+    <template v-if="$slots.features?.()">
+      <div class="main__features">
+        <slot name="features"/>
+      </div>
+
+      <div class="main__separator"/>
+    </template>
+
     <div class="main__cards">
       <BaseCard
         data-test="report"
         label="Report a bug" icon="bug" class="main__card"
         @click="toggleReportModal(true)"
-        />
+      />
       <BaseCard
         data-test="rate"
         label="Share feedback" icon="rate" class="main__card" @click="onRateUsClicked"/>
