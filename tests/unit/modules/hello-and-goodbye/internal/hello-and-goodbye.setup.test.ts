@@ -15,11 +15,13 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-import { helloAndGoodbyeSetup, handleOnInstall } from '@/modules/hello-and-goodbye/internal/hello-and-goodbye.setup'
+import { helloAndGoodbyeSetup } from '@/modules/hello-and-goodbye/internal/hello-and-goodbye.setup'
 
-const setUninstallURLMock = jest.fn().mockResolvedValue(undefined)
+const setUninstallURLMock = jest.fn()
 const addListenerMock = jest.fn()
-const createTabMock = jest.fn().mockResolvedValue(undefined)
+
+const INSTALL_URL = 'http://localhost:8080/thank-you/'
+const UNINSTALL_URL = 'http://localhost:8080/uninstall/'
 
 global.chrome = {
   runtime: {
@@ -30,9 +32,6 @@ global.chrome = {
     OnInstalledReason: {
       INSTALL: 'install'
     }
-  },
-  tabs: {
-    create: createTabMock
   }
 } as any
 
@@ -42,28 +41,9 @@ describe('helloAndGoodbyeSetup', () => {
   })
 
   it('should set the uninstall URL and register an install handler', () => {
-    helloAndGoodbyeSetup()
-    expect(setUninstallURLMock).toHaveBeenCalledWith('https://openadblocker.com/uninstall/')
-    expect(addListenerMock).toHaveBeenCalledWith(handleOnInstall)
-  })
-})
-
-describe('handleOnInstall', () => {
-  beforeEach(() => {
-    jest.clearAllMocks()
-  })
-
-  it('should open a new tab when installed', () => {
-    const details = { reason: 'install' } as any
-    handleOnInstall(details)
-    expect(createTabMock).toHaveBeenCalledWith({
-      url: 'https://openadblocker.com/thank-you/'
-    })
-  })
-
-  it('should do nothing if not installed', () => {
-    const details = { reason: 'update' } as any
-    handleOnInstall(details)
-    expect(createTabMock).not.toHaveBeenCalled()
+    helloAndGoodbyeSetup(INSTALL_URL, UNINSTALL_URL)
+    expect(setUninstallURLMock).toHaveBeenCalledWith(UNINSTALL_URL)
+    expect(addListenerMock).toHaveBeenCalledTimes(1)
+    expect(typeof addListenerMock.mock.calls[0][0]).toBe('function')
   })
 })

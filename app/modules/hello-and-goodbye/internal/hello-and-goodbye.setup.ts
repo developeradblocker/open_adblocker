@@ -15,17 +15,8 @@
  * You should have received a copy of the GNU General Public License
  * along with Open Ad Blocker Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
-import InstalledDetails = chrome.runtime.InstalledDetails
+import { createOnInstallHandler } from '@/modules/hello-and-goodbye/internal/handlers/on-install.handler'
 
-export const helloAndGoodbyeSetup = (): void => {
-  chrome.runtime.setUninstallURL('https://openadblocker.com/uninstall/')
-  chrome.runtime.onInstalled.addListener(handleOnInstall)
-}
-
-export const handleOnInstall = (details: InstalledDetails): void => {
-  if (details.reason === chrome.runtime.OnInstalledReason.INSTALL) {
-    chrome.tabs.create({
-      url: 'https://openadblocker.com/thank-you/'
-    })
-  }
+export const helloAndGoodbyeSetup = (installURL: string, uninstallURL: string): void => {
+  chrome.runtime.onInstalled.addListener(createOnInstallHandler(installURL, uninstallURL))
 }
