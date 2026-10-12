@@ -42,7 +42,7 @@ logger.info('Service Worker preparing')
  * Service Worker (SW)
  */
 setupWorker('SW')
-helloAndGoodbyeSetup()
+helloAndGoodbyeSetup(process.env.INSTALL_URL, process.env.UNINSTALL_URL)
 setupInternalConfig(process.env.CONFIG_API_URL, Number(process.env.CONFIG_UPDATE_INTERVAL))
 setupInternalWebRTC()
 setupAdGuard()
