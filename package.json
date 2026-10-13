@@ -26,7 +26,7 @@
     "@adguard/tsurlfilter": "6.0.3",
     "@adguard/tswebextension": "^5.0.3",
     "ace-builds": "^1.43.4",
-    "inversify": "^7.10.4",
+    "inversify": "^8.2.3",
     "pinia": "^3.0.3",
     "reflect-metadata": "^0.2.2",
     "uuid": "^13.0.0",
