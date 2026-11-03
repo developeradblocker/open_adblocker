@@ -23,6 +23,7 @@ import { babelLoader } from '../loaders/babel.loader.js'
 import { lessLoader } from '../loaders/less.loader.js'
 import { cssLoader } from '../loaders/css.loader.js'
 import { imageLoader } from '../loaders/image.loader.js'
+import { fontLoader } from '../loaders/font.loader.js'
 import { aliases } from '../alias.js'
 import { dotenvPlugin } from '../plugins/dotenv.plugin.js'
 import { vueLoaderPlugin } from '../plugins/vue-loader.plugin.js'
@@ -60,7 +61,8 @@ export const commonMode = (env, mode) => {
     babelLoader(),
     lessLoader(),
     cssLoader(),
-    imageLoader()
+    imageLoader(),
+    fontLoader()
   ]
 
   return {
@@ -94,7 +96,8 @@ export const commonMode = (env, mode) => {
     ],
     output: {
       filename: '[name].js',
-      path: path.resolve(__dirname, '..', buildPath)
+      path: path.resolve(__dirname, '..', buildPath),
+      publicPath: '/'
     }
   }
 }
