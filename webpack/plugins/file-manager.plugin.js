@@ -46,6 +46,10 @@ export const fileManagerPlugin = ({ distName, filters, mode, hotReload }) => {
             destination: './build/icons'
           },
           {
+            source: './app/ui/shared/fonts',
+            destination: './build/fonts'
+          },
+          {
             source: './app/web-accessible-resources',
             destination: './build/web-accessible-resources'
           },
