@@ -1032,6 +1032,28 @@
 							"filterId": 112
 						},
 						{
+							"name": "Romanian filter",
+							"description": "Additional filter list for websites in Romanian.",
+							"timeAdded": "2014-06-30T07:56:55+0000",
+							"homepage": "https://www.zoso.ro/rolist",
+							"expires": 864000,
+							"displayNumber": 2,
+							"groupId": 7,
+							"subscriptionUrl": "https://www.zoso.ro/pages/rolist.txt",
+							"trustLevel": "low",
+							"version": "2.0.1.57",
+							"timeUpdated": "2026-04-23T20:46:35+0000",
+							"deprecated": false,
+							"languages": [],
+							"tags": [
+								1,
+								9,
+								39
+							],
+							"downloadUrl": "https://filters.adtidy.org/extension/chromium-mv3/filters/114.txt",
+							"filterId": 114
+						},
+						{
 							"name": "Indonesian filter",
 							"description": "Filter list for websites in Indonesian.",
 							"timeAdded": "2019-10-18T07:59:54+0000",
