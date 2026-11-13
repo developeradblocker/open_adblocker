@@ -71,12 +71,13 @@ export class UserActivityService implements UserActivityInterface {
     await this.port.sendMessage(message)
   }
 
-  async toggle (toggleId: ElementID, state: boolean): Promise<void> {
+  async toggle (toggleId: ElementID, state: boolean, page?: PageUI): Promise<void> {
     const activity: UserToggleActivity = {
       sessionId: this.sessionId,
       type: UserActivityType.toggle,
       element: toggleId,
-      action: state
+      action: state,
+      page
     }
     const message: UserActivityMessage = {
       type: UserActivityMessages.activity,
