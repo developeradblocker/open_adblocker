@@ -97,7 +97,9 @@ export type UserActivity =
 
 export interface BaseUserClickPayload {
   page: PageUI
-  to: ClickEventToLink | ClickEventToAction
+  to?: ClickEventToLink | ClickEventToAction
+  type?: string
+  manual?: boolean
 }
 
 export interface UserClickActivity<T extends BaseUserClickPayload> extends BaseUserActivity {
@@ -126,11 +128,12 @@ export interface UserToggleActivity extends BaseUserActivity {
   type: UserActivityType.toggle
   element: ElementID
   action: boolean
+  page?: PageUI
 }
 
 export interface UserActivityInterface {
   visitPage: (page: PageUI) => Promise<void>
-  toggle: (toggleId: ElementID, state: boolean) => Promise<void>
+  toggle: (toggleId: ElementID, state: boolean, page?: PageUI) => Promise<void>
   click: <T extends BaseUserClickPayload>(element: ElementID, payload?: T) => Promise<void>
   settingsImportError: (reason: ImportErrorReason) => Promise<void>
   snackbarShown: (snackbarId: string, snackbarSuccess: boolean) => Promise<void>
