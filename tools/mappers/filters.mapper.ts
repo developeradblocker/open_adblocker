@@ -156,6 +156,11 @@ const FILTER_MAP: Record<number, Filter> = {
     name: 'Arabic filter',
     description: 'Filter list for websites in Arabic.'
   },
+  114: {
+    filterId: 114,
+    name: 'Romanian filter',
+    description: 'Additional filter list for websites in Romanian.'
+  },
   120: {
     filterId: 120,
     name: 'Indonesian filter',
@@ -215,11 +220,6 @@ const FILTER_MAP: Record<number, Filter> = {
     filterId: 235,
     name: 'Persian filter',
     description: 'Filter list for blocking ads and trackers on websites in Persian.'
-  },
-  238: {
-    filterId: 238,
-    name: 'Polish Anti Adblock Filters',
-    description: 'Official Polish filters against Adblock alerts.'
   },
   243: {
     filterId: 243,
